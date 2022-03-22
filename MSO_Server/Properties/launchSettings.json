@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "dotnet-2": {
+    "MSO_Server": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": false,

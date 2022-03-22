@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "dotnet_2";
+option csharp_namespace = "MSO_Server";
 
 package greet;
 

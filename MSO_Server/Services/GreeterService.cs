@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 
-namespace dotnet_2
+namespace MSO_Server
 {
     public class GreeterService : Greeter.GreeterBase
     {
