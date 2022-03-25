@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "MSO_Server";
+
+package game;
+
+service GameNetwork
+{
+    rpc CreateRoom (CreateRequest) returns (CreateResponse);
+}
+
+message CreateRequest
+{
+    string player_name = 1;
+    int32 max_players = 2;
+}
+message CreateResponse
+{
+    int32 room_id = 1;
+}

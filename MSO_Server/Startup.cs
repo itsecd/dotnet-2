@@ -31,7 +31,7 @@ namespace MSO_Server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<GameService>();
 
                 endpoints.MapGet("/", async context =>
                 {
