@@ -6,15 +6,30 @@ package game;
 
 service GameNetwork
 {
-    rpc CreateRoom (CreateRequest) returns (CreateResponse);
+    rpc CreateRoom (CreateInfo) returns (RoomInfo);
+    rpc JoinRoom (RoomRequest) returns (ConnectionStatus);
+    rpc LeaveRoom (RoomRequest) returns (ConnectionStatus);
 }
 
-message CreateRequest
+message CreateInfo
 {
     string player_name = 1;
-    int32 max_players = 2;
+    int32 players_max = 2;
 }
-message CreateResponse
+
+message RoomInfo
 {
     int32 room_id = 1;
+    int32 players_max = 2;
+}
+
+message RoomRequest
+{
+    string player_name = 1;
+    int32 room_id = 2;
+}
+
+message ConnectionStatus
+{
+    bool connected = 1;
 }

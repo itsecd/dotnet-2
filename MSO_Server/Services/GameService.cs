@@ -12,13 +12,30 @@ namespace MSO_Server
             _logger = logger;
         }
 
-        public override Task<CreateResponse> CreateRoom(CreateRequest request, ServerCallContext context)
+        public override Task<RoomInfo> CreateRoom(CreateInfo request, ServerCallContext context)
         {
-            _logger.LogInformation("User {User} created room with {Count} max players count.", request.PlayerName, request.MaxPlayers);
-            // return base.CreateRoom(request, context);
-            return Task.FromResult(new CreateResponse
+            _logger.LogDebug("User '{username}' created room, {count} is max players count.", request.PlayerName, request.PlayersMax);
+            return Task.FromResult(new RoomInfo
             {
-                RoomId = 123
+                RoomId = 111
+            });
+        }
+
+        public override Task<ConnectionStatus> JoinRoom(RoomRequest request, ServerCallContext context)
+        {
+            _logger.LogDebug("User '{username}' connected to room #{room_id}.", request.PlayerName, request.RoomId);
+            return Task.FromResult(new ConnectionStatus
+            {
+                Connected = true
+            });
+        }
+
+        public override Task<ConnectionStatus> LeaveRoom(RoomRequest request, ServerCallContext context)
+        {
+            _logger.LogDebug("User '{username}' disconnected from room #{room_id}.", request.PlayerName, request.RoomId);
+            return Task.FromResult(new ConnectionStatus
+            {
+                Connected = false
             });
         }
     }
