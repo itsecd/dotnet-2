@@ -1,0 +1,10 @@
+[
+  {
+    "RoomId": 20325,
+    "PlayersMax": 5,
+    "PlayersCount": 1,
+    "PlayersReady": 0,
+    "Players": [],
+    "GameState": 0
+  }
+]
