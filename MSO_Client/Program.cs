@@ -11,12 +11,16 @@ namespace MSO_Client
         {
             using var channel = GrpcChannel.ForAddress("http://localhost:5000");
             var client = new GameNetwork.GameNetworkClient(channel);
-            var reply1 = await client.CreateRoomAsync(new CreateInfo{PlayerName = "dimadivan", PlayersMax = 5});
-            Console.WriteLine(reply1.RoomId);
-            // var reply2 = await client.JoinRoomAsync(new RoomRequest{PlayerName = "dimadivan", RoomId = 111});
-            // Console.WriteLine(reply2.Connected);
-            // var reply3 = await client.LeaveRoomAsync(new RoomRequest{PlayerName = "dimadivan", RoomId = 111});
-            // Console.WriteLine(reply3.Connected);
+            var roomInfo = await client.CreateRoomAsync(new CreateInfo{PlayerName = "dimadivan", PlayersMax = 5});
+            Console.ReadKey();
+            int newId = roomInfo.RoomId;
+            var connection = await client.JoinRoomAsync(new RoomRequest{PlayerName = "gromimolnia", RoomId = newId});
+            Console.ReadKey();
+            connection = await client.JoinRoomAsync(new RoomRequest{PlayerName = "grey_wizard", RoomId = newId});
+            Console.ReadKey();
+            connection = await client.JoinRoomAsync(new RoomRequest{PlayerName = "divanchik", RoomId = newId});
+            Console.ReadKey();
+            var reply3 = await client.LeaveRoomAsync(new RoomRequest{PlayerName = "grey_wizard", RoomId = newId});
             Console.ReadKey();
         }
     }
