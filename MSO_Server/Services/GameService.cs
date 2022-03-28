@@ -10,9 +10,13 @@ namespace MSO_Server
     public class GameService : GameNetwork.GameNetworkBase
     {
         private readonly ILogger<GameService> _logger;
-        public GameService(ILogger<GameService> logger)
+        private readonly PlayerRepository _players;
+        private readonly RoomRepository _rooms;
+        public GameService(ILogger<GameService> logger, PlayerRepository players, RoomRepository rooms)
         {
             _logger = logger;
+            _players = players;
+            _rooms = rooms;
         }
 
         public override Task<RoomInfo> CreateRoom(CreateInfo request, ServerCallContext context)
@@ -20,49 +24,46 @@ namespace MSO_Server
             try
             {
                 // добавить нового игрока в список, если ник неизвестен
-                var players = new PlayerRepository();
-                players.Load();
-                if (players.Add(request.PlayerName))
+                _players.Load();
+                if (_players.Add(request.PlayerName))
                 {
-                    players.Dump();
+                    _players.Dump();
                     AnsiConsole.MarkupLine($"[bold yellow]New user: '{request.PlayerName}'[/]");
                 }
+                // создать новую комнату
+                _rooms.Load();
+                int room_id = _rooms.Add(request.PlayersMax);
+                _rooms[room_id].Join(request.PlayerName);
+                _rooms.Dump();
+                AnsiConsole.MarkupLine($"[bold yellow]New room: #{room_id}[/]");
+                return Task.FromResult(new RoomInfo
+                {
+                    RoomId = room_id,
+                    PlayersMax = request.PlayersMax
+                });
             }
             catch (Exception e)
             {
                 AnsiConsole.WriteException(e);
+                return Task.FromResult(new RoomInfo { RoomId = 0, PlayersMax = 0 });
             }
-            // создать новую комнату
-            var rooms = new RoomRepository();
-            rooms.Load();
-            int room_id = rooms.Add(request.PlayersMax);
-            rooms[room_id].Players.Add(request.PlayerName);
-            rooms.Dump();
-            AnsiConsole.MarkupLine($"[bold yellow]New room: #{room_id}[/]");
-            return Task.FromResult(new RoomInfo
-            {
-                RoomId = room_id,
-                PlayersMax = request.PlayersMax
-            });
         }
 
         public override Task<ConnectionStatus> JoinRoom(RoomRequest request, ServerCallContext context)
         {
             // добавить нового игрока в список, если ник неизвестен
-            var players = new PlayerRepository();
-            players.Load();
-            if (players.Add(request.PlayerName))
+            _players.Load();
+            if (_players.Add(request.PlayerName))
             {
-                players.Dump();
-                AnsiConsole.MarkupLine($"[bold yellow]New user: {request.PlayerName}[/]");
+                _players.Dump();
+                AnsiConsole.MarkupLine($"[bold yellow]New user: '{request.PlayerName}'[/]");
             }
             // добавить игрока в комнату
-            var rooms = new RoomRepository();
-            rooms.Load();
-            if (rooms.Exists(request.RoomId))
+            _rooms.Load();
+            if (_rooms.Exists(request.RoomId))
             {
-                rooms[request.RoomId].Players.Add(request.PlayerName);
-                rooms.Dump();
+                _rooms[request.RoomId].Join(request.PlayerName);
+                _rooms.Dump();
                 _logger.LogWarning("User '{username}' connected to room #{room_id}.", request.PlayerName, request.RoomId);
             }
             else
@@ -73,12 +74,11 @@ namespace MSO_Server
         public override Task<ConnectionStatus> LeaveRoom(RoomRequest request, ServerCallContext context)
         {
             // убрать игрока из комнаты
-            var rooms = new RoomRepository();
-            rooms.Load();
-            if (rooms.Exists(request.RoomId))
+            _rooms.Load();
+            if (_rooms.Exists(request.RoomId))
             {
-                rooms[request.RoomId].Players.Remove(request.PlayerName);
-                rooms.Dump();
+                _rooms[request.RoomId].Leave(request.PlayerName);
+                _rooms.Dump();
                 _logger.LogWarning("User '{username}' disconnected from room #{room_id}.", request.PlayerName, request.RoomId);
             }
             else

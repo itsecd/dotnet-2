@@ -1,15 +1,12 @@
-using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.IO;
-using System;
 
 namespace MSO_Server.Data
 {
     /// <summary>Класс для хранения информации об игроке.</summary>
-    public class Player
+    public class PlayerInfo
     {
-        public string Name;
         public int TotalScore = 0;
         public int WinCount = 0;
         public int LoseCount = 0;
@@ -19,9 +16,8 @@ namespace MSO_Server.Data
     /// <summary>Репозиторий для хранения списка игроков.</summary>
     public class PlayerRepository
     {
-        private readonly ConcurrentBag<Player> _players1 = new();
-        private List<Player> _players;
-        public Player this[string name] { get => _players.Find(x => x.Name == name); }
+        private ConcurrentDictionary<string, PlayerInfo> _players;
+        public PlayerInfo this[string name] { get => _players[name]; }
         public int Count { get => _players.Count; }
 
         public PlayerRepository() => _players = new();
@@ -30,12 +26,8 @@ namespace MSO_Server.Data
         /// <returns>'true' если игрок успешно добавлен, иначе 'false'</returns>
         public bool Add(string name)
         {
-            _players1.Add(new Player{Name = name});
             if (!Exists(name))
-            {
-                _players.Add(new Player{Name = name});
-                return true;
-            }
+                return _players.TryAdd(name, new PlayerInfo());
             return false;
         }
 
@@ -43,20 +35,12 @@ namespace MSO_Server.Data
         /// <returns>true если игрок успешно удален, иначе 'false'</returns>
         public bool Delete(string name)
         {
-            if (Exists(name))
-            {
-                var delInd = _players.FindIndex(x => x.Name == name);
-                _players.RemoveAt(delInd);
-                return true;
-            }
-            return false;
+            PlayerInfo res;
+            return _players.TryRemove(name, out res);
         }
 
         /// <summary>Существует ли игрок с данным именем в списке.</summary>
-        public bool Exists(string name)
-        {
-            return _players.Exists(x => x.Name == name);
-        }
+        public bool Exists(string name) => _players.ContainsKey(name);
 
         /// <summary>Загрузка списка игроков.</summary>
         public void Load()
@@ -64,14 +48,14 @@ namespace MSO_Server.Data
             if (File.Exists("players.json"))
             {
                 string jsonString = File.ReadAllText("players.json");
-                _players = JsonSerializer.Deserialize<List<Player>>(jsonString);
+                _players = JsonSerializer.Deserialize<ConcurrentDictionary<string, PlayerInfo>>(jsonString);
             }
         }
 
         /// <summary>Сохранение списка игроков.</summary>
         public void Dump()
         {
-            string jsonString = JsonSerializer.Serialize<List<Player>>(_players, new JsonSerializerOptions { IncludeFields = true, WriteIndented = true });
+            string jsonString = JsonSerializer.Serialize<ConcurrentDictionary<string, PlayerInfo>>(_players, new JsonSerializerOptions { IncludeFields = true, WriteIndented = true });
             File.WriteAllText("players.json", jsonString);
         }
     }

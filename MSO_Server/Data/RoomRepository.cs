@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+// using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.IO;
@@ -10,63 +10,75 @@ namespace MSO_Server.Data
     /// <summary>Класс для хранения параметров комнаты и списка игроков.</summary>
     public class Room
     {
-        public int RoomId = 0;
-        public int PlayersMax = 1;
-        public int PlayersCount = 1;
-        public int PlayersReady = 0;
+        // public int RoomId = 0;
+        public int PlayersMax;
+        public int PlayersCount;
+        public int PlayersReady;
 
         [JsonInclude]
-        public List<string> Players;
-        public int GameState = 0;
+        public ConcurrentDictionary<string, int> Players;
+        public int GameState;
 
-        /// <summary>Инициализация номера комнаты и списка игроков.</summary>
-        public Room()
+        /// <summary>Конструктор по умолчанию.</summary>
+        public Room() => Players = new();
+
+        public bool Join(string name)
         {
-            Players = new();
-            DateTime time = DateTime.Now;
-            var rand = new Random(time.Hour * time.Minute * time.Second);
-            RoomId = rand.Next(1, 100000);
+            if (Players.TryAdd(name, 0))
+            {
+                PlayersCount += 1;
+                return true;
+            }
+            return false;
         }
 
-        public void Join(string name)
+        public bool Leave(string name)
         {
-            Players.Add(name);
-            PlayersCount++;
-        }
-
-        public void Leave(string name)
-        {
-            Players.Remove(name);
-            PlayersCount--;
+            int res;
+            if (Players.TryRemove(name, out res))
+            {
+                PlayersCount -= 1;
+                return true;
+            }
+            return false;
         }
     }
 
     /// <summary>Репозиторий для хранения списка комнат.</summary>
     public class RoomRepository
     {
-        private List<Room> _rooms;
-        public Room this[int id] { get => _rooms.Find(x => x.RoomId == id); }
-        public int Count { get => _rooms.Count; }
+        private ConcurrentDictionary<int, Room> _rooms;
+        public Room this[int id] => _rooms[id];
+        public int Count => _rooms.Count;
 
         public RoomRepository() => _rooms = new();
 
-        /// <summary>Создание новой комнаты.</summary><returns>Номер новой комнаты.</returns>
+        /// <summary>Создание новой комнаты.</summary>
+        /// <returns>Номер новой комнаты.</returns>
         public int Add(int players_max)
         {
+            // генерируем новый номер
+            DateTime time = DateTime.Now;
+            var rand = new Random(time.Hour * time.Minute * time.Second);
+            int new_id = rand.Next();
+            while (_rooms.ContainsKey(new_id))
+                new_id = rand.Next();
+            // создаем новую комнату
             var room = new Room();
             room.PlayersMax = players_max;
-            _rooms.Add(room);
-            return room.RoomId;
+            // добавляем комнату в список
+            _rooms.TryAdd(new_id, room);
+            return new_id;
         }
 
         /// <summary>Удаление комнаты.</summary>
-        public void Delete(int room_id)
+        public bool Delete(int room_id)
         {
-            int indDel = _rooms.FindIndex(x => x.RoomId == room_id);
-            _rooms.RemoveAt(indDel);
+            Room res;
+            return _rooms.TryRemove(room_id, out res);
         }
 
-        public bool Exists(int id) => _rooms.Exists(x => x.RoomId == id);
+        public bool Exists(int id) => _rooms.ContainsKey(id);
 
         /// <summary>Загрузка списка комнат.</summary>
         public void Load()
@@ -74,7 +86,7 @@ namespace MSO_Server.Data
             if (File.Exists("rooms.json"))
             {
                 string jsonString = File.ReadAllText("rooms.json");
-                _rooms = JsonSerializer.Deserialize<List<Room>>(jsonString);
+                _rooms = JsonSerializer.Deserialize<ConcurrentDictionary<int, Room>>(jsonString);
             }
         }
 
