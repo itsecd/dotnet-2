@@ -1,7 +1,7 @@
+using System.IO;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.IO;
 
 namespace MSO_Server.Data
 {
@@ -37,7 +37,7 @@ namespace MSO_Server.Data
         }
 
         /// <summary>Удаление игрока из списка, если найден.</summary>
-        /// <returns>true если игрок успешно удален, иначе 'false'</returns>
+        /// <returns>'true' если игрок успешно удален, иначе 'false'</returns>
         public bool Delete(string name)
         {
             PlayerInfo res;

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sayhello_75',['SayHello',['../da/d04/classMSO__Server_1_1Greeter_1_1GreeterBase.html#aab43a283bb259f48bb4cd6447b5d0201',1,'MSO_Server::Greeter::GreeterBase']]]
+  ['room_78',['Room',['../db/dbc/classMSO__Server_1_1Data_1_1Room.html#adf40b43e54686e55eead4180d0ef0130',1,'MSO_Server::Data::Room']]]
 ];

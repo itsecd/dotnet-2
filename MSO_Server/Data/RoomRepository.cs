@@ -1,8 +1,8 @@
-// using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Linq;
 using System.Collections.Concurrent;
 using System.Text.Json;
-using System.IO;
-using System;
 using System.Text.Json.Serialization;
 
 namespace MSO_Server.Data
@@ -12,10 +12,8 @@ namespace MSO_Server.Data
     {
         [JsonInclude]
         public int PlayersMax;
-        [JsonInclude]
-        public int PlayersCount;
-        [JsonInclude]
-        public int PlayersReady;
+        public int PlayersCount => Players.Count;
+        public int PlayersReady => (Players.Values.Where(val => val == -1)).Count();
         [JsonInclude]
         public ConcurrentDictionary<string, int> Players;
         [JsonInclude]
@@ -25,27 +23,16 @@ namespace MSO_Server.Data
         public Room() => Players = new();
 
         /// <summary>Добавление игрока в комнату.</summary>
-        public bool Join(string name)
-        {
-            if (Players.TryAdd(name, 0))
-            {
-                PlayersCount += 1;
-                return true;
-            }
-            return false;
-        }
+        public bool Join(string name) => Players.TryAdd(name, 0);
 
         /// <summary>Удаление игрока из комнаты.</summary>
         public bool Leave(string name)
         {
             int res;
-            if (Players.TryRemove(name, out res))
-            {
-                PlayersCount -= 1;
-                return true;
-            }
-            return false;
+            return Players.TryRemove(name, out res);
         }
+
+        public void Ready(string name) => Players[name] = -1;
     }
 
     /// <summary>Репозиторий для хранения списка комнат.</summary>
