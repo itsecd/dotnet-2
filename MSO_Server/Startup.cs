@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MSO_Server.Data;
 
 namespace MSO_Server
 {
@@ -18,8 +17,7 @@ namespace MSO_Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-            services.AddSingleton<PlayerRepository>();
-            services.AddSingleton<RoomRepository>();
+            services.AddSingleton<GameDatabase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
