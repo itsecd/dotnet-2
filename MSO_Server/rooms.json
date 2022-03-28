@@ -1,24 +1,2 @@
 {
-  "214702045": {
-    "PlayersMax": 0,
-    "PlayersCount": 0,
-    "PlayersReady": 0,
-    "Players": {
-      "gromimolnia": 0,
-      "divanchik": 0,
-      "dimadivan": 0
-    },
-    "GameState": 0
-  },
-  "1709750893": {
-    "PlayersMax": 0,
-    "PlayersCount": -1,
-    "PlayersReady": 0,
-    "Players": {
-      "gromimolnia": 0,
-      "divanchik": 0,
-      "dimadivan": 0
-    },
-    "GameState": 0
-  }
 }

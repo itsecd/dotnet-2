@@ -17,6 +17,8 @@ namespace MSO_Server
             _logger = logger;
             _players = players;
             _rooms = rooms;
+            _players.Load();
+            _rooms.Load();
         }
 
         public override Task<RoomInfo> CreateRoom(CreateInfo request, ServerCallContext context)
@@ -24,14 +26,14 @@ namespace MSO_Server
             try
             {
                 // добавить нового игрока в список, если ник неизвестен
-                _players.Load();
+                // _players.Load();
                 if (_players.Add(request.PlayerName))
                 {
                     _players.Dump();
                     AnsiConsole.MarkupLine($"[bold yellow]New user: '{request.PlayerName}'[/]");
                 }
                 // создать новую комнату
-                _rooms.Load();
+                // _rooms.Load();
                 int room_id = _rooms.Add(request.PlayersMax);
                 _rooms[room_id].Join(request.PlayerName);
                 _rooms.Dump();
@@ -52,14 +54,14 @@ namespace MSO_Server
         public override Task<ConnectionStatus> JoinRoom(RoomRequest request, ServerCallContext context)
         {
             // добавить нового игрока в список, если ник неизвестен
-            _players.Load();
+            // _players.Load();
             if (_players.Add(request.PlayerName))
             {
                 _players.Dump();
                 AnsiConsole.MarkupLine($"[bold yellow]New user: '{request.PlayerName}'[/]");
             }
             // добавить игрока в комнату
-            _rooms.Load();
+            // _rooms.Load();
             if (_rooms.Exists(request.RoomId))
             {
                 _rooms[request.RoomId].Join(request.PlayerName);
@@ -74,7 +76,7 @@ namespace MSO_Server
         public override Task<ConnectionStatus> LeaveRoom(RoomRequest request, ServerCallContext context)
         {
             // убрать игрока из комнаты
-            _rooms.Load();
+            // _rooms.Load();
             if (_rooms.Exists(request.RoomId))
             {
                 _rooms[request.RoomId].Leave(request.PlayerName);

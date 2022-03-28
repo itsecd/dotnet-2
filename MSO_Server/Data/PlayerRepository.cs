@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.IO;
 
 namespace MSO_Server.Data
@@ -7,9 +8,13 @@ namespace MSO_Server.Data
     /// <summary>Класс для хранения информации об игроке.</summary>
     public class PlayerInfo
     {
+        [JsonInclude]
         public int TotalScore = 0;
+        [JsonInclude]
         public int WinCount = 0;
+        [JsonInclude]
         public int LoseCount = 0;
+        [JsonInclude]
         public int WinStreak = 0;
     }
 
