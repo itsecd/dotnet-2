@@ -1,11 +1,17 @@
 {
+  "dimadivan": {
+    "TotalScore": 0,
+    "WinCount": 0,
+    "LoseCount": 0,
+    "WinStreak": 0
+  },
   "gromimolnia": {
     "TotalScore": 0,
     "WinCount": 0,
     "LoseCount": 0,
     "WinStreak": 0
   },
-  "dimadivan": {
+  "divanchik": {
     "TotalScore": 0,
     "WinCount": 0,
     "LoseCount": 0,
@@ -17,7 +23,7 @@
     "LoseCount": 0,
     "WinStreak": 0
   },
-  "divanchik": {
+  "failman": {
     "TotalScore": 0,
     "WinCount": 0,
     "LoseCount": 0,
