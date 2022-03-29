@@ -16,33 +16,37 @@ namespace MSO_Server
             _data = data;
             _data.Load();
         }
-        public override async Task CreateRoom(IAsyncStreamReader<PlayerMessage> requestStream, IServerStreamWriter<ServerMessage> responseStream, ServerCallContext context)
+
+        public override async Task Join(IAsyncStreamReader<PlayerMessage> requestStream, IServerStreamWriter<ServerMessage> responseStream, ServerCallContext context)
         {
             if (!await requestStream.MoveNext()) return;
-
-            // create room
-            var playerMessage = requestStream.Current;
-            int res = _data.Create(playerMessage.Name, playerMessage.State);
-            await responseStream.WriteAsync(new ServerMessage{Text = "new room?", State = res});
+            var initMessage = requestStream.Current;
+            string playerName = initMessage.Name;
+            // add player if new
+            _data.TryAdd(playerName);
             _data.Dump();
-
+            // join player
+            _data.Join(playerName, responseStream);
             // pre game
-            while (true)
+            while(true)
             {
                 await requestStream.MoveNext();
-                playerMessage = requestStream.Current;
-                if (playerMessage.Text == "get_players")
-                    await responseStream.WriteAsync(new ServerMessage{Text = "not implemented", State = 0});
-                if (playerMessage.Text == "leave")
+                var message = requestStream.Current;
+                switch (message.Text)
                 {
-                    await responseStream.WriteAsync(new ServerMessage{Text = "OK", State = 0});
-                    break;
+                    case "players":
+                        await _data.SendPlayers(playerName);
+                        break;
+                    case "ready":
+                        _data.Ready(playerName);
+                        break;
+                    case "leave":
+                        _data.Leave(playerName);
+                        return;
+                    default:
+                        break;
                 }
             }
-        }
-        public override Task JoinRoom(IAsyncStreamReader<PlayerMessage> requestStream, IServerStreamWriter<ServerMessage> responseStream, ServerCallContext context)
-        {
-            return base.JoinRoom(requestStream, responseStream, context);
         }
     }
 }
