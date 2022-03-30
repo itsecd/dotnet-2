@@ -3,15 +3,15 @@
 	namespace="AccountingSystem.Model" assembly="AccountingSystem">
   <class name="Order" table="ORDERS">
 
-    <id name="OrderId" column="ORDER_ID"/>
+    <id name="OrderId" column="ID"/>
 
-    <many-to-one name = "Customer" column = "CUSTOMER" cascade ="all"/>
+    <many-to-one name = "Customer" column = "CUSTOMER" cascade ="all-delete-orphan"/>
     <property name="Status" column="STATUS"  />
     <property name="Price" column="PRICE"  />
-    <list name = "Products" cascade ="all">
-      <key column="PRODUCT"/>
+    <list name = "Products" cascade ="all-delete-orphan">
+      <key column="ORDER_ID"/>
       <list-index column = "IDX"/>
-      <many-to-many class="Product" column = "ID" />
+      <one-to-many class="Product" />
     </list>
 
   </class>

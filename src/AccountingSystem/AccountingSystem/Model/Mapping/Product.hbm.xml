@@ -3,11 +3,12 @@
 	namespace="AccountingSystem.Model" assembly="AccountingSystem">
   <class name="Product" table="PRODUCTS">
 
-    <id name="ProductId" column="PRODUCT_ID"/>
+    <id name="ProductId" column="ID"/>
     
     <property name="Name" column="NAME"  />
     <property name="Price" column="PRICE"  />
     <property name="Date" column="DATA"  />
+    
     
   </class>
 </hibernate-mapping>

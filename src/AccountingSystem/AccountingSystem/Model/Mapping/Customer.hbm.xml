@@ -3,7 +3,7 @@
 	namespace="AccountingSystem.Model" assembly="AccountingSystem">
   <class name="Customer" table="CUSTOMERS">
     
-    <id name="CustomerId" column="CUSTOMER_ID"/>
+    <id name="CustomerId" column="ID"/>
     
     <property name="Name" column="NAME"  />
     <property name="Phone" column="PHONE"  />
