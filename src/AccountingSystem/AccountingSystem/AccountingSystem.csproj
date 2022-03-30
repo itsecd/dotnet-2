@@ -5,7 +5,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <None Remove="Model\Customer.hbm.xml" />
+    <None Remove="Model\Mapping\Order.hbm.xml" />
+    <None Remove="Model\Mapping\Product.hbm.xml" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Mapping\Order.hbm.xml" />
+    <EmbeddedResource Include="Model\Mapping\Product.hbm.xml" />
+    <EmbeddedResource Include="Model\Mapping\Customer.hbm.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NHibernate" Version="5.3.11" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.50" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
