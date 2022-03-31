@@ -10,43 +10,43 @@ namespace AccountingSystem.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class ProductController : ControllerBase
     {
-        private readonly ICustomerRepository _repository;
+        private readonly IProductRepository _repository;
 
-        public CustomerController(ICustomerRepository repository)
+        public ProductController(IProductRepository repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        public IList<Customer> Get()
+        public IList<Product> Get()
         {
-            return _repository.GetCustomers();
+            return _repository.GetProducts();
         }
 
         [HttpGet("{id}")]
-        public Customer Get(int id)
+        public Product Get(int id)
         {
-            return _repository.GetCustomer(id);
+            return _repository.GetProduct(id);
         }
 
         [HttpPost]
-        public void Post([FromBody] Customer customer)
+        public int Post([FromBody] Product product)
         {
-            _repository.AddCustomer(customer);
+            return _repository.AddProduct(product);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Customer customer)
+        public int Put(int id, [FromBody] Product product)
         {
-            _repository.ChangeCustomer(id, customer);
+            return _repository.ChangeProduct(id, product);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public int Delete(int id)
         {
-            _repository.RemoveCustomer(id);
+            return _repository.RemoveProduct(id);
         }
     }
 }

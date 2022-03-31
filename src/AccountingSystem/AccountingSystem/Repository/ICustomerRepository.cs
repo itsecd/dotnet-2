@@ -7,8 +7,8 @@ namespace AccountingSystem.Repository
     {
         IList<Customer> GetCustomers();
         Customer GetCustomer(int id);
-        void ChangeCustomer(int  id, Customer customer);
-        void AddCustomer(Customer customer);
-        void RemoveCustomer(int id);
+        int ChangeCustomer(int  id, Customer customer);
+        int AddCustomer(Customer customer);
+        int RemoveCustomer(int id);
     }
 }

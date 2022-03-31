@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Model;
 using AccountingSystem.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,43 +11,43 @@ namespace AccountingSystem.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class CustomerController : ControllerBase
     {
-        private readonly IProductRepository _repository;
+        private readonly ICustomerRepository _repository;
 
-        public ProductController(IProductRepository repository)
+        public CustomerController(ICustomerRepository repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        public IList<Product> Get()
+        public IList<Customer> Get()
         {
-            return _repository.GetProducts();
+            return _repository.GetCustomers();
         }
 
         [HttpGet("{id}")]
-        public Product Get(int id)
+        public Customer Get(int id)
         {
-            return _repository.GetProduct(id);
+            return _repository.GetCustomer(id);
         }
 
         [HttpPost]
-        public void Post([FromBody] Product product)
+        public int Post([FromBody] Customer customer)
         {
-            _repository.AddProduct(product);
+            return _repository.AddCustomer(customer);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Product product)
+        public int Put(int id, [FromBody] Customer customer)
         {
-            _repository.ChangeProduct(id, product);
+            return _repository.ChangeCustomer(id, customer);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public int Delete(int id)
         {
-            _repository.RemoveProduct(id);
+            return _repository.RemoveCustomer(id);
         }
     }
 }

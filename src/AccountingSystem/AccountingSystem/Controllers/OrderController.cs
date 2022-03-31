@@ -31,22 +31,34 @@ namespace AccountingSystem.Controllers
             return _repository.GetOrder(id);
         }
 
-        [HttpPost]
-        public void Post([FromBody] Order order)
+        [HttpGet("all-price")]
+        public double GetAllPrice()
         {
-            _repository.AddOrder(order);
+            return _repository.GetAllPrice();
+        }
+
+        [HttpPost]
+        public int Post([FromBody] Order order)
+        {
+            return _repository.AddOrder(order);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Order order)
+        public int Put(int id, [FromBody] Order order)
         {
-            _repository.ChangeOrder(id, order);
+            return _repository.ChangeOrder(id, order);
+        }
+
+        [HttpPut("change-status-{id}")]
+        public int ChangeStatus(int id, [FromBody] int newStatus)
+        {
+            return _repository.ChangeOrderStatus(id, newStatus);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public int Delete(int id)
         {
-            _repository.RemoveOrder(id);
+            return _repository.RemoveOrder(id);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Connection;
 using AccountingSystem.Model;
 using NHibernate;
+using System;
 using System.Collections.Generic;
 
 
@@ -22,35 +23,60 @@ namespace AccountingSystem.Repository
             return session.Get<Customer>(id);
         }
 
-        public void AddCustomer(Customer customer)
+        public int AddCustomer(Customer customer)
         {
-            using (session.BeginTransaction())
+            try
+            { 
+                using (session.BeginTransaction())
+                {
+                    session.Save(customer);
+                    session.GetCurrentTransaction().Commit();
+                }
+                return 1;
+            }            
+            catch
             {
-                session.Save(customer);
-                session.GetCurrentTransaction().Commit();
+                return 0;
             }
         }
 
-        public void ChangeCustomer(int id, Customer newCustomer)
+        public int ChangeCustomer(int id, Customer newCustomer)
         {
-            using (session.BeginTransaction())
+            try
             {
-                Customer customer = session.Get<Customer>(id);
-                customer.Name = newCustomer.Name;
-                customer.Phone = newCustomer.Phone;
-                customer.Address = newCustomer.Address;
-                session.Save(customer);
-                session.GetCurrentTransaction().Commit();
+                using (session.BeginTransaction())
+                {
+                    Customer customer = session.Get<Customer>(id);
+                    customer.Name = newCustomer.Name;
+                    customer.Phone = newCustomer.Phone;
+                    customer.Address = newCustomer.Address;
+                    session.Save(customer);
+                    session.GetCurrentTransaction().Commit();
+                }
+                return 1;
+            }
+            catch
+            {
+                return 0;
             }
         }
 
-        public void RemoveCustomer(int id)
+        public int RemoveCustomer(int id)
         {
-            using (session.BeginTransaction())
+            try
+            { 
+                using (session.BeginTransaction())
+                {
+                    session.Delete(session.Get<Customer>(id));
+                    session.GetCurrentTransaction().Commit();
+                }
+                return 1;
+            }            
+            catch
             {
-                session.Delete(session.Get<Customer>(id));
-                session.GetCurrentTransaction().Commit();
+                return 0;
             }
+
         }
     }
 }

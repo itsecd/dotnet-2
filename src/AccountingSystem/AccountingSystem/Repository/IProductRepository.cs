@@ -7,8 +7,8 @@ namespace AccountingSystem.Repository
     {
         IList<Product> GetProducts();
         Product GetProduct(int id);
-        void ChangeProduct(int id, Product product);
-        void AddProduct(Product product);
-        void RemoveProduct(int id);
+        int ChangeProduct(int id, Product product);
+        int AddProduct(Product product);
+        int RemoveProduct(int id);
     }
 }

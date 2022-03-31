@@ -7,8 +7,10 @@ namespace AccountingSystem.Repository
     {
         IList<Order> GetOrders();
         Order GetOrder(int id);
-        void ChangeOrder(int id, Order customer);
-        void AddOrder(Order customer);
-        void RemoveOrder(int id);
+        double GetAllPrice();
+        int ChangeOrder(int id, Order customer);
+        int ChangeOrderStatus(int id, int newStatus);
+        int AddOrder(Order customer);
+        int RemoveOrder(int id);
     }
 }
