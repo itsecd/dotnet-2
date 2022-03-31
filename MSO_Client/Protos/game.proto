@@ -6,19 +6,18 @@ package game;
 
 service Minesweeper
 {
-    rpc CreateRoom (stream PlayerMessage) returns (stream ServerMessage);
-    rpc JoinRoom (stream PlayerMessage) returns (stream ServerMessage);
+    rpc Join (stream PlayerMessage) returns (stream ServerMessage);
 }
 
 message PlayerMessage
 {
     string name = 1;
     string text = 2;
-    int32 state = 3;
+    string state = 3;
 }
 
 message ServerMessage
 {
     string text = 1;
-    int32 state = 2;
+    string state = 2;
 }

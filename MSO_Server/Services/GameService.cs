@@ -22,16 +22,18 @@ namespace MSO_Server
             if (!await requestStream.MoveNext()) return;
             var initMessage = requestStream.Current;
             string playerName = initMessage.Name;
+            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] присоединился[/]");
             // add player if new
             if (_data.TryAdd(playerName))
                 await _data.DumpAsync();
             // join player
             _data.Join(playerName, responseStream);
             // pre game
-            while(!_data.AllStates("ready"))
+            PlayerMessage message = new();
+            while(message.Text != "ready")
             {
                 await requestStream.MoveNext();
-                var message = requestStream.Current;
+                message = requestStream.Current;
                 switch (message.Text)
                 {
                     case "players":
@@ -39,19 +41,24 @@ namespace MSO_Server
                         break;
                     case "ready":
                         _data.Ready(playerName);
+                        AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] готов[/]");
                         break;
                     case "leave":
                         _data.Leave(playerName);
+                        AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] покинул комнату[/]");
                         return;
                     default:
                         break;
                 }
             }
+            await responseStream.WriteAsync(new ServerMessage{Text = "waiting"});
+            while (!_data.AllStates("ready"));
             // in game
+            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] начал игру[/]");
             while (!_data.AllStates("lobby"))
             {
                 await requestStream.MoveNext();
-                var message = requestStream.Current;
+                message = requestStream.Current;
                 switch (message.Text)
                 {
                     case "players":
@@ -59,17 +66,24 @@ namespace MSO_Server
                         break;
                     case "leave":
                         _data.Leave(playerName);
+                        AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] покинул комнату[/]");
                         return;
                     case "win":
+                        _data.DeclareWin(playerName);
+                        _data.CalcScores();
                         await _data.Broadcast(new ServerMessage{Text = playerName, State = "win"}, playerName);
+                        AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] выиграл[/]");
                         break;
                     case "lose":
+                        _data.SetPlayerState(playerName, "lose");
                         await _data.Broadcast(new ServerMessage{Text = playerName, State = "lose"}, playerName);
+                        AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] проиграл[/]");
                         break;
                     default:
                         break;
                 }
             }
+            await _data.DumpAsync();
         }
     }
 }
