@@ -26,7 +26,7 @@ namespace MSO_Client
                 });
                 string text = "";
                 await connection.RequestStream.WriteAsync(new PlayerMessage{Name = nickname});
-                while (text != "leave" || text != "win" || text != "lose")
+                while (text != "leave")
                 {
                     Console.Write(">>> ");
                     text = Console.ReadLine();

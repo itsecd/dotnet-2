@@ -1,20 +1,20 @@
 {
-  "player2": {
-    "TotalScore": 10,
-    "WinCount": 1,
+  "DimaDivan": {
+    "TotalScore": 30,
+    "WinCount": 3,
     "LoseCount": 0,
-    "WinStreak": 1
+    "WinStreak": 3
   },
   "player1": {
-    "TotalScore": -12,
-    "WinCount": 0,
-    "LoseCount": 1,
+    "TotalScore": 0,
+    "WinCount": 1,
+    "LoseCount": 2,
     "WinStreak": 0
   },
-  "DimaDivan": {
+  "player2": {
     "TotalScore": 10,
-    "WinCount": 1,
-    "LoseCount": 0,
+    "WinCount": 2,
+    "LoseCount": 1,
     "WinStreak": 1
   }
 }

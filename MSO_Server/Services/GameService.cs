@@ -28,62 +28,66 @@ namespace MSO_Server
                 await _data.DumpAsync();
             // join player
             _data.Join(playerName, responseStream);
-            // pre game
-            PlayerMessage message = new();
-            while(message.Text != "ready")
+            do
             {
-                await requestStream.MoveNext();
-                message = requestStream.Current;
-                switch (message.Text)
+                // lobby
+                PlayerMessage message = new();
+                while (_data.GetPlayerState(playerName) != "ready")
                 {
-                    case "players":
-                        await _data.SendPlayers(playerName);
-                        break;
-                    case "ready":
-                        _data.Ready(playerName);
-                        AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] готов[/]");
-                        break;
-                    case "leave":
-                        _data.Leave(playerName);
-                        AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] покинул комнату[/]");
-                        return;
-                    default:
-                        break;
+                    await requestStream.MoveNext();
+                    message = requestStream.Current;
+                    switch (message.Text)
+                    {
+                        case "players":
+                            await _data.SendPlayers(playerName);
+                            break;
+                        case "ready":
+                            _data.Ready(playerName);
+                            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] готов[/]");
+                            break;
+                        case "leave":
+                            _data.Leave(playerName);
+                            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] покинул комнату[/]");
+                            return;
+                        default:
+                            break;
+                    }
                 }
-            }
-            await responseStream.WriteAsync(new ServerMessage{Text = "waiting"});
-            while (!_data.AllStates("ready"));
-            // in game
-            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] начал игру[/]");
-            while (!_data.AllStates("lobby"))
-            {
-                await requestStream.MoveNext();
-                message = requestStream.Current;
-                switch (message.Text)
+                while (!_data.AllStates("ready")) ;
+                await responseStream.WriteAsync(new ServerMessage { Text = "start" });
+                // in game
+                AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] начал игру[/]");
+                while (_data.GetPlayerState(playerName) != "lobby")
                 {
-                    case "players":
-                        await _data.SendPlayers(playerName);
-                        break;
-                    case "leave":
-                        _data.Leave(playerName);
-                        AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] покинул комнату[/]");
-                        return;
-                    case "win":
-                        _data.DeclareWin(playerName);
-                        _data.CalcScores();
-                        await _data.Broadcast(new ServerMessage{Text = playerName, State = "win"}, playerName);
-                        AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] выиграл[/]");
-                        break;
-                    case "lose":
-                        _data.SetPlayerState(playerName, "lose");
-                        await _data.Broadcast(new ServerMessage{Text = playerName, State = "lose"}, playerName);
-                        AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] проиграл[/]");
-                        break;
-                    default:
-                        break;
+                    await requestStream.MoveNext();
+                    message = requestStream.Current;
+                    switch (message.Text)
+                    {
+                        case "players":
+                            await _data.SendPlayers(playerName);
+                            break;
+                        case "leave":
+                            _data.Leave(playerName);
+                            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] покинул комнату[/]");
+                            return;
+                        case "win":
+                            _data.SetPlayerState(playerName, "win");
+                            _data.CalcScore(playerName);
+                            await _data.Broadcast(new ServerMessage { Text = playerName, State = "win" }, playerName);
+                            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] выиграл[/]");
+                            break;
+                        case "lose":
+                            _data.SetPlayerState(playerName, "lose");
+                            _data.CalcScore(playerName);
+                            await _data.Broadcast(new ServerMessage { Text = playerName, State = "lose" }, playerName);
+                            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] проиграл[/]");
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            }
-            await _data.DumpAsync();
+                await _data.DumpAsync();
+            } while (_data.IsConnected(playerName));
         }
     }
 }

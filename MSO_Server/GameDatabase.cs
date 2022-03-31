@@ -36,6 +36,8 @@ namespace MSO_Server
                 return false;
             return _players.TryAdd(name, new Player());
         }
+        /// <summary>Подключен ли игрок к комнате.</summary>
+        public bool IsConnected(string name) => _users.ContainsKey(name);
         /// <summary>Присоединение игрока к комнате.</summary>
         public bool Join(string name, IServerStreamWriter<ServerMessage> channel) => _users.TryAdd(name, new User { Channel = channel, State = "lobby" });
         /// <summary>Отсоединение игрока от комнаты.</summary>
@@ -99,6 +101,28 @@ namespace MSO_Server
         public void SetPlayerState(string name, string state)
         {
             _users[name].State = state;
+        }
+        /// <summary>Получить статус игрока.</summary>
+        public string GetPlayerState(string name) => _users[name].State;
+        /// <summary>Просчитать очки игрока и вернуть его в лобби.</summary>
+        public void CalcScore(string name)
+        {
+            if (_users[name].State == "win")
+            {
+                _players[name].TotalScore += 10;
+                _players[name].WinCount++;
+                _players[name].WinStreak++;
+            }
+            if (_users[name].State == "lose")
+            {
+                _players[name].TotalScore -= 12;
+                if (_players[name].TotalScore < 0)
+                    _players[name].TotalScore = 0;
+                _players[name].LoseCount++;
+                _players[name].WinStreak = 0;
+            }
+            _users[name].State = "lobby";
+            
         }
         /// <summary>Просчитать очки игроков и выставить всем статус "лобби".</summary>
         public void CalcScores()
