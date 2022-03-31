@@ -23,12 +23,12 @@ namespace MSO_Server
             var initMessage = requestStream.Current;
             string playerName = initMessage.Name;
             // add player if new
-            _data.TryAdd(playerName);
-            _data.Dump();
+            if (_data.TryAdd(playerName))
+                await _data.DumpAsync();
             // join player
             _data.Join(playerName, responseStream);
             // pre game
-            while(true)
+            while(!_data.AllStates("ready"))
             {
                 await requestStream.MoveNext();
                 var message = requestStream.Current;
@@ -43,6 +43,29 @@ namespace MSO_Server
                     case "leave":
                         _data.Leave(playerName);
                         return;
+                    default:
+                        break;
+                }
+            }
+            // in game
+            while (!_data.AllStates("lobby"))
+            {
+                await requestStream.MoveNext();
+                var message = requestStream.Current;
+                switch (message.Text)
+                {
+                    case "players":
+                        await _data.SendPlayers(playerName);
+                        break;
+                    case "leave":
+                        _data.Leave(playerName);
+                        return;
+                    case "win":
+                        await _data.Broadcast(new ServerMessage{Text = playerName, State = "win"}, playerName);
+                        break;
+                    case "lose":
+                        await _data.Broadcast(new ServerMessage{Text = playerName, State = "lose"}, playerName);
+                        break;
                     default:
                         break;
                 }

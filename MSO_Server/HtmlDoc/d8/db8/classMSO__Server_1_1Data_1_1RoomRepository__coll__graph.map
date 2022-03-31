@@ -1,4 +1,0 @@
-<map id="MSO_Server.Data.RoomRepository" name="MSO_Server.Data.RoomRepository">
-<area shape="rect" id="node1" title="Репозиторий для хранения списка комнат." alt="" coords="5,95,252,121"/>
-<area shape="rect" id="node2" href="$db/dbc/classMSO__Server_1_1Data_1_1Room.html" title="Класс для хранения параметров комнаты и списка игроков." alt="" coords="40,5,217,32"/>
-</map>
