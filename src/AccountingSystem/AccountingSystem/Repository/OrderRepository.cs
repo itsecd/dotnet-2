@@ -3,38 +3,33 @@ using AccountingSystem.Model;
 using NHibernate;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AccountingSystem.Repository
 {
     public class OrderRepository : IOrderRepository
     {
-        private static ISession session = NHibernateSession.OpenSession();
-
         public IList<Order> GetOrders()
         {
-            ICriteria criteria = session.CreateCriteria<Order>();
+            ICriteria criteria = NHibernateSession.OpenSession().CreateCriteria<Order>();
             return criteria.List<Order>();
         }
 
         public Order GetOrder(int id)
         {
-            return session.Get<Order>(id);
+            return NHibernateSession.OpenSession().Get<Order>(id);
         }
         public double GetAllPrice()
         {
-            ICriteria criteria = session.CreateCriteria<Order>();
-            double sumPrice = 0;
-            foreach (Order order in criteria.List<Order>())
-            {
-                sumPrice += order.Price;
-            }
-            return sumPrice;
+            ICriteria criteria = NHibernateSession.OpenSession().CreateCriteria<Order>();
+            return criteria.List<Order>().Sum(f => f.Price);
         }
 
         public int AddOrder(Order order)
         {
-            try 
-            { 
+            try
+            {
+                ISession session = NHibernateSession.OpenSession();
                 using (session.BeginTransaction())
                 {
                     order.Price = calculationPrice(order);
@@ -43,16 +38,17 @@ namespace AccountingSystem.Repository
                 }
                 return 1;
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 return 0;
             }
-}
+        }
 
         public int ChangeOrder(int id, Order newOrder)
         {
             try
-            { 
+            {
+                ISession session = NHibernateSession.OpenSession();
                 using (session.BeginTransaction())
                 {
                     Order order = session.Get<Order>(id);
@@ -65,16 +61,17 @@ namespace AccountingSystem.Repository
                 }
                 return 1;
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 return 0;
             }
         }
 
-        public int ChangeOrderStatus(int id, int newStatus)
+        public int PatchStatus(int id, int newStatus)
         {
             try
-            { 
+            {
+                ISession session = NHibernateSession.OpenSession();
                 using (session.BeginTransaction())
                 {
                     Order order = session.Get<Order>(id);
@@ -84,16 +81,17 @@ namespace AccountingSystem.Repository
                 }
                 return 1;
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 return 0;
             }
-}
+        }
 
         public int RemoveOrder(int id)
         {
-            try 
-            { 
+            try
+            {
+                ISession session = NHibernateSession.OpenSession();
                 using (session.BeginTransaction())
                 {
                     session.Delete(session.Get<Order>(id));
@@ -101,23 +99,15 @@ namespace AccountingSystem.Repository
                 }
                 return 1;
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 return 0;
             }
-}
+        }
 
-        public double calculationPrice(Order order)
+        private double calculationPrice(Order order)
         {
-            double price = 0;
-            if (order.Products.Count > 0)
-            {
-                foreach (Product product in order.Products)
-                {
-                    price += product.Price;
-                }
-            }
-            return price;
+            return order.Products.Sum(f => f.Price);
         }
     }
 }

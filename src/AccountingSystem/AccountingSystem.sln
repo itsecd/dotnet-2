@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SQLScript.txt = SQLScript.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServerAccountingSystem", "TestServerAccountingSystem\TestServerAccountingSystem.csproj", "{7D3677B3-AC28-4B33-9D18-994A3BB2DD1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServerAccountingSystem", "TestServerAccountingSystem\TestServerAccountingSystem.csproj", "{BDD8FCC2-8D40-452F-86E8-E68EFD55D12D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +22,10 @@ Global
 		{DD32E587-B333-4353-9AC6-94E929B16E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD32E587-B333-4353-9AC6-94E929B16E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD32E587-B333-4353-9AC6-94E929B16E28}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D3677B3-AC28-4B33-9D18-994A3BB2DD1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D3677B3-AC28-4B33-9D18-994A3BB2DD1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D3677B3-AC28-4B33-9D18-994A3BB2DD1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D3677B3-AC28-4B33-9D18-994A3BB2DD1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDD8FCC2-8D40-452F-86E8-E68EFD55D12D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDD8FCC2-8D40-452F-86E8-E68EFD55D12D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDD8FCC2-8D40-452F-86E8-E68EFD55D12D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDD8FCC2-8D40-452F-86E8-E68EFD55D12D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

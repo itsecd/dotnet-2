@@ -1,18 +1,13 @@
 ﻿using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AccountingSystem.Connection
 {
     public class NHibernateSession
     {
-        private static ISessionFactory fabrica = CreateSessionFactory();
+        readonly static ISessionFactory Factory = CreateSessionFactory();
 
         private static ISessionFactory CreateSessionFactory()
         {
@@ -36,7 +31,7 @@ namespace AccountingSystem.Connection
 
         public static ISession OpenSession()
         {
-            return fabrica.OpenSession();
+            return Factory.OpenSession();
         }
 
     }

@@ -1,7 +1,6 @@
 ﻿using AccountingSystem.Connection;
 using AccountingSystem.Model;
 using NHibernate;
-using System;
 using System.Collections.Generic;
 
 
@@ -10,30 +9,29 @@ namespace AccountingSystem.Repository
     public class CustomerRepository : ICustomerRepository
     {
 
-        private static ISession session = NHibernateSession.OpenSession();
-
         public IList<Customer> GetCustomers()
         {
-            ICriteria criteria = session.CreateCriteria<Customer>();
+            ICriteria criteria = NHibernateSession.OpenSession().CreateCriteria<Customer>();
             return criteria.List<Customer>();
         }
 
         public Customer GetCustomer(int id)
         {
-            return session.Get<Customer>(id);
+            return NHibernateSession.OpenSession().Get<Customer>(id);
         }
 
         public int AddCustomer(Customer customer)
         {
             try
-            { 
+            {
+                ISession session = NHibernateSession.OpenSession();
                 using (session.BeginTransaction())
                 {
                     session.Save(customer);
                     session.GetCurrentTransaction().Commit();
                 }
                 return 1;
-            }            
+            }
             catch
             {
                 return 0;
@@ -44,6 +42,7 @@ namespace AccountingSystem.Repository
         {
             try
             {
+                ISession session = NHibernateSession.OpenSession();
                 using (session.BeginTransaction())
                 {
                     Customer customer = session.Get<Customer>(id);
@@ -64,14 +63,15 @@ namespace AccountingSystem.Repository
         public int RemoveCustomer(int id)
         {
             try
-            { 
+            {
+                ISession session = NHibernateSession.OpenSession();
                 using (session.BeginTransaction())
                 {
                     session.Delete(session.Get<Customer>(id));
                     session.GetCurrentTransaction().Commit();
                 }
                 return 1;
-            }            
+            }
             catch
             {
                 return 0;

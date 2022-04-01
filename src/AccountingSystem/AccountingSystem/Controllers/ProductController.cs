@@ -2,7 +2,6 @@
 using AccountingSystem.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 
 
 namespace AccountingSystem.Controllers
@@ -25,7 +24,7 @@ namespace AccountingSystem.Controllers
             return _repository.GetProducts();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public Product Get(int id)
         {
             return _repository.GetProduct(id);
@@ -37,13 +36,13 @@ namespace AccountingSystem.Controllers
             return _repository.AddProduct(product);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public int Put(int id, [FromBody] Product product)
         {
             return _repository.ChangeProduct(id, product);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public int Delete(int id)
         {
             return _repository.RemoveProduct(id);

@@ -1,70 +1,58 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AccountingSystem;
-using Microsoft.AspNetCore.TestHost;
-using System;
-using System.Text.Json;
-using Newtonsoft.Json;
-using System.Text;
+using Xunit;
 
 namespace TestServerAccountingSystem
 {
-    [TestFixture]
     public class CustomerControllerTests
     {
-        [Test]
-        public async Task AddCustomer()
+        [Theory]
+        [InlineData("api/Customer/")]
+        public async Task AddCustomer(string url)
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            //var model = new { customerId = 0, name = "ANTON", phone = "88005553535", address = "SAMARA" };
-            //var content = new StringContent(JsonConvert.SerializeObject(model));
-            //var jsonString = "{\"customerId\":1,\"name\":\"ANTON\",\"phone\":\"88005553535\",\"address\":\"SAMARA\"}";
-            //var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
             var content = new StringContent(@"{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""}");
-            HttpResponseMessage response = await httpClient.PostAsync("api /Customer/", content);
+            HttpResponseMessage response = await httpClient.PostAsync(url, content);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("1", responseString);
+            Assert.Equal("1", responseString);
         }
 
-        [Test]
-        public async Task GetCustomerWithID()
+        [Theory]
+        [InlineData("api/Customer/0")]
+        public async Task GetCustomerWithID(string url)
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.GetAsync("api/Customer/0");
+            HttpResponseMessage response = await httpClient.GetAsync(url);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual(@"{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""}", responseString);
+            Assert.Equal(@"{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""}", responseString);
 
         }
 
-        [Test]
-        public async Task ChangeCustomer()
+        [Theory]
+        [InlineData("api/Customer/0")]
+        public async Task ChangeCustomer(string url)
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            //var model = new { customerId = 0, name = "BATON", phone = "8005553535", address = "SMR" };
-            //var content = new StringContent(JsonConvert.SerializeObject(model));
             var content = new StringContent(@"{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""}");
-            HttpResponseMessage response = await httpClient.PutAsync("api/Customer/0", content);
+            HttpResponseMessage response = await httpClient.PutAsync(url, content);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("1", responseString);
+            Assert.Equal("1", responseString);
         }
 
-        [Test]
-        public async Task RemoveCustomer()
+        [Theory]
+        [InlineData("api/Customer/0")]
+        public async Task RemoveCustomer(string url)
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.DeleteAsync("api/Customer/0");
+            HttpResponseMessage response = await httpClient.DeleteAsync(url);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("1", responseString);
+            Assert.Equal("1", responseString);
 
         }
     }

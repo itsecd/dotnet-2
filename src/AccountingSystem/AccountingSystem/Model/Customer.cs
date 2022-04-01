@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AccountingSystem.Model
+﻿namespace AccountingSystem.Model
 {
     public class Customer
     {

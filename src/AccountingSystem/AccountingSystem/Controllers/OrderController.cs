@@ -2,7 +2,6 @@
 using AccountingSystem.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 
 
 namespace AccountingSystem.Controllers
@@ -25,7 +24,7 @@ namespace AccountingSystem.Controllers
             return _repository.GetOrders();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public Order Get(int id)
         {
             return _repository.GetOrder(id);
@@ -43,19 +42,19 @@ namespace AccountingSystem.Controllers
             return _repository.AddOrder(order);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public int Put(int id, [FromBody] Order order)
         {
             return _repository.ChangeOrder(id, order);
         }
 
-        [HttpPut("change-status-{id}")]
-        public int ChangeStatus(int id, [FromBody] int newStatus)
+        [HttpPatch("status-{id:int}")]
+        public int PatchStatus(int id, [FromBody] int newStatus)
         {
-            return _repository.ChangeOrderStatus(id, newStatus);
+            return _repository.PatchStatus(id, newStatus);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public int Delete(int id)
         {
             return _repository.RemoveOrder(id);

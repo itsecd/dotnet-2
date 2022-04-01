@@ -1,9 +1,7 @@
 ﻿using AccountingSystem.Model;
 using AccountingSystem.Repository;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 
 namespace AccountingSystem.Controllers
@@ -13,7 +11,7 @@ namespace AccountingSystem.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly ICustomerRepository _repository;
+        ICustomerRepository _repository;
 
         public CustomerController(ICustomerRepository repository)
         {
@@ -26,7 +24,7 @@ namespace AccountingSystem.Controllers
             return _repository.GetCustomers();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public Customer Get(int id)
         {
             return _repository.GetCustomer(id);
@@ -38,13 +36,13 @@ namespace AccountingSystem.Controllers
             return _repository.AddCustomer(customer);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public int Put(int id, [FromBody] Customer customer)
         {
             return _repository.ChangeCustomer(id, customer);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public int Delete(int id)
         {
             return _repository.RemoveCustomer(id);
