@@ -1,13 +1,13 @@
 using System;
 using Xunit;
-using MSO_Server;
+using MinesweeperServer;
 
 namespace ServerTest
 {
     public class DatabaseTest
     {
         [Fact]
-        public void Test1()
+        public void PlayerTest()
         {
             GameDatabase db = new();
             Assert.True(db.TryAdd("DimaDivan"));

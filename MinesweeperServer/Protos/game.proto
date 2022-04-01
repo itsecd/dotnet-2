@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "MSO_Server";
+option csharp_namespace = "MinesweeperServer";
 
 package game;
 

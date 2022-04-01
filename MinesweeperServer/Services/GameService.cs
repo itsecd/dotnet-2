@@ -2,9 +2,8 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
-using System;
 
-namespace MSO_Server
+namespace MinesweeperServer
 {
     public class GameService : Minesweeper.MinesweeperBase
     {

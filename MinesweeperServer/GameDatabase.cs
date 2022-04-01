@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
@@ -6,22 +5,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
 
-namespace MSO_Server
+namespace MinesweeperServer
 {
-    /// <summary>Класс для хранения информации об игроке.</summary>
-    public class Player
-    {
-        public int TotalScore { get; set; }
-        public int WinCount { get; set; }
-        public int LoseCount { get; set; }
-        public int WinStreak { get; set; }
-    }
-    /// <summary>Класс для хранения информации о пользователе.</summary>
-    public class User
-    {
-        public IServerStreamWriter<ServerMessage> Channel;
-        public string State;
-    }
     /// <summary>Класс для хранения игровых данных.</summary>
     public class GameDatabase
     {
