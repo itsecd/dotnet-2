@@ -8,25 +8,23 @@ namespace TestServerAccountingSystem
 {
     public class ProductControllerTests
     {
-        [Theory]
-        [InlineData("api/Product")]
-        public async Task AddProduct(string url)
+        [Fact]
+        public async Task AddProduct()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
-            HttpResponseMessage response = await httpClient.PostAsync(url, content);
+            HttpResponseMessage response = await httpClient.PostAsync("api/Product", content);
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Equal("1", responseString);
         }
 
-        [Theory]
-        [InlineData("api/Product/0")]
-        public async Task GetProductWithID(string url)
+        [Fact]
+        public async Task GetProductWithID()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.GetAsync(url);
+            HttpResponseMessage response = await httpClient.GetAsync("api/Product/0");
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Equal(@"{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}", responseString);
 
@@ -34,6 +32,7 @@ namespace TestServerAccountingSystem
 
         [Theory]
         [InlineData("api/Product/0")]
+        [InlineData("api/Product/2")]
         public async Task ChangeProduct(string url)
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
@@ -46,6 +45,7 @@ namespace TestServerAccountingSystem
 
         [Theory]
         [InlineData("api/Product/0")]
+        [InlineData("api/Product/2")]
         public async Task RemoveProduct(string url)
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();

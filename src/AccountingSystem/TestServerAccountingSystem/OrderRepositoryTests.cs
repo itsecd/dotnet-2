@@ -11,24 +11,30 @@ namespace TestServerAccountingSystem
         [Fact]
         public void AddOrder()
         {
-            Customer customer = new Customer();
-            customer.CustomerId = 57;
-            customer.Name = "Vova";
-            customer.Phone = "888";
-            customer.Address = "SPB";
+            var customer = new Customer
+            {
+                CustomerId = 57,
+                Name = "Vova",
+                Phone = "888",
+                Address = "SPB"
+            };
 
-            Product product = new Product();
-            product.ProductId = 57;
-            product.Name = "Motorolla";
-            product.Price = 3000;
-            product.Date = System.DateTime.Now;
+            Product product = new Product
+            {
+                ProductId = 57,
+                Name = "Motorolla",
+                Price = 3000,
+                Date = System.DateTime.Now,
+            };
 
-            Order order = new Order();
-            order.OrderId = 123;
-            order.Customer = customer;
-            order.Status = 0;
-            order.Price = 0;
-            order.Products = new List<Product>() { product};
+            Order order = new Order
+            {
+                OrderId = 123,
+                Customer = customer,
+                Status = 0,
+                Price = 0,
+                Products = new List<Product>() { product }
+            };
 
             OrderRepository repository = new();
             Assert.Equal(1, repository.AddOrder(order));
@@ -37,24 +43,31 @@ namespace TestServerAccountingSystem
         [Fact]
         public void ChangeOrder()
         {
-            Customer customer = new Customer();
-            customer.CustomerId = 57;
-            customer.Name = "Vova";
-            customer.Phone = "888";
-            customer.Address = "SPB";
+            var customer = new Customer
+            {
+                CustomerId = 57,
+                Name = "Vova",
+                Phone = "888",
+                Address = "SPB"
+            };
 
-            Product product = new Product();
-            product.ProductId = 57;
-            product.Name = "Motorolla";
-            product.Price = 3000;
-            product.Date = System.DateTime.Now;
+            Product product = new Product
+            {
+                ProductId = 57,
+                Name = "Motorolla",
+                Price = 3000,
+                Date = System.DateTime.Now,
 
-            Order order = new Order();
-            order.OrderId = 123;
-            order.Customer = customer;
-            order.Status = 0;
-            order.Price = 0;
-            order.Products = new List<Product>() { product };
+            };
+
+            Order order = new Order
+            {
+                OrderId = 123,
+                Customer = customer,
+                Status = 7,
+                Price = 0,
+                Products = new List<Product>() { product }
+            };
 
             OrderRepository repository = new();
             Assert.Equal(1, repository.ChangeOrder(123, order));

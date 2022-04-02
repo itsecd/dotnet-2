@@ -10,11 +10,14 @@ namespace TestServerAccountingSystem
         [Fact]
         public void AddProduct()
         {
-            Product product = new Product();
-            product.ProductId = 57;
-            product.Name = "Motorolla";
-            product.Price = 3000;
-            product.Date = System.DateTime.Now;
+            Product product = new Product
+            {
+                ProductId = 57,
+                Name = "Motorolla",
+                Price = 3000,
+                Date = System.DateTime.Now,
+
+            };
             ProductRepository repository = new();
             Assert.Equal(1, repository.AddProduct(product));
         }
@@ -22,11 +25,14 @@ namespace TestServerAccountingSystem
         [Fact]
         public void ChangeProduct()
         {
-            Product product = new Product();
-            product.ProductId = 57;
-            product.Name = "Motorolla";
-            product.Price = 3000;
-            product.Date = System.DateTime.Now;
+            Product product = new Product
+            {
+                ProductId = 57,
+                Name = "IPhone",
+                Price = 7000,
+                Date = System.DateTime.Now,
+
+            };
             ProductRepository repository = new();
             Assert.Equal(1, repository.ChangeProduct(57, product));
         }

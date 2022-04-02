@@ -32,7 +32,7 @@ namespace AccountingSystem.Repository
                 ISession session = NHibernateSession.OpenSession();
                 using (session.BeginTransaction())
                 {
-                    order.Price = calculationPrice(order);
+                    order.Price = СalculationPrice(order);
                     session.Save(order);
                     session.GetCurrentTransaction().Commit();
                 }
@@ -53,7 +53,7 @@ namespace AccountingSystem.Repository
                 {
                     Order order = session.Get<Order>(id);
                     order.Customer = newOrder.Customer;
-                    order.Price = calculationPrice(newOrder);
+                    order.Price = СalculationPrice(newOrder);
                     order.Status = newOrder.Status;
                     order.Products = newOrder.Products;
                     session.Save(order);
@@ -105,7 +105,7 @@ namespace AccountingSystem.Repository
             }
         }
 
-        private double calculationPrice(Order order)
+        private double СalculationPrice(Order order)
         {
             return order.Products.Sum(f => f.Price);
         }

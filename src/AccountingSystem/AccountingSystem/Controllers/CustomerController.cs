@@ -11,7 +11,7 @@ namespace AccountingSystem.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        ICustomerRepository _repository;
+        private readonly ICustomerRepository _repository;
 
         public CustomerController(ICustomerRepository repository)
         {

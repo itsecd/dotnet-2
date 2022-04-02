@@ -7,7 +7,7 @@ namespace AccountingSystem.Connection
 {
     public class NHibernateSession
     {
-        readonly static ISessionFactory Factory = CreateSessionFactory();
+        private static readonly ISessionFactory Factory = CreateSessionFactory();
 
         private static ISessionFactory CreateSessionFactory()
         {

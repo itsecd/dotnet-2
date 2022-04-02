@@ -10,11 +10,13 @@ namespace TestServerAccountingSystem
         [Fact]
         public void AddCustomer()
         {
-            Customer customer = new Customer();
-            customer.CustomerId = 57;
-            customer.Name = "Vova";
-            customer.Phone = "888";
-            customer.Address = "SPB";
+            var customer = new Customer
+            {
+                CustomerId = 57,
+                Name = "Vova",
+                Phone = "888",
+                Address = "SPB"
+            };
             CustomerRepository repository = new();
             Assert.Equal(1, repository.AddCustomer(customer));
         }
@@ -22,11 +24,13 @@ namespace TestServerAccountingSystem
         [Fact]
         public void ChangeCustomer()
         {
-            Customer customer = new Customer();
-            customer.CustomerId = 57;
-            customer.Name = "VovaDD";
-            customer.Phone = "88822";
-            customer.Address = "MSK";
+            var customer = new Customer
+            {
+                CustomerId = 57,
+                Name = "VovaDD",
+                Phone = "88822",
+                Address = "MSK"
+            };
             CustomerRepository repository = new();
             Assert.Equal(1, repository.ChangeCustomer(57, customer));
         }
