@@ -32,15 +32,15 @@ namespace AccountingSystem.Repository
                 ISession session = NHibernateSession.OpenSession();
                 using (session.BeginTransaction())
                 {
-                    order.Price = СalculationPrice(order);
+                    order.Price = CalculationPrice(order);
                     session.Save(order);
                     session.GetCurrentTransaction().Commit();
                 }
-                return 1;
+                return order.OrderId;
             }
             catch (NullReferenceException)
             {
-                return 0;
+                return -1;
             }
         }
 
@@ -53,17 +53,17 @@ namespace AccountingSystem.Repository
                 {
                     Order order = session.Get<Order>(id);
                     order.Customer = newOrder.Customer;
-                    order.Price = СalculationPrice(newOrder);
+                    order.Price = CalculationPrice(newOrder);
                     order.Status = newOrder.Status;
                     order.Products = newOrder.Products;
                     session.Save(order);
                     session.GetCurrentTransaction().Commit();
                 }
-                return 1;
+                return id;
             }
             catch (NullReferenceException)
             {
-                return 0;
+                return -1;
             }
         }
 
@@ -79,11 +79,11 @@ namespace AccountingSystem.Repository
                     session.Save(order);
                     session.GetCurrentTransaction().Commit();
                 }
-                return 1;
+                return id;
             }
             catch (NullReferenceException)
             {
-                return 0;
+                return -1;
             }
         }
 
@@ -97,15 +97,15 @@ namespace AccountingSystem.Repository
                     session.Delete(session.Get<Order>(id));
                     session.GetCurrentTransaction().Commit();
                 }
-                return 1;
+                return id;
             }
             catch (NullReferenceException)
             {
-                return 0;
+                return -1;
             }
         }
 
-        private double СalculationPrice(Order order)
+        private double CalculationPrice(Order order)
         {
             return order.Products.Sum(f => f.Price);
         }

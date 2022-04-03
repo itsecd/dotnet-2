@@ -30,11 +30,11 @@ namespace AccountingSystem.Repository
                     session.Save(customer);
                     session.GetCurrentTransaction().Commit();
                 }
-                return 1;
+                return customer.CustomerId;
             }
             catch
             {
-                return 0;
+                return -1;
             }
         }
 
@@ -52,11 +52,11 @@ namespace AccountingSystem.Repository
                     session.Save(customer);
                     session.GetCurrentTransaction().Commit();
                 }
-                return 1;
+                return id;
             }
             catch
             {
-                return 0;
+                return -1;
             }
         }
 
@@ -70,11 +70,11 @@ namespace AccountingSystem.Repository
                     session.Delete(session.Get<Customer>(id));
                     session.GetCurrentTransaction().Commit();
                 }
-                return 1;
+                return id;
             }
             catch
             {
-                return 0;
+                return -1;
             }
 
         }

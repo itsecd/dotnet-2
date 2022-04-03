@@ -16,7 +16,7 @@ namespace TestServerAccountingSystem
             var content = new StringContent(@"{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""}");
             HttpResponseMessage response = await httpClient.PostAsync("api/Customer", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("1", responseString);
+            Assert.Equal("0", responseString);
         }
 
         [Fact]
@@ -31,28 +31,28 @@ namespace TestServerAccountingSystem
         }
 
         [Theory]
-        [InlineData("api/Customer/0")]
-        [InlineData("api/Customer/1")]
-        public async Task ChangeCustomer(string url)
+        [InlineData(0)]
+        [InlineData(1)]
+        public async Task ChangeCustomer(int id)
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""}");
-            HttpResponseMessage response = await httpClient.PutAsync(url, content);
+            HttpResponseMessage response = await httpClient.PutAsync("api/Customer/" + id, content);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("1", responseString);
+            Assert.Equal(id.ToString(), responseString);
         }
 
         [Theory]
-        [InlineData("api/Customer/0")]
-        [InlineData("api/Customer/1")]
-        public async Task RemoveCustomer(string url)
+        [InlineData(0)]
+        [InlineData(1)]
+        public async Task RemoveCustomer(int id)
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.DeleteAsync(url);
+            HttpResponseMessage response = await httpClient.DeleteAsync("api/Customer/" + id);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("1", responseString);
+            Assert.Equal(id.ToString(), responseString);
 
         }
     }

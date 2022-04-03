@@ -19,7 +19,7 @@ namespace TestServerAccountingSystem
 
             };
             ProductRepository repository = new();
-            Assert.Equal(1, repository.AddProduct(product));
+            Assert.Equal(57, repository.AddProduct(product));
         }
 
         [Fact]
@@ -34,14 +34,14 @@ namespace TestServerAccountingSystem
 
             };
             ProductRepository repository = new();
-            Assert.Equal(1, repository.ChangeProduct(57, product));
+            Assert.Equal(57, repository.ChangeProduct(57, product));
         }
 
         [Fact]
         public void RemoveProduct()
         {
             ProductRepository repository = new();
-            Assert.Equal(1, repository.RemoveProduct(57));
+            Assert.Equal(57, repository.RemoveProduct(57));
         }
 
     }

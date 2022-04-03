@@ -37,7 +37,7 @@ namespace TestServerAccountingSystem
             };
 
             OrderRepository repository = new();
-            Assert.Equal(1, repository.AddOrder(order));
+            Assert.Equal(123, repository.AddOrder(order));
         }
 
         [Fact]
@@ -70,21 +70,21 @@ namespace TestServerAccountingSystem
             };
 
             OrderRepository repository = new();
-            Assert.Equal(1, repository.ChangeOrder(123, order));
+            Assert.Equal(123, repository.ChangeOrder(123, order));
         }
 
         [Fact]
         public void PatchStatus()
         {
             OrderRepository repository = new();
-            Assert.Equal(1, repository.PatchStatus(123, 123));
+            Assert.Equal(123, repository.PatchStatus(123, 123));
         }
 
         [Fact]
         public void RemoveOrder()
         {
             OrderRepository repository = new();
-            Assert.Equal(1, repository.RemoveOrder(123));
+            Assert.Equal(123, repository.RemoveOrder(123));
         }
 
     }

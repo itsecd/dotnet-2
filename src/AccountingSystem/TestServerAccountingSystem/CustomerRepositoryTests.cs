@@ -18,7 +18,7 @@ namespace TestServerAccountingSystem
                 Address = "SPB"
             };
             CustomerRepository repository = new();
-            Assert.Equal(1, repository.AddCustomer(customer));
+            Assert.Equal(57, repository.AddCustomer(customer));
         }
 
         [Fact]
@@ -32,14 +32,14 @@ namespace TestServerAccountingSystem
                 Address = "MSK"
             };
             CustomerRepository repository = new();
-            Assert.Equal(1, repository.ChangeCustomer(57, customer));
+            Assert.Equal(57, repository.ChangeCustomer(57, customer));
         }
 
         [Fact]
         public void RemoveCustomer()
         {
             CustomerRepository repository = new();
-            Assert.Equal(1, repository.RemoveCustomer(57));
+            Assert.Equal(57, repository.RemoveCustomer(57));
         }
 
     }

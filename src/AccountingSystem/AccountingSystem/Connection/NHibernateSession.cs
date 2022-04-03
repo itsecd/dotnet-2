@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace AccountingSystem.Connection
 {
-    public class NHibernateSession
+    public static class NHibernateSession
     {
         private static readonly ISessionFactory Factory = CreateSessionFactory();
 

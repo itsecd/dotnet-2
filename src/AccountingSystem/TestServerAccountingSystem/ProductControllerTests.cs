@@ -16,7 +16,7 @@ namespace TestServerAccountingSystem
             var content = new StringContent(@"{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
             HttpResponseMessage response = await httpClient.PostAsync("api/Product", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("1", responseString);
+            Assert.Equal("0", responseString);
         }
 
         [Fact]
@@ -31,28 +31,28 @@ namespace TestServerAccountingSystem
         }
 
         [Theory]
-        [InlineData("api/Product/0")]
-        [InlineData("api/Product/2")]
-        public async Task ChangeProduct(string url)
+        [InlineData(0)]
+        [InlineData(2)]
+        public async Task ChangeProduct(int id)
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""productId"":0,""name"":""Xiaomi"",""price"":""2000"",""date"":""2022-03-31""}");
-            HttpResponseMessage response = await httpClient.PutAsync(url, content);
+            HttpResponseMessage response = await httpClient.PutAsync("api/Product/" + id, content);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("1", responseString);
+            Assert.Equal(id.ToString(), responseString);
         }
 
         [Theory]
-        [InlineData("api/Product/0")]
-        [InlineData("api/Product/2")]
-        public async Task RemoveProduct(string url)
+        [InlineData(0)]
+        [InlineData(2)]
+        public async Task RemoveProduct(int id)
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.DeleteAsync(url);
+            HttpResponseMessage response = await httpClient.DeleteAsync("api/Product/" + id);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("1", responseString);
+            Assert.Equal(id.ToString(), responseString);
 
         }
     }
