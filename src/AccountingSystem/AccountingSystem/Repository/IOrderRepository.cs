@@ -9,7 +9,7 @@ namespace AccountingSystem.Repository
         Order GetOrder(int id);
         double GetAllPrice();
         int ChangeOrder(int id, Order order);
-        int PatchStatus(int status, Order order);
+        int PatchStatus(int id, Order order);
         int AddOrder(Order customer);
         int RemoveOrder(int id);
     }

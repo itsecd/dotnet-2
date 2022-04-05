@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Information System</title>
+</head>
+    <body>
+    <script src="~/js/start-customer/start-customer.js"></script>
+    <script src="~/js/start-customer/panels.js"></script>
+    <link rel = "stylesheet" href="CSS/style.css">
+        <div class="start-page">
+            <table>
+                <td colspan="1">
+                    <a href="add-customer.html"><button>Add Customer</button></a>
+                </td>
+                <td colspan="1">
+                    <button onclick="openChangePanel(); getCustomersToChange()">Change Customer</button>
+                </td>
+                <td colspan="1">
+                    <button onclick="openDeletePanel(); getCustomersToDelete();">Delete Customer</button>
+                </td>
+                <td colspan="1">
+                    <a onclick="openOpenPanel()"><button>Open XML</button></a>
+                </td>
+                <td colspan="1">
+                    <a onclick="xsltCustomer()"><button>Customer XSLT</button></a>
+                </td>
+                <td colspan="1">
+                    <a href="start-order.html"><button>Order Table</button></a>
+                </td>
+                <tr>
+                    <td colspan="6" >
+                        <div id="changeDiv" style="display: none">
+                            <h2>Change Customer</h2>
+                            <p>Customer id:</p>
+                            <select id = "updateCustomerChoose" multiple></select>
+                            <p>
+                            <p>Name:</p>
+                            <input id="updateName" type="text" maxlength = 40/>
+                            <p>
+                            <p>Telephone:</p>
+                            <input id="updatePhone" type="text" maxlength = 40/>
+                            <p>
+                            <p>Address:</p>
+                            <input id="updateAddress" type="text" maxlength = 40/>
+                            <p>
+                                <button onclick="changeCustomer()">Update Item</button>
+                            <p>
+                                <button onclick="closeChangePanel()">Close Panel</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" >
+                        <div id="deleteDiv" style="display: none">
+                            <h2>Delete Customer</h2>
+                            <p>Customer id:</p>
+                            <select id = "deleteCustomerChoose" multiple></select>
+                            <p>
+                                <button onclick="deleteCustomer()">Delete Item</button>
+                            <p>
+                                <button onclick="closeDeletePanel()">Close Panel</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" >
+                        <div id="openDiv" style="display: none">
+                            <h2>Open Customer XML</h2>
+                            <input type="file" id="openCustomerFile">
+                            <p>
+                                <button onclick="openCustomerFile()">Open File</button>
+                            <p>
+                                <button onclick="closeOpenPanel()">Close Panel</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table id="customerTable"></table>
+        </div>
+    </body>
+</html>

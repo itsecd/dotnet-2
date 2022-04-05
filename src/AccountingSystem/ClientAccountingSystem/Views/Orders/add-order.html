@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Customer</title>
+</head>
+<body>
+    <script src="JS/add-order/add-order.js"></script>
+    <link rel = "stylesheet" href="CSS/style.css">
+    <div name="add-page">
+        <table>
+            <tr>
+                <td colspan="1">Customer:</td>
+                <td colspan="1"><label>
+                    <select id = "customerChoose" multiple></select>
+                </label></td>
+            </tr>
+            <tr>
+                <td colspan="1">Date:</td>
+                <td colspan="1"><label>
+                    <input type="date" id='date' />
+                </label></td>
+            </tr>
+            <tr>
+                <td colspan="1">Price:</td>
+                <td colspan="1"><label>
+                    <input type="number" id='price' maxlength = 38/>
+                </label></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button onclick=addOrder()>Add</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

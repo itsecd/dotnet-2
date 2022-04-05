@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Information System</title>
+</head>
+    <body>
+    <script src="~/js/start-order/start-order.js"></script>
+    <script src="~/js/start-order/panels.js"></script>
+    <link rel = "stylesheet" href="CSS/style.css">
+        <div class="start-page">
+            <table>
+                <td colspan="1">
+                    <a href="add-order.html"><button>Add Order</button></a>
+                </td>
+                <td colspan="1">
+                    <button onclick="getOrdersToChange(); getCustomers(); openChangePanel();">Change Order</button>
+                </td>
+
+                <td colspan="1">
+                    <button onclick="openDeletePanel(); getOrdersToDelete();">Delete Order</button>
+                </td>
+                <td colspan="1">
+                    <a onclick="openOpenPanel()"><button>Open XML</button></a>
+                </td>
+                <td colspan="1">
+                    <a onclick="xsltOrder()"><button>Order XSLT</button></a>
+                </td>
+                <td colspan="1">
+                    <a href="start-customer.html"><button>Customer Table</button></a>
+                </td>
+                <tr>
+                    <td colspan="6" >
+                        <div id="changeDiv" style="display: none">
+                            <h2>Change Order</h2>
+                            <p>Order id:</p>
+                            <select id = "updateOrderChoose" multiple></select>
+                            <p>
+                                <p>Customer:</p>
+                                <select id = "updateCustomerChoose" multiple></select>
+                            <p>
+                                <p>Date:</p>
+                                <input type="date" id='updateDate'/>
+                            <p>
+                                <p>Price:</p>
+                                <input type="number" id='updatePrice'/>
+                            <p>
+                                <button onclick="changeOrder()">Update Item</button>
+                            </p>
+                            <p>
+                                <button onclick="closeChangePanel()">Close Panel</button>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" >
+                        <div colspan="4" id="deleteDiv" style="display: none">
+                            <h2>Delete Order</h2>
+                            <p>Order id:</p>
+                            <select id = "deleteChoose" multiple></select>
+                            <p>
+                                <button onclick="deleteOrder()">Delete Item</button>
+                            </p>
+                            <p>
+                                <button onclick="closeDeletePanel()">Close Panel</button>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" >
+                        <div id="openDiv" style="display: none">
+                            <h2>Open Order XML</h2>
+                            <input type="file" id="openOrderFile" multiple>
+                            <p>
+                                <button onclick="openOrderFile()">Open File</button>
+                            <p>
+                                <button onclick="closeOpenPanel()">Close Panel</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table id="orderTable"></table>
+        </div>
+    </body>
+</html>

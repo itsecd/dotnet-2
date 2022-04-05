@@ -1,14 +1,13 @@
 ﻿using AccountingSystem.Model;
 using AccountingSystem.Repository;
+using System;
 using Xunit;
 
 namespace TestServerAccountingSystem
 {
-    public class ProductRepositoryTests
+    public class ProductRepositoryFixture : IDisposable
     {
-
-        [Fact]
-        public void AddProduct()
+        public ProductRepositoryFixture()
         {
             Product product = new Product
             {
@@ -21,6 +20,16 @@ namespace TestServerAccountingSystem
             ProductRepository repository = new();
             Assert.Equal(57, repository.AddProduct(product));
         }
+
+        public void Dispose()
+        {
+            ProductRepository repository = new();
+            Assert.Equal(57, repository.RemoveProduct(57));
+        }
+    }
+
+    public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
+    {
 
         [Fact]
         public void ChangeProduct()
@@ -35,13 +44,6 @@ namespace TestServerAccountingSystem
             };
             ProductRepository repository = new();
             Assert.Equal(57, repository.ChangeProduct(57, product));
-        }
-
-        [Fact]
-        public void RemoveProduct()
-        {
-            ProductRepository repository = new();
-            Assert.Equal(57, repository.RemoveProduct(57));
         }
 
     }

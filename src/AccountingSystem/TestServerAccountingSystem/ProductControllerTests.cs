@@ -3,56 +3,61 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AccountingSystem;
 using Xunit;
+using System;
 
 namespace TestServerAccountingSystem
 {
-    public class ProductControllerTests
+    public class ProductControllerFixture : IDisposable
     {
-        [Fact]
-        public async Task AddProduct()
+
+
+        public readonly HttpClient httpClient = new WebApplicationFactory<Startup>().CreateClient();
+
+        public ProductControllerFixture()
         {
-            WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
-            HttpClient httpClient = webHost.CreateClient();
-            var content = new StringContent(@"{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
-            HttpResponseMessage response = await httpClient.PostAsync("api/Product", content);
-            var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("0", responseString);
+            var content = new StringContent(@"{""productId"":25,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
+            httpClient.PostAsync("api/Product", content);
         }
+
+        public void Dispose()
+        {
+            httpClient.DeleteAsync("api/Product/25");
+        }
+    }
+
+    public class ProductControllerTests : IClassFixture<ProductControllerFixture>
+    {
 
         [Fact]
         public async Task GetProductWithID()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.GetAsync("api/Product/0");
+            HttpResponseMessage response = await httpClient.GetAsync("api/Product/25");
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Equal(@"{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}", responseString);
 
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(2)]
-        public async Task ChangeProduct(int id)
+        [Fact]
+        public async Task ChangeProduct()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""productId"":0,""name"":""Xiaomi"",""price"":""2000"",""date"":""2022-03-31""}");
-            HttpResponseMessage response = await httpClient.PutAsync("api/Product/" + id, content);
+            HttpResponseMessage response = await httpClient.PutAsync("api/Product/25", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal(id.ToString(), responseString);
+            Assert.Equal("25", responseString);
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(2)]
-        public async Task RemoveProduct(int id)
+        [Fact]
+        public async Task RemoveProduct()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.DeleteAsync("api/Product/" + id);
+            HttpResponseMessage response = await httpClient.DeleteAsync("api/Product/25");
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal(id.ToString(), responseString);
+            Assert.Equal("25", responseString);
 
         }
     }

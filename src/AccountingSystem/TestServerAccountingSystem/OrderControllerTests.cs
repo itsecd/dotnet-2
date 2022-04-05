@@ -3,31 +3,38 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AccountingSystem;
 using Xunit;
+using System;
 
 namespace TestServerAccountingSystem
 {
-    public class OrderControllerTests
+    public class OrderControllerFixture : IDisposable
     {
-        [Fact]
-        public async Task AddOrder()
+
+        public readonly HttpClient httpClient = new WebApplicationFactory<Startup>().CreateClient();
+
+        public OrderControllerFixture()
         {
-            WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
-            HttpClient httpClient = webHost.CreateClient();
-            var content = new StringContent(@"{""orderId"":0, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
+            var content = new StringContent(@"{""orderId"":49, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
                             ""status"": 0,""price"": 400, ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
-            HttpResponseMessage response = await httpClient.PostAsync("api/Order", content);
-            var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("0", responseString);
+            httpClient.PostAsync("api/Order", content);
         }
+
+        public void Dispose()
+        {
+            httpClient.DeleteAsync("api/Order/49");
+        }
+    }
+    public class OrderControllerTests : IClassFixture<OrderControllerFixture>
+    {
 
         [Fact]
         public async Task GetOrderWithID()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.GetAsync("api/Order/0");
+            HttpResponseMessage response = await httpClient.GetAsync("api/Order/49");
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal(@"{""orderId"":0, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
+            Assert.Equal(@"{""orderId"":49, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
                             ""status"": 0,""price"": 400, ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}", responseString);
 
         }
@@ -43,43 +50,29 @@ namespace TestServerAccountingSystem
 
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        public async Task ChangeOrder(int id)
+        [Fact]
+        public async Task ChangeOrder()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""orderId"":0, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
                             ""status"": 4,""price"": 20000, ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
-            HttpResponseMessage response = await httpClient.PutAsync("api/Order/" + id, content);
+            HttpResponseMessage response = await httpClient.PutAsync("api/Order/49", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal(id.ToString(), responseString);
+            Assert.Equal("49", responseString);
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        public async Task ChangeOrderStatus(int id)
+        [Fact]
+        public async Task ChangeOrderStatus()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            var content = new StringContent("4");
-            HttpResponseMessage response = await httpClient.PatchAsync("api/Order/status-" + id, content);
+            var content = new StringContent(@"{""orderId"":0, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
+                            ""status"": 9,""price"": 20000, ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+            HttpResponseMessage response = await httpClient.PatchAsync("api/Order/status-49", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal(id.ToString(), responseString);
+            Assert.Equal("49", responseString);
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        public async Task RemoveOrder(int id)
-        {
-            WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
-            HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.DeleteAsync("api/Order/" + id);
-            var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal(id.ToString(), responseString);
-        }
     }
 }

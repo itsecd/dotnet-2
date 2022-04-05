@@ -54,16 +54,17 @@ namespace AccountingSystem.Repository
             return id;
         }
 
-        public int PatchStatus(int status, Order order)
+        public int PatchStatus(int id, Order newOrder)
         {
             ISession session = NHibernateSession.OpenSession();
             using (session.BeginTransaction())
             {
-                order.Status = status;
+                Order order = session.Get<Order>(id);
+                order.Status = newOrder.Status;
                 session.Save(order);
                 session.GetCurrentTransaction().Commit();
             }
-            return order.OrderId;
+            return id;
         }
 
         public int RemoveOrder(int id)
