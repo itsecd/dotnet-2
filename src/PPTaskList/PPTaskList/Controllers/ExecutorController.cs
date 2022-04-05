@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PPTaskList.Controllers.Model;
+using PPTaskList.Repositories;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PPTaskList.Controllers
 {
@@ -8,34 +10,46 @@ namespace PPTaskList.Controllers
     [ApiController]
     public class ExecutorController : ControllerBase
     {
+        private readonly IExecutorRepository _executorRepository;
+
+        public ExecutorController(IExecutorRepository executorRepository)
+        {
+            _executorRepository = executorRepository;
+        }
+
         [HttpGet]
         public IEnumerable<Executor> Get()
         {
-            return new Executor[]{
-                        new Executor(0, "Tom"),
-                        new Executor(1, "Mike"),
-            };
+            return _executorRepository.GetExecutors();
         }
 
         [HttpGet("{id}")]
         public Executor Get(int id)
         {
-            return new Executor(0, "Tom");
+            return _executorRepository.GetExecutors().Where(executor => executor.ExecutorId == id).Single();
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Executor value)
         {
+            _executorRepository.AddExecutor(value);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Executor value)
         {
+            var executorIndex = _executorRepository.GetExecutors().FindIndex(executor => executor.ExecutorId == id);
+            
+            if(executorIndex > 0)
+            {
+                _executorRepository.GetExecutors()[executorIndex] = value;
+            }
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _executorRepository.RemoveAllExecutors();
         }
     }
 }
