@@ -22,61 +22,39 @@ namespace AccountingSystem.Repository
 
         public int AddCustomer(Customer customer)
         {
-            try
+            ISession session = NHibernateSession.OpenSession();
+            using (session.BeginTransaction())
             {
-                ISession session = NHibernateSession.OpenSession();
-                using (session.BeginTransaction())
-                {
-                    session.Save(customer);
-                    session.GetCurrentTransaction().Commit();
-                }
-                return customer.CustomerId;
+                session.Save(customer);
+                session.GetCurrentTransaction().Commit();
             }
-            catch
-            {
-                return -1;
-            }
+            return customer.CustomerId;
         }
 
         public int ChangeCustomer(int id, Customer newCustomer)
         {
-            try
+            ISession session = NHibernateSession.OpenSession();
+            using (session.BeginTransaction())
             {
-                ISession session = NHibernateSession.OpenSession();
-                using (session.BeginTransaction())
-                {
-                    Customer customer = session.Get<Customer>(id);
-                    customer.Name = newCustomer.Name;
-                    customer.Phone = newCustomer.Phone;
-                    customer.Address = newCustomer.Address;
-                    session.Save(customer);
-                    session.GetCurrentTransaction().Commit();
-                }
-                return id;
+                Customer customer = session.Get<Customer>(id);
+                customer.Name = newCustomer.Name;
+                customer.Phone = newCustomer.Phone;
+                customer.Address = newCustomer.Address;
+                session.Save(customer);
+                session.GetCurrentTransaction().Commit();
             }
-            catch
-            {
-                return -1;
-            }
+            return id;
         }
 
         public int RemoveCustomer(int id)
         {
-            try
+            ISession session = NHibernateSession.OpenSession();
+            using (session.BeginTransaction())
             {
-                ISession session = NHibernateSession.OpenSession();
-                using (session.BeginTransaction())
-                {
-                    session.Delete(session.Get<Customer>(id));
-                    session.GetCurrentTransaction().Commit();
-                }
-                return id;
+                session.Delete(session.Get<Customer>(id));
+                session.GetCurrentTransaction().Commit();
             }
-            catch
-            {
-                return -1;
-            }
-
+            return id;
         }
     }
 }

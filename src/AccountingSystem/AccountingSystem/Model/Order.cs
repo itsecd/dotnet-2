@@ -2,6 +2,7 @@
 
 namespace AccountingSystem.Model
 {
+    /// <summary>Class to save info about order</summary>
     public class Order
     {
         public virtual int OrderId { get; set; }

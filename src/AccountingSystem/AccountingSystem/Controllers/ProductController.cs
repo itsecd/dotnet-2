@@ -18,34 +18,60 @@ namespace AccountingSystem.Controllers
             _repository = repository;
         }
 
+        /// <summary>Get All Product</summary>
         [HttpGet]
         public IList<Product> Get()
         {
             return _repository.GetProducts();
         }
 
+        /// <summary>Get Product By ID</summary>
         [HttpGet("{id:int}")]
-        public Product Get(int id)
+        public ActionResult<Product> Get(int id)
         {
             return _repository.GetProduct(id);
         }
 
+        /// <summary>Add Product To DataBase</summary>
         [HttpPost]
-        public int Post([FromBody] Product product)
+        public ActionResult<int> Post([FromBody] Product product)
         {
-            return _repository.AddProduct(product);
+            try
+            {
+                return _repository.AddProduct(product);
+            }
+            catch
+            {
+                return Conflict();
+            }
         }
 
+        /// <summary>Change Product In DataBase</summary>
         [HttpPut("{id:int}")]
-        public int Put(int id, [FromBody] Product product)
+        public ActionResult<int> Put(int id, [FromBody] Product product)
         {
-            return _repository.ChangeProduct(id, product);
+            try
+            {
+                return _repository.ChangeProduct(id, product);
+            }
+            catch
+            {
+                return Conflict();
+            }
         }
 
+        /// <summary>Delete Product From DataBase</summary>
         [HttpDelete("{id:int}")]
-        public int Delete(int id)
+        public ActionResult<int> Delete(int id)
         {
-            return _repository.RemoveProduct(id);
+            try
+            {
+                return _repository.RemoveProduct(id);
+            }        
+            catch
+            {
+                return Conflict();
+            }
         }
     }
 }

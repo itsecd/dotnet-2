@@ -1,5 +1,6 @@
 ﻿namespace AccountingSystem.Model
 {
+    /// <summary>Class to save info about customer</summary>
     public class Customer
     {
         public virtual int CustomerId { get; set; }

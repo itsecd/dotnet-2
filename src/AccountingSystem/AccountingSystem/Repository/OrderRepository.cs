@@ -4,6 +4,7 @@ using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace AccountingSystem.Repository
 {
@@ -27,82 +28,53 @@ namespace AccountingSystem.Repository
 
         public int AddOrder(Order order)
         {
-            try
+            ISession session = NHibernateSession.OpenSession();
+            using (session.BeginTransaction())
             {
-                ISession session = NHibernateSession.OpenSession();
-                using (session.BeginTransaction())
-                {
-                    order.Price = CalculationPrice(order);
-                    session.Save(order);
-                    session.GetCurrentTransaction().Commit();
-                }
-                return order.OrderId;
+                order.Price = CalculationPrice(order);
+                session.Save(order);
+                session.GetCurrentTransaction().Commit();
             }
-            catch (NullReferenceException)
-            {
-                return -1;
-            }
+            return order.OrderId;
         }
 
         public int ChangeOrder(int id, Order newOrder)
         {
-            try
+            ISession session = NHibernateSession.OpenSession();
+            using (session.BeginTransaction())
             {
-                ISession session = NHibernateSession.OpenSession();
-                using (session.BeginTransaction())
-                {
-                    Order order = session.Get<Order>(id);
-                    order.Customer = newOrder.Customer;
-                    order.Price = CalculationPrice(newOrder);
-                    order.Status = newOrder.Status;
-                    order.Products = newOrder.Products;
-                    session.Save(order);
-                    session.GetCurrentTransaction().Commit();
-                }
-                return id;
+                Order order = session.Get<Order>(id);
+                order.Customer = newOrder.Customer;
+                order.Price = CalculationPrice(newOrder);
+                order.Status = newOrder.Status;
+                order.Products = newOrder.Products;
+                session.Save(order);
+                session.GetCurrentTransaction().Commit();
             }
-            catch (NullReferenceException)
-            {
-                return -1;
-            }
+            return id;
         }
 
-        public int PatchStatus(int id, int newStatus)
+        public int PatchStatus(int status, Order order)
         {
-            try
+            ISession session = NHibernateSession.OpenSession();
+            using (session.BeginTransaction())
             {
-                ISession session = NHibernateSession.OpenSession();
-                using (session.BeginTransaction())
-                {
-                    Order order = session.Get<Order>(id);
-                    order.Status = newStatus;
-                    session.Save(order);
-                    session.GetCurrentTransaction().Commit();
-                }
-                return id;
+                order.Status = status;
+                session.Save(order);
+                session.GetCurrentTransaction().Commit();
             }
-            catch (NullReferenceException)
-            {
-                return -1;
-            }
+            return order.OrderId;
         }
 
         public int RemoveOrder(int id)
         {
-            try
+            ISession session = NHibernateSession.OpenSession();
+            using (session.BeginTransaction())
             {
-                ISession session = NHibernateSession.OpenSession();
-                using (session.BeginTransaction())
-                {
-                    session.Delete(session.Get<Order>(id));
-                    session.GetCurrentTransaction().Commit();
-                }
-                return id;
+                session.Delete(session.Get<Order>(id));
+                session.GetCurrentTransaction().Commit();
             }
-            catch (NullReferenceException)
-            {
-                return -1;
-            }
+            return id;
         }
 
         private double CalculationPrice(Order order)

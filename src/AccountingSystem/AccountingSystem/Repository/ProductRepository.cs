@@ -21,61 +21,40 @@ namespace AccountingSystem.Repository
 
         public int AddProduct(Product product)
         {
-            try
+            ISession session = NHibernateSession.OpenSession();
+            using (session.BeginTransaction())
             {
-                ISession session = NHibernateSession.OpenSession();
-                using (session.BeginTransaction())
-                {
-                    session.Save(product);
-                    session.GetCurrentTransaction().Commit();
-                }
-                return product.ProductId;
+                session.Save(product);
+                session.GetCurrentTransaction().Commit();
             }
-            catch
-            {
-                return -1;
-            }
+            return product.ProductId;
         }
 
         public int ChangeProduct(int id, Product newProduct)
         {
-            try
+            ISession session = NHibernateSession.OpenSession();
+            Product product = session.Get<Product>(id);
+            product.Name = newProduct.Name;
+            product.Price = newProduct.Price;
+            product.Date = newProduct.Date;
+            using (session.BeginTransaction())
             {
-                ISession session = NHibernateSession.OpenSession();
-                Product product = session.Get<Product>(id);
-                product.Name = newProduct.Name;
-                product.Price = newProduct.Price;
-                product.Date = newProduct.Date;
-                using (session.BeginTransaction())
-                {
-                    session.Save(product);
-                    session.GetCurrentTransaction().Commit();
-                }
-                return id;
+                session.Save(product);
+                session.GetCurrentTransaction().Commit();
             }
-            catch
-            {
-                return -1;
-            }
+            return id;
 
         }
 
         public int RemoveProduct(int id)
         {
-            try
+            ISession session = NHibernateSession.OpenSession();
+            using (session.BeginTransaction())
             {
-                ISession session = NHibernateSession.OpenSession();
-                using (session.BeginTransaction())
-                {
-                    session.Delete(session.Get<Product>(id));
-                    session.GetCurrentTransaction().Commit();
-                }
-                return id;
+                session.Delete(session.Get<Product>(id));
+                session.GetCurrentTransaction().Commit();
             }
-            catch
-            {
-                return -1;
-            }
+            return id;
         }
     }
 }

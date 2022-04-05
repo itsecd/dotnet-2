@@ -8,8 +8,8 @@ namespace AccountingSystem.Repository
         IList<Order> GetOrders();
         Order GetOrder(int id);
         double GetAllPrice();
-        int ChangeOrder(int id, Order customer);
-        int PatchStatus(int id, int newStatus);
+        int ChangeOrder(int id, Order order);
+        int PatchStatus(int status, Order order);
         int AddOrder(Order customer);
         int RemoveOrder(int id);
     }
