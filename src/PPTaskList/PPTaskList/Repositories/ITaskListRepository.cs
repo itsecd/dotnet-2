@@ -8,6 +8,5 @@ namespace PPTaskList.Repositories
         void AddTask(TaskList task);
         List<TaskList> GetTasks();
         void RemoveAllTasks();
-
     }
 }
