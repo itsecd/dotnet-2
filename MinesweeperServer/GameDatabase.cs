@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Microsoft.Extensions.Configuration;
 
 namespace MinesweeperServer
 {
@@ -12,7 +14,12 @@ namespace MinesweeperServer
     {
         private readonly ConcurrentDictionary<string, User> _users = new();
         private ConcurrentDictionary<string, Player> _players = new();
-        private readonly string pathPlayers = "players.json";
+        private readonly IConfiguration _config;
+
+        public GameDatabase(IConfiguration config)
+        {
+            _config = config;
+        }
 
         /// <summary>Добавление игрока в список, если не найден.</summary>
         public bool TryAdd(string name)
@@ -32,9 +39,9 @@ namespace MinesweeperServer
         /// <summary>Загрузить список игроков из файла.</summary>
         public void Load()
         {
-            if (File.Exists(pathPlayers))
+            if (File.Exists(_config["pathPlayers"]))
             {
-                var jsonString = File.ReadAllText(pathPlayers);
+                var jsonString = File.ReadAllText(_config["pathPlayers"]);
                 _players = JsonSerializer.Deserialize<ConcurrentDictionary<string, Player>>(jsonString);
             }
         }
@@ -42,14 +49,14 @@ namespace MinesweeperServer
         public void Dump()
         {
             string jsonString = JsonSerializer.Serialize(_players, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(pathPlayers, jsonString);
+            File.WriteAllText(_config["pathPlayers"], jsonString);
         }
         /// <summary>Загрузить список игроков из файла (асинхронно).</summary>
         public async Task LoadAsync()
         {
-            if (File.Exists(pathPlayers))
+            if (File.Exists(_config["pathPlayers"]))
             {
-                using FileStream stream = File.Open(pathPlayers, FileMode.Open);
+                using FileStream stream = File.Open(_config["pathPlayers"], FileMode.Open);
                 _players = await JsonSerializer.DeserializeAsync<ConcurrentDictionary<string, Player>>(stream);
                 await stream.DisposeAsync();
             }
@@ -57,7 +64,7 @@ namespace MinesweeperServer
         /// <summary>Выгрузить список игроков в файл (асинхронно).</summary>
         public async Task DumpAsync()
         {
-            using FileStream stream = File.Create(pathPlayers);
+            using FileStream stream = File.Create(_config["pathPlayers"]);
             await JsonSerializer.SerializeAsync<ConcurrentDictionary<string, Player>>(stream, _players, new JsonSerializerOptions { WriteIndented = true });
             await stream.DisposeAsync();
         }

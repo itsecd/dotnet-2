@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
-using Spectre.Console;
 
 namespace MinesweeperServer
 {
@@ -21,7 +20,7 @@ namespace MinesweeperServer
             if (!await requestStream.MoveNext()) return;
             var initMessage = requestStream.Current;
             string playerName = initMessage.Name;
-            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] присоединился[/]");
+            _logger.LogTrace("[{username}] присоединился к комнате", playerName);
             // add player if new
             if (_data.TryAdd(playerName))
                 await _data.DumpAsync();
@@ -42,11 +41,11 @@ namespace MinesweeperServer
                             break;
                         case "ready":
                             _data.Ready(playerName);
-                            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] готов[/]");
+                            _logger.LogTrace("[{username}] готов", playerName);
                             break;
                         case "leave":
                             _data.Leave(playerName);
-                            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] покинул комнату[/]");
+                            _logger.LogTrace("[{username}] покинул комнату", playerName);
                             return;
                         default:
                             break;
@@ -55,7 +54,7 @@ namespace MinesweeperServer
                 while (!_data.AllStates("ready")) ;
                 await responseStream.WriteAsync(new ServerMessage { Text = "start" });
                 // in game
-                AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] начал игру[/]");
+                _logger.LogTrace("[{username}] приступил к игре", playerName);
                 while (_data.GetPlayerState(playerName) != "lobby")
                 {
                     await requestStream.MoveNext();
@@ -67,19 +66,19 @@ namespace MinesweeperServer
                             break;
                         case "leave":
                             _data.Leave(playerName);
-                            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] покинул комнату[/]");
+                            _logger.LogTrace("[{username}] покинул комнату", playerName);
                             return;
                         case "win":
                             _data.SetPlayerState(playerName, "win");
                             _data.CalcScore(playerName);
                             await _data.Broadcast(new ServerMessage { Text = playerName, State = "win" }, playerName);
-                            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] выиграл[/]");
+                            _logger.LogTrace("[{username}] выиграл", playerName);
                             break;
                         case "lose":
                             _data.SetPlayerState(playerName, "lose");
                             _data.CalcScore(playerName);
                             await _data.Broadcast(new ServerMessage { Text = playerName, State = "lose" }, playerName);
-                            AnsiConsole.MarkupLine($"[bold yellow][[{playerName}]] проиграл[/]");
+                            _logger.LogTrace("[{username}] проиграл", playerName);
                             break;
                         default:
                             break;
