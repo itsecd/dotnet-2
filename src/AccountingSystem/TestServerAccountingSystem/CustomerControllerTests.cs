@@ -14,14 +14,30 @@ namespace TestServerAccountingSystem
 
         public CustomerControllerFixture()
         {
+            AddCustomer();
+        }
+
+        public async Task AddCustomer()
+        {
             var content = new StringContent(@"{""customerId"":44,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""}");
-            httpClient.PostAsync("api/Customer", content);
+            HttpResponseMessage response = await httpClient.PostAsync("api/Customer", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Equal("44", responseString);
+
         }
 
         public void Dispose()
         {
-            httpClient.DeleteAsync("api/Customer/44");
+            DeleteCustomer();
         }
+
+        public async Task DeleteCustomer()
+        {
+            HttpResponseMessage response = await httpClient.DeleteAsync("api/Customer/44");
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Equal("44", responseString);
+        }
+
     }
     public class CustomerControllerTests : IClassFixture<CustomerControllerFixture>
     {

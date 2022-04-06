@@ -23,7 +23,7 @@ namespace TestServerAccountingSystem
                 ProductId = 57,
                 Name = "Motorolla",
                 Price = 3000,
-                Date = System.DateTime.Now,
+                Date = DateTime.Now,
             };
 
             Order order = new Order
@@ -32,6 +32,7 @@ namespace TestServerAccountingSystem
                 Customer = customer,
                 Status = 0,
                 Price = 0,
+                Date = DateTime.Now,
                 Products = new List<Product>() { product }
             };
 
@@ -65,8 +66,7 @@ namespace TestServerAccountingSystem
                 ProductId = 57,
                 Name = "Motorolla",
                 Price = 3000,
-                Date = System.DateTime.Now,
-
+                Date = DateTime.Now,
             };
 
             Order order = new Order
@@ -75,12 +75,15 @@ namespace TestServerAccountingSystem
                 Customer = customer,
                 Status = 7,
                 Price = 0,
+                Date = DateTime.Now,
                 Products = new List<Product>() { product }
             };
 
             OrderRepository repository = new();
             Assert.Equal(123, repository.ChangeOrder(123, order));
         }
+
+
 
         [Fact]
         public void PatchStatus()
@@ -92,7 +95,6 @@ namespace TestServerAccountingSystem
             };
             Assert.Equal(123, repository.PatchStatus(123, order));
         }
-
 
     }
 }

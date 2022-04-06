@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Connection;
+using AccountingSystem.Exeption;
 using AccountingSystem.Model;
 using NHibernate;
 using System.Collections.Generic;
@@ -17,7 +18,12 @@ namespace AccountingSystem.Repository
 
         public Customer GetCustomer(int id)
         {
-            return NHibernateSession.OpenSession().Get<Customer>(id);
+            Customer customer = NHibernateSession.OpenSession().Get<Customer>(id);
+            if (customer == null)
+            {
+                throw new NoFoundInDataBaseExeption();
+            }
+            return customer;
         }
 
         public int AddCustomer(Customer customer)
@@ -37,6 +43,10 @@ namespace AccountingSystem.Repository
             using (session.BeginTransaction())
             {
                 Customer customer = session.Get<Customer>(id);
+                if (customer == null)
+                {
+                    throw new NoFoundInDataBaseExeption();
+                }
                 customer.Name = newCustomer.Name;
                 customer.Phone = newCustomer.Phone;
                 customer.Address = newCustomer.Address;
@@ -51,7 +61,12 @@ namespace AccountingSystem.Repository
             ISession session = NHibernateSession.OpenSession();
             using (session.BeginTransaction())
             {
-                session.Delete(session.Get<Customer>(id));
+                Customer customer = session.Get<Customer>(id);
+                if (customer == null)
+                {
+                    throw new NoFoundInDataBaseExeption();
+                }
+                session.Delete(customer);
                 session.GetCurrentTransaction().Commit();
             }
             return id;

@@ -8,6 +8,7 @@
     <many-to-one name = "Customer" column = "CUSTOMER" cascade ="all-delete-orphan"/>
     <property name="Status" column="STATUS"  />
     <property name="Price" column="PRICE"  />
+    <property name="Date" column="ORDER_DATE"  />
     <list name = "Products" cascade ="all">
       <key column="ORDER_ID"/>
       <list-index column = "IDX"/>

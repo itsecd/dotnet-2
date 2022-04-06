@@ -1,9 +1,10 @@
-﻿using AccountingSystem.Model;
+﻿using AccountingSystem.Exeption;
+using AccountingSystem.Model;
 using AccountingSystem.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AccountingSystem.Controllers
 {
@@ -22,10 +23,16 @@ namespace AccountingSystem.Controllers
         /// <summary>Get All Customer</summary>
         /// <returns>All Customer</returns>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IList<Customer> Get()
+        public ActionResult<IList<Customer>> Get()
         {
-            return _repository.GetCustomers();
+            try
+            {
+                return _repository.GetCustomers().ToList();
+            }
+            catch (TypeInitializationException)
+            {
+                return Problem();
+            }
         }
 
         /// <summary>Get Customer By ID</summary>
@@ -37,9 +44,13 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.GetCustomer(id);
             }
+            catch (NoFoundInDataBaseExeption)
+            {
+                return NotFound();
+            }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
         }
 
@@ -52,13 +63,9 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.AddCustomer(customer);
             }
-            catch (NullReferenceException)
-            {
-                return NotFound();
-            }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {
@@ -76,13 +83,13 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.ChangeCustomer(id, customer);
             }
-            catch(NullReferenceException)
+            catch (NoFoundInDataBaseExeption)
             {
                 return NotFound();
             }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {
@@ -99,13 +106,13 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.RemoveCustomer(id);
             }
-            catch (NullReferenceException)
+            catch (NoFoundInDataBaseExeption)
             {
                 return NotFound();
             }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {

@@ -11,7 +11,7 @@ namespace AccountingSystem.Model
         public virtual string Name { get; set; }
         /// <summary>Field Including Product Price</summary>
         public virtual double Price { get; set; }
-        /// <summary>Field Including Product Expiration Date</summary>
+        /// <summary>Field Including Product Date Of Delivery</summary>
         public virtual DateTime Date { get; set; }
 
     }

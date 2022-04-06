@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AccountingSystem.Model
 {
@@ -13,6 +14,8 @@ namespace AccountingSystem.Model
         public virtual int Status { get; set; }
         /// <summary>Field Including Order Price</summary>
         public virtual double Price { get; set; }
+        /// <summary>Field Including Order Date</summary>
+        public virtual DateTime Date { get; set; }
         /// <summary>Field Including Products In Order</summary>
         public virtual IList<Product> Products { get; set; }
 

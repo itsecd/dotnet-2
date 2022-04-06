@@ -1,10 +1,10 @@
-﻿using AccountingSystem.Model;
+﻿using AccountingSystem.Exeption;
+using AccountingSystem.Model;
 using AccountingSystem.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace AccountingSystem.Controllers
 {
@@ -23,11 +23,16 @@ namespace AccountingSystem.Controllers
         /// <summary>Get All Product</summary>
         /// <returns>All Products</returns>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IList<Product> Get()
+        public ActionResult<IList<Product>> Get()
         {
-
-            return _repository.GetProducts();
+            try
+            {
+                return _repository.GetProducts().ToList();
+            }
+            catch (TypeInitializationException)
+            {
+                return Problem();
+            }
         }
 
         /// <summary>Get Product By ID</summary>
@@ -39,13 +44,13 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.GetProduct(id);
             }
-            catch (NullReferenceException)
+            catch (NoFoundInDataBaseExeption)
             {
                 return NotFound();
             }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {
@@ -62,13 +67,9 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.AddProduct(product);
             }
-            catch (NullReferenceException)
-            {
-                return NotFound();
-            }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {
@@ -85,13 +86,13 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.ChangeProduct(id, product);
             }
-            catch (NullReferenceException)
+            catch (NoFoundInDataBaseExeption)
             {
                 return NotFound();
             }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {
@@ -108,13 +109,13 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.RemoveProduct(id);
             }
-            catch (NullReferenceException)
+            catch (NoFoundInDataBaseExeption)
             {
                 return NotFound();
             }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {

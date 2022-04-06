@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Connection;
+using AccountingSystem.Exeption;
 using AccountingSystem.Model;
 using NHibernate;
 using System.Collections.Generic;
@@ -16,7 +17,12 @@ namespace AccountingSystem.Repository
 
         public Product GetProduct(int id)
         {
-            return NHibernateSession.OpenSession().Get<Product>(id);
+            Product product = NHibernateSession.OpenSession().Get<Product>(id);
+            if (product == null)
+            {
+                throw new NoFoundInDataBaseExeption();
+            }
+            return product;
         }
 
         public int AddProduct(Product product)
@@ -34,6 +40,10 @@ namespace AccountingSystem.Repository
         {
             ISession session = NHibernateSession.OpenSession();
             Product product = session.Get<Product>(id);
+            if (product == null)
+            {
+                throw new NoFoundInDataBaseExeption();
+            }
             product.Name = newProduct.Name;
             product.Price = newProduct.Price;
             product.Date = newProduct.Date;
@@ -51,7 +61,12 @@ namespace AccountingSystem.Repository
             ISession session = NHibernateSession.OpenSession();
             using (session.BeginTransaction())
             {
-                session.Delete(session.Get<Product>(id));
+                Product product = session.Get<Product>(id);
+                if (product == null)
+                {
+                    throw new NoFoundInDataBaseExeption();
+                }
+                session.Delete(product);
                 session.GetCurrentTransaction().Commit();
             }
             return id;

@@ -8,6 +8,7 @@ namespace AccountingSystem.Repository
         IList<Order> GetOrders();
         Order GetOrder(int id);
         double GetAllPrice();
+        int GetCountProductMonthly();
         int ChangeOrder(int id, Order order);
         int PatchStatus(int id, Order order);
         int AddOrder(Order customer);

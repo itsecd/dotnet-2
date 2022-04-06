@@ -14,14 +14,29 @@ namespace TestServerAccountingSystem
 
         public OrderControllerFixture()
         {
+            AddOrder();           
+        }
+
+        public async Task AddOrder()
+        {
             var content = new StringContent(@"{""orderId"":49, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400, ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
-            httpClient.PostAsync("api/Order", content);
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+            HttpResponseMessage response = await httpClient.PostAsync("api/Order", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Equal("49", responseString);
+
         }
 
         public void Dispose()
         {
-            httpClient.DeleteAsync("api/Order/49");
+            DeleteOrder();
+        }
+
+        public async Task DeleteOrder()
+        {
+            HttpResponseMessage response = await httpClient.DeleteAsync("api/Order/49");
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Equal("49", responseString);
         }
     }
     public class OrderControllerTests : IClassFixture<OrderControllerFixture>
@@ -35,7 +50,7 @@ namespace TestServerAccountingSystem
             HttpResponseMessage response = await httpClient.GetAsync("api/Order/49");
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Equal(@"{""orderId"":49, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400, ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}", responseString);
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}", responseString);
 
         }
 
@@ -56,7 +71,7 @@ namespace TestServerAccountingSystem
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""orderId"":0, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 4,""price"": 20000, ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+                            ""status"": 4,""price"": 20000,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
             HttpResponseMessage response = await httpClient.PutAsync("api/Order/49", content);
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Equal("49", responseString);
@@ -68,7 +83,7 @@ namespace TestServerAccountingSystem
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""orderId"":0, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 9,""price"": 20000, ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+                            ""status"": 9,""price"": 20000,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
             HttpResponseMessage response = await httpClient.PatchAsync("api/Order/status-49", content);
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Equal("49", responseString);

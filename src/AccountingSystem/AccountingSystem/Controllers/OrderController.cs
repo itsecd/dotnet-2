@@ -1,10 +1,10 @@
-﻿using AccountingSystem.Model;
+﻿using AccountingSystem.Exeption;
+using AccountingSystem.Model;
 using AccountingSystem.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace AccountingSystem.Controllers
 {
@@ -23,10 +23,16 @@ namespace AccountingSystem.Controllers
         /// <summary>Get All Order</summary>
         /// <returns>All Order</returns>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IList<Order> Get()
+        public ActionResult<IList<Order>> Get()
         {
-            return _repository.GetOrders();
+            try
+            {
+                return _repository.GetOrders().ToList();
+            }
+            catch (TypeInitializationException)
+            {
+                return Problem();
+            }
         }
 
         /// <summary>Get Order By ID</summary>
@@ -38,9 +44,13 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.GetOrder(id);
             }
+            catch (NoFoundInDataBaseExeption)
+            {
+                return NotFound();
+            }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
         }
 
@@ -55,11 +65,22 @@ namespace AccountingSystem.Controllers
             }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
-            catch
+        }
+
+        /// <summary>Get All Count Products By Order Monthly</summary>
+        /// <returns>All Count Products</returns>
+        [HttpGet("products-monthly")]
+        public ActionResult<int> GetCountProductMonthly()
+        {
+            try
             {
-                return Conflict();
+                return _repository.GetCountProductMonthly();
+            }
+            catch (TypeInitializationException)
+            {
+                return Problem();
             }
         }
 
@@ -72,13 +93,9 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.AddOrder(order);
             }
-            catch (NullReferenceException)
-            {
-                return NotFound();
-            }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {
@@ -96,13 +113,13 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.ChangeOrder(id, order);
             }
-            catch (NullReferenceException)
+            catch (NoFoundInDataBaseExeption)
             {
                 return NotFound();
             }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {
@@ -112,20 +129,20 @@ namespace AccountingSystem.Controllers
 
         /// <summary>Change Order Status</summary>
         /// <returns>Order ID</returns>
-        [HttpPatch("status-{id:int}")]
+        [HttpPatch("{id:int}")]
         public ActionResult<int> PatchStatus(int id, [FromBody] Order order)
         {
             try
             {
                 return _repository.PatchStatus(id, order);
             }
-            catch (NullReferenceException)
+            catch (NoFoundInDataBaseExeption)
             {
                 return NotFound();
             }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {
@@ -143,13 +160,13 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.RemoveOrder(id);
             }
-            catch (NullReferenceException)
+            catch (NoFoundInDataBaseExeption)
             {
                 return NotFound();
             }
             catch (TypeInitializationException)
             {
-                return Forbid();
+                return Problem();
             }
             catch
             {

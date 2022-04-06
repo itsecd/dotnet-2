@@ -15,13 +15,28 @@ namespace TestServerAccountingSystem
 
         public ProductControllerFixture()
         {
+            AddProduct();            
+        }
+
+        public async Task AddProduct()
+        {
             var content = new StringContent(@"{""productId"":25,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
-            httpClient.PostAsync("api/Product", content);
+            HttpResponseMessage response = await httpClient.PostAsync("api/Product", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Equal("25", responseString);
+
         }
 
         public void Dispose()
         {
-            httpClient.DeleteAsync("api/Product/25");
+            DeleteOrder();
+        }
+
+        public async Task DeleteOrder()
+        {
+            HttpResponseMessage response = await httpClient.DeleteAsync("api/Product/25");
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Equal("25", responseString);
         }
     }
 
