@@ -29,7 +29,7 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.GetProducts().ToList();
             }
-            catch (TypeInitializationException)
+            catch
             {
                 return Problem();
             }
@@ -44,7 +44,7 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.GetProduct(id);
             }
-            catch (NoFoundInDataBaseExeption)
+            catch (NotFoundInDatabaseException)
             {
                 return NotFound();
             }
@@ -67,13 +67,9 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.AddProduct(product);
             }
-            catch (TypeInitializationException)
-            {
-                return Problem();
-            }
             catch
             {
-                return Conflict();
+                return Problem();
             }
         }
 
@@ -86,7 +82,7 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.ChangeProduct(id, product);
             }
-            catch (NoFoundInDataBaseExeption)
+            catch (NotFoundInDatabaseException)
             {
                 return NotFound();
             }
@@ -109,7 +105,7 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.RemoveProduct(id);
             }
-            catch (NoFoundInDataBaseExeption)
+            catch (NotFoundInDatabaseException)
             {
                 return NotFound();
             }

@@ -29,7 +29,7 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.GetOrders().ToList();
             }
-            catch (TypeInitializationException)
+            catch
             {
                 return Problem();
             }
@@ -44,11 +44,11 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.GetOrder(id);
             }
-            catch (NoFoundInDataBaseExeption)
+            catch (NotFoundInDatabaseException)
             {
                 return NotFound();
             }
-            catch (TypeInitializationException)
+            catch
             {
                 return Problem();
             }
@@ -63,7 +63,7 @@ namespace AccountingSystem.Controllers
             { 
                 return _repository.GetAllPrice();
             }
-            catch (TypeInitializationException)
+            catch
             {
                 return Problem();
             }
@@ -78,7 +78,7 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.GetCountProductMonthly();
             }
-            catch (TypeInitializationException)
+            catch
             {
                 return Problem();
             }
@@ -93,13 +93,9 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.AddOrder(order);
             }
-            catch (TypeInitializationException)
-            {
-                return Problem();
-            }
             catch
             {
-                return Conflict();
+                return Problem();
             }
 
         }
@@ -113,7 +109,7 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.ChangeOrder(id, order);
             }
-            catch (NoFoundInDataBaseExeption)
+            catch (NotFoundInDatabaseException)
             {
                 return NotFound();
             }
@@ -136,7 +132,7 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.PatchStatus(id, order);
             }
-            catch (NoFoundInDataBaseExeption)
+            catch (NotFoundInDatabaseException)
             {
                 return NotFound();
             }
@@ -160,7 +156,7 @@ namespace AccountingSystem.Controllers
             {
                 return _repository.RemoveOrder(id);
             }
-            catch (NoFoundInDataBaseExeption)
+            catch (NotFoundInDatabaseException)
             {
                 return NotFound();
             }

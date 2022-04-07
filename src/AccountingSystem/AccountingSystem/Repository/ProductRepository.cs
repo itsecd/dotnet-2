@@ -20,7 +20,7 @@ namespace AccountingSystem.Repository
             Product product = NHibernateSession.OpenSession().Get<Product>(id);
             if (product == null)
             {
-                throw new NoFoundInDataBaseExeption();
+                throw new NotFoundInDatabaseException();
             }
             return product;
         }
@@ -42,7 +42,7 @@ namespace AccountingSystem.Repository
             Product product = session.Get<Product>(id);
             if (product == null)
             {
-                throw new NoFoundInDataBaseExeption();
+                throw new NotFoundInDatabaseException();
             }
             product.Name = newProduct.Name;
             product.Price = newProduct.Price;
@@ -64,7 +64,7 @@ namespace AccountingSystem.Repository
                 Product product = session.Get<Product>(id);
                 if (product == null)
                 {
-                    throw new NoFoundInDataBaseExeption();
+                    throw new NotFoundInDatabaseException();
                 }
                 session.Delete(product);
                 session.GetCurrentTransaction().Commit();

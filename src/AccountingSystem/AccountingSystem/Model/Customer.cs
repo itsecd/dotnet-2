@@ -1,4 +1,7 @@
-﻿namespace AccountingSystem.Model
+﻿using System;
+using System.Net.Http;
+
+namespace AccountingSystem.Model
 {
     /// <summary>Class to save info about customer</summary>
     public class Customer
@@ -12,5 +15,9 @@
         /// <summary>Field Including Customer Address</summary>
         public virtual string Address { get; set; }
 
+        public static implicit operator Customer(HttpResponseMessage v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

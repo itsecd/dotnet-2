@@ -2,9 +2,11 @@
 using AccountingSystem.Exeption;
 using AccountingSystem.Model;
 using NHibernate;
+using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Order = AccountingSystem.Model.Order;
 
 namespace AccountingSystem.Repository
 {
@@ -21,7 +23,7 @@ namespace AccountingSystem.Repository
             Order order = NHibernateSession.OpenSession().Get<Order>(id);
             if (order == null)
             {
-                throw new NoFoundInDataBaseExeption();
+                throw new NotFoundInDatabaseException();
             }
             return order;
 
@@ -34,16 +36,8 @@ namespace AccountingSystem.Repository
 
         public int GetCountProductMonthly()
         {
-            ICriteria criteria = NHibernateSession.OpenSession().CreateCriteria<Order>();
-            List<Order> monthlyOrder = new List<Order>();
-            foreach (Order order in criteria.List<Order>())
-            {
-                if (DateTime.Today < order.Date.AddDays(30))
-                {
-                    monthlyOrder.Add(order);
-                }
-            }
-            return monthlyOrder.Sum(f => f.Products.Count);
+            IList<Order> validateOrder = NHibernateSession.OpenSession().Query<Order>().Where(f => f.Date.AddDays(30) > DateTime.Today).ToList();
+            return validateOrder.Sum(f => f.Products.Count);
         }
 
         public int AddOrder(Order order)
@@ -66,7 +60,7 @@ namespace AccountingSystem.Repository
                 Order order = session.Get<Order>(id);
                 if (order == null)
                 {
-                    throw new NoFoundInDataBaseExeption();
+                    throw new NotFoundInDatabaseException();
                 }
                 order.Customer = newOrder.Customer;
                 order.Price = CalculationPrice(newOrder);
@@ -87,7 +81,7 @@ namespace AccountingSystem.Repository
                 Order order = session.Get<Order>(id);
                 if (order == null)
                 {
-                    throw new NoFoundInDataBaseExeption();
+                    throw new NotFoundInDatabaseException();
                 }
                 order.Status = newOrder.Status;
                 session.Save(order);
@@ -104,7 +98,7 @@ namespace AccountingSystem.Repository
                 Order order = session.Get<Order>(id);
                 if (order == null)
                 {
-                    throw new NoFoundInDataBaseExeption();
+                    throw new NotFoundInDatabaseException();
                 }
                 session.Delete(order);
                 session.GetCurrentTransaction().Commit();

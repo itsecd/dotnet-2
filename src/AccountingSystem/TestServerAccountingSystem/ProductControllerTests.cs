@@ -4,54 +4,39 @@ using System.Threading.Tasks;
 using AccountingSystem;
 using Xunit;
 using System;
+using System.Net;
 
 namespace TestServerAccountingSystem
 {
-    public class ProductControllerFixture : IDisposable
+    public class ProductControllerTests
     {
-
-
-        public readonly HttpClient httpClient = new WebApplicationFactory<Startup>().CreateClient();
-
-        public ProductControllerFixture()
-        {
-            AddProduct();            
-        }
-
+        [Fact]
         public async Task AddProduct()
         {
-            var content = new StringContent(@"{""productId"":25,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
-            HttpResponseMessage response = await httpClient.PostAsync("api/Product", content);
-            var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("25", responseString);
-
+            WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
+            HttpClient httpClient = webHost.CreateClient();
+            var content = new StringContent(@"{""productId"":44,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
+            HttpResponseMessage firstResponse = await httpClient.PostAsync("api/Product", content);
+            var responseString = await firstResponse.Content.ReadAsStringAsync();
+            Assert.Equal("44", responseString);
+            HttpResponseMessage secondResponse = await httpClient.PostAsync("api/Product", content);
+            Assert.Equal(HttpStatusCode.InternalServerError, secondResponse.StatusCode);
+            await httpClient.DeleteAsync("api/Product/44");
         }
-
-        public void Dispose()
-        {
-            DeleteOrder();
-        }
-
-        public async Task DeleteOrder()
-        {
-            HttpResponseMessage response = await httpClient.DeleteAsync("api/Product/25");
-            var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("25", responseString);
-        }
-    }
-
-    public class ProductControllerTests : IClassFixture<ProductControllerFixture>
-    {
 
         [Fact]
         public async Task GetProductWithID()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.GetAsync("api/Product/25");
-            var responseString = await response.Content.ReadAsStringAsync();
+            var content = new StringContent(@"{""productId"":55,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
+            await httpClient.PostAsync("api/Product", content);
+            HttpResponseMessage firstResponse = await httpClient.GetAsync("api/Product/55");
+            var responseString = await firstResponse.Content.ReadAsStringAsync();
             Assert.Equal(@"{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}", responseString);
-
+            HttpResponseMessage secondResponse = await httpClient.GetAsync("api/Product/66");
+            Assert.Equal(HttpStatusCode.NotFound, secondResponse.StatusCode);
+            await httpClient.DeleteAsync("api/Product/55");
         }
 
         [Fact]
@@ -59,10 +44,14 @@ namespace TestServerAccountingSystem
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
+            await httpClient.PostAsync("api/Product", new StringContent(@"{""productId"":77,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}"));
             var content = new StringContent(@"{""productId"":0,""name"":""Xiaomi"",""price"":""2000"",""date"":""2022-03-31""}");
-            HttpResponseMessage response = await httpClient.PutAsync("api/Product/25", content);
-            var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("25", responseString);
+            HttpResponseMessage firstResponse = await httpClient.PutAsync("api/Product/77", content);
+            var responseString = await firstResponse.Content.ReadAsStringAsync();
+            Assert.Equal("77", responseString);
+            HttpResponseMessage secondResponse = await httpClient.PutAsync("api/Product/88", content);
+            Assert.Equal(HttpStatusCode.NotFound, secondResponse.StatusCode);
+            await httpClient.DeleteAsync("api/Product/77");
         }
 
         [Fact]
@@ -70,10 +59,13 @@ namespace TestServerAccountingSystem
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
-            HttpResponseMessage response = await httpClient.DeleteAsync("api/Product/25");
-            var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("25", responseString);
-
+            var content = new StringContent(@"{""productId"":99,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
+            await httpClient.PostAsync("api/Product", content);
+            HttpResponseMessage firstResponse = await httpClient.DeleteAsync("api/Product/99");
+            var responseString = await firstResponse.Content.ReadAsStringAsync();
+            Assert.Equal("99", responseString);
+            HttpResponseMessage secondResponse = await httpClient.DeleteAsync("api/Product/110");
+            Assert.Equal(HttpStatusCode.NotFound, secondResponse.StatusCode);
         }
     }
 }

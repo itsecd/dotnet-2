@@ -21,7 +21,7 @@ namespace AccountingSystem.Repository
             Customer customer = NHibernateSession.OpenSession().Get<Customer>(id);
             if (customer == null)
             {
-                throw new NoFoundInDataBaseExeption();
+                throw new NotFoundInDatabaseException();
             }
             return customer;
         }
@@ -45,7 +45,7 @@ namespace AccountingSystem.Repository
                 Customer customer = session.Get<Customer>(id);
                 if (customer == null)
                 {
-                    throw new NoFoundInDataBaseExeption();
+                    throw new NotFoundInDatabaseException();
                 }
                 customer.Name = newCustomer.Name;
                 customer.Phone = newCustomer.Phone;
@@ -64,7 +64,7 @@ namespace AccountingSystem.Repository
                 Customer customer = session.Get<Customer>(id);
                 if (customer == null)
                 {
-                    throw new NoFoundInDataBaseExeption();
+                    throw new NotFoundInDatabaseException();
                 }
                 session.Delete(customer);
                 session.GetCurrentTransaction().Commit();
