@@ -1,4 +1,4 @@
-namespace MinesweeperServer
+namespace MinesweeperServer.Database
 {
     /// <summary>Класс для хранения информации об игроке.</summary>
     public class Player

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MinesweeperServer.Database;
 
 namespace MinesweeperServer
 {
@@ -13,7 +14,8 @@ namespace MinesweeperServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-            services.AddSingleton<GameDatabase>();
+            services.AddSingleton<GameRepository>();
+            services.AddSingleton<GameNetwork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

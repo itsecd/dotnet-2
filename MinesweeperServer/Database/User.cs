@@ -1,6 +1,6 @@
 using Grpc.Core;
 
-namespace MinesweeperServer
+namespace MinesweeperServer.Database
 {
     /// <summary>Класс для хранения информации о пользователе.</summary>
     public class User
