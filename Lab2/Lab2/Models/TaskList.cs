@@ -7,12 +7,12 @@ namespace Lab2.Models
     /// <summary>
     /// Модель запроса задачи
     /// </summary>
-    public class Task
+    public class TaskList
     {
         /// <summary>
         /// id задачи
         /// </summary>
-        public int Id { get; set; }
+        public int TaskId { get; set; }
         /// <summary>
         /// имя задачи
         /// </summary>
@@ -33,6 +33,15 @@ namespace Lab2.Models
         /// набор тэгов, ассоциированных с задачей
         /// </summary>
         public List<Tags> TagsNames { get; set; }
-
+        public TaskList()
+        {
+            Name = string.Empty;
+            Description = string.Empty;
+        }
+        public TaskList(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
     }
 }

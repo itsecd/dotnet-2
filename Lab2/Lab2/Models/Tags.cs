@@ -8,7 +8,7 @@
         /// <summary>
         /// Id метки
         /// </summary>
-        public int Id { get; set; }
+        public int TagId { get; set; }
         /// <summary>
         /// Имя метки
         /// </summary>
@@ -17,5 +17,14 @@
         /// цвет метки
         /// </summary>
         public int Color { get; set; }
+        public Tags()
+        {
+            Name = string.Empty;
+        }
+        public Tags(string name, int color)
+        {
+            Name = name;
+            Color = color;
+        }
     }
 }

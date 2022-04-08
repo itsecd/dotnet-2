@@ -8,7 +8,7 @@
         /// <summary>
         /// id исполнителя
         /// </summary>
-        public int Id { get; set; }
+        public int ExecutorId { get; set; }
         /// <summary>
         /// имя исполнителя
         /// </summary>
@@ -17,5 +17,16 @@
         /// фамилия исполнителя
         /// </summary>
         public string Surname { get; set; }
+        public Executor()
+        {
+            Name = string.Empty;
+            Surname = string.Empty;
+        }
+        public Executor(int id, string name, string surname)
+        {
+            ExecutorId = id;
+            Name = name;
+            Surname = surname;
+        }
     }
 }
