@@ -1,3 +1,5 @@
+using Grpc.Core;
+using MinesweeperServer;
 using MinesweeperServer.Database;
 using Xunit;
 
@@ -47,6 +49,14 @@ namespace ServerTest
             Assert.True(network.AllStates("lobby"));
             network.SetPlayerState("username1", "win");
             Assert.False(network.AllStates("lobby"));
+        }
+        [Fact]
+        public void SendPlayersTest()
+        {
+            GameNetwork network = new();
+            network.Join("user1", null);
+            network.Join("user2", null);
+            network.Join("user3", null);
         }
     }
 }
