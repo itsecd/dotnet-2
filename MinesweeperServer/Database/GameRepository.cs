@@ -16,7 +16,7 @@ namespace MinesweeperServer.Database
         {
             _config = config;
         }
-        public bool TryAdd(string name) => _players.TryAdd(name, new Player());
+        public bool TryAddPlayer(string name) => _players.TryAdd(name, new Player());
         public void Load()
         {
             if (File.Exists(_config["PathPlayers"]))
@@ -25,22 +25,9 @@ namespace MinesweeperServer.Database
                 _players = JsonSerializer.Deserialize<ConcurrentDictionary<string, Player>>(jsonString);
             }
         }
-        public void Dump()
-        {
-            string jsonString = JsonSerializer.Serialize(_players, new JsonSerializerOptions{WriteIndented = true});
-            File.WriteAllText(_config["PathPlayers"], jsonString);
-        }
-        public async Task LoadAsync()
-        {
-            if (File.Exists(_config["pathPlayers"]))
-            {
-                using FileStream stream = File.Open(_config["pathPlayers"], FileMode.Open);
-                _players = await JsonSerializer.DeserializeAsync<ConcurrentDictionary<string, Player>>(stream);
-            }
-        }
         public async Task DumpAsync()
         {
-            using FileStream stream = File.Create(_config["pathPlayers"]);
+            await using FileStream stream = File.Create(_config["pathPlayers"]);
             await JsonSerializer.SerializeAsync<ConcurrentDictionary<string, Player>>(stream, _players, new JsonSerializerOptions { WriteIndented = true });
         }
         public bool CalcScore(string name, string state)

@@ -9,7 +9,6 @@ namespace MinesweeperServer.Database
         bool Leave(string name);
         bool IsConnected(string name);
         bool AllStates(string name);
-        void DeclareWin(string name);
         void SetPlayerState(string name, string state);
         string GetPlayerState(string name);
         Task SendPlayers(string name);

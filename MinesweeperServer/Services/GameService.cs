@@ -25,7 +25,7 @@ namespace MinesweeperServer
             string playerName = initMessage.Name;
             _logger.LogTrace("[{username}] присоединился к комнате", playerName);
             // add player if new
-            if (_players.TryAdd(playerName))
+            if (_players.TryAddPlayer(playerName))
                 await _players.DumpAsync();
             // join player
             _users.Join(playerName, responseStream);
