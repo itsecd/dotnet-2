@@ -14,7 +14,7 @@ namespace Lab2.Repositories
 
         private List<Tags> _tags;
 
-        private void ReadFromFile()
+        private async void ReadFromFile()
         {
             if (_tags != null) return;
 
@@ -23,18 +23,24 @@ namespace Lab2.Repositories
                 _tags = new List<Tags>();
                 return;
             }
-
+            await DeserializeFile();   
+        }
+        private async Task DeserializeFile()
+        {
             var xmlSerializer = new XmlSerializer(typeof(List<Tags>));
             using var fileReader = new FileStream(StorageFileName, FileMode.Open);
             _tags = (List<Tags>)xmlSerializer.Deserialize(fileReader);
         }
-        private void WriteToFile()
+        private async Task WriteToFile()
+        {
+           await SerializeFile();
+        }
+        private async Task SerializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<Tags>));
             using var fileWriter = new FileStream(StorageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileWriter, _tags);
         }
-
         public void AddTag(Tags tags)
         {
             ReadFromFile();
@@ -55,5 +61,12 @@ namespace Lab2.Repositories
             ReadFromFile();
             return _tags;
         }
+        public void RemoveTag(int id)
+        {
+            ReadFromFile();
+            _tags.RemoveAt(id);
+            WriteToFile();
+        }
+
     }
 }

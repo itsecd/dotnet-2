@@ -25,7 +25,7 @@ namespace Lab2.Controllers
             return _tagRepository.GetTags();
         }
         // GET api/<TagsController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public Tags Get(int id)
         {
             return _tagRepository.GetTags().Where(tags => tags.TagId == id).Single();
@@ -40,7 +40,7 @@ namespace Lab2.Controllers
         }
 
         // PUT api/<TagsController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public void Put(int id, [FromBody] Tags value)
         {
             var tagsIndex = _tagRepository.GetTags().FindIndex(tags => tags.TagId == id);
@@ -52,10 +52,16 @@ namespace Lab2.Controllers
         }
 
         // DELETE api/<TagsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public void Delete()
         {
             _tagRepository.RemoveAllTags();
+        }
+        // DELETE api/<TaskListController>/5
+        [HttpDelete("{id:int}")]
+        public void Delete(int id)
+        {
+            _tagRepository.RemoveTag(id);
         }
     }
 }

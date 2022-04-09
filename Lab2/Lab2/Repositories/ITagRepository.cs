@@ -8,5 +8,6 @@ namespace Lab2.Repositories
         void AddTag(Tags task);
         List<Tags> GetTags();
         void RemoveAllTags();
+        void RemoveTag(int id);
     }
 }

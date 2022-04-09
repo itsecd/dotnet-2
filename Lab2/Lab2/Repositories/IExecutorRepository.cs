@@ -8,5 +8,6 @@ namespace Lab2.Repositories
         List<Executor> GetExecutors();
         void AddExecutor(Executor executor);
         void RemoveAllExecutors();
+        void RemoveExecutor(int id);
     }
 }

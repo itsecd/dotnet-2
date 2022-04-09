@@ -8,5 +8,7 @@ namespace Lab2.Repositories
         void AddTask(TaskList task);
         List<TaskList> GetTasks();
         void RemoveAllTasks();
+        void SaveFile();
+        void RemoveTask(int id);
     }
 }

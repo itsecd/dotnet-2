@@ -13,7 +13,7 @@ namespace Lab2.Repositories
         private const string StorageFileName = "executors.xml";
 
         private List<Executor> _executors;
-        private void ReadFromFile()
+        private async Task ReadFromFile()
         {
             if (_executors != null) return;
 
@@ -22,17 +22,24 @@ namespace Lab2.Repositories
                 _executors = new List<Executor>();
                 return;
             }
-
+            await DeserializeFile();
+            
+        }
+        private async Task DeserializeFile()
+        {
             var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
             using var fileReader = new FileStream(StorageFileName, FileMode.Open);
-            _executors =  (List<Executor>)xmlSerializer.Deserialize(fileReader);
+            _executors = (List<Executor>)xmlSerializer.Deserialize(fileReader);
         }
-
-        private void WriteToFile()
+        private async Task SerializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
             using var fileWriter = new FileStream(StorageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileWriter, _executors);
+        }
+        private async Task WriteToFile()
+        {
+            await SerializeFile();
         }
 
         public void AddExecutor(Executor executor)
@@ -54,6 +61,12 @@ namespace Lab2.Repositories
         {
             ReadFromFile();
             return _executors;
+        }
+        public void RemoveExecutor(int id)
+        {
+            ReadFromFile();
+            _executors.RemoveAt(id);
+            WriteToFile();
         }
 
 

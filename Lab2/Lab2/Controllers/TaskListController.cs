@@ -3,6 +3,7 @@ using Lab2.Models;
 using Lab2.Repositories;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace Lab2.Controllers
 {
@@ -25,7 +26,7 @@ namespace Lab2.Controllers
         }
 
         // GET api/<TaskListController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public TaskList Get(int id)
         {
             return _taskListRepository.GetTasks().Where(task => task.TaskId == id).Single();
@@ -41,7 +42,7 @@ namespace Lab2.Controllers
 
 
         // PUT api/<TaskListController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public void Put(int id, [FromBody] TaskList value)
         {
             var taskIndex = _taskListRepository.GetTasks().FindIndex(task => task.TaskId == id);
@@ -50,13 +51,20 @@ namespace Lab2.Controllers
             {
                 _taskListRepository.GetTasks()[taskIndex] = value;
             }
+            _taskListRepository.SaveFile();
         }
 
         // DELETE api/<TaskListController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public void Delete()
         {
             _taskListRepository.RemoveAllTasks();
+        }
+        // DELETE api/<TaskListController>/5
+        [HttpDelete("{id:int}")]
+        public void Delete(int id)
+        {
+            _taskListRepository.RemoveTask(id);
         }
     }
 }

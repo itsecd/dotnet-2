@@ -15,7 +15,7 @@ namespace Lab2.Repositories
 
         private List<TaskList> _tasks;
 
-        private void ReadFromFile()
+        private async Task ReadFromFile()
         {
             if (_tasks != null) return;
 
@@ -24,18 +24,29 @@ namespace Lab2.Repositories
                 _tasks = new List<TaskList>();
                 return;
             }
-
+            await DeserializeFile();     
+        }
+        private async Task DeserializeFile()
+        {
             var xmlSerializer = new XmlSerializer(typeof(List<TaskList>));
             using var fileReader = new FileStream(StorageFileName, FileMode.Open);
             _tasks = (List<TaskList>)xmlSerializer.Deserialize(fileReader);
         }
-        private void WriteToFile()
+        private async Task SerializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<TaskList>));
             using var fileWriter = new FileStream(StorageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileWriter, _tasks);
         }
+        private async Task WriteToFile()
+        {
+            await SerializeFile();
+        }
 
+        public void SaveFile()
+        {
+            WriteToFile();
+        }
         public void AddTask(TaskList tasks)
         {
             ReadFromFile();
@@ -57,6 +68,11 @@ namespace Lab2.Repositories
             return _tasks;
         }
 
-
+        public void RemoveTask(int id)
+        {
+            ReadFromFile();
+            _tasks.RemoveAt(id);
+            WriteToFile();
+        }
     }
 }

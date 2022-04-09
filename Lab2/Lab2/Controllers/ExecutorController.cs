@@ -26,7 +26,7 @@ namespace Lab2.Controllers
         }
 
         // GET api/<ExecutorController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public Executor Get(int id)
         {
             return _executorRepository.GetExecutors().Where(executor => executor.ExecutorId == id).Single();
@@ -40,7 +40,7 @@ namespace Lab2.Controllers
         }
 
         // PUT api/<ExecutorController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public void Put(int id, [FromBody] Executor value)
         {
             var executorIndex = _executorRepository.GetExecutors().FindIndex(executor => executor.ExecutorId == id);
@@ -52,10 +52,15 @@ namespace Lab2.Controllers
         }
 
         // DELETE api/<ExecutorController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public void Delete()
         {
             _executorRepository.RemoveAllExecutors();
+        }
+        [HttpDelete("{id:int}")]
+        public void Delete(int id)
+        {
+            _executorRepository.RemoveExecutor(id);
         }
     }
 }
