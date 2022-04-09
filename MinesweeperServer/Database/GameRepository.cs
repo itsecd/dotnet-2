@@ -36,14 +36,12 @@ namespace MinesweeperServer.Database
             {
                 using FileStream stream = File.Open(_config["pathPlayers"], FileMode.Open);
                 _players = await JsonSerializer.DeserializeAsync<ConcurrentDictionary<string, Player>>(stream);
-                await stream.DisposeAsync();
             }
         }
         public async Task DumpAsync()
         {
             using FileStream stream = File.Create(_config["pathPlayers"]);
             await JsonSerializer.SerializeAsync<ConcurrentDictionary<string, Player>>(stream, _players, new JsonSerializerOptions { WriteIndented = true });
-            await stream.DisposeAsync();
         }
         public bool CalcScore(string name, string state)
         {
