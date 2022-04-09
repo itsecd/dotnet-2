@@ -21,7 +21,6 @@ namespace ServerTest
             GameRepository repo = new(configurationRoot);
             repo.TryAddPlayer("username");
             Assert.True(repo.CalcScore("username", "win"));
-            Assert.True(repo.CalcScore("username", "win"));
             Assert.Equal(20, repo["username"].TotalScore);
             Assert.Equal(2, repo["username"].WinStreak);
             Assert.Equal(2, repo["username"].WinCount);
