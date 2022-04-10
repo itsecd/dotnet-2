@@ -2,6 +2,8 @@ using Grpc.Core;
 using MinesweeperServer;
 using MinesweeperServer.Database;
 using Xunit;
+using Moq;
+using System.Threading.Tasks;
 
 namespace ServerTest
 {
@@ -51,12 +53,26 @@ namespace ServerTest
             Assert.False(network.AllStates("lobby"));
         }
         [Fact]
-        public void SendPlayersTest()
+        public async void SendPlayersTestAsync()
         {
+            var mock = new Mock<IServerStreamWriter<ServerMessage>>();
             GameNetwork network = new();
-            network.Join("user1", null);
+            network.Join("user1", mock.Object);
             network.Join("user2", null);
             network.Join("user3", null);
+            await network.SendPlayers("user1");
+            mock.Verify(x => x.WriteAsync(new ServerMessage{Text = "user2", State = "lobby"}));
+            mock.Verify(x => x.WriteAsync(new ServerMessage{Text = "user3", State = "lobby"}));
+        }
+        [Fact]
+        public async void BroadcastTest()
+        {
+            var mock = new Mock<IServerStreamWriter<ServerMessage>>();
+            GameNetwork network = new();
+            network.Join("user1", mock.Object);
+            network.Join("user2", mock.Object);
+            await network.Broadcast(new ServerMessage{Text = "gg", State = "win"});
+            mock.Verify(x => x.WriteAsync(new ServerMessage{Text = "gg", State = "win"}), Times.Exactly(2));
         }
     }
 }
