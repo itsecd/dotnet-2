@@ -17,9 +17,9 @@ namespace MinesweeperServer.Database
         public string GetPlayerState(string name) => _users[name].State;
         public async Task SendPlayers(string name)
         {
-            foreach (var player in _users.Where(x => x.Key != name))
+            foreach (var (key, value) in _users.Where(x => x.Key != name))
             {
-                await _users[name].Channel.WriteAsync(new ServerMessage { Text = player.Key, State = _users[player.Key].State });
+                await _users[name].Channel.WriteAsync(new ServerMessage { Text = key, State = value.State });
             }
         }
         public async Task Broadcast(ServerMessage message, string name = "")

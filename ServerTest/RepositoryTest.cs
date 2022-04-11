@@ -2,6 +2,7 @@ using Xunit;
 using MinesweeperServer.Database;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Collections.Generic;
 
 namespace ServerTest
 {
@@ -53,8 +54,10 @@ namespace ServerTest
             repo.TryAddPlayer("user1");
             repo.CalcScore("user1", "win");
             await repo.DumpAsync();
-            string controlString = "{\n  \"user1\": {\n    \"TotalScore\": 10,\n    \"WinCount\": 1,\n    \"LoseCount\": 0,\n    \"WinStreak\": 1\n  }\n}";
-            Assert.Equal(controlString, File.ReadAllText("players.json"));
+            List<string> controlList = new();
+            controlList.Add("{\n  \"user1\": {\n    \"TotalScore\": 10,\n    \"WinCount\": 1,\n    \"LoseCount\": 0,\n    \"WinStreak\": 1\n  }\n}");
+            controlList.Add("{\r\n  \"user1\": {\r\n    \"TotalScore\": 10,\r\n    \"WinCount\": 1,\r\n    \"LoseCount\": 0,\r\n    \"WinStreak\": 1\r\n  }\r\n}");
+            Assert.Contains(File.ReadAllTextAsync("players.json").Result, controlList);
         }
     }
 }
