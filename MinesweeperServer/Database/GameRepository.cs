@@ -35,14 +35,14 @@ namespace MinesweeperServer.Database
             switch (state)
             {
                 case "win":
-                    _players[name].TotalScore += int.Parse(_config["WinPoints"]);
+                    _players[name].TotalScore += _config.GetValue<int>("WinPoints");
                     _players[name].WinCount++;
                     _players[name].WinStreak++;
-                    if (_players[name].WinStreak % int.Parse(_config["StreakCount"]) == 0)
-                        _players[name].TotalScore += int.Parse(_config["StreakBonus"]);
+                    if (_players[name].WinStreak % _config.GetValue<int>("StreakCount") == 0)
+                        _players[name].TotalScore += _config.GetValue<int>("StreakBonus");
                     break;
                 case "lose":
-                    _players[name].TotalScore -= int.Parse(_config["LosePoints"]);
+                    _players[name].TotalScore -= _config.GetValue<int>("LosePoints");
                     if (_players[name].TotalScore < 0)
                         _players[name].TotalScore = 0;
                     _players[name].LoseCount++;
