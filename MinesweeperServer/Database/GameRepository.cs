@@ -38,6 +38,8 @@ namespace MinesweeperServer.Database
                     _players[name].TotalScore += int.Parse(_config["WinPoints"]);
                     _players[name].WinCount++;
                     _players[name].WinStreak++;
+                    if (_players[name].WinStreak % int.Parse(_config["StreakCount"]) == 0)
+                        _players[name].TotalScore += int.Parse(_config["StreakBonus"]);
                     break;
                 case "lose":
                     _players[name].TotalScore -= int.Parse(_config["LosePoints"]);

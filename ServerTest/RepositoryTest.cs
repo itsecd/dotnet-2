@@ -59,5 +59,15 @@ namespace ServerTest
             controlList.Add("{\r\n  \"user1\": {\r\n    \"TotalScore\": 10,\r\n    \"WinCount\": 1,\r\n    \"LoseCount\": 0,\r\n    \"WinStreak\": 1\r\n  }\r\n}");
             Assert.Contains(File.ReadAllTextAsync("players.json").Result, controlList);
         }
+        [Fact]
+        public void WinStreakTest()
+        {
+            var configurationRoot = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+            GameRepository repo = new(configurationRoot);
+            repo.TryAddPlayer("user1");
+            for (int i = 0; i < 3; i++)
+                repo.CalcScore("user1", "win");
+            Assert.Equal(33, repo["user1"].TotalScore);
+        }
     }
 }
