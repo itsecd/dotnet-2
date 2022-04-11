@@ -9,7 +9,8 @@ namespace ConsoleApp1
     {
         static async Task Main(string[] args)
         {
-            var userName = Console.ReadLine();// 
+            var id = Console.ReadLine();
+            var userName = Console.ReadLine(); 
 
             var channel = GrpcChannel.ForAddress("https://localhost:5001");
             var client = new ChatRoom.ChatRoomClient(channel);

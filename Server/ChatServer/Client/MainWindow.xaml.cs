@@ -1,4 +1,5 @@
 ﻿using ChatServer;
+using Grpc.Core;
 using Grpc.Net.Client;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace Client
     public partial class MainWindow : Window
     {
         private bool isConnected;
+
+        private AsyncDuplexStreamingCall<Message, Message> _chat;
         
         private async void ConnectUser() {
             if (!isConnected) 
@@ -35,18 +38,18 @@ namespace Client
                 string userName = tbUserName.Text;
                 var channel = GrpcChannel.ForAddress("https://localhost:5001");
                 var client = new ChatRoom.ChatRoomClient(channel);
-                using (var chat = client.Join()) {
-                    _ = Task.Run(async () =>
+                _chat = client.Join();
+                _ = Task.Run(async () =>
+                {
+                    while (await _chat.ResponseStream.MoveNext(cancellationToken: System.Threading.CancellationToken.None))
                     {
-                        while (await chat.ResponseStream.MoveNext(cancellationToken: System.Threading.CancellationToken.None))
-                        {
-                            var response = chat.ResponseStream.Current;
-                            MessageBox.Show($"{response.User}: {response.Text}");
-                        }
-                    });
-                    await chat.RequestStream.WriteAsync(new Message()
-                    { User = userName, Text = " has joined the room" });
-                }
+                        var response = _chat.ResponseStream.Current;
+                        MessageBox.Show($"{response.User}: {response.Text}");
+                    }
+                });
+                await _chat.RequestStream.WriteAsync(new Message()
+                { User = userName, Text = " has joined the room" });
+                    //await chat.RequestStream.CompleteAsync();
                
 
 

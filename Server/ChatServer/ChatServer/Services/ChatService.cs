@@ -1,28 +1,54 @@
-﻿using Grpc.Core;
+﻿using ChatServer.Repositories;
+using Grpc.Core;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 namespace ChatServer.Services
 {
     public class ChatService : ChatRoom.ChatRoomBase
     {
-        private readonly IChatRoomUtils _chatRoomUtils;
 
-        public ChatService(IChatRoomUtils chatRoomUtils)
+        private IChatRoomRepository _chatRooms; 
+        
+
+        public ChatService(IChatRoomRepository chatRooms)
         {
-            _chatRoomUtils = chatRoomUtils;
+            
+            _chatRooms = chatRooms;
+            _chatRooms.ReadFile();
+
         }
+
+     
         public override async Task Join(IAsyncStreamReader<Message> requestStream, IServerStreamWriter<Message> responseStream, ServerCallContext context)
         {
-            if (!await requestStream.MoveNext()) return; // если все закончилось - возвращаемся
-
+            int roomId = 0;
+            if (!await requestStream.MoveNext()) return;
+            if (requestStream.Current.Text == "Create")
+            {
+               roomId = _chatRooms.AddRoom(requestStream.Current.User.GetHashCode(), new ChatRoomUtils());
+                _chatRooms.WriteToFile();
+                await responseStream.WriteAsync(new Message{ Text = roomId.ToString()});
+                await requestStream.MoveNext();
+            }
+            else
+            {
+                roomId = int.Parse(requestStream.Current.Text);
+                var room = _chatRooms.FindRoom(roomId);
+                await room.BroadcastMessage(requestStream.Current);
+            }
             do
             {
-                // регистрация пользоваетля
-                _chatRoomUtils.Join(requestStream.Current.User, responseStream);
-                await _chatRoomUtils.BroadcastMessage(requestStream.Current);
+                var CurrentMessage = requestStream.Current;
+                var room = _chatRooms.FindRoom(roomId);
+                await room.BroadcastMessage(CurrentMessage);
+                   
             }
-            while (await requestStream.MoveNext()); // пока в потоке вопросов что-то имеется
-
-            _chatRoomUtils.Remove(context.Peer);
+            while (await requestStream.MoveNext());
+            var roomDelUser = _chatRooms.FindRoom(roomId);
+            roomDelUser.Remove(context.Peer);
         }
     }
 }
