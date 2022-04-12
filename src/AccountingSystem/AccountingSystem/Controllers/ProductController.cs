@@ -52,10 +52,6 @@ namespace AccountingSystem.Controllers
             {
                 return Problem();
             }
-            catch
-            {
-                return Conflict();
-            }
         }
 
         /// <summary>Add Product To DataBase</summary>
@@ -90,10 +86,6 @@ namespace AccountingSystem.Controllers
             {
                 return Problem();
             }
-            catch
-            {
-                return Conflict();
-            }
         }
 
         /// <summary>Delete Product From DataBase</summary>
@@ -112,10 +104,6 @@ namespace AccountingSystem.Controllers
             catch (TypeInitializationException)
             {
                 return Problem();
-            }
-            catch
-            {
-                return Conflict();
             }
         }
     }

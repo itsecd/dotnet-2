@@ -87,10 +87,6 @@ namespace AccountingSystem.Controllers
             {
                 return Problem();
             }
-            catch
-            {
-                return Conflict();
-            }
         }
 
         /// <summary>Delete Customer From DataBase</summary>
@@ -109,10 +105,6 @@ namespace AccountingSystem.Controllers
             catch (TypeInitializationException)
             {
                 return Problem();
-            }
-            catch
-            {
-                return Conflict();
             }
         }
     }

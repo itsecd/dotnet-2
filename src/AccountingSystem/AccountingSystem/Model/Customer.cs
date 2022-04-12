@@ -15,9 +15,5 @@ namespace AccountingSystem.Model
         /// <summary>Field Including Customer Address</summary>
         public virtual string Address { get; set; }
 
-        public static implicit operator Customer(HttpResponseMessage v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

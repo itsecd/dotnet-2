@@ -11,7 +11,7 @@ namespace AccountingSystem.Connection
 
         private static ISessionFactory CreateSessionFactory()
         {
-            Configuration cfg = NHibernateSession.RecoverConfiguration();
+            Configuration cfg = RecoverConfiguration();
             return cfg.BuildSessionFactory();
         }
 

@@ -117,10 +117,6 @@ namespace AccountingSystem.Controllers
             {
                 return Problem();
             }
-            catch
-            {
-                return Conflict();
-            }
         }
 
         /// <summary>Change Order Status</summary>
@@ -139,10 +135,6 @@ namespace AccountingSystem.Controllers
             catch (TypeInitializationException)
             {
                 return Problem();
-            }
-            catch
-            {
-                return Conflict();
             }
 
         }
@@ -163,10 +155,6 @@ namespace AccountingSystem.Controllers
             catch (TypeInitializationException)
             {
                 return Problem();
-            }
-            catch
-            {
-                return Conflict();
             }
         }
     }
