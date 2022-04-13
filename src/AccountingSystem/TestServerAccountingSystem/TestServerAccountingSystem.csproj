@@ -24,4 +24,10 @@
     <ProjectReference Include="..\AccountingSystem\AccountingSystem.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="hibernate.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
