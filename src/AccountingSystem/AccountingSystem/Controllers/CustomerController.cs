@@ -83,7 +83,7 @@ namespace AccountingSystem.Controllers
             {
                 return NotFound();
             }
-            catch (TypeInitializationException)
+            catch
             {
                 return Problem();
             }
@@ -102,7 +102,7 @@ namespace AccountingSystem.Controllers
             {
                 return NotFound();
             }
-            catch (TypeInitializationException)
+            catch
             {
                 return Problem();
             }

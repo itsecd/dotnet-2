@@ -5,15 +5,7 @@ using Xunit;
 
 namespace TestServerAccountingSystem
 {
-    public class CustomerRepositoryFixture
-    {
-        public CustomerRepositoryFixture()
-        {
-            NHibernateSession.GenerateSchema();
-        }
-    }
-
-    public class CustomerRepositoryTests : IClassFixture<CustomerRepositoryFixture>
+    public class CustomerRepositoryTests : IClassFixture<RepositoryFixture>
     {
     
         [Fact]

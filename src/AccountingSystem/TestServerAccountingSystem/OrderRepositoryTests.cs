@@ -7,14 +7,7 @@ using Xunit;
 
 namespace TestServerAccountingSystem
 {
-    public class OrderRepositoryFixture
-    {
-        public OrderRepositoryFixture()
-        {
-            NHibernateSession.GenerateSchema();
-        }
-    }
-    public class OrderRepositoryTests : IClassFixture<OrderRepositoryFixture>
+    public class OrderRepositoryTests : IClassFixture<RepositoryFixture>
     {
         [Fact]
         public void AddOrder()
