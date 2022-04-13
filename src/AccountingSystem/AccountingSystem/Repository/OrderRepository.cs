@@ -106,6 +106,97 @@ namespace AccountingSystem.Repository
             return id;
         }
 
+        public IList<Product> GetProducts(int id)
+        {
+            Order order = NHibernateSession.OpenSession().Get<Order>(id);
+            if (order == null)
+            {
+                throw new NotFoundInDatabaseException();
+            }
+            return order.Products;
+        }
+
+        public Product GetProduct(int id, int productId)
+        {
+            Order order = NHibernateSession.OpenSession().Get<Order>(id);
+            if (order == null)
+            {
+                throw new NotFoundInDatabaseException();
+            }
+            foreach(Product product in order.Products)
+            {
+                if(product.ProductId == productId)
+                {
+                    return product;
+                }
+            }
+            throw new NotFoundInDatabaseException();
+        }
+
+        public int AddProduct(Product product, int id)
+        {
+            ISession session = NHibernateSession.OpenSession();
+            Order order = session.Get<Order>(id);
+            using (session.BeginTransaction())
+            {
+                order.Products.Add(product);
+                session.Save(order);
+                session.GetCurrentTransaction().Commit();
+            }
+            return order.OrderId;
+        }
+
+        public int ChangeProduct(int id, Product newProduct, int productId)
+        {
+            ISession session = NHibernateSession.OpenSession();
+            Order order = session.Get<Order>(id);
+            if (order == null)
+            {
+                throw new NotFoundInDatabaseException();
+            }
+            foreach (Product product in order.Products)
+            {
+                if (product.ProductId == productId)
+                {
+                    product.Name = newProduct.Name;
+                    product.Price = newProduct.Price;
+                    product.Date = newProduct.Date;
+                    using (session.BeginTransaction())
+                    {
+                        session.Save(order);
+                        session.GetCurrentTransaction().Commit();
+                    }
+                    return order.OrderId;
+                }
+            }
+            throw new NotFoundInDatabaseException();
+
+        }
+
+        public int RemoveProduct(int id, int productId)
+        {
+                        ISession session = NHibernateSession.OpenSession();
+            Order order = session.Get<Order>(id);
+            if (order == null)
+            {
+                throw new NotFoundInDatabaseException();
+            }
+            foreach (Product product in order.Products)
+            {
+                if (product.ProductId == productId)
+                {
+                    using (session.BeginTransaction())
+                    {
+                        order.Products.Remove(product);
+                        session.Save(order);
+                        session.GetCurrentTransaction().Commit();
+                    }
+                    return order.OrderId;
+                }
+            }
+            throw new NotFoundInDatabaseException();
+        }
+
         private double CalculationPrice(Order order)
         {
             return order.Products.Sum(f => f.Price);

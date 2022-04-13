@@ -1,11 +1,21 @@
-﻿using AccountingSystem.Model;
+﻿using AccountingSystem.Connection;
+using AccountingSystem.Model;
 using AccountingSystem.Repository;
 using Xunit;
 
 namespace TestServerAccountingSystem
 {
-    public class CustomerRepositoryTests
+    public class CustomerRepositoryFixture
     {
+        public CustomerRepositoryFixture()
+        {
+            NHibernateSession.GenerateSchema();
+        }
+    }
+
+    public class CustomerRepositoryTests : IClassFixture<CustomerRepositoryFixture>
+    {
+    
         [Fact]
         public void AddCustomer()
         {

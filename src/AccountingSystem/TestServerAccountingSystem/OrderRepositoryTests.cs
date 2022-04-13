@@ -1,4 +1,5 @@
-﻿using AccountingSystem.Model;
+﻿using AccountingSystem.Connection;
+using AccountingSystem.Model;
 using AccountingSystem.Repository;
 using System;
 using System.Collections.Generic;
@@ -6,8 +7,14 @@ using Xunit;
 
 namespace TestServerAccountingSystem
 {
-
-    public class OrderRepositoryTests
+    public class OrderRepositoryFixture
+    {
+        public OrderRepositoryFixture()
+        {
+            NHibernateSession.GenerateSchema();
+        }
+    }
+    public class OrderRepositoryTests : IClassFixture<OrderRepositoryFixture>
     {
         [Fact]
         public void AddOrder()
@@ -49,6 +56,63 @@ namespace TestServerAccountingSystem
             int count = repository.GetOrders().Count;
             Assert.Equal(64, repository.RemoveOrder(64));
             Assert.Equal(count - 1, repository.GetOrders().Count);
+        }
+
+        [Fact]
+        public void AddProduct()
+        {
+            Product product = new Product
+            {
+                ProductId = 57,
+                Name = "IPhone",
+                Price = 7000,
+                Date = System.DateTime.Now,
+
+            };
+            OrderRepository repository = new();
+            repository.AddOrder(CreateOrder(67));
+            int count = repository.GetProducts(67).Count;
+            Assert.Equal(67, repository.AddProduct(product, 67));
+            Assert.Equal(count + 1, repository.GetProducts(67).Count);
+            repository.RemoveOrder(67);
+        }
+
+        [Fact]
+        public void ChangeProduct()
+        {
+            Product product = new Product
+            {
+                ProductId = 36,
+                Name = "IPhone",
+                Price = 7000,
+                Date = System.DateTime.Now,
+
+            };
+            OrderRepository repository = new();
+            repository.AddOrder(CreateOrder(75));
+            repository.AddProduct(product, 75);
+            Assert.Equal(36, repository.ChangeProduct(75, product, 36));
+            repository.RemoveOrder(75);
+        }
+
+        [Fact]
+        public void RemoveProduct()
+        {
+            Product product = new Product
+            {
+                ProductId = 64,
+                Name = "IPhone",
+                Price = 7000,
+                Date = System.DateTime.Now,
+
+            };
+            OrderRepository repository = new();
+            repository.AddOrder(CreateOrder(84));
+            repository.AddProduct(product, 84);
+            int count = repository.GetProducts(84).Count;
+            Assert.Equal(84, repository.RemoveProduct(84, 64));
+            Assert.Equal(count - 1, repository.GetProducts(84).Count);
+
         }
 
         private Order CreateOrder(int id)

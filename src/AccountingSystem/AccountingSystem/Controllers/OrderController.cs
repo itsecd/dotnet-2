@@ -157,5 +157,94 @@ namespace AccountingSystem.Controllers
                 return Problem();
             }
         }
+
+        /// <summary>Get All Product From Order</summary>
+        /// <returns>All Products</returns>
+        [HttpGet("{id:int}/products")]
+        public ActionResult<IList<Product>> GetProducts(int id)
+        {
+            try
+            {
+                return _repository.GetProducts(id).ToList();
+            }
+            catch
+            {
+                return Problem();
+            }
+        }
+
+        /// <summary>Get Product By ID From Order</summary>
+        /// <returns>Product</returns>
+        [HttpGet("{id:int}/products/{productId:int}")]
+        public ActionResult<Product> GetProduct(int id, int productId)
+        {
+            try
+            {
+                return _repository.GetProduct(id, productId);
+            }
+            catch (NotFoundInDatabaseException)
+            {
+                return NotFound();
+            }
+            catch (TypeInitializationException)
+            {
+                return Problem();
+            }
+        }
+
+        /// <summary>Add Product To Order</summary>
+        /// <returns>Product ID</returns>
+        [HttpPost("{id:int}/product")]
+        public ActionResult<int> PostProduct([FromBody] Product product, int id)
+        {
+            try
+            {
+                return _repository.AddProduct(product, id);
+            }
+            catch
+            {
+                return Problem();
+            }
+        }
+
+        /// <summary>Change Product In Order</summary>
+        /// <returns>Product ID</returns>
+        [HttpPut("{id:int}/products/{productId:int}")]
+        public ActionResult<int> PutProduct(int id, [FromBody] Product product, int productId)
+        {
+            try
+            {
+                return _repository.ChangeProduct(id, product, productId);
+            }
+            catch (NotFoundInDatabaseException)
+            {
+                return NotFound();
+            }
+            catch (TypeInitializationException)
+            {
+                return Problem();
+            }
+        }
+
+        /// <summary>Delete Product From Order</summary>
+        /// <returns>Product ID</returns>
+        [HttpDelete("{id:int}/products/{productId:int}")]
+        public ActionResult<int> DeleteProduct(int id, int productId)
+        {
+            try
+            {
+                return _repository.RemoveProduct(id, productId);
+            }
+            catch (NotFoundInDatabaseException)
+            {
+                return NotFound();
+            }
+            catch (TypeInitializationException)
+            {
+                return Problem();
+            }
+        }
+
+
     }
 }

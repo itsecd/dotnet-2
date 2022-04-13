@@ -13,5 +13,10 @@ namespace AccountingSystem.Repository
         int PatchStatus(int id, Order order);
         int AddOrder(Order customer);
         int RemoveOrder(int id);
+        IList<Product> GetProducts(int id);
+        Product GetProduct(int id, int productId);
+        int ChangeProduct(int id, Product product, int productId);
+        int AddProduct(Product product, int id);
+        int RemoveProduct(int id, int productId);
     }
 }
