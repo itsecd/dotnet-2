@@ -22,21 +22,28 @@
                 <td colspan="1">
                     <a href="start-customer.html"><button>Customer Table</button></a>
                 </td>
+                <td colspan="1">
+                    <a href="start-product.html"><button>Product Table</button></a>
+                </td>
                 <tr>
-                    <td colspan="6" >
+                    <td colspan="5">
                         <div id="changeDiv" style="display: none">
                             <h2>Change Order</h2>
                             <p>Order id:</p>
-                            <select id = "updateOrderChoose" multiple></select>
+                            <select id="updateOrderChoose"></select>
                             <p>
-                                <p>Customer:</p>
-                                <select id = "updateCustomerChoose" multiple></select>
+                            <p>Customer:</p>
+                            <select id="updateCustomerChoose"></select>
                             <p>
-                                <p>Date:</p>
-                                <input type="date" id='updateDate'/>
+                            <p>Status:</p>
+                            <input type="number" id='updateStatus' />
                             <p>
-                                <p>Price:</p>
-                                <input type="number" id='updatePrice'/>
+                            <p>Date:</p>
+                            <input type="date" id='updateDate' />
+                            <p>
+                            <p>Products:</p>
+                            <select id="updateProductsChoose" multiple></select>
+                            <p>
                             <p>
                                 <button onclick="changeOrder()">Update Item</button>
                             </p>
@@ -47,29 +54,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6" >
+                    <td colspan="5">
                         <div colspan="4" id="deleteDiv" style="display: none">
                             <h2>Delete Order</h2>
                             <p>Order id:</p>
-                            <select id = "deleteChoose" multiple></select>
+                            <select id="deleteChoose"></select>
                             <p>
                                 <button onclick="deleteOrder()">Delete Item</button>
                             </p>
                             <p>
                                 <button onclick="closeDeletePanel()">Close Panel</button>
                             </p>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6" >
-                        <div id="openDiv" style="display: none">
-                            <h2>Open Order XML</h2>
-                            <input type="file" id="openOrderFile" multiple>
-                            <p>
-                                <button onclick="openOrderFile()">Open File</button>
-                            <p>
-                                <button onclick="closeOpenPanel()">Close Panel</button>
                         </div>
                     </td>
                 </tr>

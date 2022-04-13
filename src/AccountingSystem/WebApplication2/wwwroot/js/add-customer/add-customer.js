@@ -6,10 +6,7 @@ function addCustomer() {
     };
     let itemToInsertJson = JSON.stringify(itemToInsert);
     let xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "api/Customer/");
-    xhttp.onload = function (){
-        document.location='start-customer.html';
-    }
+    xhttp.open("POST", "api/Customers/");
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send(itemToInsertJson);
 }

@@ -4,8 +4,8 @@ function openChangePanel() {
 
 function closeChangePanel() {
     document.getElementById("updateName").value = "";
-    document.getElementById("updatePhone").value = "";
-    document.getElementById("updateAddress").value = "";
+    document.getElementById("updatePrice").value = "";
+    document.getElementById("updateDate").value = "";
     document.getElementById("changeDiv").style.display = "none";
 }
 

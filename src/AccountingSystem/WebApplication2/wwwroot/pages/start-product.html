@@ -5,57 +5,60 @@
     <title>Information System</title>
 </head>
     <body>
-    <script src="../js/start-customer/start-customer.js"></script>
-    <script src="../js/start-customer/panels.js"></script>
-    <link rel = "stylesheet" href="CSS/style.css">
+    <script src="../js/start-product/start-customer.js"></script>
+    <script src="../js/start-product/panels.js"></script>
+    <link rel = "stylesheet" href="../css/style.css">
         <div class="start-page">
             <table>
                 <td colspan="1">
-                    <a href="add-customer.html"><button>Add Customer</button></a>
+                    <a href="add-product.html"><button>Add Product</button></a>
                 </td>
                 <td colspan="1">
-                    <button onclick="openChangePanel(); getCustomersToChange()">Change Customer</button>
+                    <button onclick="openChangePanel(); getProductsToChange()">Change Product</button>
                 </td>
                 <td colspan="1">
-                    <button onclick="openDeletePanel(); getCustomersToDelete();">Delete Customer</button>
+                    <button onclick="openDeletePanel(); getProductsToDelete();">Delete Product</button>
+                </td>
+                <td colspan="1">
+                    <a href="start-order.html"><button>Order Table</button></a>
                 </td>
                 <tr>
-                    <td colspan="6" >
+                    <td colspan="4">
                         <div id="changeDiv" style="display: none">
-                            <h2>Change Customer</h2>
-                            <p>Customer id:</p>
-                            <select id = "updateCustomerChoose" multiple></select>
+                            <h2>Change Product</h2>
+                            <p>Product id:</p>
+                            <select id="updateProductChoose" multiple></select>
                             <p>
                             <p>Name:</p>
-                            <input id="updateName" type="text" maxlength = 40/>
+                            <input id="updateName" type="text" maxlength=40 />
                             <p>
-                            <p>Telephone:</p>
-                            <input id="updatePhone" type="text" maxlength = 40/>
+                            <p>Price:</p>
+                            <input id="updatePrice" type="number" maxlength=40 />
                             <p>
-                            <p>Address:</p>
-                            <input id="updateAddress" type="text" maxlength = 40/>
+                            <p>Date:</p>
+                            <input id="updateDate" type="date" maxlength=40 />
                             <p>
-                                <button onclick="changeCustomer()">Update Item</button>
+                                <button onclick="changeProduct()">Update Item</button>
                             <p>
                                 <button onclick="closeChangePanel()">Close Panel</button>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6" >
+                    <td colspan="4">
                         <div id="deleteDiv" style="display: none">
-                            <h2>Delete Customer</h2>
-                            <p>Customer id:</p>
-                            <select id = "deleteCustomerChoose" multiple></select>
+                            <h2>Delete Product</h2>
+                            <p>Product id:</p>
+                            <select id="deleteProductChoose" multiple></select>
                             <p>
-                                <button onclick="deleteCustomer()">Delete Item</button>
+                                <button onclick="deleteProduct()">Delete Item</button>
                             <p>
                                 <button onclick="closeDeletePanel()">Close Panel</button>
                         </div>
                     </td>
                 </tr>
             </table>
-            <table id="customerTable"></table>
+            <table id="productTable"></table>
         </div>
     </body>
 </html>

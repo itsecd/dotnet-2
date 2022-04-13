@@ -1,26 +1,44 @@
 window.onload = function() {
     getCustomers();
+    getProducts();
 }
 
 function getCustomers() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "rest/customers/");
+    xhttp.open("GET", "api/Customer");
     xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         let rows = '';
         for (let i = 0; i < customers.length; i++) {
             rows +=
                 "<option value = " + customers[i].customerID + ">" +
-                customers[i].customerID + "</option>";
+                customers[i].Name + "</option>";
         }
         document.getElementById("customerChoose").innerHTML = rows;
     }
     xhttp.send();
 }
 
+function getProducts() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "api/Product");
+    xhttp.onload = function () {
+        var products = JSON.parse(xhttp.responseText);
+        let rows = '';
+        for (let i = 0; i < products.length; i++) {
+            if (products[i].)
+            rows +=
+                "<option value = " + products[i].ProductId + ">" +
+                products[i].Name + "</option>";
+        }
+        document.getElementById("productChoose").innerHTML = rows;
+    }
+    xhttp.send();
+}
+
 function addOrder() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "rest/customers/");
+    xhttp.open("GET", "api/Customer");
     xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         for (let i = 0; i < customers.length; i++) {
@@ -38,9 +56,6 @@ function addOrder() {
                 };
                 let itemToInsertJson = JSON.stringify(itemToInsert);
                 let xhttpPost = new XMLHttpRequest();
-                xhttpPost.onload = function (){
-                    document.location='start-order.html';
-                }
                 xhttpPost.open("POST", "rest/orders/");
                 xhttpPost.setRequestHeader('Content-Type', 'application/json');
                 xhttpPost.send(itemToInsertJson);

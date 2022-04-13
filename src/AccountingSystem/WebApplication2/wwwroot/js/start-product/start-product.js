@@ -4,86 +4,86 @@ window.onload = function() {
 
 function selectAllItems() {
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "api/Customer");
+	xhttp.open("GET", "api/Product");
 	xhttp.onload = function() {
-        var customers = JSON.parse(xhttp.responseText);
+        var products = JSON.parse(xhttp.responseText);
         var rows = "<tr>" +
             "<td>" + 'Id' + "</td>" +
             "<td>" + 'Name' + "</td>" +
-            "<td>" + 'Phone' + "</td>" +
-            "<td>" + 'Address' + "</td>" +
+            "<td>" + 'Price' + "</td>" +
+            "<td>" + 'Date' + "</td>" +
             "</tr>";
-        for (i = 0; i < customers.length; i++) {
+        for (i = 0; i < products.length; i++) {
             rows +=
                 "<tr>" +
-                "<td>" + customers[i].CustomerID + "</td>" +
-                "<td>" + customers[i].Name + "</td>" +
-                "<td>" + customers[i].Phone + "</td>" +
-                "<td>" + customers[i].Address + "</td>" +
+                "<td>" + products[i].ProductId + "</td>" +
+                "<td>" + products[i].Name + "</td>" +
+                "<td>" + products[i].Price + "</td>" +
+                "<td>" + products[i].Date + "</td>" +
                 "</tr>";
         }
-        document.getElementById("customerTable").innerHTML = rows;
+        document.getElementById("productTable").innerHTML = rows;
     }
 	xhttp.send();
 }
 
-function changeCustomer() {
-    var id = document.getElementById('updateCustomerChoose').value
+function changeProduct() {
+    var id = document.getElementById('updateProductChoose').value
     var itemToUpdate = {
         name: document.getElementById('updateName').value,
-        phoneNumber: document.getElementById('updatePhone').value,
-        address: document.getElementById('updateAddress').value
+        price: document.getElementById('updatePrice').value,
+        date: document.getElementById('updateDate').value
 	};
     var itemToUpdateJson = JSON.stringify(itemToUpdate);
     var xhttp = new XMLHttpRequest();
-    xhttp.open('PUT', 'api/Customer' + id);
+    xhttp.open('PUT', 'api/Product/' + id);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onload = function() {
         selectAllItems();
-        getCustomersToChange();
+        getProductsToChange();
     }
     xhttp.send(itemToUpdateJson);
 }
 
-function deleteCustomer() {
-    var id = document.getElementById('deleteCustomerChoose').value;
+function deleteProduct() {
+    var id = document.getElementById('deleteProductChoose').value;
     var xhttp = new XMLHttpRequest();
-    xhttp.open('DELETE', 'api/Customer' + id);
+    xhttp.open('DELETE', 'api/Product/' + id);
     xhttp.onload = function() {
         selectAllItems();
-        getCustomersToDelete();
+        getProductsToDelete();
     }
     xhttp.send();
 }
 
-function getCustomersToChange() {
+function getProductsToChange() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "api/Customer");
+    xhttp.open("GET", "api/Product");
     xhttp.onload = function() {
-        var customers = JSON.parse(xhttp.responseText);
+        var products = JSON.parse(xhttp.responseText);
         let rows = '';
-        for (let i = 0; i < customers.length; i++) {
+        for (let i = 0; i < products.length; i++) {
             rows +=
-                "<option value = " + customers[i].customerID + ">" +
-                customers[i].name + "</option>";
+                "<option value = " + customers[i].ProductId + ">" +
+                products[i].Name + "</option>";
         }
-        document.getElementById("updateCustomerChoose").innerHTML = rows;
+        document.getElementById("updateProductChoose").innerHTML = rows;
     }
     xhttp.send();
 }
 
-function getCustomersToDelete() {
+function getProductsToDelete() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "api/Customer");
+    xhttp.open("GET", "api/Product");
     xhttp.onload = function() {
-        var customers = JSON.parse(xhttp.responseText);
+        var products = JSON.parse(xhttp.responseText);
         let rows = '';
-        for (let i = 0; i < customers.length; i++) {
+        for (let i = 0; i < products.length; i++) {
             rows +=
-                "<option value = " + customers[i].customerID + ">" +
-                customers[i].name + "</option>";
+                "<option value = " + products[i].customerID + ">" +
+                products[i].name + "</option>";
         }
-        document.getElementById("deleteCustomerChoose").innerHTML = rows;
+        document.getElementById("deleteProductChoose").innerHTML = rows;
     }
     xhttp.send();
 }

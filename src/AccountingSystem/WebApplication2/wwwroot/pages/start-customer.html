@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Information System</title>
+    <title>Customer</title>
 </head>
     <body>
     <script src="../js/start-customer/start-customer.js"></script>
     <script src="../js/start-customer/panels.js"></script>
-    <link rel = "stylesheet" href="CSS/style.css">
+    <link rel = "stylesheet" href="../css/style.css">
         <div class="start-page">
             <table>
                 <td colspan="1">
@@ -19,21 +19,24 @@
                 <td colspan="1">
                     <button onclick="openDeletePanel(); getCustomersToDelete();">Delete Customer</button>
                 </td>
+                <td colspan="1">
+                    <a href="start-order.html"><button>Order Table</button></a>
+                </td>
                 <tr>
-                    <td colspan="6" >
+                    <td colspan="4">
                         <div id="changeDiv" style="display: none">
                             <h2>Change Customer</h2>
                             <p>Customer id:</p>
-                            <select id = "updateCustomerChoose" multiple></select>
+                            <select id="updateCustomerChoose" multiple></select>
                             <p>
                             <p>Name:</p>
-                            <input id="updateName" type="text" maxlength = 40/>
+                            <input id="updateName" type="text" maxlength=40 />
                             <p>
                             <p>Telephone:</p>
-                            <input id="updatePhone" type="text" maxlength = 40/>
+                            <input id="updatePhone" type="text" maxlength=40 />
                             <p>
                             <p>Address:</p>
-                            <input id="updateAddress" type="text" maxlength = 40/>
+                            <input id="updateAddress" type="text" maxlength=40 />
                             <p>
                                 <button onclick="changeCustomer()">Update Item</button>
                             <p>
@@ -42,11 +45,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6" >
+                    <td colspan="4">
                         <div id="deleteDiv" style="display: none">
                             <h2>Delete Customer</h2>
                             <p>Customer id:</p>
-                            <select id = "deleteCustomerChoose" multiple></select>
+                            <select id="deleteCustomerChoose" multiple></select>
                             <p>
                                 <button onclick="deleteCustomer()">Delete Item</button>
                             <p>
