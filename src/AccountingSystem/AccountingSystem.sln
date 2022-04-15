@@ -7,7 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountingSystem", "Account
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C94D8885-BCF3-4704-9D92-27567E0BE2E3}"
 	ProjectSection(SolutionItems) = preProject
-		SQLScript.txt = SQLScript.txt
+		OracleSQLScript.txt = OracleSQLScript.txt
+		SQLiteScript.txt = SQLiteScript.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestServerAccountingSystem", "TestServerAccountingSystem\TestServerAccountingSystem.csproj", "{BDD8FCC2-8D40-452F-86E8-E68EFD55D12D}"

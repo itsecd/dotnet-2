@@ -5,18 +5,27 @@ using AccountingSystem;
 using Xunit;
 using System;
 using System.Net;
+using System.Text;
+using Xunit.Abstractions;
 
 namespace TestServerAccountingSystem
 {
     public class OrderControllerTests
     {
+        protected readonly ITestOutputHelper Output;
+
+        public OrderControllerTests(ITestOutputHelper tempOutput)
+        {
+            Output = tempOutput;
+        }
+
         [Fact]
         public async Task AddOrder()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""orderId"":44, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":[{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}]}", Encoding.UTF8, "application/json");
             HttpResponseMessage firstResponse = await httpClient.PostAsync("api/Order", content);
             var responseString = await firstResponse.Content.ReadAsStringAsync();
             Assert.Equal("44", responseString);
@@ -31,12 +40,11 @@ namespace TestServerAccountingSystem
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""orderId"":55, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":[{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}]}", Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/Order", content);
             HttpResponseMessage firstResponse = await httpClient.GetAsync("api/Order/55");
             var responseString = await firstResponse.Content.ReadAsStringAsync();
-            Assert.Equal(@"{""orderId"":55, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}", responseString);
+            Assert.Equal(@"{""orderId"":55,""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},""status"":0,""price"":8000,""date"":""2022-03-30T00:00:00"",""products"":[{""productId"":0,""name"":""IPhone"",""price"":8000,""date"":""2022-03-30T00:00:00""}]}", responseString);
             HttpResponseMessage secondResponse = await httpClient.GetAsync("api/Order/66");
             Assert.Equal(HttpStatusCode.NotFound, secondResponse.StatusCode);
             await httpClient.DeleteAsync("api/Order/55");
@@ -49,7 +57,7 @@ namespace TestServerAccountingSystem
             HttpClient httpClient = webHost.CreateClient();
             HttpResponseMessage response = await httpClient.GetAsync("api/Order/all-price");
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("500", responseString);
+            Assert.Equal("32000", responseString);
 
         }
 
@@ -59,9 +67,9 @@ namespace TestServerAccountingSystem
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             await httpClient.PostAsync("api/Order", new StringContent(@"{""orderId"":77, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}"));
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":[{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}]}", Encoding.UTF8, "application/json"));
             var content = new StringContent(@"{""orderId"":77, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 4,""price"": 20000,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":[{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}]}", Encoding.UTF8, "application/json");
             HttpResponseMessage firstResponse = await httpClient.PutAsync("api/Order/77", content);
             var responseString = await firstResponse.Content.ReadAsStringAsync();
             Assert.Equal("77", responseString);
@@ -76,10 +84,9 @@ namespace TestServerAccountingSystem
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             await httpClient.PostAsync("api/Order", new StringContent(@"{""orderId"":99, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}"));
-            var content = new StringContent(@"{""orderId"":99, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 9,""price"": 20000,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
-            HttpResponseMessage firstResponse = await httpClient.PatchAsync("api/Order/status-99", content);
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":[{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}]}", Encoding.UTF8, "application/json"));
+            var content = new StringContent(@"{""status"": 9}", Encoding.UTF8, "application/json");
+            HttpResponseMessage firstResponse = await httpClient.PatchAsync("api/Order/99", content);
             var responseString = await firstResponse.Content.ReadAsStringAsync();
             Assert.Equal("99", responseString);
             HttpResponseMessage secondResponse = await httpClient.PatchAsync("api/Order/status-110", content);
@@ -93,7 +100,7 @@ namespace TestServerAccountingSystem
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             await httpClient.PostAsync("api/Order", new StringContent(@"{""orderId"":120, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}"));
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":[{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}]}", Encoding.UTF8, "application/json"));
             HttpResponseMessage firstResponse = await httpClient.DeleteAsync("api/Order/120");
             var responseString = await firstResponse.Content.ReadAsStringAsync();
             Assert.Equal("120", responseString);
@@ -107,12 +114,12 @@ namespace TestServerAccountingSystem
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""orderId"":140, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":[{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}]}", Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/Order", content);
-            var product = new StringContent(@"{""productId"":44,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
+            var product = new StringContent(@"{""productId"":44,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}", Encoding.UTF8, "application/json");
             HttpResponseMessage firstResponse = await httpClient.PostAsync("api/Order/140/product", product);
             var responseString = await firstResponse.Content.ReadAsStringAsync();
-            Assert.Equal("120", responseString);
+            Assert.Equal("140", responseString);
             HttpResponseMessage secondResponse = await httpClient.PostAsync("api/Order/150/product", product);
             Assert.Equal(HttpStatusCode.InternalServerError, secondResponse.StatusCode);
             await httpClient.DeleteAsync("api/Order/140");
@@ -124,14 +131,14 @@ namespace TestServerAccountingSystem
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""orderId"":160, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":[{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}]}", Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/Order", content);
-            var product = new StringContent(@"{""productId"":55,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
+            var product = new StringContent(@"{""productId"":55,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}", Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/Order/160/product", product);
-            HttpResponseMessage firstResponse = await httpClient.GetAsync("api/Order/160/product/55");
+            HttpResponseMessage firstResponse = await httpClient.GetAsync("api/Order/160/products/55");
             var responseString = await firstResponse.Content.ReadAsStringAsync();
-            Assert.Equal(@"{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}", responseString);
-            HttpResponseMessage secondResponse = await httpClient.GetAsync("api/Product/66");
+            Assert.Equal(@"{""productId"":55,""name"":""IPhone"",""price"":8000,""date"":""2022-03-30T00:00:00""}", responseString);
+            HttpResponseMessage secondResponse = await httpClient.GetAsync("api/Order/160/products/66");
             Assert.Equal(HttpStatusCode.NotFound, secondResponse.StatusCode);
             await httpClient.DeleteAsync("api/Order/160");
         }
@@ -142,14 +149,14 @@ namespace TestServerAccountingSystem
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""orderId"":170, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":[{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}]}", Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/Order", content);
-            await httpClient.PostAsync("api/Order/170/product", new StringContent(@"{""productId"":77,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}"));
-            var product = new StringContent(@"{""productId"":0,""name"":""Xiaomi"",""price"":""2000"",""date"":""2022-03-31""}");
-            HttpResponseMessage firstResponse = await httpClient.PutAsync("api/Order/170/product/77", product);
+            await httpClient.PostAsync("api/Order/170/product", new StringContent(@"{""productId"":77,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}", Encoding.UTF8, "application/json"));
+            var product = new StringContent(@"{""productId"":0,""name"":""Xiaomi"",""price"":""2000"",""date"":""2022-03-31""}", Encoding.UTF8, "application/json");
+            HttpResponseMessage firstResponse = await httpClient.PutAsync("api/Order/170/products/77", product);
             var responseString = await firstResponse.Content.ReadAsStringAsync();
-            Assert.Equal("77", responseString);
-            HttpResponseMessage secondResponse = await httpClient.PutAsync("api/Order/170/product/88", product);
+            Assert.Equal("170", responseString);
+            HttpResponseMessage secondResponse = await httpClient.PutAsync("api/Order/170/products/88", product);
             Assert.Equal(HttpStatusCode.NotFound, secondResponse.StatusCode);
             await httpClient.DeleteAsync("api/Order/170");
         }
@@ -160,14 +167,14 @@ namespace TestServerAccountingSystem
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
             var content = new StringContent(@"{""orderId"":180, ""customer"":{""customerId"":0,""name"":""ANTON"",""phone"":""88005553535"",""address"":""SAMARA""},
-                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}}");
+                            ""status"": 0,""price"": 400,""date"":""2022-03-30"", ""products"":[{""productId"":0,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}]}", Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/Order", content);
-            var product = new StringContent(@"{""productId"":99,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}");
+            var product = new StringContent(@"{""productId"":99,""name"":""IPhone"",""price"":""8000"",""date"":""2022-03-30""}", Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/Order/180/product", product);
-            HttpResponseMessage firstResponse = await httpClient.DeleteAsync("api/Order/180/product/99");
+            HttpResponseMessage firstResponse = await httpClient.DeleteAsync("api/Order/180/products/99");
             var responseString = await firstResponse.Content.ReadAsStringAsync();
-            Assert.Equal("99", responseString);
-            HttpResponseMessage secondResponse = await httpClient.DeleteAsync("api/Order/180/product/110");
+            Assert.Equal("180", responseString);
+            HttpResponseMessage secondResponse = await httpClient.DeleteAsync("api/Order/180/products/110");
             Assert.Equal(HttpStatusCode.NotFound, secondResponse.StatusCode);
             await httpClient.DeleteAsync("api/Order/180");
         }

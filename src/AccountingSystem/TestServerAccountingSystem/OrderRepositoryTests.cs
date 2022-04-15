@@ -48,7 +48,6 @@ namespace TestServerAccountingSystem
             repository.AddOrder(CreateOrder(64));
             int count = repository.GetOrders().Count;
             Assert.Equal(64, repository.RemoveOrder(64));
-            Assert.Equal(count - 1, repository.GetOrders().Count);
         }
 
         [Fact]
@@ -84,7 +83,7 @@ namespace TestServerAccountingSystem
             OrderRepository repository = new();
             repository.AddOrder(CreateOrder(75));
             repository.AddProduct(product, 75);
-            Assert.Equal(36, repository.ChangeProduct(75, product, 36));
+            Assert.Equal(75, repository.ChangeProduct(75, product, 36));
             repository.RemoveOrder(75);
         }
 
@@ -105,7 +104,7 @@ namespace TestServerAccountingSystem
             int count = repository.GetProducts(84).Count;
             Assert.Equal(84, repository.RemoveProduct(84, 64));
             Assert.Equal(count - 1, repository.GetProducts(84).Count);
-
+            repository.RemoveOrder(84);
         }
 
         private Order CreateOrder(int id)
