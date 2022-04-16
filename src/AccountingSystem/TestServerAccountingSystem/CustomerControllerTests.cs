@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net.Http;
-using System.Threading.Tasks;
-using AccountingSystem;
-using Xunit;
+﻿using AccountingSystem;
+using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace TestServerAccountingSystem
 {
@@ -27,7 +27,7 @@ namespace TestServerAccountingSystem
         }
 
         [Fact]
-        public async Task GetCustomerWithID()
+        public async Task GetCustomerWithId()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();

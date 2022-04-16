@@ -2,7 +2,6 @@
 using AccountingSystem.Model;
 using AccountingSystem.Repository;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -94,7 +93,7 @@ namespace AccountingSystem.Controllers
         [HttpDelete("{id:int}")]
         public ActionResult<int> Delete(int id)
         {
-            try 
+            try
             {
                 return _repository.RemoveCustomer(id);
             }

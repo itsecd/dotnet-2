@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net.Http;
-
-namespace AccountingSystem.Model
+﻿namespace AccountingSystem.Model
 {
     /// <summary>Class to save info about customer</summary>
     public class Customer

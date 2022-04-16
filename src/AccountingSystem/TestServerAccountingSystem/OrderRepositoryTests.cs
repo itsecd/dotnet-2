@@ -1,5 +1,4 @@
-﻿using AccountingSystem.Connection;
-using AccountingSystem.Model;
+﻿using AccountingSystem.Model;
 using AccountingSystem.Repository;
 using System;
 using System.Collections.Generic;
@@ -46,7 +45,6 @@ namespace TestServerAccountingSystem
         {
             OrderRepository repository = new();
             repository.AddOrder(CreateOrder(64));
-            int count = repository.GetOrders().Count;
             Assert.Equal(64, repository.RemoveOrder(64));
         }
 

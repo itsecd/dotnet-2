@@ -1,5 +1,4 @@
-﻿using AccountingSystem.Connection;
-using AccountingSystem.Model;
+﻿using AccountingSystem.Model;
 using AccountingSystem.Repository;
 using Xunit;
 
@@ -7,7 +6,7 @@ namespace TestServerAccountingSystem
 {
     public class CustomerRepositoryTests : IClassFixture<RepositoryFixture>
     {
-    
+
         [Fact]
         public void AddCustomer()
         {
@@ -53,7 +52,6 @@ namespace TestServerAccountingSystem
             };
             CustomerRepository repository = new();
             repository.AddCustomer(customer);
-            int count = repository.GetCustomers().Count;
             Assert.Equal(64, repository.RemoveCustomer(64));
 
         }

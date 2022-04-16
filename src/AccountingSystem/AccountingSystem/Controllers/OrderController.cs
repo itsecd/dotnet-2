@@ -2,7 +2,6 @@
 using AccountingSystem.Model;
 using AccountingSystem.Repository;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -59,8 +58,8 @@ namespace AccountingSystem.Controllers
         [HttpGet("all-price")]
         public ActionResult<double> GetAllPrice()
         {
-            try 
-            { 
+            try
+            {
                 return _repository.GetAllPrice();
             }
             catch
@@ -194,7 +193,7 @@ namespace AccountingSystem.Controllers
 
         /// <summary>Add Product To Order</summary>
         /// <returns>Product ID</returns>
-        [HttpPost("{id:int}/product")]
+        [HttpPost("{id:int}/products")]
         public ActionResult<int> PostProduct([FromBody] Product product, int id)
         {
             try

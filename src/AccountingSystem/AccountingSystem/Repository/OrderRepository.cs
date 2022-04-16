@@ -2,7 +2,6 @@
 using AccountingSystem.Exeption;
 using AccountingSystem.Model;
 using NHibernate;
-using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -123,9 +122,9 @@ namespace AccountingSystem.Repository
             {
                 throw new NotFoundInDatabaseException();
             }
-            foreach(Product product in order.Products)
+            foreach (Product product in order.Products)
             {
-                if(product.ProductId == productId)
+                if (product.ProductId == productId)
                 {
                     return product;
                 }
@@ -175,7 +174,7 @@ namespace AccountingSystem.Repository
 
         public int RemoveProduct(int id, int productId)
         {
-                        ISession session = NHibernateSession.OpenSession();
+            ISession session = NHibernateSession.OpenSession();
             Order order = session.Get<Order>(id);
             if (order == null)
             {
