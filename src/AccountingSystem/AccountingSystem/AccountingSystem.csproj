@@ -27,6 +27,7 @@
 
   <ItemGroup>
      <InternalsVisibleTo Include="TestServerAccountingSystem" />
+     <InternalsVisibleTo Include="WebApplication2" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

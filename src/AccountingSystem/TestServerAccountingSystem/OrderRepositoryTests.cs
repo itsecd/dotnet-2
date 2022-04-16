@@ -6,7 +6,8 @@ using Xunit;
 
 namespace TestServerAccountingSystem
 {
-    public class OrderRepositoryTests : IClassFixture<RepositoryFixture>
+    [Collection("Accounting System")]
+    public class OrderRepositoryTests
     {
         [Fact]
         public void AddOrder()

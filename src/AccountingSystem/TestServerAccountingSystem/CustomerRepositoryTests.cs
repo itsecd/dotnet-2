@@ -4,7 +4,8 @@ using Xunit;
 
 namespace TestServerAccountingSystem
 {
-    public class CustomerRepositoryTests : IClassFixture<RepositoryFixture>
+    [Collection("Accounting System")]
+    public class CustomerRepositoryTests
     {
 
         [Fact]
@@ -18,7 +19,6 @@ namespace TestServerAccountingSystem
                 Address = "MSK"
             };
             CustomerRepository repository = new();
-            int count = repository.GetCustomers().Count;
             Assert.Equal(57, repository.AddCustomer(customer));
             repository.RemoveCustomer(57);
         }
