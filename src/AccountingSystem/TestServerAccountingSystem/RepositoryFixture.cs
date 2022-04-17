@@ -13,7 +13,7 @@ namespace TestServerAccountingSystem
 
         public void Dispose()
         {
-            File.Delete(@"bin\Debug\net5.0\AccountingSystem.db3");
+            File.Delete(@"AccountingSystem.db3");
         }
     }
 }

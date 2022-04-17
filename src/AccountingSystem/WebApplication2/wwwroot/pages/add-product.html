@@ -10,29 +10,50 @@
     <div name="add-page">
         <table>
             <tr>
+                <td colspan="1">Order:</td>
+                <td colspan="1">
+                    <label>
+                        <select id="orderChoose" onchange="if (this.selectedIndex) selectAllProducts();"></select>
+                    </label>
+                </td>
+            </tr>
+            <tr>
                 <td colspan="1">Name:</td>
-                <td colspan="1"><label>
-                    <input type="text" id='name' maxlength = 38/>
-                </label></td>
+                <td colspan="1">
+                    <label>
+                        <input type="text" id='name' maxlength=38 />
+                    </label>
+                </td>
             </tr>
             <tr>
                 <td colspan="1">Price:</td>
-                <td colspan="1"><label>
-                    <input type="number" id='price' maxlength = 38/>
-                </label></td>
+                <td colspan="1">
+                    <label>
+                        <input type="number" id='price' maxlength=38 />
+                    </label>
+                </td>
             </tr>
             <tr>
                 <td colspan="1">Date:</td>
-                <td colspan="1"><label>
-                    <input type="date" id='date' maxlength = 38/>
-                </label></td>
+                <td colspan="1">
+                    <label>
+                        <input type="date" id='date' maxlength=38 />
+                    </label>
+                </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <a href="start-product.html"><button onclick="addProduct()">Add</button></a>
-</td>
+                    <button onclick="addProduct()">Add</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a href="start-order.html"><button>Order Table</button></a>
+                </td>
             </tr>
         </table>
+
+        <table id="productTable"></table>
     </div>
 </body>
 </html>

@@ -8,6 +8,7 @@ using Xunit;
 
 namespace TestServerAccountingSystem
 {
+    [Collection("Accounting System")]
     public class OrderControllerTests
     {
 

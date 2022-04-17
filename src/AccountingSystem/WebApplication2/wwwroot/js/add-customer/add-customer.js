@@ -1,6 +1,5 @@
 function addCustomer() {
     let itemToInsert = {
-        customerId: document.getElementById('customerId').value,
         name: document.getElementById('name').value,
         phone: document.getElementById('telephone').value,
         address: document.getElementById('address').value

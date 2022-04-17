@@ -3,7 +3,7 @@
 	namespace="AccountingSystem.Model" assembly="AccountingSystem">
   <class name="Product" table="PRODUCTS">
 
-    <id name="ProductId" column="ID"/>
+    <id name="ProductId" column="ID" generator="increment"/>
     
     <property name="Name" column="NAME"  />
     <property name="Price" column="PRICE"  />

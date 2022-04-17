@@ -4,28 +4,41 @@ window.onload = function() {
 
 function selectAllItems() {
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "rest/orders/");
+	xhttp.open("GET", "../api/Order/");
 	xhttp.onload = function() {
         var orders = JSON.parse(xhttp.responseText);
         var rows = "<tr>" +
             "<td>" + 'ID' + "</td>" +
             "<td>" + 'Customer' + "</td>" +
+            "<td>" + 'Price' + "</td>" +
             "<td>" + 'Status' + "</td>" +
             "<td>" + 'Date' + "</td>" +
-            "<td>" + 'Products' + "</td>" +
+            "<td><table><tr>" + 'Products' + "</tr>" +
+            "<tr>" +
+            "<td>" + 'ID' + "</td>" +
+            "<td>" + 'Name' + "</td>" +
+            "<td>" + 'Price' + "</td>" +
+            "<td>" + 'Date' + "</td>"+
+            "</tr></table></td>" +
             "</tr>";
         for (i = 0; i < orders.length; i++) {
             rows +=
                 "<tr>" +
-                "<td>" + orders[i].OrderId + "</td>" +
-                "<td>" + orders[i].Customer.CustomerId + "</td>" +
-                "<td>" + orders[i].Status + "</td>" +
-                "<td>" + orders[i].Date + "</td>";
-            rows += "<td>"
-            for (j = 0; j < orders[i].Products.length; i++) {
-                rows += orders[i].Products.Name + "\n";
+                "<td>" + orders[i].orderId + "</td>" +
+                "<td>" + orders[i].customer.name + "</td>" +
+                "<td>" + orders[i].price + "</td>" +
+                "<td>" + orders[i].status + "</td>" +
+                "<td>" + orders[i].date + "</td>";
+            rows += "<td><table>"
+            for (j = 0; j < orders[i].products.length; j++) {
+                rows +=
+                    "<tr>" +
+                    "<td>" + orders[i].products[j].productId + "</td>" +
+                    "<td>" + orders[i].products[j].name + "</td>" +
+                    "<td>" + orders[i].products[j].price + "</td>" +
+                "<td>" + orders[i].products[j].date + "</td></tr > ";
             }
-            rows += "</td ></tr>";
+            rows += "</table></td></tr>";
         }
         document.getElementById("orderTable").innerHTML = rows;
     }
@@ -69,7 +82,7 @@ function changeOrder() {
 function deleteOrder() {
     var id = document.getElementById('deleteChoose').value;
     var xhttp = new XMLHttpRequest();
-    xhttp.open('DELETE', 'api/Order/' + id);
+    xhttp.open('DELETE', '../api/Order/' + id);
     xhttp.onload = function() {
         selectAllItems();
         getOrdersToDelete();
@@ -77,9 +90,19 @@ function deleteOrder() {
     xhttp.send();
 }
 
-function getCustomersTo() {
+function getAllPrice() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "api/Customer/");
+    xhttp.open('GET', '../api/Order/all-price');
+    xhttp.onload = function () {
+        alert("All Price Orders is " + xhttp.responseText)
+    }
+    xhttp.send();
+}
+
+
+function getCustomersToChange() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "../api/Customer/");
     xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         let rows = '';
@@ -95,14 +118,14 @@ function getCustomersTo() {
 
 function getOrdersToChange() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "rest/orders/");
+    xhttp.open("GET", "../api/Order/");
     xhttp.onload = function() {
         var orders = JSON.parse(xhttp.responseText);
         let rows = '';
         for (let i = 0; i < orders.length; i++) {
             rows +=
-                "<option value = " + orders[i].orderID + ">" +
-                orders[i].orderID + "</option>";
+                "<option value = " + orders[i].orderId + ">" +
+                orders[i].orderId + "</option>";
         }
         document.getElementById("updateOrderChoose").innerHTML = rows;
     }
@@ -111,59 +134,16 @@ function getOrdersToChange() {
 
 function getOrdersToDelete() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "rest/orders/");
+    xhttp.open("GET", "../api/Order/");
     xhttp.onload = function() {
         var orders = JSON.parse(xhttp.responseText);
         let rows = '';
         for (let i = 0; i < orders.length; i++) {
             rows +=
-                "<option value = " + orders[i].orderID + ">" +
-                orders[i].orderID + "</option>";
+                "<option value = " + orders[i].orderId + ">" +
+                orders[i].orderId + "</option>";
         }
         document.getElementById("deleteChoose").innerHTML = rows;
     }
     xhttp.send();
-}
-
-
-function openOrderFile() {
-    var control = document.getElementById("openOrderFile");
-    var file = control.files
-    if(file[0].type == 'text/xml'){
-        let reader = new FileReader();
-        reader.readAsText(file[0]);
-        reader.onload = function() {
-            var xhttp = new XMLHttpRequest();
-            if(confirm("Completely replace the data?")){
-                xhttp.open("POST", "rest/xmlOrder/0");
-            }else{
-                xhttp.open("POST", "rest/xmlOrder/1");
-            }
-            xhttp.onload = function() {
-                if(xhttp.responseText == 1){
-                    selectAllItems();
-                }else {
-                    alert("File is incorrect!");
-                }
-            }
-            xhttp.send(reader.result);
-        };
-        reader.onerror = function() {
-            console.log(reader.error);
-        };
-    }else{
-        alert("File is not XML");
-    }
-}
-
-function xsltOrder() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "rest/xmlOrder/");
-    xhttp.onload = function() {
-        if(xhttp.responseText == 1){
-            window.open("xlst-order.html")
-        }
-    }
-    xhttp.send();
-
 }

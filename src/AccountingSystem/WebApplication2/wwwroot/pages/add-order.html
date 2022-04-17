@@ -5,7 +5,7 @@
     <title>Add Customer</title>
 </head>
 <body>
-    <script src="JS/add-order/add-order.js"></script>
+    <script src="../js/add-order/add-order.js"></script>
     <link rel = "stylesheet" href="../css/style.css">
     <div name="add-page">
         <table>
@@ -34,16 +34,11 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="1">Product:</td>
                 <td colspan="1">
-                    <label>
-                        <select id="productChoose" multiple></select>
-                    </label>
+                    <button onclick=addOrder();>Add Order</button>
                 </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <a href="start-order.html"><button>Add</button></a>
+                <td colspan="1">
+                    <button onclick=addOrderAndProduct();>Add Product To Order</button>
                 </td>
             </tr>
         </table>

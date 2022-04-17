@@ -139,6 +139,7 @@ namespace AccountingSystem.Repository
             using (session.BeginTransaction())
             {
                 order.Products.Add(product);
+                order.Price = CalculationPrice(order);
                 session.Save(order);
                 session.GetCurrentTransaction().Commit();
             }
