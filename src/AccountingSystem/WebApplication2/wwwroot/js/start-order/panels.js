@@ -1,18 +1,27 @@
-function openChangePanel() {
-    document.getElementById("changeDiv").style.display = "block";
+function openChangeOrderPanel() {
+    document.getElementById("changeOrder").style.display = "block";
 }
 
-function closeChangePanel() {
+function closeChangeOrderPanel() {
     document.getElementById("updateDate").value = "";
     document.getElementById("updateStatus").value = "";
-    document.getElementById("changeDiv").style.display = 'none';
+    document.getElementById("changeOrder").style.display = 'none';
 }
 
-function openDeletePanel() {
-    document.getElementById("deleteDiv").style.display = "block";
+function openChangeOrderStatusPanel() {
+    document.getElementById("changeOrderStatus").style.display = "block";
 }
 
-function closeDeletePanel() {
-    document.getElementById("deleteDiv").style.display = "none";
+function closeChangeOrderStatusPanel() {
+    document.getElementById("statusToUpdate").value = "";
+    document.getElementById("changeOrderStatus").style.display = 'none';
+}
+
+function openDeleteOrderPanel() {
+    document.getElementById("deleteOrder").style.display = "block";
+}
+
+function closeDeleteOrderPanel() {
+    document.getElementById("deleteOrder").style.display = "none";
 }
 

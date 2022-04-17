@@ -14,23 +14,29 @@
                     <a href="add-order.html"><button>Add Order</button></a>
                 </td>
                 <td colspan="1">
-                    <button onclick="getOrdersToChange(); getCustomersToChange(); openChangePanel();">Change Order</button>
+                    <button onclick="getOrdersToChange(); getCustomersToChange(); openChangeOrderPanel();">Change Order</button>
                 </td>
                 <td colspan="1">
-                    <button onclick="openDeletePanel(); getOrdersToDelete();">Delete Order</button>
+                    <button onclick="openDeleteOrderPanel(); getOrdersToDelete();">Delete Order</button>
                 </td>
                 <td colspan="1">
                     <button onclick="getAllPrice();">Get All Price</button>
                 </td>
                 <td colspan="1">
-                    <button>Change Status</button>
+                    <button onclick="openChangeOrderStatusPanel();">Change Status</button>
+                </td>
+                <td colspan="1">
+                    <a href="add-product.html"><button>Add Product</button></a>
+</td>
+                <td colspan="1">
+                    <button>Change Product</button>
                 </td>
                 <td colspan="1">
                     <a href="start-customer.html"><button>Customer Table</button></a>
                 </td>
                 <tr>
-                    <td colspan="5">
-                        <div id="changeDiv" style="display: none">
+                    <td colspan="6">
+                        <div id="changeOrder" style="display: none">
                             <h2>Change Order</h2>
                             <p>Order id:</p>
                             <select id="updateOrderChoose"></select>
@@ -44,21 +50,37 @@
                             <p>Date:</p>
                             <input type="date" id='updateDate' />
                             <p>
-                            <p>Products:</p>
-                            <select id="updateProductsChoose" multiple></select>
-                            <p>
                             <p>
                                 <button onclick="changeOrder()">Update Item</button>
                             </p>
                             <p>
-                                <button onclick="closeChangePanel()">Close Panel</button>
+                                <button onclick="closeChangeOrderPanel()">Close Panel</button>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div id="changeOrderStatus" style="display: none">
+                            <h2>Change Order</h2>
+                            <p>Order id:</p>
+                            <select id="updateOrderStatusChoose"></select>
+                            <p>
+                            <p>Status:</p>
+                            <input type="number" id='statusToUpdate' />
+                            <p>
+                            <p>
+                                <button onclick="changeOrderStatus()">Update Item</button>
+                            </p>
+                            <p>
+                                <button onclick="closeChangeOrderStatusPanel()">Close Panel</button>
                             </p>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="5">
-                        <div colspan="4" id="deleteDiv" style="display: none">
+                        <div colspan="4" id="deleteOrder" style="display: none">
                             <h2>Delete Order</h2>
                             <p>Order id:</p>
                             <select id="deleteChoose"></select>
@@ -66,7 +88,7 @@
                                 <button onclick="deleteOrder()">Delete Item</button>
                             </p>
                             <p>
-                                <button onclick="closeDeletePanel()">Close Panel</button>
+                                <button onclick="closeDeleteOrderPanel()">Close Panel</button>
                             </p>
                         </div>
                     </td>

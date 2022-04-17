@@ -3,13 +3,13 @@
 	namespace="AccountingSystem.Model" assembly="AccountingSystem">
   <class name="Order" table="ORDERS">
 
-    <id name="OrderId" column="ID" generator="increment"/>
+    <id name="OrderId" column="ID" generator="assigned"/>
 
     <many-to-one name = "Customer" column = "CUSTOMER" cascade ="save-update"/>
     <property name="Status" column="STATUS"  />
     <property name="Price" column="PRICE"  />
     <property name="Date" column="ORDER_DATE"  />
-    <list name = "Products" cascade = "all-delete-orphan">
+    <list name = "Products" cascade = "all">
       <key column="ORDER_ID"/>
       <list-index column = "IDX"/>
       <one-to-many class="Product" />
