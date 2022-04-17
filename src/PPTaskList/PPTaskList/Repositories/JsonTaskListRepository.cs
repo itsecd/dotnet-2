@@ -1,54 +1,60 @@
-﻿using PPTaskList.Controllers.Model;
+﻿using Microsoft.Extensions.Configuration;
+using PPTask.Controllers.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace PPTaskList.Repositories
+namespace PPTask.Repositories
 {
-    public class JsonTaskListRepository : ITaskListRepository
+    public class JsonTaskRepository : ITaskRepository
     {
-        private const string StorageFileName = "tasks.json";
+        private readonly string _storageFileName;
 
-        private List<TaskList> _tasks;
+        public JsonTaskRepository(IConfiguration configuration)
+        {
+            _storageFileName = configuration.GetValue<string>("ExecutorsFile");
+        }
 
-        private async void ReadFromFileAsync()
+        private List<Task> _tasks;
+
+        private async System.Threading.Tasks.Task ReadFromFileAsync()
         {
             if (_tasks != null) return;
 
-            if (!File.Exists(StorageFileName))
+            if (!File.Exists(_storageFileName))
             {
-                _tasks = new List<TaskList>();
+                _tasks = new List<Task>();
                 return;
             }
 
-            using var fileReader = new FileStream(StorageFileName, FileMode.Open);
-            _tasks = await JsonSerializer.DeserializeAsync<List<TaskList>>(fileReader);
+            using var fileReader = new FileStream(_storageFileName, FileMode.Open);
+            _tasks = await JsonSerializer.DeserializeAsync<List<Task>>(fileReader);
         }
 
-        private async void WriteToFileAsync()
+        private async System.Threading.Tasks.Task WriteToFileAsync()
         {
-            using var fileWriter = new FileStream(StorageFileName, FileMode.Create);
-            await JsonSerializer.SerializeAsync<List<TaskList>>(fileWriter, _tasks);
+            using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
+            await JsonSerializer.SerializeAsync<List<Task>>(fileWriter, _tasks);
         }
 
-        public void AddTask(TaskList task)
+        public async System.Threading.Tasks.Task AddTask(Task task)
         {
-            ReadFromFileAsync();
+            await ReadFromFileAsync();
             _tasks.Add(task);
-            WriteToFileAsync();
+            await WriteToFileAsync();
         }
 
-        public void RemoveAllTasks()
+        public async System.Threading.Tasks.Task RemoveAllTasks()
         {
-            ReadFromFileAsync();
+            await ReadFromFileAsync();
             _tasks.RemoveRange(0, _tasks.Count);
-            WriteToFileAsync();
+            await WriteToFileAsync();
 
         }
 
-        public List<TaskList> GetTasks()
+        public async System.Threading.Tasks.Task<List<Task>> GetTasks()
         {
-            ReadFromFileAsync();
+            await ReadFromFileAsync();
             return _tasks;
         }
     }

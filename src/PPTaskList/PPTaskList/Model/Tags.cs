@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PPTaskList.Controllers.Model
+namespace PPTask.Controllers.Model
 {
     public class Tags
     {

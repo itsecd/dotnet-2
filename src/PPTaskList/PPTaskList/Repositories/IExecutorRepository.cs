@@ -1,12 +1,13 @@
-﻿using PPTaskList.Controllers.Model;
+﻿using PPTask.Controllers.Model;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace PPTaskList.Repositories
+namespace PPTask.Repositories
 {
     public interface IExecutorRepository
     {
-        List<Executor> GetExecutors();
-        void AddExecutor(Executor executor);
-        void RemoveAllExecutors();
+        Task<List<Executor>> GetExecutors();
+        System.Threading.Tasks.Task AddExecutor(Executor executor);
+        System.Threading.Tasks.Task RemoveAllExecutors();
     }
 }

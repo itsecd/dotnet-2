@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PPTaskList.Controllers.Model;
-using PPTaskList.Repositories;
+using PPTask.Controllers.Model;
+using PPTask.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PPTaskList.Controllers
+namespace PPTask.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

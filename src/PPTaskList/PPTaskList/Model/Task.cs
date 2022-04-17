@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace PPTaskList.Controllers.Model
+namespace PPTask.Controllers.Model
 {
-    public class TaskList
+    public class Task
     {
         public int TaskId { get; set; }
 
@@ -10,17 +10,21 @@ namespace PPTaskList.Controllers.Model
 
         public string TextDescription { get; set; }
 
+        public Executor Executor { get; set; }
+
+        public List <Tags> Tags { get; set; }
+
         private static readonly List<string> _statuses = new List<string>
         {
             "Done", "Not ready yet"
         };
-        public TaskList()
+        public Task()
         {
-            HeaderText = "Empty";
-            TextDescription = "Empty";
+            HeaderText = string.Empty;
+            TextDescription = string.Empty;
         }
 
-        public TaskList(string header, string text)
+        public Task(string header, string text)
         {
             HeaderText = header;
             TextDescription = text;

@@ -1,6 +1,6 @@
 using System;
 
-namespace PPTaskList
+namespace PPTask
 {
     public class WeatherForecast
     {

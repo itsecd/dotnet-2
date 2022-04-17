@@ -1,43 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PPTaskList.Controllers.Model;
-using PPTaskList.Repositories;
+using PPTask.Controllers.Model;
+using PPTask.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PPTaskList.Controllers
+namespace PPTask.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private readonly ITaskListRepository _taskListRepository;
+        private readonly ITaskRepository _taskListRepository;
 
-        public TaskController(ITaskListRepository taskListRepository)
+        public TaskController(ITaskRepository taskListRepository)
         {
             _taskListRepository = taskListRepository;
         }
 
         [HttpGet]
-        public IEnumerable<TaskList> Get()
+        public IEnumerable<Task> Get()
         {
             return _taskListRepository.GetTasks();
         }
 
         [HttpGet("{id}")]
-        public TaskList Get(int id)
+        public Task Get(int id)
         {
             return _taskListRepository.GetTasks().Where(task => task.TaskId == id).Single();
 
         }
 
         [HttpPost]
-        public void Post([FromBody] TaskList value)
+        public void Post([FromBody] Task value)
         {
             _taskListRepository.AddTask(value);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] TaskList value)
+        public void Put(int id, [FromBody] Task value)
         {
             var taskIndex = _taskListRepository.GetTasks().FindIndex(task => task.TaskId == id);
 

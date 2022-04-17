@@ -7,13 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using PPTaskList.Repositories;
+using PPTask.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PPTaskList
+namespace PPTask
 {
     public class Startup
     {
@@ -28,7 +28,7 @@ namespace PPTaskList
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IExecutorRepository, JsonExecutorRepository>();
-            services.AddSingleton<ITaskListRepository, JsonTaskListRepository>();
+            services.AddSingleton<ITaskRepository, JsonTaskRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
