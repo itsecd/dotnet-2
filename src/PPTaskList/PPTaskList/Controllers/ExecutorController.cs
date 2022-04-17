@@ -20,13 +20,13 @@ namespace PPTask.Controllers
         [HttpGet]
         public IEnumerable<Executor> Get()
         {
-            return _executorRepository.GetExecutors();
+            return (IEnumerable<Executor>)_executorRepository.GetExecutors();
         }
 
         [HttpGet("{id}")]
         public Executor Get(int id)
         {
-            return _executorRepository.GetExecutors().Where(executor => executor.ExecutorId == id).Single();
+            return _executorRepository.GetExecutors().Result.Where(executor => executor.ExecutorId == id).Single();
         }
 
         [HttpPost]
@@ -38,11 +38,11 @@ namespace PPTask.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Executor value)
         {
-            var executorIndex = _executorRepository.GetExecutors().FindIndex(executor => executor.ExecutorId == id);
+            var executorIndex = _executorRepository.GetExecutors().Result.FindIndex(executor => executor.ExecutorId == id);
             
             if(executorIndex > 0)
             {
-                _executorRepository.GetExecutors()[executorIndex] = value;
+                _executorRepository.GetExecutors().Result[executorIndex] = value;
             }
         }
 

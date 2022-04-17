@@ -4,53 +4,53 @@ using PPTask.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace PPTask.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private readonly ITaskRepository _taskListRepository;
+        private readonly ITaskRepository _taskRepository;
 
-        public TaskController(ITaskRepository taskListRepository)
+        public TaskController(ITaskRepository taskRepository)
         {
-            _taskListRepository = taskListRepository;
+            _taskRepository = taskRepository;
         }
 
         [HttpGet]
         public IEnumerable<Task> Get()
         {
-            return _taskListRepository.GetTasks();
+            return (IEnumerable<Task>)_taskRepository.GetTasks();
         }
 
         [HttpGet("{id}")]
         public Task Get(int id)
         {
-            return _taskListRepository.GetTasks().Where(task => task.TaskId == id).Single();
-
+            return _taskRepository.GetTasks().Result.Where(task => task.TaskId == id).Single();
         }
 
         [HttpPost]
         public void Post([FromBody] Task value)
         {
-            _taskListRepository.AddTask(value);
+            _taskRepository.AddTask(value);
         }
 
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Task value)
         {
-            var taskIndex = _taskListRepository.GetTasks().FindIndex(task => task.TaskId == id);
+            var taskIndex = _taskRepository.GetTasks().Result.FindIndex(task => task.TaskId == id);
 
             if (taskIndex > 0)
             {
-                _taskListRepository.GetTasks()[taskIndex] = value;
+                _taskRepository.GetTasks().Result[taskIndex] = value;
             }
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _taskListRepository.RemoveAllTasks();
+            _taskRepository.RemoveAllTasks();
         }
     }
 }

@@ -4,7 +4,7 @@ namespace PPTask.Controllers.Model
 {
     public class Tags
     {
-        private static readonly List<string> _tegs = new List<string>
+        private static readonly List<string> _tags = new List<string>
         {
             "Immediately", "Remake", "Finalize"
         };
