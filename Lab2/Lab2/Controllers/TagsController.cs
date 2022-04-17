@@ -56,7 +56,7 @@ namespace Lab2.Controllers
         /// <summary>
         /// Добавление тэга
         /// </summary>
-        /// <param name="value">Новый тэг</param>
+        /// <param name="tag">Новый тэг</param>
         // POST api/<TagsController>
         [HttpPost]
         public IActionResult Post([FromBody] Tags tag)
@@ -77,7 +77,7 @@ namespace Lab2.Controllers
         /// Изменение параметров тэга по идентификатору
         /// </summary>
         /// <param name="id">Идентификатор</param>
-        /// <param name="value">Новый тэг</param>
+        /// <param name="tag">Новый тэг</param>
         // PUT api/<TagsController>/5
         [HttpPut("{id:int}")]
         public IActionResult Put(int id, [FromBody] Tags tag)
@@ -94,7 +94,7 @@ namespace Lab2.Controllers
             {
                 return NotFound();
             }
-            catch (IndexOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 return BadRequest();
             }
@@ -140,7 +140,7 @@ namespace Lab2.Controllers
             {
                 return NotFound();
             }
-            catch (IndexOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 return BadRequest();
             }

@@ -42,11 +42,12 @@ namespace Lab2.Repositories
             await SerializeFile();
         }
 
-        public void AddExecutor(Executor executor)
+        public int AddExecutor(Executor executor)
         {
             ReadFromFile();
             _executors.Add(executor);
             WriteToFile();
+            return executor.ExecutorId;
         }
         public void SaveFile()
         {
@@ -57,7 +58,6 @@ namespace Lab2.Repositories
             ReadFromFile();
             _executors.RemoveRange(0, _executors.Count);
             WriteToFile();
-
         }
 
         public List<Executor> GetExecutors()
@@ -65,11 +65,12 @@ namespace Lab2.Repositories
             ReadFromFile();
             return _executors;
         }
-        public void RemoveExecutor(int id)
+        public int RemoveExecutor(int id)
         {
             ReadFromFile();
             _executors.RemoveAt(id-1);
             WriteToFile();
+            return id;
         }
 
 

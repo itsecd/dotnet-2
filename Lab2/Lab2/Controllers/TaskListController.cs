@@ -94,7 +94,7 @@ namespace Lab2.Controllers
             {
                 return NotFound();
             }
-            catch (IndexOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 return BadRequest();
             }
@@ -142,7 +142,7 @@ namespace Lab2.Controllers
             {
                 return NotFound();
             }
-            catch (IndexOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 return BadRequest();
             }
@@ -150,6 +150,7 @@ namespace Lab2.Controllers
             {
                 return Problem();
             }
+        
         }
 
     }

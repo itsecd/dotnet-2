@@ -41,11 +41,12 @@ namespace Lab2.Repositories
             using var fileWriter = new FileStream(StorageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileWriter, _tags);
         }
-        public void AddTag(Tags tags)
+        public int AddTag(Tags tags)
         {
             ReadFromFile();
             _tags.Add(tags);
             WriteToFile();
+            return tags.TagId;
         }
 
         public void RemoveAllTags()
@@ -64,11 +65,12 @@ namespace Lab2.Repositories
             ReadFromFile();
             return _tags;
         }
-        public void RemoveTag(int id)
+        public int RemoveTag(int id)
         {
             ReadFromFile();
             _tags.RemoveAt(id);
             WriteToFile();
+            return id;
         }
 
     }

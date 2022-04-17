@@ -6,9 +6,9 @@ namespace Lab2.Repositories
     public interface IExecutorRepository
     {
         List<Executor> GetExecutors();
-        void AddExecutor(Executor executor);
+        int AddExecutor(Executor executor);
         void RemoveAllExecutors();
-        void RemoveExecutor(int id);
+        int RemoveExecutor(int id);
         void SaveFile();
     }
 }

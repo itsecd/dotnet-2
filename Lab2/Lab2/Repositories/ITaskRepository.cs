@@ -5,10 +5,10 @@ namespace Lab2.Repositories
 {
     public interface ITaskRepository
     {
-        void AddTask(TaskList task);
+        int AddTask(TaskList task);
         List<TaskList> GetTasks();
         void RemoveAllTasks();
         void SaveFile();
-        void RemoveTask(int id);
+        int RemoveTask(int id);
     }
 }

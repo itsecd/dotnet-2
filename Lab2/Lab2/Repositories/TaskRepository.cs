@@ -47,11 +47,12 @@ namespace Lab2.Repositories
         {
             WriteToFile();
         }
-        public void AddTask(TaskList tasks)
+        public int AddTask(TaskList tasks)
         {
             ReadFromFile();
             _tasks.Add(tasks);
             WriteToFile();
+            return tasks.TaskId;
         }
 
         public void RemoveAllTasks()
@@ -68,11 +69,12 @@ namespace Lab2.Repositories
             return _tasks;
         }
 
-        public void RemoveTask(int id)
+        public int RemoveTask(int id)
         {
             ReadFromFile();
             _tasks.RemoveAt(id);
             WriteToFile();
+            return id; 
         }
     }
 }
