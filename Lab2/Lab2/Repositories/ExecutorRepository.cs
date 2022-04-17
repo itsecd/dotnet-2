@@ -17,7 +17,10 @@ namespace Lab2.Repositories
         {
             _storageFileName = configuration.GetValue<string>("ExecutorsFile");
         }
-
+        public ExecutorRepository()
+        {
+           
+        }
         private List<Executor> _executors;
         private async Task ReadFromFile()
         {

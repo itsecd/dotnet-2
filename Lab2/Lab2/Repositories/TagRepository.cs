@@ -17,7 +17,7 @@ namespace Lab2.Repositories
         {
             _storageFileName = configuration.GetValue<string>("TagsFile");
         }
-
+        public TagRepository() { }
         private List<Tags> _tags;
 
         private async void ReadFromFile()

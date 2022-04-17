@@ -12,8 +12,9 @@ namespace Lab2.Repositories
 	public class TaskRepository: ITaskRepository
 	{
         private readonly string _storageFileName;
-
-        public TaskRepository(IConfiguration configuration)
+        public TaskRepository()
+        { }
+         public TaskRepository(IConfiguration configuration)
         {
             _storageFileName = configuration.GetValue<string>("TasksFile");
         }
