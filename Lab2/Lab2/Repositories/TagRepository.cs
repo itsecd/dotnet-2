@@ -55,7 +55,10 @@ namespace Lab2.Repositories
             WriteToFile();
 
         }
-
+        public void SaveFile()
+        {
+            WriteToFile();
+        }
         public List<Tags> GetTags()
         {
             ReadFromFile();

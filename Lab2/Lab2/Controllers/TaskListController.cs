@@ -3,7 +3,8 @@ using Lab2.Models;
 using Lab2.Repositories;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
+using System;
+using Lab2.Exceptions;
 
 namespace Lab2.Controllers
 {
@@ -17,54 +18,140 @@ namespace Lab2.Controllers
         {
             _taskListRepository = taskListRepository;
         }
-
+        /// <summary>
+        /// Получение всех задач
+        /// </summary>
+        /// <returns>All Tasks</returns>
         // GET: api/<TaskListController>
         [HttpGet]
-        public IEnumerable<TaskList> Get()
-        {
-            return _taskListRepository.GetTasks();
-        }
-
+        public ActionResult<List<TaskList>> Get() => _taskListRepository.GetTasks();
+       
+        /// <summary>
+        /// Получение задачи по индентификатору
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
+        /// <returns>Task</returns>
         // GET api/<TaskListController>/5
         [HttpGet("{id:int}")]
-        public TaskList Get(int id)
+        public ActionResult<TaskList> Get(int id)
         {
-            return _taskListRepository.GetTasks().Where(task => task.TaskId == id).Single();
+
+            try
+            {
+                var task = _taskListRepository.GetTasks().Single(task => task.TaskId == id);
+                return task;
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch
+            {
+                return Problem();
+            }
 
         }
 
+
+        /// <summary>
+        /// Добавление задачи
+        /// </summary>
+        /// <param name="task">Новая задача</param>
         // POST api/<TaskListController>
         [HttpPost]
-        public void Post([FromBody] TaskList value)
+        public IActionResult Post([FromBody] TaskList task)
         {
-            _taskListRepository.AddTask(value);
+
+            try
+            {
+                _taskListRepository.AddTask(task);
+                return CreatedAtAction(nameof(Post), task);
+            }
+            catch
+            {
+                return Problem();
+            }
         }
 
-
+        /// <summary>
+        /// Изменение параметров задачи по идентификатору
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
+        /// <param name="task">Новая задача</param>
         // PUT api/<TaskListController>/5
         [HttpPut("{id:int}")]
-        public void Put(int id, [FromBody] TaskList value)
+        public IActionResult Put(int id, [FromBody] TaskList task)
         {
-            var taskIndex = _taskListRepository.GetTasks().FindIndex(task => task.TaskId == id);
 
-            if (taskIndex > 0)
+            try
             {
-                _taskListRepository.GetTasks()[taskIndex] = value;
+                var taskIndex = _taskListRepository.GetTasks().FindIndex(task => task.TaskId == id);
+                _taskListRepository.GetTasks()[taskIndex] = task;
+                _taskListRepository.SaveFile();
+                return Ok();
             }
-            _taskListRepository.SaveFile();
-        }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
 
+
+        }
+       
+        /// <summary>
+        /// Удаление всех задач
+        /// </summary>
         // DELETE api/<TaskListController>/5
         [HttpDelete]
-        public void Delete()
+        public IActionResult Delete()
         {
-            _taskListRepository.RemoveAllTasks();
+            try
+            {
+                _taskListRepository.RemoveAllTasks();
+                return Ok();
+            }
+            catch
+            {
+                return Problem();
+            }
         }
+
+        /// <summary>
+        /// Удаление задачи по идентификатору
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
         // DELETE api/<TaskListController>/5
         [HttpDelete("{id:int}")]
-        public void Delete(int id)
+       
+        public IActionResult Delete(int id)
         {
-            _taskListRepository.RemoveTask(id);
+            try
+            {
+                _taskListRepository.RemoveTask(id);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
         }
+
     }
 }
+

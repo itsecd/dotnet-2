@@ -48,7 +48,10 @@ namespace Lab2.Repositories
             _executors.Add(executor);
             WriteToFile();
         }
-
+        public void SaveFile()
+        {
+            WriteToFile();
+        }
         public void RemoveAllExecutors()
         {
             ReadFromFile();
@@ -65,7 +68,7 @@ namespace Lab2.Repositories
         public void RemoveExecutor(int id)
         {
             ReadFromFile();
-            _executors.RemoveAt(id);
+            _executors.RemoveAt(id-1);
             WriteToFile();
         }
 

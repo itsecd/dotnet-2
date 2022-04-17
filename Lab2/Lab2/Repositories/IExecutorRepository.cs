@@ -9,5 +9,6 @@ namespace Lab2.Repositories
         void AddExecutor(Executor executor);
         void RemoveAllExecutors();
         void RemoveExecutor(int id);
+        void SaveFile();
     }
 }

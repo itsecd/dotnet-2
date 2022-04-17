@@ -9,5 +9,6 @@ namespace Lab2.Repositories
         List<Tags> GetTags();
         void RemoveAllTags();
         void RemoveTag(int id);
+        void SaveFile();
     }
 }
