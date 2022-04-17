@@ -5,13 +5,18 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Configuration;
 
 namespace Lab2.Repositories
 {
 	public class TaskRepository: ITaskRepository
 	{
-        private const string StorageFileName = "tasks.xml";
+        private readonly string _storageFileName;
+
+        public TaskRepository(IConfiguration configuration)
+        {
+            _storageFileName = configuration.GetValue<string>("TasksFile");
+        }
 
         private List<TaskList> _tasks;
 
@@ -19,7 +24,7 @@ namespace Lab2.Repositories
         {
             if (_tasks != null) return;
 
-            if (!File.Exists(StorageFileName))
+            if (!File.Exists(_storageFileName))
             {
                 _tasks = new List<TaskList>();
                 return;
@@ -29,13 +34,13 @@ namespace Lab2.Repositories
         private async Task DeserializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<TaskList>));
-            using var fileReader = new FileStream(StorageFileName, FileMode.Open);
+            using var fileReader = new FileStream(_storageFileName, FileMode.Open);
             _tasks = (List<TaskList>)xmlSerializer.Deserialize(fileReader);
         }
         private async Task SerializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<TaskList>));
-            using var fileWriter = new FileStream(StorageFileName, FileMode.Create);
+            using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileWriter, _tasks);
         }
         private async Task WriteToFile()

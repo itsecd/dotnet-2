@@ -5,19 +5,25 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Lab2.Repositories
 {
     public class ExecutorRepository: IExecutorRepository
     {
-        private const string StorageFileName = "executors.xml";
+
+        private readonly string _storageFileName;
+        public ExecutorRepository(IConfiguration configuration)
+        {
+            _storageFileName = configuration.GetValue<string>("ExecutorsFile");
+        }
 
         private List<Executor> _executors;
         private async Task ReadFromFile()
         {
             if (_executors != null) return;
 
-            if (!File.Exists(StorageFileName))
+            if (!File.Exists(_storageFileName))
             {
                 _executors = new List<Executor>();
                 return;
@@ -28,13 +34,13 @@ namespace Lab2.Repositories
         private async Task DeserializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
-            using var fileReader = new FileStream(StorageFileName, FileMode.Open);
+            using var fileReader = new FileStream(_storageFileName, FileMode.Open);
             _executors = (List<Executor>)xmlSerializer.Deserialize(fileReader);
         }
         private async Task SerializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
-            using var fileWriter = new FileStream(StorageFileName, FileMode.Create);
+            using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileWriter, _executors);
         }
         private async Task WriteToFile()

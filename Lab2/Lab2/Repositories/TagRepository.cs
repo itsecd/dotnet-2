@@ -5,12 +5,18 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Lab2.Repositories
 {
     public class TagRepository:ITagRepository
     {
-        private const string StorageFileName = "tag.xml";
+        private readonly string _storageFileName;
+
+        public TagRepository(IConfiguration configuration)
+        {
+            _storageFileName = configuration.GetValue<string>("TagsFile");
+        }
 
         private List<Tags> _tags;
 
@@ -18,7 +24,7 @@ namespace Lab2.Repositories
         {
             if (_tags != null) return;
 
-            if (!File.Exists(StorageFileName))
+            if (!File.Exists(_storageFileName))
             {
                 _tags = new List<Tags>();
                 return;
@@ -28,7 +34,7 @@ namespace Lab2.Repositories
         private async Task DeserializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<Tags>));
-            using var fileReader = new FileStream(StorageFileName, FileMode.Open);
+            using var fileReader = new FileStream(_storageFileName, FileMode.Open);
             _tags = (List<Tags>)xmlSerializer.Deserialize(fileReader);
         }
         private async Task WriteToFile()
@@ -38,7 +44,7 @@ namespace Lab2.Repositories
         private async Task SerializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<Tags>));
-            using var fileWriter = new FileStream(StorageFileName, FileMode.Create);
+            using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileWriter, _tags);
         }
         public int AddTag(Tags tags)
