@@ -3,7 +3,7 @@
 namespace TestServerAccountingSystem
 {
     [CollectionDefinition("Accounting System")]
-    internal class DatabaseCollection : ICollectionFixture<RepositoryFixture>
+    public class DatabaseCollection : ICollectionFixture<RepositoryFixture>
     {
     }
 }
