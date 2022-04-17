@@ -29,6 +29,7 @@ namespace PPTask
         {
             services.AddSingleton<IExecutorRepository, JsonExecutorRepository>();
             services.AddSingleton<ITaskRepository, JsonTaskRepository>();
+            services.AddSingleton<ITagRepository, JsonTagRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
