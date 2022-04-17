@@ -5,12 +5,9 @@ option csharp_namespace = "ChatServer";
 package greet;
 
 // The greeting service definition.
-service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply);
-}
 
 service ChatRoom{
+	rpc Create(stream Message) returns(stream Message); 
 	rpc Join(stream Message) returns (stream Message);
 }
 

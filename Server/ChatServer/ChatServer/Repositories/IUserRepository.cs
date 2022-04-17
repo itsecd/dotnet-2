@@ -2,14 +2,12 @@
 
 namespace ChatServer.Repositories
 {
-    public interface IChatRoomRepository
+    public interface IUserRepository
     {
-        int AddRoom(int id, ChatRoomUtils room);
+        void AddUser(string nameUser);
         Task ReadAsync();
         void ReadFile();
-        void RemoveRoom(int id);
         Task WriteAsync();
         void WriteToFile();
-        ChatRoomUtils FindRoom(int id);
     }
 }
