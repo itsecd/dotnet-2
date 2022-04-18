@@ -4,14 +4,39 @@ namespace PPTask.Controllers.Model
 {
     public class Tags
     {
-        private static readonly List<string> _tags = new List<string>
+        private readonly List<string> _statuses = new List<string>
         {
-            "Immediately", "Remake", "Finalize"
+            "Immediately", "Remake", "Finalize","Done", "Not ready yet"
         };
 
-        private static readonly List<string> _colours = new List<string>
+        private readonly List<string> _colours = new List<string>
         {
             "Green", "Red", "Yellow"
         };
+
+        private List<string> _tags;
+
+        public List<string> TagList 
+        {
+            get => _tags;
+            set
+            {
+                for(var i = 0; i < value.Count; i++)
+                {
+                    if (_statuses.Exists(x => x == value[i]) || _colours.Exists(x => x == value[i]))
+                    {
+                        _tags.Add (value[i]);
+                    }
+                }
+            }
+        }
+
+        public Tags()
+        {
+            var tag = new Tags()
+            {
+                TagList = TagList
+            };
+        }
     }
 }

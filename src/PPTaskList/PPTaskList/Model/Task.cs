@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using PPTask.Repositories;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PPTask.Controllers.Model
 {
@@ -12,22 +14,25 @@ namespace PPTask.Controllers.Model
 
         public Executor Executor { get; set; }
 
+        public int ExecutorId { get; set; }
+
         public List <Tags> Tags { get; set; }
 
-        private static readonly List<string> _statuses = new List<string>
-        {
-            "Done", "Not ready yet"
-        };
         public Task()
         {
             HeaderText = string.Empty;
             TextDescription = string.Empty;
         }
 
-        public Task(string header, string text)
+        public Task(string header, string text, int id)
         {
             HeaderText = header;
             TextDescription = text;
+            ExecutorId = id;
+
+            //var executorRepository = JsonExecutorRepository();
+
+            //Executor = executorRepository.GetExecutors().Result.Where(executor => executor.ExecutorId == id).Single();
         }
     }
 }

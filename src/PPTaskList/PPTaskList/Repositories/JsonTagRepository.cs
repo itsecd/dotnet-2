@@ -38,10 +38,10 @@ namespace PPTask.Repositories
             await JsonSerializer.SerializeAsync<List<Tags>>(fileWriter, _tags);
         }
 
-        public async System.Threading.Tasks.Task AddTag(Tags task)
+        public async System.Threading.Tasks.Task AddTag(Tags tag)
         {
             await ReadFromFileAsync();
-            _tags.Add(task);
+            _tags.Add(tag);
             await WriteToFileAsync();
         }
 
