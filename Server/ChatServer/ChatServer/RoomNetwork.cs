@@ -7,13 +7,19 @@ using System.Threading.Tasks;
 
 namespace ChatServer
 {
+    [Serializable]
     public class RoomNetwork : IRoomNetwork
     {
-        public ConcurrentDictionary<string, IServerStreamWriter<Message>> Online { get; set; } = new();
-        public ConcurrentBag<User> Users { get; set; } = new();
-        public ConcurrentDictionary<DateTime, Message> History { get; set; } = new(); 
+        public ConcurrentBag<User> Users = new();
+        [NonSerialized] public ConcurrentDictionary<string, IServerStreamWriter<Message>> Online  = new();
+        //public ConcurrentBag<User> User 
+        public ConcurrentDictionary<DateTime, Message> History { get; set; } = new();
 
         //добавление
+        public void AddUser(string name) {
+            Users.Add(new User(name, name.GetHashCode()));
+        }
+        public ConcurrentBag<User> GetUsers() => Users;
         public void Join(string name, IServerStreamWriter<Message> responce)
         {
             Online.TryAdd(name, responce);
@@ -34,7 +40,7 @@ namespace ChatServer
         public async Task BroadcastMessage(Message message, string name = null)
         {
             History.TryAdd(DateTime.Now, message);
-            foreach (var user in Users.Where(x => x.Name != name))
+            foreach (var user in GetUsers().Where(x => x.Name != name))
             {
                 await Online[name].WriteAsync(message);
             }

@@ -36,7 +36,8 @@ namespace ChatServer.Services
                 var nameRoom = _chatRooms.AddRoom(requestStream.Current.Text, new RoomNetwork());
                 _users.AddUser(requestStream.Current.User);
                 _chatRooms.FindRoom(requestStream.Current.Text).Online.TryAdd(requestStream.Current.User, responseStream);
-                await _chatRooms.WriteAsync();
+                _chatRooms.FindRoom(requestStream.Current.Text).AddUser(requestStream.Current.User);
+                _chatRooms.WriteToFile();
                 await _users.WriteAsync();
                 await responseStream.WriteAsync(new Message { Text = requestStream.Current.Text });
                 await requestStream.MoveNext();
@@ -56,7 +57,7 @@ namespace ChatServer.Services
                 await _chatRooms.ReadAsync(requestStream.Current.Text);
                 _chatRooms.FindRoom(requestStream.Current.Text).Online.TryAdd(requestStream.Current.User, responseStream);
                 if (_chatRooms.FindRoom(requestStream.Current.Text).Users.Where(x => x.Name == requestStream.Current.User).Count() == 0)
-                    _chatRooms.FindRoom(requestStream.Current.Text).Users.Add(new User(requestStream.Current.User, requestStream.Current.User.GetHashCode()));
+                    _chatRooms.FindRoom(requestStream.Current.Text).AddUser(requestStream.Current.User);
             }
             do
             {

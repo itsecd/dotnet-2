@@ -34,7 +34,7 @@ namespace ChatServer.Repositories
 
         public async Task ReadAsync(string nameRoom)
         {
-            if (_current.ContainsKey(nameRoom))
+            if (IsRoomExists(nameRoom))
             {
                 using FileStream stream = File.Open(nameRoom + ".json", FileMode.Open);
                 _current[nameRoom] = await JsonSerializer.DeserializeAsync<RoomNetwork>(stream);
