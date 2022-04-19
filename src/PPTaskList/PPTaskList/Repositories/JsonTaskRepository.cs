@@ -47,10 +47,10 @@ namespace PPTask.Repositories
 
         public async System.Threading.Tasks.Task RemoveTask(int id)
         {
-            if (id < _tasks.Count)
+            if (_tasks != null)
             {
                 await ReadFromFileAsync();
-                _tasks.RemoveAt(id);
+                _tasks.RemoveAll(task => task.TaskId == id);
                 await WriteToFileAsync();
             }
         }

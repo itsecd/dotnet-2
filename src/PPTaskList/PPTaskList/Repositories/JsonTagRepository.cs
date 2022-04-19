@@ -53,15 +53,15 @@ namespace PPTask.Repositories
 
         }
 
-        public async System.Threading.Tasks.Task RemoveTag(int id)
-        {
-            if(id < _tags.Count)
-            {
-                await ReadFromFileAsync();
-                _tags.RemoveAt(id);
-                await WriteToFileAsync();
-            }
-        }
+        //public async System.Threading.Tasks.Task RemoveTag(int id)
+        //{
+        //    if(_tags != null)
+        //    {
+        //        await ReadFromFileAsync();
+        //        _tags.RemoveAll(tag => tag.)
+        //        await WriteToFileAsync();
+        //    }
+        //}
 
         public async System.Threading.Tasks.Task<List<Tags>> GetTags()
         {

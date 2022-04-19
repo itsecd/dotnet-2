@@ -14,7 +14,7 @@ namespace PPTask.Controllers.Model
             "Green", "Red", "Yellow"
         };
 
-        private List<string> _tags;
+        private List<string> _tags = new List<string> { };
 
         public List<string> TagList 
         {

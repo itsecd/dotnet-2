@@ -53,7 +53,7 @@ namespace PPTask.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _tagRepository.RemoveTag(id);
+            _tagRepository.RemoveAllTags();
         }
     }
 }
