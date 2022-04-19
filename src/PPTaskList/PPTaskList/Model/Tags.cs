@@ -31,12 +31,11 @@ namespace PPTask.Controllers.Model
             }
         }
 
-        public Tags()
+        public Tags() { }
+
+        public Tags( List<string> tags)
         {
-            var tag = new Tags()
-            {
-                TagList = TagList
-            };
+            TagList = tags;
         }
     }
 }

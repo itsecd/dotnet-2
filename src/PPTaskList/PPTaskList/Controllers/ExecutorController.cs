@@ -20,7 +20,7 @@ namespace PPTask.Controllers
         [HttpGet]
         public IEnumerable<Executor> Get()
         {
-            return (IEnumerable<Executor>)_executorRepository.GetExecutors();
+            return (IEnumerable<Executor>)_executorRepository.GetExecutors().Result;
         }
 
         [HttpGet("{id}")]
@@ -49,7 +49,7 @@ namespace PPTask.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _executorRepository.RemoveAllExecutors();
+            _executorRepository.RemoveExecutor(id);
         }
     }
 }

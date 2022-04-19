@@ -6,14 +6,7 @@
 
         public string Name { get; set; }
 
-        public Executor()
-        {
-            var executor = new Executor()
-            {
-                ExecutorId = ExecutorId,
-                Name = Name
-            };
-        }
+        public Executor() {}
 
         public Executor(int id, string name)
         {

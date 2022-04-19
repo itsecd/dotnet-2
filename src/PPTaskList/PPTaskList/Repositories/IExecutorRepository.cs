@@ -8,6 +8,7 @@ namespace PPTask.Repositories
     {
         Task<List<Executor>> GetExecutors();
         System.Threading.Tasks.Task AddExecutor(Executor executor);
+        System.Threading.Tasks.Task RemoveExecutor(int id);
         System.Threading.Tasks.Task RemoveAllExecutors();
     }
 }

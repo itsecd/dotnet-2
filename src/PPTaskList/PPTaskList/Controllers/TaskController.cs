@@ -21,7 +21,7 @@ namespace PPTask.Controllers
         [HttpGet]
         public IEnumerable<Task> Get()
         {
-            return (IEnumerable<Task>)_taskRepository.GetTasks();
+            return (IEnumerable<Task>)_taskRepository.GetTasks().Result;
         }
 
         [HttpGet("{id}")]
@@ -50,7 +50,7 @@ namespace PPTask.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _taskRepository.RemoveAllTasks();
+            _taskRepository.RemoveTask(id);
         }
     }
 }

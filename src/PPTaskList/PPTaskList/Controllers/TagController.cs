@@ -21,7 +21,7 @@ namespace PPTask.Controllers
         [HttpGet]
         public IEnumerable<Tags> Get()
         {
-            return (IEnumerable<Tags>)_tagRepository.GetTags();
+            return (IEnumerable<Tags>)_tagRepository.GetTags().Result;
         }
 
         [HttpGet("{id}")]
