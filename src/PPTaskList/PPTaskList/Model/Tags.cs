@@ -2,20 +2,35 @@
 
 namespace PPTask.Controllers.Model
 {
+    /// <summary>
+    /// Теги
+    /// </summary>
     public class Tags
     {
+        /// <summary>
+        /// Список возможных статусов
+        /// </summary>
         private readonly List<string> _statuses = new List<string>
         {
             "Immediately", "Remake", "Finalize","Done", "Not ready yet"
         };
 
+        /// <summary>
+        /// Список возможных цветов тега
+        /// </summary>
         private readonly List<string> _colours = new List<string>
         {
             "Green", "Red", "Yellow"
         };
 
+        /// <summary>
+        /// Список тегов (приватное поле)
+        /// </summary>
         private List<string> _tags = new List<string> { };
 
+        /// <summary>
+        /// Список тегов
+        /// </summary>
         public List<string> TagList 
         {
             get => _tags;
@@ -31,8 +46,14 @@ namespace PPTask.Controllers.Model
             }
         }
 
+        /// <summary>
+        /// Конструкор по умолчанию
+        /// </summary>
         public Tags() { }
 
+        /// <summary>
+        /// Конструктор с параметрами
+        /// </summary>
         public Tags( List<string> tags)
         {
             TagList = tags;

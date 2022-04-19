@@ -10,7 +10,9 @@ using Microsoft.OpenApi.Models;
 using PPTask.Repositories;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace PPTask
@@ -31,9 +33,11 @@ namespace PPTask
             services.AddSingleton<ITaskRepository, JsonTaskRepository>();
             services.AddSingleton<ITagRepository, JsonTagRepository>();
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PPTaskList", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "PPTaskList", Version = "v1" });
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
         }
 
