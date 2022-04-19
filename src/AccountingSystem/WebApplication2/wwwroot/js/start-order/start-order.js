@@ -114,6 +114,18 @@ function deleteOrder() {
     xhttp.send();
 }
 
+function deleteProduct() {
+    var idOrder = document.getElementById('deleteOrderChoose').value;
+    var idProduct = document.getElementById('deleteProductChoose').value;
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('DELETE', '../api/Order/' + idOrder + '/products/' + idProduct);
+    xhttp.onload = function () {
+        selectAllItems();
+        getProductsIDToDeleteProduct();
+    }
+    xhttp.send();
+}
+
 function getAllPrice() {
     var xhttp = new XMLHttpRequest();
     xhttp.open('GET', '../api/Order/all-price');
@@ -123,6 +135,14 @@ function getAllPrice() {
     xhttp.send();
 }
 
+function getCountProductMonthly() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('GET', '../api/Order/products-monthly');
+    xhttp.onload = function () {
+        alert("All Count Products By Order Monthly is " + xhttp.responseText)
+    }
+    xhttp.send();
+}
 
 function getCustomersToChange() {
     var xhttp = new XMLHttpRequest();
@@ -187,4 +207,38 @@ function getOrdersToDelete() {
         document.getElementById("deleteChoose").innerHTML = rows;
     }
     xhttp.send();
+}
+
+function getOrdersToDeleteProduct() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "../api/Order/");
+    xhttp.onload = function () {
+        var orders = JSON.parse(xhttp.responseText);
+        let rows = '<option>--</option>';
+        for (let i = 0; i < orders.length; i++) {
+            rows +=
+                "<option value = " + orders[i].orderId + ">" +
+                orders[i].orderId + "</option>";
+        }
+        document.getElementById("deleteOrderChoose").innerHTML = rows;
+    }
+    xhttp.send();
+    
+}
+
+function getProductsIDToDeleteProduct() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "../api/Order/" + document.getElementById("deleteOrderChoose").value + "/products");
+    xhttp.onload = function () {
+        var products = JSON.parse(xhttp.responseText);
+        let rows = '';
+        for (let i = 0; i < products.length; i++) {
+            rows +=
+                "<option value = " + products[i].productId + ">" +
+                products[i].productId + "</option>";
+        }
+        document.getElementById("deleteProductChoose").innerHTML = rows;
+    }
+    xhttp.send();
+
 }

@@ -25,3 +25,11 @@ function closeDeleteOrderPanel() {
     document.getElementById("deleteOrder").style.display = "none";
 }
 
+function openDeleteProductPanel() {
+    document.getElementById("deleteProduct").style.display = "block";
+}
+
+function closeDeleteProductPanel() {
+    document.getElementById("deleteProduct").style.display = "none";
+}
+
