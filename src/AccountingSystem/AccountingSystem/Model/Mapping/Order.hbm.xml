@@ -3,7 +3,7 @@
 	namespace="AccountingSystem.Model" assembly="AccountingSystem">
   <class name="Order" table="ORDERS">
 
-    <id name="OrderId" column="ID" generator="assigned"/>
+    <id name="OrderId" column="ID" generator="native"/>
 
     <many-to-one name = "Customer" column = "CUSTOMER" cascade ="save-update"/>
     <property name="Status" column="STATUS"  />

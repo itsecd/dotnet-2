@@ -4,98 +4,115 @@
     <meta charset="UTF-8">
     <title>Accounting System</title>
 </head>
-    <body>
+<body>
     <script src="../js/start-order/start-order.js"></script>
     <script src="../js/start-order/panels.js"></script>
-    <link rel = "stylesheet" href="../css/style.css">
-        <div class="start-page">
-            <table>
+    <link rel="stylesheet" href="../css/style.css">
+    <div class="start-page">
+        <table>
+            <tr>
                 <td colspan="1">
-                    <a href="add-order.html"><button>Add Order</button></a>
+                    <div class="dropdown">
+                        <button class="dropbtn">Add</button>
+                        <div class="dropdown-content">
+                            <a href="add-order.html">Add Order</a>
+                            <a href="add-product.html">Add Product</a>
+                        </div>
+                    </div>
                 </td>
                 <td colspan="1">
-                    <button onclick="getOrdersToChange(); getCustomersToChange(); openChangeOrderPanel();">Change Order</button>
+                    <div class="dropdown">
+                        <button class="dropbtn">Change</button>
+                        <div class="dropdown-content">
+                            <a href="#"  onclick="getOrdersToChange(); getCustomersToChange(); openChangeOrderPanel(); return false;">Change Order</a>
+                            <a href="#"  onclick="openChangeOrderStatusPanel(); getOrdersToChangeStatus(); return false;">Change Status</a>
+                            <a href="#"  onclick="return false;"> Change Product</a>
+                        </div>
+                    </div>
                 </td>
                 <td colspan="1">
-                    <button onclick="openDeleteOrderPanel(); getOrdersToDelete();">Delete Order</button>
+                    <div class="dropdown">
+                        <button class="dropbtn">Delete</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="openDeleteOrderPanel(); getOrdersToDelete(); return false;">Delete Order</a>
+                            <a href="#" onclick="return false;">Delete Product</a>
+                        </div>
+                    </div>
                 </td>
                 <td colspan="1">
-                    <button onclick="getAllPrice();">Get All Price</button>
-                </td>
-                <td colspan="1">
-                    <button onclick="openChangeOrderStatusPanel();">Change Status</button>
-                </td>
-                <td colspan="1">
-                    <a href="add-product.html"><button>Add Product</button></a>
-</td>
-                <td colspan="1">
-                    <button>Change Product</button>
+                    <div class="dropdown">
+                        <button class="dropbtn">Get</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="getAllPrice(); return false;">Get All Price</a>
+                        </div>
+                    </div>
                 </td>
                 <td colspan="1">
                     <a href="start-customer.html"><button>Customer Table</button></a>
                 </td>
-                <tr>
-                    <td colspan="6">
-                        <div id="changeOrder" style="display: none">
-                            <h2>Change Order</h2>
-                            <p>Order id:</p>
-                            <select id="updateOrderChoose"></select>
-                            <p>
-                            <p>Customer:</p>
-                            <select id="updateCustomerChoose"></select>
-                            <p>
-                            <p>Status:</p>
-                            <input type="number" id='updateStatus' />
-                            <p>
-                            <p>Date:</p>
-                            <input type="date" id='updateDate' />
-                            <p>
-                            <p>
-                                <button onclick="changeOrder()">Update Item</button>
-                            </p>
-                            <p>
-                                <button onclick="closeChangeOrderPanel()">Close Panel</button>
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <div id="changeOrderStatus" style="display: none">
-                            <h2>Change Order</h2>
-                            <p>Order id:</p>
-                            <select id="updateOrderStatusChoose"></select>
-                            <p>
-                            <p>Status:</p>
-                            <input type="number" id='statusToUpdate' />
-                            <p>
-                            <p>
-                                <button onclick="changeOrderStatus()">Update Item</button>
-                            </p>
-                            <p>
-                                <button onclick="closeChangeOrderStatusPanel()">Close Panel</button>
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="5">
-                        <div colspan="4" id="deleteOrder" style="display: none">
-                            <h2>Delete Order</h2>
-                            <p>Order id:</p>
-                            <select id="deleteChoose"></select>
-                            <p>
-                                <button onclick="deleteOrder()">Delete Item</button>
-                            </p>
-                            <p>
-                                <button onclick="closeDeleteOrderPanel()">Close Panel</button>
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div id="changeOrder" style="display: none">
+                        <h2>Change Order</h2>
+                        <p>Order id:</p>
+                        <select id="updateOrderChoose"></select>
+                        <p>
+                        <p>Customer:</p>
+                        <select id="updateCustomerChoose"></select>
+                        <p>
+                        <p>Status:</p>
+                        <input type="number" id='updateStatus' />
+                        <p>
+                        <p>Date:</p>
+                        <input type="date" id='updateDate' />
+                        <p>
+                        <p>
+                            <button onclick="changeOrder()">Update Item</button>
+                        </p>
+                        <p>
+                            <button onclick="closeChangeOrderPanel()">Close Panel</button>
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div id="changeOrderStatus" style="display: none">
+                        <h2>Change Order Status</h2>
+                        <p>Order id:</p>
+                        <select id="updateOrderStatusChoose"></select>
+                        <p>
+                        <p>Status:</p>
+                        <input type="number" id='statusToUpdate' />
+                        <p>
+                        <p>
+                            <button onclick="changeOrderStatus()">Update Item</button>
+                        </p>
+                        <p>
+                            <button onclick="closeChangeOrderStatusPanel()">Close Panel</button>
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div colspan="4" id="deleteOrder" style="display: none">
+                        <h2>Delete Order</h2>
+                        <p>Order id:</p>
+                        <select id="deleteChoose"></select>
+                        <p>
+                            <button onclick="deleteOrder()">Delete Item</button>
+                        </p>
+                        <p>
+                            <button onclick="closeDeleteOrderPanel()">Close Panel</button>
+                        </p>
+                    </div>
+                </td>
+            </tr>
+        </table>
 
-            <table id="orderTable"></table>
-        </div>
-    </body>
+        <table id="orderTable"></table>
+    </div>
+</body>
 </html>

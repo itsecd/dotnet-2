@@ -47,37 +47,61 @@ function selectAllItems() {
 
 function changeOrder() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "rest/customers/");
+    xhttp.open("GET", "../api/Customer/");
     xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         for (let i = 0; i < customers.length; i++) {
-            if(customers[i].customerID == document.getElementById('updateCustomerChoose').value){
+            if(customers[i].customerId == document.getElementById('updateCustomerChoose').value){
                 let CustomerToUpdate = {
-                    customerID: customers[i].customerID,
+                    customerId: customers[i].customerId,
                     name: customers[i].name,
-                    phoneNumber: customers[i].phoneNumber,
+                    phone: customers[i].phoneNumber,
                     address: customers[i].address
                 };
                 var id = document.getElementById('updateOrderChoose').value
-                var itemToUpdate = {
-                    customer: CustomerToUpdate,
-                    orderDate: document.getElementById('updateDate').value,
-                    orderPrice: document.getElementById('updatePrice').value
-                };
-                var itemToUpdateJson = JSON.stringify(itemToUpdate);
-                var xhttpPut = new XMLHttpRequest();
-                xhttpPut.open('PUT', 'rest/orders/' + id);
-                xhttpPut.setRequestHeader('Content-Type', 'application/json');
-                xhttpPut.onload = function() {
-                    selectAllItems();
-                    getOrdersToChange();
+
+                var xhttpGetProducts = new XMLHttpRequest();
+                xhttpGetProducts.open("GET", "../api/Order/" + id + "/products");
+                xhttpGetProducts.onload = function () {
+                    var itemToUpdate = {
+                        customer: CustomerToUpdate,
+                        status: document.getElementById('updateStatus').value,
+                        date: document.getElementById('updateDate').value,
+                        products: JSON.parse(xhttpGetProducts.responseText)
+                    };
+                    var itemToUpdateJson = JSON.stringify(itemToUpdate);
+                    var xhttpPut = new XMLHttpRequest();
+                    xhttpPut.open('PUT', '../api/Order/' + id);
+                    xhttpPut.setRequestHeader('Content-Type', 'application/json');
+                    xhttpPut.onload = function () {
+                        selectAllItems();
+                        getOrdersToChange();
+                    }
+                    xhttpPut.send(itemToUpdateJson);
                 }
-                xhttpPut.send(itemToUpdateJson);
+                xhttpGetProducts.send();
             }
         }
     }
     xhttp.send();
 }
+
+function changeOrderStatus() {
+    var id = document.getElementById('updateOrderStatusChoose').value
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("PATCH", "../api/Order/" + id);
+    var itemToUpdate = {
+        status: document.getElementById('statusToUpdate').value
+    };
+    var itemToUpdateJson = JSON.stringify(itemToUpdate);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.onload = function () {
+        selectAllItems();
+        getOrdersToChangeStatus();
+    }
+    xhttp.send(itemToUpdateJson);
+}
+
 
 function deleteOrder() {
     var id = document.getElementById('deleteChoose').value;
@@ -108,7 +132,7 @@ function getCustomersToChange() {
         let rows = '';
         for (let i = 0; i < customers.length; i++) {
             rows +=
-                "<option value = " + customers[i].customerID + ">" +
+                "<option value = " + customers[i].customerId + ">" +
                 customers[i].name + "</option>";
         }
         document.getElementById("updateCustomerChoose").innerHTML = rows;
@@ -128,6 +152,23 @@ function getOrdersToChange() {
                 orders[i].orderId + "</option>";
         }
         document.getElementById("updateOrderChoose").innerHTML = rows;
+    }
+    xhttp.send();
+}
+
+
+function getOrdersToChangeStatus() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "../api/Order/");
+    xhttp.onload = function () {
+        var orders = JSON.parse(xhttp.responseText);
+        let rows = '';
+        for (let i = 0; i < orders.length; i++) {
+            rows +=
+                "<option value = " + orders[i].orderId + ">" +
+                orders[i].orderId + "</option>";
+        }
+        document.getElementById("updateOrderStatusChoose").innerHTML = rows;
     }
     xhttp.send();
 }

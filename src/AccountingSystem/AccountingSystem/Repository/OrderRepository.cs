@@ -35,8 +35,16 @@ namespace AccountingSystem.Repository
 
         public int GetCountProductMonthly()
         {
-            IList<Order> validateOrder = NHibernateSession.OpenSession().Query<Order>().Where(f => f.Date.AddDays(30) > DateTime.Today).ToList();
-            return validateOrder.Sum(f => f.Products.Count);
+            ICriteria criteria = NHibernateSession.OpenSession().CreateCriteria<Order>();
+            List<Order> monthlyOrder = new List<Order>();
+            foreach (Order order in criteria.List<Order>())
+            {
+                if (DateTime.Today < order.Date.AddDays(30))
+                {
+                    monthlyOrder.Add(order);
+                }
+            }
+            return monthlyOrder.Sum(f => f.Products.Count);
         }
 
         public int AddOrder(Order order)
@@ -61,7 +69,7 @@ namespace AccountingSystem.Repository
                 {
                     throw new NotFoundInDatabaseException();
                 }
-                order.Customer = newOrder.Customer;
+                order.Customer = session.Get<Customer>(newOrder.Customer.CustomerId); 
                 order.Price = CalculationPrice(newOrder);
                 order.Status = newOrder.Status;
                 order.Date = newOrder.Date;
