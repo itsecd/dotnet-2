@@ -4,7 +4,7 @@ window.onload = function() {
 
 function selectAllItems() {
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "../api/Order/");
+    xhttp.open("GET", "https://localhost:5002/api/Order/");
 	xhttp.onload = function() {
         var orders = JSON.parse(xhttp.responseText);
         var rows = "<tr>" +

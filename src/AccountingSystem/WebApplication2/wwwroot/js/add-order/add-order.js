@@ -41,7 +41,13 @@ function addOrder() {
                 let xhttpPost = new XMLHttpRequest();
                 xhttpPost.open("POST", "../api/Order/");
                 xhttpPost.onload = function () {
-                    document.location = 'start-order.html';
+                    if (xhttpPost.status == 200) {
+                        document.location = 'start-order.html';
+                    } else {
+                        if (alert("Order don't add")) {
+                            document.location = 'start-order.html';
+                        }
+                    }
                 }
                 xhttpPost.setRequestHeader('Content-Type', 'application/json');
                 xhttpPost.send(itemToInsertJson);

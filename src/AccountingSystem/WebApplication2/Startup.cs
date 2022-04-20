@@ -1,4 +1,3 @@
-using AccountingSystem.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,13 +15,6 @@ namespace WebApplication2
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddControllers();
-        }
-
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -33,13 +25,6 @@ namespace WebApplication2
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
         }
     }
 }
