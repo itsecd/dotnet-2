@@ -47,7 +47,7 @@ function selectAllItems() {
 
 function changeOrder() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Customer/");
+    xhttp.open("GET", "https://localhost:5002/api/Customer/");
     xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         for (let i = 0; i < customers.length; i++) {
@@ -61,7 +61,7 @@ function changeOrder() {
                 var id = document.getElementById('updateOrderChoose').value
 
                 var xhttpGetProducts = new XMLHttpRequest();
-                xhttpGetProducts.open("GET", "../api/Order/" + id + "/products");
+                xhttpGetProducts.open("GET", "https://localhost:5002/api/Order/" + id + "/products");
                 xhttpGetProducts.onload = function () {
                     var itemToUpdate = {
                         customer: CustomerToUpdate,
@@ -71,11 +71,15 @@ function changeOrder() {
                     };
                     var itemToUpdateJson = JSON.stringify(itemToUpdate);
                     var xhttpPut = new XMLHttpRequest();
-                    xhttpPut.open('PUT', '../api/Order/' + id);
+                    xhttpPut.open('PUT', 'https://localhost:5002/api/Order/' + id);
                     xhttpPut.setRequestHeader('Content-Type', 'application/json');
                     xhttpPut.onload = function () {
-                        selectAllItems();
-                        getOrdersToChange();
+                        if (xhttpPut.status == 200) {
+                            selectAllItems();
+                            getOrdersToChange();
+                        } else {
+                            alert("Order don't change");
+                        }
                     }
                     xhttpPut.send(itemToUpdateJson);
                 }
@@ -89,15 +93,19 @@ function changeOrder() {
 function changeOrderStatus() {
     var id = document.getElementById('updateOrderStatusChoose').value
     var xhttp = new XMLHttpRequest();
-    xhttp.open("PATCH", "../api/Order/" + id);
+    xhttp.open("PATCH", "https://localhost:5002/api/Order/" + id);
     var itemToUpdate = {
         status: document.getElementById('statusToUpdate').value
     };
     var itemToUpdateJson = JSON.stringify(itemToUpdate);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onload = function () {
-        selectAllItems();
-        getOrdersToChangeStatus();
+        if (xhttp.status == 200) {
+            selectAllItems();
+            getOrdersToChangeStatus();
+        } else {
+            alert("Order status don't change");
+        }
     }
     xhttp.send(itemToUpdateJson);
 }
@@ -106,7 +114,7 @@ function changeProduct() {
     var idOrder = document.getElementById('updateOrderToProductChoose').value;
     var idProduct = document.getElementById('updateProductChoose').value;
     var xhttp = new XMLHttpRequest();
-    xhttp.open("PATCH", '../api/Order/' + idOrder + '/products/' + idProduct);
+    xhttp.open("PATCH", 'https://localhost:5002/api/Order/' + idOrder + '/products/' + idProduct);
     var itemToUpdate = {
         name: document.getElementById('updateProductName').value,
         price: document.getElementById('updateProductPrice').value,
@@ -115,8 +123,12 @@ function changeProduct() {
     var itemToUpdateJson = JSON.stringify(itemToUpdate);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onload = function () {
-        selectAllItems();
-        getProductsIdToUpdateProduct();
+        if (xhttp.status == 200) {
+            selectAllItems();
+            getProductsIdToUpdateProduct();
+        } else {
+            alert("Product don't change");
+        }
     }
     xhttp.send(itemToUpdateJson);
 }
@@ -125,10 +137,14 @@ function changeProduct() {
 function deleteOrder() {
     var id = document.getElementById('deleteChoose').value;
     var xhttp = new XMLHttpRequest();
-    xhttp.open('DELETE', '../api/Order/' + id);
-    xhttp.onload = function() {
-        selectAllItems();
-        getOrdersToDelete();
+    xhttp.open('DELETE', 'https://localhost:5002/api/Order/' + id);
+    xhttp.onload = function () {
+        if (xhttp.status == 200) {
+            selectAllItems();
+            getOrdersToDelete();
+        } else {
+            alert("Order don't delete");
+        }
     }
     xhttp.send();
 }
@@ -137,17 +153,22 @@ function deleteProduct() {
     var idOrder = document.getElementById('deleteOrderChoose').value;
     var idProduct = document.getElementById('deleteProductChoose').value;
     var xhttp = new XMLHttpRequest();
-    xhttp.open('DELETE', '../api/Order/' + idOrder + '/products/' + idProduct);
+    xhttp.open('DELETE', 'https://localhost:5002/api/Order/' + idOrder + '/products/' + idProduct);
     xhttp.onload = function () {
-        selectAllItems();
-        getProductsIdToDeleteProduct();
+        if (xhttp.status == 200) {
+            selectAllItems();
+            getProductsIdToDeleteProduct();
+        } else {
+            alert("Product don't delete");
+        }
+
     }
     xhttp.send();
 }
 
 function getAllPrice() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open('GET', '../api/Order/all-price');
+    xhttp.open('GET', 'https://localhost:5002/api/Order/all-price');
     xhttp.onload = function () {
         alert("All Price Orders is " + xhttp.responseText)
     }
@@ -156,7 +177,7 @@ function getAllPrice() {
 
 function getCountProductMonthly() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open('GET', '../api/Order/products-monthly');
+    xhttp.open('GET', 'https://localhost:5002/api/Order/products-monthly');
     xhttp.onload = function () {
         alert("All Count Products By Order Monthly is " + xhttp.responseText)
     }
@@ -165,7 +186,7 @@ function getCountProductMonthly() {
 
 function getCustomersToChange() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Customer/");
+    xhttp.open("GET", "https://localhost:5002/api/Customer/");
     xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         let rows = '';
@@ -181,7 +202,7 @@ function getCustomersToChange() {
 
 function getOrdersToChange() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Order/");
+    xhttp.open("GET", "https://localhost:5002/api/Order/");
     xhttp.onload = function() {
         var orders = JSON.parse(xhttp.responseText);
         let rows = '';
@@ -198,7 +219,7 @@ function getOrdersToChange() {
 
 function getOrdersToChangeStatus() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Order/");
+    xhttp.open("GET", "https://localhost:5002/api/Order/");
     xhttp.onload = function () {
         var orders = JSON.parse(xhttp.responseText);
         let rows = '';
@@ -214,7 +235,7 @@ function getOrdersToChangeStatus() {
 
 function getOrdersToDelete() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Order/");
+    xhttp.open("GET", "https://localhost:5002/api/Order/");
     xhttp.onload = function() {
         var orders = JSON.parse(xhttp.responseText);
         let rows = '';
@@ -230,7 +251,7 @@ function getOrdersToDelete() {
 
 function getOrdersToDeleteProduct() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Order/");
+    xhttp.open("GET", "https://localhost:5002/api/Order/");
     xhttp.onload = function () {
         var orders = JSON.parse(xhttp.responseText);
         let rows = '<option>--</option>';
@@ -247,7 +268,7 @@ function getOrdersToDeleteProduct() {
 
 function getProductsIdToDeleteProduct() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Order/" + document.getElementById("deleteOrderChoose").value + "/products");
+    xhttp.open("GET", "https://localhost:5002/api/Order/" + document.getElementById("deleteOrderChoose").value + "/products");
     xhttp.onload = function () {
         var products = JSON.parse(xhttp.responseText);
         let rows = '';
@@ -263,7 +284,7 @@ function getProductsIdToDeleteProduct() {
 
 function getOrdersToUpdateProduct() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Order/");
+    xhttp.open("GET", "https://localhost:5002/api/Order/");
     xhttp.onload = function () {
         var orders = JSON.parse(xhttp.responseText);
         let rows = '<option>--</option>';
@@ -281,7 +302,7 @@ function getOrdersToUpdateProduct() {
 
 function getProductsIdToUpdateProduct() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Order/" + document.getElementById("updateOrderToProductChoose").value + "/products");
+    xhttp.open("GET", "https://localhost:5002/api/Order/" + document.getElementById("updateOrderToProductChoose").value + "/products");
     xhttp.onload = function () {
         var products = JSON.parse(xhttp.responseText);
         let rows = '';

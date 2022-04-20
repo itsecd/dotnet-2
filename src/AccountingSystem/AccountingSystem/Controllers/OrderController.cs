@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Exeption;
 using AccountingSystem.Model;
 using AccountingSystem.Repository;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace AccountingSystem.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("Order")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _repository;

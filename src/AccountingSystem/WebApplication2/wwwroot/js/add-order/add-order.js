@@ -4,7 +4,7 @@ window.onload = function() {
 
 function getCustomers() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Customer/");
+    xhttp.open("GET", "https://localhost:5002/api/Customer/");
     xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         let rows = '';
@@ -20,7 +20,7 @@ function getCustomers() {
 
 function addOrder() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Customer");
+    xhttp.open("GET", "https://localhost:5002/api/Customer");
     xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         for (let i = 0; i < customers.length; i++) {
@@ -39,12 +39,12 @@ function addOrder() {
                 };
                 let itemToInsertJson = JSON.stringify(itemToInsert);
                 let xhttpPost = new XMLHttpRequest();
-                xhttpPost.open("POST", "../api/Order/");
+                xhttpPost.open("POST", "https://localhost:5002/api/Order/");
                 xhttpPost.onload = function () {
                     if (xhttpPost.status == 200) {
                         document.location = 'start-order.html';
                     } else {
-                        if (alert("Order don't add")) {
+                        if (confirm("Order don't add. Close?")) {
                             document.location = 'start-order.html';
                         }
                     }
@@ -59,7 +59,7 @@ function addOrder() {
 
 function addOrderAndProduct() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Customer");
+    xhttp.open("GET", "https://localhost:5002/api/Customer");
     xhttp.onload = function () {
         var customers = JSON.parse(xhttp.responseText);
         for (let i = 0; i < customers.length; i++) {
@@ -78,9 +78,15 @@ function addOrderAndProduct() {
                 };
                 let itemToInsertJson = JSON.stringify(itemToInsert);
                 let xhttpPost = new XMLHttpRequest();
-                xhttpPost.open("POST", "../api/Order/");
+                xhttpPost.open("POST", "https://localhost:5002/api/Order/");
                 xhttpPost.onload = function () {
-                    document.location = 'add-product.html';
+                    if (xhttpPost.status == 200) {
+                        document.location = 'add-product.html';
+                    } else {
+                        if (confirm("Order don't add. Close?")) {
+                            document.location = 'add-product.html';
+                        }
+                    }
                 }
                 xhttpPost.setRequestHeader('Content-Type', 'application/json');
                 xhttpPost.send(itemToInsertJson);

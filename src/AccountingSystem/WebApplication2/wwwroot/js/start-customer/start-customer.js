@@ -4,7 +4,7 @@ window.onload = function() {
 
 function selectAllItems() {
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "../api/Customer/");
+    xhttp.open("GET", "https://localhost:5002/api/Customer/");
 	xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         var rows = "<tr>" +
@@ -36,11 +36,16 @@ function changeCustomer() {
 	};
     var itemToUpdateJson = JSON.stringify(itemToUpdate);
     var xhttp = new XMLHttpRequest();
-    xhttp.open('PUT', '../api/Customer/' + id);
+    xhttp.open('PUT', 'https://localhost:5002/api/Customer/' + id);
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.onload = function() {
-        selectAllItems();
-        getCustomersToChange();
+    xhttp.onload = function () {
+        if (xhttp.status == 200) {
+            selectAllItems();
+            getCustomersToChange();
+        } else {
+            alert("Customer don't change");
+        }
+
     }
     xhttp.send(itemToUpdateJson);
 }
@@ -48,17 +53,21 @@ function changeCustomer() {
 function deleteCustomer() {
     var id = document.getElementById('deleteCustomerChoose').value;
     var xhttp = new XMLHttpRequest();
-    xhttp.open('DELETE', '../api/Customer/' + id);
+    xhttp.open('DELETE', 'https://localhost:5002/api/Customer/' + id);
     xhttp.onload = function() {
-        selectAllItems();
-        getCustomersToDelete();
+        if (xhttp.status == 200) {
+            selectAllItems();
+            getCustomersToDelete();
+        } else {
+            alert("Customer don't delete");
+        }
     }
     xhttp.send();
 }
 
 function getCustomersToChange() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Customer/");
+    xhttp.open("GET", "https://localhost:5002/api/Customer/");
     xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         let rows = '';
@@ -74,7 +83,7 @@ function getCustomersToChange() {
 
 function getCustomersToDelete() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Customer/");
+    xhttp.open("GET", "https://localhost:5002/api/Customer/");
     xhttp.onload = function() {
         var customers = JSON.parse(xhttp.responseText);
         let rows = '';

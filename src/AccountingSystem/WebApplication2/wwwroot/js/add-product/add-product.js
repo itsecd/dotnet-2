@@ -4,7 +4,7 @@ window.onload = function () {
 
 function selectAllProducts() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Order/" + document.getElementById("orderChoose").value + "/products");
+    xhttp.open("GET", "https://localhost:5002/api/Order/" + document.getElementById("orderChoose").value + "/products");
     xhttp.onload = function () {
         var products = JSON.parse(xhttp.responseText);
         var rows = "<tr>" +
@@ -28,7 +28,7 @@ function selectAllProducts() {
 
 function getOrders() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../api/Order/");
+    xhttp.open("GET", "https://localhost:5002/api/Order/");
     xhttp.onload = function () {
         var orders = JSON.parse(xhttp.responseText);
         let rows = '<option>--</option>';
@@ -52,9 +52,13 @@ function addProduct() {
     let itemToInsertJson = JSON.stringify(itemToInsert);
     let xhttp = new XMLHttpRequest();
     xhttp.onload = function () {
-        selectAllProducts();
+        if (xhttp.status == 200) {
+            selectAllProducts();
+        } else {
+            alert("Customer don't add");
+        }
     }
-    xhttp.open("POST", "../api/Order/" + document.getElementById("orderChoose").value + "/products");
+    xhttp.open("POST", "https://localhost:5002/api/Order/" + document.getElementById("orderChoose").value + "/products");
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send(itemToInsertJson);
 }

@@ -8,12 +8,6 @@
     <Folder Include="wwwroot\pages\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="hibernate.cfg.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
