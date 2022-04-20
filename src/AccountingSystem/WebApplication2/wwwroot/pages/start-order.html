@@ -26,7 +26,7 @@
                         <div class="dropdown-content">
                             <a href="#" onclick="getOrdersToChange(); getCustomersToChange(); openChangeOrderPanel(); return false;">Change Order</a>
                             <a href="#" onclick="openChangeOrderStatusPanel(); getOrdersToChangeStatus(); return false;">Change Status</a>
-                            <a href="#" onclick="return false;"> Change Product</a>
+                            <a href="#" onclick="openChangeProductPanel(); getOrdersToUpdateProduct(); return false;"> Change Product</a>
                         </div>
                     </div>
                 </td>
@@ -113,25 +113,28 @@
             </tr>
             <tr>
                 <td colspan="5">
-                    <div id="changeOrder" style="display: none">
-                        <h2>Change Order</h2>
+                    <div id="changeProduct" style="display: none">
+                        <h2>Change Product</h2>
                         <p>Order id:</p>
-                        <select id="updateOrderChoose"></select>
+                        <select id="updateOrderToProductChoose" onchange="if (this.selectedIndex) getProductsIdToUpdateProduct();"></select>
                         <p>
-                        <p>Customer:</p>
-                        <select id="updateCustomerChoose"></select>
+                        <p>Product id:</p>
+                        <select id="updateProductChoose"></select>
                         <p>
-                        <p>Status:</p>
-                        <input type="number" id='updateStatus' />
+                        <p>Name:</p>
+                        <input type="text" id='updateProductName' />
+                        <p>
+                        <p>Price:</p>
+                        <input type="number" id='updateProductPrice' />
                         <p>
                         <p>Date:</p>
-                        <input type="date" id='updateDate' />
+                        <input type="date" id='updateProductDate' />
                         <p>
                         <p>
-                            <button onclick="changeOrder()">Update Item</button>
+                            <button onclick="changeProduct()">Update Item</button>
                         </p>
                         <p>
-                            <button onclick="closeChangeOrderPanel()">Close Panel</button>
+                            <button onclick="closeChangeProductPanel()">Close Panel</button>
                         </p>
                     </div>
                 </td>
@@ -141,7 +144,7 @@
                     <div colspan="4" id="deleteProduct" style="display: none">
                         <h2>Delete Product</h2>
                         <p>Order id:</p>
-                        <select id="deleteOrderChoose" onchange="if (this.selectedIndex) getProductsIDToDeleteProduct();"></select>
+                        <select id="deleteOrderChoose" onchange="if (this.selectedIndex) getProductsIdToDeleteProduct();"></select>
                         <p>
                         <p>Product id:</p>
                         <select id="deleteProductChoose"></select>

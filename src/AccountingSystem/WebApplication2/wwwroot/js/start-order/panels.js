@@ -8,6 +8,17 @@ function closeChangeOrderPanel() {
     document.getElementById("changeOrder").style.display = 'none';
 }
 
+function openChangeProductPanel() {
+    document.getElementById("changeProduct").style.display = "block";
+}
+
+function closeChangeProductPanel() {
+    document.getElementById("updateProductDate").value = "";
+    document.getElementById("updateProductPrice").value = "";
+    document.getElementById("updateProductName").value = "";
+    document.getElementById("changeProduct").style.display = 'none';
+}
+
 function openChangeOrderStatusPanel() {
     document.getElementById("changeOrderStatus").style.display = "block";
 }

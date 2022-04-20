@@ -225,6 +225,26 @@ namespace AccountingSystem.Controllers
             }
         }
 
+        /// <summary>Change Order Status</summary>
+        /// <returns>Order ID</returns>
+        [HttpPatch("{id:int}/products/{productId:int}")]
+        public ActionResult<int> PatchProduct(int id, [FromBody] Product product, int productId)
+        {
+            try
+            {
+                return _repository.ChangeProduct(id, product, productId);
+            }
+            catch (NotFoundInDatabaseException)
+            {
+                return NotFound();
+            }
+            catch
+            {
+                return Problem();
+            }
+
+        }
+
         /// <summary>Delete Product From Order</summary>
         /// <returns>Product ID</returns>
         [HttpDelete("{id:int}/products/{productId:int}")]
