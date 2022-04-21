@@ -7,13 +7,13 @@
 <body>
     <script src="../js/add-order/add-order.js"></script>
     <link rel = "stylesheet" href="../css/style.css">
-    <div name="add-page">
+    <form class="add-page">
         <table>
             <tr>
                 <td colspan="1">Customer:</td>
                 <td colspan="1">
                     <label>
-                        <select id="customerChoose"></select>
+                        <select id="customerChoose" class='field'></select>
                     </label>
                 </td>
             </tr>
@@ -21,7 +21,7 @@
                 <td colspan="1">Status:</td>
                 <td colspan="1">
                     <label>
-                        <input type="number" id='status' maxlength=3 />
+                        <input type="number" id='status' maxlength=3 class='field'/>
                     </label>
                 </td>
             </tr>
@@ -29,19 +29,19 @@
                 <td colspan="1">Date:</td>
                 <td colspan="1">
                     <label>
-                        <input type="date" id='date' />
+                        <input type="date" id='date' class='field'/>
                     </label>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
-                    <button onclick=addOrder();>Add Order</button>
+                    <button type="button" onclick="addOrder();return false;">Add Order</button>
                 </td>
                 <td colspan="1">
-                    <button onclick=addOrderAndProduct();>Add Product To Order</button>
+                    <button type="button" onclick="addOrderAndProduct();return false;">Add Product To Order</button>
                 </td>
             </tr>
         </table>
-    </div>
+    </form>
 </body>
 </html>

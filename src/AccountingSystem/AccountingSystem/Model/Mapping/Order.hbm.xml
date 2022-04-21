@@ -5,7 +5,7 @@
 
     <id name="OrderId" column="ID" generator="native"/>
 
-    <many-to-one name = "Customer" column = "CUSTOMER" cascade ="save-update"/>
+    <many-to-one name = "Customer" column = "CUSTOMER" cascade="none"/>
     <property name="Status" column="STATUS"  />
     <property name="Price" column="PRICE"  />
     <property name="Date" column="ORDER_DATE"  />

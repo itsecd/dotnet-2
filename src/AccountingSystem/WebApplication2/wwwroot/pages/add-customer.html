@@ -7,13 +7,13 @@
 <body>
     <script src="../js/add-customer/add-customer.js"></script>
     <link rel = "stylesheet" href="../css/style.css">
-    <div name="add-page">
+    <form class="add-page">
         <table>
             <tr>
                 <td colspan="1">Name:</td>
                 <td colspan="1">
                     <label>
-                        <input type="text" id='name' maxlength=38 />
+                        <input type="text" id='name' maxlength=38 class='field'/>
                     </label>
                 </td>
             </tr>
@@ -21,7 +21,7 @@
                 <td colspan="1">Phone number:</td>
                 <td colspan="1">
                     <label>
-                        <input type="tel" id='telephone' maxlength=38 />
+                        <input type="tel" id='telephone' maxlength=38 class='field'/>
                     </label>
                 </td>
             </tr>
@@ -29,16 +29,16 @@
                 <td colspan="1">Address:</td>
                 <td colspan="1">
                     <label>
-                        <input type="text" id='address' maxlength=38 />
+                        <input type="text" id='address' maxlength=38 class='field'/>
                     </label>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <button onclick="addCustomer()">Add</button>
+                    <button type="button" onclick="addCustomer();return false;">Add</button>
                 </td>
             </tr>
         </table>
-    </div>
+    </form>
 </body>
 </html>

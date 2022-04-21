@@ -52,6 +52,7 @@ namespace AccountingSystem.Repository
             ISession session = NHibernateSession.OpenSession();
             using (session.BeginTransaction())
             {
+                order.Customer = session.Get<Customer>(order.Customer.CustomerId);
                 order.Price = CalculationPrice(order);
                 session.Save(order);
                 session.GetCurrentTransaction().Commit();

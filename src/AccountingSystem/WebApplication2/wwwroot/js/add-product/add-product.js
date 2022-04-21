@@ -19,7 +19,7 @@ function selectAllProducts() {
                 "<td>" + products[i].productId + "</td>" +
                 "<td>" + products[i].name + "</td>" +
                 "<td>" + products[i].price + "</td>" +
-                "<td>" + products[i].date + "</td></tr > ";
+                "<td>" + new Date(products[i].date).toDateString() + "</td></tr > ";
         }
         document.getElementById("productTable").innerHTML = rows;
     }
@@ -31,7 +31,7 @@ function getOrders() {
     xhttp.open("GET", "https://localhost:5002/api/Order/");
     xhttp.onload = function () {
         var orders = JSON.parse(xhttp.responseText);
-        let rows = '<option>--</option>';
+        let rows = '<option value = "">--</option>';
         for (let i = 0; i < orders.length; i++) {
             rows +=
                 "<option value = " + orders[i].orderId + ">" +
@@ -44,21 +44,48 @@ function getOrders() {
 }
 
 function addProduct() {
-    let itemToInsert = {
-        name: document.getElementById('name').value,
-        price: document.getElementById('price').value,
-        date: document.getElementById('date').value
-    };
-    let itemToInsertJson = JSON.stringify(itemToInsert);
-    let xhttp = new XMLHttpRequest();
-    xhttp.onload = function () {
-        if (xhttp.status == 200) {
-            selectAllProducts();
-        } else {
-            alert("Customer don't add");
+    if (CheckValidationData()) {
+        let itemToInsert = {
+            name: document.getElementById('name').value,
+            price: document.getElementById('price').value,
+            date: document.getElementById('date').value
+        };
+        let itemToInsertJson = JSON.stringify(itemToInsert);
+        let xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            if (xhttp.status == 200) {
+                selectAllProducts();
+            } else {
+                alert("Customer don't add");
+            }
+        }
+        xhttp.open("POST", "https://localhost:5002/api/Order/" + document.getElementById("orderChoose").value + "/products");
+        xhttp.setRequestHeader('Content-Type', 'application/json');
+        xhttp.send(itemToInsertJson);
+    }
+}
+
+function CheckValidationData() {
+    var flag = true;
+
+    var form = document.querySelector('.add-page')
+    var fields = form.querySelectorAll('.field')
+    var errors = form.querySelectorAll('.error')
+
+    for (var i = 0; i < errors.length; i++) {
+        errors[i].remove()
+    }
+
+    for (var i = 0; i < fields.length; i++) {
+        if (!fields[i].value) {
+            var error = document.createElement('div')
+            error.className = 'error'
+            error.style.color = 'red'
+            error.innerHTML = 'Cannot be blank'
+            form[i].parentElement.insertBefore(error, fields[i])
+            flag = false
         }
     }
-    xhttp.open("POST", "https://localhost:5002/api/Order/" + document.getElementById("orderChoose").value + "/products");
-    xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.send(itemToInsertJson);
+
+    return flag
 }

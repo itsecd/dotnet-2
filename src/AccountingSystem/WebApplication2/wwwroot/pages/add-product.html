@@ -7,13 +7,13 @@
 <body>
     <script src="../js/add-product/add-product.js"></script>
     <link rel = "stylesheet" href="../css/style.css">
-    <div name="add-page">
+    <form class="add-page">
         <table>
             <tr>
                 <td colspan="1">Order:</td>
                 <td colspan="1">
                     <label>
-                        <select id="orderChoose" onchange="if (this.selectedIndex) selectAllProducts();"></select>
+                        <select id="orderChoose" onchange="if (this.selectedIndex) selectAllProducts();" class='field'></select>
                     </label>
                 </td>
             </tr>
@@ -21,7 +21,7 @@
                 <td colspan="1">Name:</td>
                 <td colspan="1">
                     <label>
-                        <input type="text" id='name' maxlength=38 />
+                        <input type="text" id='name' maxlength=38 class='field'/>
                     </label>
                 </td>
             </tr>
@@ -29,7 +29,7 @@
                 <td colspan="1">Price:</td>
                 <td colspan="1">
                     <label>
-                        <input type="number" id='price' maxlength=38 />
+                        <input type="number" id='price' min="0" maxlength=38 class='field'/>
                     </label>
                 </td>
             </tr>
@@ -37,23 +37,23 @@
                 <td colspan="1">Date:</td>
                 <td colspan="1">
                     <label>
-                        <input type="date" id='date' maxlength=38 />
+                        <input type="date" id='date' class='field'/>
                     </label>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <button onclick="addProduct()">Add</button>
+                    <button type="button" onclick="addProduct();return false;">Add</button>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <a href="start-order.html"><button>Order Table</button></a>
+                    <button onclick ="location.href = 'start-order.html';return false;" >Order Table</button>
                 </td>
             </tr>
         </table>
 
         <table id="productTable"></table>
-    </div>
+    </form>
 </body>
 </html>

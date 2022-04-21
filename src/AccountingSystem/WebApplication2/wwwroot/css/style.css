@@ -201,3 +201,11 @@ table tr:nth-child(even) {
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
 }
+
+input:invalid {
+    box-shadow: 0 0 5px 1px red;
+}
+
+input:valid {
+    border: 2px solid black;
+}
