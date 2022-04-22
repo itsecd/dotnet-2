@@ -1,44 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
+    <meta charset='UTF-8'>
     <title>Add Customer</title>
 </head>
 <body>
-    <script src="../js/add-order/add-order.js"></script>
-    <link rel = "stylesheet" href="../css/style.css">
-    <form class="add-page">
+    <script src='../js/add-order/add-order.js'></script>
+    <script src='../common/constants.js'></script>
+    <link rel='stylesheet' href='../css/style.css'>
+    <form class='add-page'>
         <table>
             <tr>
-                <td colspan="1">Customer:</td>
-                <td colspan="1">
+                <td colspan='1'>Customer:</td>
+                <td colspan='1'>
                     <label>
-                        <select id="customerChoose" class='field'></select>
+                        <select id='customerChoose' class='field'></select>
                     </label>
                 </td>
             </tr>
             <tr>
-                <td colspan="1">Status:</td>
-                <td colspan="1">
+                <td colspan='1'>Status:</td>
+                <td colspan='1'>
                     <label>
-                        <input type="number" id='status' maxlength=3 class='field'/>
+                        <select id='status' maxlength=3 class='field'></select>
                     </label>
                 </td>
             </tr>
             <tr>
-                <td colspan="1">Date:</td>
-                <td colspan="1">
+                <td colspan='1'>Date:</td>
+                <td colspan='1'>
                     <label>
-                        <input type="date" id='date' class='field'/>
+                        <input type='date' id='date' class='field' />
                     </label>
                 </td>
             </tr>
             <tr>
-                <td colspan="1">
-                    <button type="button" onclick="addOrder();return false;">Add Order</button>
+                <td colspan='1'>
+                    <button type='button' onclick='addOrder();return false;'>Add Order</button>
                 </td>
-                <td colspan="1">
-                    <button type="button" onclick="addOrderAndProduct();return false;">Add Product To Order</button>
+                <td colspan='1'>
+                    <button type='button' onclick='addOrderAndProduct();return false;'>Add Product To Order</button>
                 </td>
             </tr>
         </table>

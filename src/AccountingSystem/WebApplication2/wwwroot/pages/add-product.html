@@ -1,59 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
+    <meta charset='UTF-8'>
     <title>Add Product</title>
 </head>
 <body>
-    <script src="../js/add-product/add-product.js"></script>
-    <link rel = "stylesheet" href="../css/style.css">
-    <form class="add-page">
+    <script src='../js/add-product/add-product.js'></script>
+    <script src='../common/constants.js'></script>
+    <link rel='stylesheet' href='../css/style.css'>
+    <form class='add-page'>
         <table>
             <tr>
-                <td colspan="1">Order:</td>
-                <td colspan="1">
+                <td colspan='1'>Order:</td>
+                <td colspan='1'>
                     <label>
-                        <select id="orderChoose" onchange="if (this.selectedIndex) selectAllProducts();" class='field'></select>
+                        <select id='orderChoose' onchange='if (this.selectedIndex) selectAllProducts();' class='field'></select>
                     </label>
                 </td>
             </tr>
             <tr>
-                <td colspan="1">Name:</td>
-                <td colspan="1">
+                <td colspan='1'>Name:</td>
+                <td colspan='1'>
                     <label>
-                        <input type="text" id='name' maxlength=38 class='field'/>
+                        <input type='text' id='name' maxlength=38 class='field' />
                     </label>
                 </td>
             </tr>
             <tr>
-                <td colspan="1">Price:</td>
-                <td colspan="1">
+                <td colspan='1'>Price:</td>
+                <td colspan='1'>
                     <label>
-                        <input type="number" id='price' min="0" maxlength=38 class='field'/>
+                        <input type='number' id='price' onkeyup='if(this.value<0)this.value=0-this.value' min='0' maxlength=38 class='field' />
                     </label>
                 </td>
             </tr>
             <tr>
-                <td colspan="1">Date:</td>
-                <td colspan="1">
+                <td colspan='1'>Date:</td>
+                <td colspan='1'>
                     <label>
-                        <input type="date" id='date' class='field'/>
+                        <input type='date' id='date' class='field' />
                     </label>
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
-                    <button type="button" onclick="addProduct();return false;">Add</button>
+                <td colspan='2'>
+                    <button type='button' onclick='addProduct();return false;'>Add</button>
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
-                    <button onclick ="location.href = 'start-order.html';return false;" >Order Table</button>
+                <td colspan='2'>
+                    <button onclick='location.href = "start-order.html";return false;'>Order Table</button>
                 </td>
             </tr>
         </table>
 
-        <table id="productTable"></table>
+        <table id='productTable'></table>
     </form>
 </body>
 </html>

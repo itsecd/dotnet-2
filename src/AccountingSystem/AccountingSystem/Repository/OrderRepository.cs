@@ -170,6 +170,7 @@ namespace AccountingSystem.Repository
                     product.Name = newProduct.Name;
                     product.Price = newProduct.Price;
                     product.Date = newProduct.Date;
+                    order.Price = CalculationPrice(order);
                     using (session.BeginTransaction())
                     {
                         session.Save(order);
@@ -197,6 +198,7 @@ namespace AccountingSystem.Repository
                     using (session.BeginTransaction())
                     {
                         order.Products.Remove(product);
+                        order.Price = CalculationPrice(order);
                         session.Save(order);
                         session.GetCurrentTransaction().Commit();
                     }

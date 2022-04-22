@@ -1,43 +1,44 @@
 window.onload = function () {
     getOrders();
+    document.getElementById('date').valueAsDate = new Date();
 }
 
 function selectAllProducts() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://localhost:5002/api/Order/" + document.getElementById("orderChoose").value + "/products");
+    const xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url + 'api/Order/' + document.getElementById('orderChoose').value + '/products');
     xhttp.onload = function () {
-        var products = JSON.parse(xhttp.responseText);
-        var rows = "<tr>" +
-            "<td>" + 'ID' + "</td>" +
-            "<td>" + 'Name' + "</td>" +
-            "<td>" + 'Price' + "</td>" +
-            "<td>" + 'Date' + "</td>" +
-            "</tr>";
+        const products = JSON.parse(xhttp.responseText);
+        let rows = '<tr>' +
+            '<td>' + 'ID' + '</td>' +
+            '<td>' + 'Name' + '</td>' +
+            '<td>' + 'Price' + '</td>' +
+            '<td>' + 'Date' + '</td>' +
+            '</tr>';
         for (i = 0; i < products.length; i++) {
             rows +=
-                "<tr>" +
-                "<td>" + products[i].productId + "</td>" +
-                "<td>" + products[i].name + "</td>" +
-                "<td>" + products[i].price + "</td>" +
-                "<td>" + new Date(products[i].date).toDateString() + "</td></tr > ";
+                '<tr>' +
+                '<td>' + products[i].productId + '</td>' +
+                '<td>' + products[i].name + '</td>' +
+                '<td>' + products[i].price + '</td>' +
+                '<td>' + new Date(products[i].date).toDateString() + '</td></tr > ';
         }
-        document.getElementById("productTable").innerHTML = rows;
+        document.getElementById('productTable').innerHTML = rows;
     }
     xhttp.send();
 }
 
 function getOrders() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://localhost:5002/api/Order/");
+    const xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url + 'api/Order/');
     xhttp.onload = function () {
-        var orders = JSON.parse(xhttp.responseText);
-        let rows = '<option value = "">--</option>';
+        const orders = JSON.parse(xhttp.responseText);
+        let rows = "<option value = ''>--</option>";
         for (let i = 0; i < orders.length; i++) {
             rows +=
-                "<option value = " + orders[i].orderId + ">" +
-            orders[i].orderId + "</option>";
+                '<option value = ' + orders[i].orderId + '>' +
+                orders[i].customer.name + '(' + new Date(orders[i].date).toDateString() + ')' + '</option>';
         }
-        document.getElementById("orderChoose").innerHTML = rows;
+        document.getElementById('orderChoose').innerHTML = rows;
         selectAllProducts();
     }
     xhttp.send();
@@ -45,47 +46,47 @@ function getOrders() {
 
 function addProduct() {
     if (CheckValidationData()) {
-        let itemToInsert = {
+        const itemToInsert = {
             name: document.getElementById('name').value,
             price: document.getElementById('price').value,
             date: document.getElementById('date').value
         };
-        let itemToInsertJson = JSON.stringify(itemToInsert);
-        let xhttp = new XMLHttpRequest();
+        const itemToInsertJson = JSON.stringify(itemToInsert);
+        const xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
             if (xhttp.status == 200) {
                 selectAllProducts();
             } else {
-                alert("Customer don't add");
+                alert('Customer dont add');
             }
         }
-        xhttp.open("POST", "https://localhost:5002/api/Order/" + document.getElementById("orderChoose").value + "/products");
+        xhttp.open('POST', url + 'api/Order/' + document.getElementById('orderChoose').value + '/products');
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.send(itemToInsertJson);
     }
 }
 
 function CheckValidationData() {
-    var flag = true;
+    let flag = true;
 
-    var form = document.querySelector('.add-page')
-    var fields = form.querySelectorAll('.field')
-    var errors = form.querySelectorAll('.error')
+    const form = document.querySelector('.add-page');
+    const fields = form.querySelectorAll('.field');
+    const errors = form.querySelectorAll('.error');
 
-    for (var i = 0; i < errors.length; i++) {
-        errors[i].remove()
+    for (let i = 0; i < errors.length; i++) {
+        errors[i].remove();
     }
 
-    for (var i = 0; i < fields.length; i++) {
+    for (let i = 0; i < fields.length; i++) {
         if (!fields[i].value) {
-            var error = document.createElement('div')
-            error.className = 'error'
-            error.style.color = 'red'
-            error.innerHTML = 'Cannot be blank'
-            form[i].parentElement.insertBefore(error, fields[i])
-            flag = false
+            const error = document.createElement('div');
+            error.className = 'error';
+            error.style.color = 'red';
+            error.innerHTML = 'Cannot be blank';
+            form[i].parentElement.insertBefore(error, fields[i]);
+            flag = false;
         }
     }
 
-    return flag
+    return flag;
 }

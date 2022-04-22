@@ -1,12 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
-	namespace="AccountingSystem.Model" assembly="AccountingSystem">
-  <class name="Customer" table="CUSTOMERS">
-    <id name="CustomerId" column="ID" generator="native"/>
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<hibernate-mapping xmlns='urn:nhibernate-mapping-2.2'
+	namespace='AccountingSystem.Model' assembly='AccountingSystem'>
+  <class name='Customer' table='CUSTOMERS'>
+    <id name='CustomerId' column='ID' generator='native'/>
     
-    <property name="Name" column="NAME"  />
-    <property name="Phone" column="PHONE"  />
-    <property name="Address" column="ADDRESS"  />
+    <property name='Name' column='NAME'  />
+    <property name='Phone' column='PHONE'  />
+    <property name='Address' column='ADDRESS'  />
     
   </class>
 </hibernate-mapping>

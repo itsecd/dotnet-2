@@ -1,18 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
-	namespace="AccountingSystem.Model" assembly="AccountingSystem">
-  <class name="Order" table="ORDERS">
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<hibernate-mapping xmlns='urn:nhibernate-mapping-2.2'
+	namespace='AccountingSystem.Model' assembly='AccountingSystem'>
+  <class name='Order' table='ORDERS'>
 
-    <id name="OrderId" column="ID" generator="native"/>
+    <id name='OrderId' column='ID' generator='native'/>
 
-    <many-to-one name = "Customer" column = "CUSTOMER" cascade="none"/>
-    <property name="Status" column="STATUS"  />
-    <property name="Price" column="PRICE"  />
-    <property name="Date" column="ORDER_DATE"  />
-    <list name = "Products" cascade = "all">
-      <key column="ORDER_ID"/>
-      <list-index column = "IDX"/>
-      <one-to-many class="Product" />
+    <many-to-one name = 'Customer' column = 'CUSTOMER' cascade='none'/>
+    <property name='Status' column='STATUS'  />
+    <property name='Price' column='PRICE'  />
+    <property name='Date' column='ORDER_DATE'  />
+    <list name = 'Products' cascade = 'all'>
+      <key column='ORDER_ID'/>
+      <list-index column = 'IDX'/>
+      <one-to-many class='Product' />
     </list>
 
   </class>

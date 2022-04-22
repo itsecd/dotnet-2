@@ -1,13 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
-	namespace="AccountingSystem.Model" assembly="AccountingSystem">
-  <class name="Product" table="PRODUCTS">
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<hibernate-mapping xmlns='urn:nhibernate-mapping-2.2'
+	namespace='AccountingSystem.Model' assembly='AccountingSystem'>
+  <class name='Product' table='PRODUCTS'>
 
-    <id name="ProductId" column="ID" generator="native"/>
+    <id name='ProductId' column='ID' generator='native'/>
     
-    <property name="Name" column="NAME"  />
-    <property name="Price" column="PRICE"  />
-    <property name="Date" column="DATA"  />
+    <property name='Name' column='NAME'  />
+    <property name='Price' column='PRICE'  />
+    <property name='Date' column='DATA'  />
     
     
   </class>

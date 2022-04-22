@@ -1,166 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
+    <meta charset='UTF-8'>
     <title>Accounting System</title>
 </head>
 <body>
-    <script src="../js/start-order/start-order.js"></script>
-    <script src="../js/start-order/panels.js"></script>
-    <link rel="stylesheet" href="../css/style.css">
-    <form class="start-page">
+    <script src='../js/start-order/start-order.js'></script>
+    <script src='../js/start-order/panels.js'></script>
+    <script src='../common/constants.js'></script>
+    <link rel='stylesheet' href='../css/style.css'>
+    <form class='start-page'>
         <table>
             <tr>
-                <td colspan="1">
-                    <div class="dropdown">
-                        <button type="button"  class="dropbtn">Add</button>
-                        <div class="dropdown-content">
+                <td colspan='1'>
+                    <div class='dropdown'>
+                        <button type='button' class='dropbtn'>Add</button>
+                        <div class='dropdown-content'>
                             <a href="add-order.html">Add Order</a>
-                            <a href="add-product.html">Add Product</a>
+                            <a href='add-product.html'>Add Product</a>
                         </div>
                     </div>
                 </td>
-                <td colspan="1">
-                    <div class="dropdown">
-                        <button type="button"  class="dropbtn">Change</button>
-                        <div class="dropdown-content">
-                            <a href="#" onclick="getOrdersToChange(); getCustomersToChange(); openChangeOrderPanel(); return false;">Change Order</a>
-                            <a href="#" onclick="openChangeOrderStatusPanel(); getOrdersToChangeStatus(); return false;">Change Status</a>
-                            <a href="#" onclick="openChangeProductPanel(); getOrdersToUpdateProduct(); return false;"> Change Product</a>
+                <td colspan='1'>
+                    <div class='dropdown'>
+                        <button type='button' class='dropbtn'>Change</button>
+                        <div class='dropdown-content'>
+                            <a href='#' onclick='getOrdersToChange(); getCustomersToChange(); getDateToChangeOrder(); getStatusToChangeOrder(); openChangeOrderPanel(); return false;'>Change Order</a>
+                            <a href='#' onclick='openChangeOrderStatusPanel(); getStatusToChangeStatus(); getOrdersToChangeStatus(); return false;'>Change Status</a>
+                            <a href='#' onclick='openChangeProductPanel(); getDateToChangeProduct(); getOrdersToUpdateProduct(); return false;'> Change Product</a>
                         </div>
                     </div>
                 </td>
-                <td colspan="1">
-                    <div class="dropdown">
-                        <button type="button"  class="dropbtn">Delete</button>
-                        <div class="dropdown-content">
-                            <a href="#" onclick="openDeleteOrderPanel(); getOrdersToDelete(); return false;">Delete Order</a>
-                            <a href="#" onclick="openDeleteProductPanel(); getOrdersToDeleteProduct(); return false;">Delete Product</a>
+                <td colspan='1'>
+                    <div class='dropdown'>
+                        <button type='button' class='dropbtn'>Delete</button>
+                        <div class='dropdown-content'>
+                            <a href='#' onclick='openDeleteOrderPanel(); getOrdersToDelete(); return false;'>Delete Order</a>
+                            <a href='#' onclick='openDeleteProductPanel(); getOrdersToDeleteProduct(); return false;'>Delete Product</a>
                         </div>
                     </div>
                 </td>
-                <td colspan="1">
-                    <div class="dropdown">
-                        <button type="button"  class="dropbtn">Get</button>
-                        <div class="dropdown-content">
-                            <a href="#" onclick="getAllPrice(); return false;">Get All Price</a>
-                            <a href="#" onclick="getCountProductMonthly(); return false;">Count Products Monthly</a>
+                <td colspan='1'>
+                    <div class='dropdown'>
+                        <button type='button' class='dropbtn'>Get</button>
+                        <div class='dropdown-content'>
+                            <a href='#' onclick='getAllPrice(); return false;'>Get All Price</a>
+                            <a href='#' onclick='getCountProductMonthly(); return false;'>Count Products Monthly</a>
                         </div>
                     </div>
                 </td>
-                <td colspan="1">
-                    <button onclick ="location.href = 'start-customer.html';return false;">Customer Table</button>
+                <td colspan='1'>
+                    <button onclick='location.href = "start-customer.html";return false;'>Customer Table</button>
                 </td>
             </tr>
         </table>
         <table>
             <tr>
-                <td colspan="5">
-                    <div id="changeOrder" class="changeOrder" style="display: none">
+                <td colspan='5'>
+                    <div id='changeOrder' class='changeOrder' style='display: none'>
                         <h2>Change Order</h2>
-                        <p>Order id:</p>
-                        <select id="updateOrderChoose" class='field'></select>
+                        <p>Order:</p>
+                        <select id='updateOrderChoose' maxlength=38 class='field'></select>
                         <p>
                         <p>Customer:</p>
-                        <select id="updateCustomerChoose" class='field'></select>
+                        <select id='updateCustomerChoose' maxlength=38 class='field'></select>
                         <p>
                         <p>Status:</p>
-                        <input type="number" id='updateStatus' class='field'/>
+                        <select id='updateStatus' class='field'></select>
                         <p>
                         <p>Date:</p>
-                        <input type="date" id='updateDate' class='field'/>
+                        <input type='date' id='updateDate' maxlength=38 class='field' />
                         <p>
                         <p>
-                            <button type="button" onclick="changeOrder()">Update Item</button>
+                            <button type='button' onclick='changeOrder()'>Update Item</button>
                         </p>
                         <p>
-                            <button type="button" onclick="closeChangeOrderPanel()">Close Panel</button>
+                            <button type='button' onclick='closeChangeOrderPanel()'>Close Panel</button>
                         </p>
                     </div>
                 </td>
             </tr>
             <tr>
-                <td colspan="6">
-                    <div id="changeOrderStatus" class="changeOrderStatus" style="display: none">
+                <td colspan='6'>
+                    <div id='changeOrderStatus' class='changeOrderStatus' style='display: none'>
                         <h2>Change Order Status</h2>
-                        <p>Order id:</p>
-                        <select id="updateOrderStatusChoose" class='field'></select>
+                        <p>Order:</p>
+                        <select id='updateOrderStatusChoose' class='field'></select>
                         <p>
                         <p>Status:</p>
-                        <input type="number" id='statusToUpdate' class='field'/>
+                        <select id='statusToUpdate' class='field'></select>
                         <p>
                         <p>
-                            <button type="button" onclick="changeOrderStatus()">Update Item</button>
+                            <button type='button' onclick='changeOrderStatus()'>Update Item</button>
                         </p>
                         <p>
-                            <button type="button" onclick="closeChangeOrderStatusPanel()">Close Panel</button>
+                            <button type='button' onclick='closeChangeOrderStatusPanel()'>Close Panel</button>
                         </p>
                     </div>
                 </td>
             </tr>
             <tr>
-                <td colspan="5">
-                    <div id="deleteOrder" class="deleteOrder" style="display: none">
+                <td colspan='5'>
+                    <div id='deleteOrder' class='deleteOrder' style='display: none'>
                         <h2>Delete Order</h2>
-                        <p>Order id:</p>
-                        <select id="deleteChoose" class='field'></select>
+                        <p>Order:</p>
+                        <select id='deleteChoose' class='field'></select>
                         <p>
-                            <button type="button" onclick="deleteOrder()">Delete Item</button>
+                            <button type='button' onclick='deleteOrder()'>Delete Item</button>
                         </p>
                         <p>
-                            <button type="button"onclick="closeDeleteOrderPanel()">Close Panel</button>
+                            <button type='button' onclick='closeDeleteOrderPanel()'>Close Panel</button>
                         </p>
                     </div>
                 </td>
             </tr>
             <tr>
-                <td colspan="5">
-                    <div id="changeProduct" class="changeProduct" style="display: none">
+                <td colspan='5'>
+                    <div id='changeProduct' class='changeProduct' style='display: none'>
                         <h2>Change Product</h2>
-                        <p>Order id:</p>
-                        <select id="updateOrderToProductChoose" onchange="if (this.selectedIndex) getProductsIdToUpdateProduct();" class='field'></select>
+                        <p>Order:</p>
+                        <select id='updateOrderToProductChoose' onchange='if (this.selectedIndex) getProductsIdToUpdateProduct();' class='field'></select>
                         <p>
                         <p>Product id:</p>
-                        <select id="updateProductChoose" class='field'></select>
+                        <select id='updateProductChoose' class='field'></select>
                         <p>
                         <p>Name:</p>
-                        <input type="text" id='updateProductName' class='field'/>
+                        <input type='text' id='updateProductName' maxlength=38 class='field' />
                         <p>
                         <p>Price:</p>
-                        <input type="number" id='updateProductPrice' class='field'/>
+                        <input type='number' id='updateProductPrice' onkeyup='if(this.value<0)this.value=0-this.value' min='0' maxlength=38 class='field' />
                         <p>
                         <p>Date:</p>
-                        <input type="date" id='updateProductDate' class='field'/>
+                        <input type='date' id='updateProductDate' class='field' />
                         <p>
                         <p>
-                            <button type="button" onclick="changeProduct()">Update Item</button>
+                            <button type='button' onclick='changeProduct()'>Update Item</button>
                         </p>
                         <p>
-                            <button type="button" onclick="closeChangeProductPanel()">Close Panel</button>
+                            <button type='button' onclick='closeChangeProductPanel()'>Close Panel</button>
                         </p>
                     </div>
                 </td>
             </tr>
             <tr>
-                <td colspan="5">
-                    <div id="deleteProduct" class="deleteProduct" style="display: none">
+                <td colspan='5'>
+                    <div id='deleteProduct' class='deleteProduct' style='display: none'>
                         <h2>Delete Product</h2>
-                        <p>Order id:</p>
-                        <select id="deleteOrderChoose" onchange="if (this.selectedIndex) getProductsIdToDeleteProduct();" class='field'></select>
+                        <p>Order:</p>
+                        <select id='deleteOrderChoose' onchange='if (this.selectedIndex) getProductsIdToDeleteProduct();' class='field'></select>
                         <p>
                         <p>Product id:</p>
-                        <select id="deleteProductChoose" class='field'></select>
+                        <select id='deleteProductChoose' class='field'></select>
                         <p>
-                            <button type="button" onclick="deleteProduct()">Delete Item</button>
+                            <button type='button' onclick='deleteProduct()'>Delete Item</button>
                         </p>
                         <p>
-                            <button type="button" onclick="closeDeleteProductPanel()">Close Panel</button>
+                            <button type='button' onclick='closeDeleteProductPanel()'>Close Panel</button>
                         </p>
                     </div>
                 </td>
             </tr>
         </table>
-        <table id="orderTable"></table>
+        <table id='orderTable'></table>
     </form>
 </body>
 </html>

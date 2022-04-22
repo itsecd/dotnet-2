@@ -1,46 +1,46 @@
 function openChangeOrderPanel() {
-    document.getElementById("changeOrder").style.display = "block";
+    document.getElementById('changeOrder').style.display = 'block';
 }
 
 function closeChangeOrderPanel() {
-    document.getElementById("updateDate").value = "";
-    document.getElementById("updateStatus").value = "";
-    document.getElementById("changeOrder").style.display = 'none';
+    document.getElementById('updateDate').value = '';
+    document.getElementById('updateStatus').value = '';
+    document.getElementById('changeOrder').style.display = 'none';
 }
 
 function openChangeProductPanel() {
-    document.getElementById("changeProduct").style.display = "block";
+    document.getElementById('changeProduct').style.display = 'block';
 }
 
 function closeChangeProductPanel() {
-    document.getElementById("updateProductDate").value = "";
-    document.getElementById("updateProductPrice").value = "";
-    document.getElementById("updateProductName").value = "";
-    document.getElementById("changeProduct").style.display = 'none';
+    document.getElementById('updateProductDate').value = '';
+    document.getElementById('updateProductPrice').value = '';
+    document.getElementById('updateProductName').value = '';
+    document.getElementById('changeProduct').style.display = 'none';
 }
 
 function openChangeOrderStatusPanel() {
-    document.getElementById("changeOrderStatus").style.display = "block";
+    document.getElementById('changeOrderStatus').style.display = 'block';
 }
 
 function closeChangeOrderStatusPanel() {
-    document.getElementById("statusToUpdate").value = "";
-    document.getElementById("changeOrderStatus").style.display = 'none';
+    document.getElementById('statusToUpdate').value = '';
+    document.getElementById('changeOrderStatus').style.display = 'none';
 }
 
 function openDeleteOrderPanel() {
-    document.getElementById("deleteOrder").style.display = "block";
+    document.getElementById('deleteOrder').style.display = 'block';
 }
 
 function closeDeleteOrderPanel() {
-    document.getElementById("deleteOrder").style.display = "none";
+    document.getElementById('deleteOrder').style.display = 'none';
 }
 
 function openDeleteProductPanel() {
-    document.getElementById("deleteProduct").style.display = "block";
+    document.getElementById('deleteProduct').style.display = 'block';
 }
 
 function closeDeleteProductPanel() {
-    document.getElementById("deleteProduct").style.display = "none";
+    document.getElementById('deleteProduct').style.display = 'none';
 }
 

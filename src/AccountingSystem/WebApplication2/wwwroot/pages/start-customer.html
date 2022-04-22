@@ -1,66 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
+    <meta charset='UTF-8'>
     <title>Customer</title>
 </head>
-    <body>
-    <script src="../js/start-customer/start-customer.js"></script>
-    <script src="../js/start-customer/panels.js"></script>
-    <link rel = "stylesheet" href="../css/style.css">
-        <form class="start-page">
-            <table>
-                <tr>
-                    <td colspan="1">
-                        <button onclick ="location.href = 'add-customer.html';return false;">Add Customer</button>
-                    </td>
-                    <td colspan="1">
-                        <button onclick="openChangePanel(); getCustomersToChange();return false;">Change Customer</button>
-                    </td>
-                    <td colspan="1">
-                        <button onclick="openDeletePanel(); getCustomersToDelete();return false;">Delete Customer</button>
-                    </td>
-                    <td colspan="1">
-                        <button onclick ="location.href = 'start-order.html';return false;">Order Table</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <div id="changeDiv" class="changeDiv" style="display: none">
-                            <h2>Change Customer</h2>
-                            <p>Customer id:</p>
-                            <select id="updateCustomerChoose" class='field'></select>
-                            <p>
-                            <p>Name:</p>
-                            <input id="updateName" type="text" maxlength=40 class='field'/>
-                            <p>
-                            <p>Telephone:</p>
-                            <input id="updatePhone" type="text" maxlength=40 class='field'/>
-                            <p>
-                            <p>Address:</p>
-                            <input id="updateAddress" type="text" maxlength=40 class='field'/>
-                            <p>
-                                <button type="button" onclick="changeCustomer()">Update Item</button>
-                            <p>
-                                <button type="button" onclick="closeChangePanel()">Close Panel</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <div id="deleteDiv" class="deleteDiv" style="display: none">
-                            <h2>Delete Customer</h2>
-                            <p>Customer id:</p>
-                            <select id="deleteCustomerChoose" class='field'></select>
-                            <p>
-                                <button type="button" onclick="deleteCustomer()">Delete Item</button>
-                            <p>
-                                <button type="button" onclick="closeDeletePanel()">Close Panel</button>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <table id="customerTable"></table>
-        </form>
-    </body>
+<body>
+    <script src='../js/start-customer/start-customer.js'></script>
+    <script src='../js/start-customer/panels.js'></script>
+    <script src='../common/constants.js'></script>
+    <link rel='stylesheet' href='../css/style.css'>
+    <form class='start-page'>
+        <table>
+            <tr>
+                <td colspan='1'>
+                    <button onclick='location.href = "add-customer.html";return false;'>Add Customer</button>
+                </td>
+                <td colspan='1'>
+                    <button onclick='openChangePanel(); getCustomersToChange();return false;'>Change Customer</button>
+                </td>
+                <td colspan='1'>
+                    <button onclick='openDeletePanel(); getCustomersToDelete();return false;'>Delete Customer</button>
+                </td>
+                <td colspan='1'>
+                    <button onclick='location.href = "start-order.html";return false;'>Order Table</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='4'>
+                    <div id='changeDiv' class='changeDiv' style='display: none'>
+                        <h2>Change Customer</h2>
+                        <p>Customer id:</p>
+                        <select id='updateCustomerChoose' class='field'></select>
+                        <p>
+                        <p>Name:</p>
+                        <input id='updateName' type='text' maxlength=40 class='field' />
+                        <p>
+                        <p>Telephone:</p>
+                        <input id='updatePhone' type='text' maxlength=40 class='field' />
+                        <p>
+                        <p>Address:</p>
+                        <input id='updateAddress' type='text' maxlength=40 class='field' />
+                        <p>
+                            <button type='button' onclick='changeCustomer()'>Update Item</button>
+                        <p>
+                            <button type='button' onclick='closeChangePanel()'>Close Panel</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='4'>
+                    <div id='deleteDiv' class='deleteDiv' style='display: none'>
+                        <h2>Delete Customer</h2>
+                        <p>Customer id:</p>
+                        <select id='deleteCustomerChoose' class='field'></select>
+                        <p>
+                            <button type='button' onclick='deleteCustomer()'>Delete Item</button>
+                        <p>
+                            <button type='button' onclick='closeDeletePanel()'>Close Panel</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table id='customerTable'></table>
+    </form>
+</body>
 </html>
