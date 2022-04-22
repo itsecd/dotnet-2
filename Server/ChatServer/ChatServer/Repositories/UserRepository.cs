@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -48,5 +49,7 @@ namespace ChatServer.Repositories
 
         }
         public void AddUser(string nameUser) => _users.Add(new User(nameUser, nameUser.GetHashCode()));
+
+        public bool FindUser(string userName) => _users.Where(x => x.Name == userName).Count() == 0;
     }
 }

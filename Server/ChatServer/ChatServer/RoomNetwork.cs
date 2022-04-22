@@ -10,30 +10,20 @@ namespace ChatServer
     [Serializable]
     public class RoomNetwork : IRoomNetwork
     {
-        public ConcurrentBag<User> Users = new();
-        [NonSerialized] public ConcurrentDictionary<string, IServerStreamWriter<Message>> Online  = new();
+        private ConcurrentBag<User> _users { get; set; } = new();
+        [NonSerialized] private ConcurrentDictionary<string, IServerStreamWriter<Message>> _online  = new();
         //public ConcurrentBag<User> User 
         public ConcurrentDictionary<DateTime, Message> History { get; set; } = new();
 
-        //добавление
         public void AddUser(string name) {
-            Users.Add(new User(name, name.GetHashCode()));
+            _users.Add(new User(name, name.GetHashCode()));
         }
-        public ConcurrentBag<User> GetUsers() => Users;
-        public void Join(string name, IServerStreamWriter<Message> responce)
+        public ConcurrentBag<User> GetUsers() => _users;
+        public void Join(string name, IServerStreamWriter<Message> responce) => _online.TryAdd(name, responce);
+       
+        public void Disconnect(string name)
         {
-            Online.TryAdd(name, responce);
-            if (Users.Where(x => x.Name == name).Count() != 0)
-                Users.Add(new User(name, name.GetHashCode() - 100000));
-
-
-        }
-
-
-        //удаление 
-        public void Remove(string name)
-        {
-            Online.TryRemove(name, out _);
+            _online.TryRemove(name, out _);
         }
 
 
@@ -42,8 +32,10 @@ namespace ChatServer
             History.TryAdd(DateTime.Now, message);
             foreach (var user in GetUsers().Where(x => x.Name != name))
             {
-                await Online[name].WriteAsync(message);
+                await _online[user.Name].WriteAsync(message);
             }
         }
+
+        public bool FindUser(string userName) => _users.Where(x => x.Name == userName).Count() == 0;
     }
 }

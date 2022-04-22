@@ -9,5 +9,7 @@ namespace ChatServer.Repositories
         void ReadFile();
         Task WriteAsync();
         void WriteToFile();
+
+        public bool FindUser(string userName);
     }
 }

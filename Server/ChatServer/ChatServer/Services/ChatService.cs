@@ -25,51 +25,80 @@ namespace ChatServer.Services
         public override async Task Create(IAsyncStreamReader<Message> requestStream, IServerStreamWriter<Message> responseStream, ServerCallContext context)
         {
             if (!await requestStream.MoveNext()) return;
-
-            if (_chatRooms.IsRoomExists(requestStream.Current.Text))
+            var userName = requestStream.Current.User;
+            if (requestStream.Current.Command == "create")
             {
-                await responseStream.WriteAsync(new Message { Text = "Данная комната существует!" });
-                return;
+                if (_chatRooms.IsRoomExists(requestStream.Current.Text))
+                {
+                    await responseStream.WriteAsync(new Message { Text = "Данная комната существует!" });
+                    return;
+                }
+                else
+                {
+                    var nameRoom = _chatRooms.AddRoom(requestStream.Current.Text, new RoomNetwork());
+                    var room = _chatRooms.FindRoom(nameRoom);
+                    _users.AddUser(userName);
+                    room.Join(userName, responseStream);
+                    room.AddUser(userName);
+                    _chatRooms.WriteToFile();
+                    await _users.WriteAsync();
+                    await responseStream.WriteAsync(new Message { Text = requestStream.Current.Text });
+                    await requestStream.MoveNext();
+                }
             }
-            else 
+            else
             {
-                var nameRoom = _chatRooms.AddRoom(requestStream.Current.Text, new RoomNetwork());
-                _users.AddUser(requestStream.Current.User);
-                _chatRooms.FindRoom(requestStream.Current.Text).Online.TryAdd(requestStream.Current.User, responseStream);
-                _chatRooms.FindRoom(requestStream.Current.Text).AddUser(requestStream.Current.User);
-                _chatRooms.WriteToFile();
-                await _users.WriteAsync();
-                await responseStream.WriteAsync(new Message { Text = requestStream.Current.Text });
-                await requestStream.MoveNext();
+                await responseStream.WriteAsync(new Message { Text = "Неверная команда!" });
+                return;            
             }
-            
-
-
             
         }
 
         public override async Task Join(IAsyncStreamReader<Message> requestStream, IServerStreamWriter<Message> responseStream, ServerCallContext context)
         {
+            
             if (!await requestStream.MoveNext()) return;
-
-            if (_chatRooms.IsRoomExists(requestStream.Current.Text))
+            var nameRoom = requestStream.Current.Text;
+            var userName = requestStream.Current.User;
+            if (_chatRooms.IsRoomExists(nameRoom))
             {
-                await _chatRooms.ReadAsync(requestStream.Current.Text);
-                _chatRooms.FindRoom(requestStream.Current.Text).Online.TryAdd(requestStream.Current.User, responseStream);
-                if (_chatRooms.FindRoom(requestStream.Current.Text).Users.Where(x => x.Name == requestStream.Current.User).Count() == 0)
-                    _chatRooms.FindRoom(requestStream.Current.Text).AddUser(requestStream.Current.User);
+                
+                await _users.ReadAsync();
+                await _chatRooms.ReadAsync(nameRoom);
+                var room = _chatRooms.FindRoom(nameRoom);
+
+                room.Join(userName, responseStream);
+
+                if (room.FindUser(userName))
+                    room.AddUser(userName);
+                
+                if (_users.FindUser(userName))
+                    _users.AddUser(userName);
+                await _users.WriteAsync();
             }
             do
             {
-                var CurrentMessage = requestStream.Current;
-                var nameRoom = CurrentMessage.Text;
-                _chatRooms.FindRoom(nameRoom).Join(requestStream.Current.User, responseStream);
-                var room = _chatRooms.FindRoom(nameRoom);
-                await room.BroadcastMessage(CurrentMessage);
-                _chatRooms.FindRoom(nameRoom).History.TryAdd(DateTime.Now, new Message { User = requestStream.Current.User, Text = requestStream.Current.Text });
-                   
+                switch (requestStream.Current.Command) {
+                    case "message":
+                        var CurrentMessage = requestStream.Current;
+                        var room = _chatRooms.FindRoom(nameRoom);
+                        await room.BroadcastMessage(CurrentMessage, userName);
+                        break;
+                    //case "disconnect":
+                    //    _chatRooms.FindRoom(nameRoom).Disconnect(requestStream.Current.User);
+                    //    await responseStream.WriteAsync(new Message { Text= $"Пользователь {requestStream.Current.User} отключился!" });
+                    //    break;
+                    default:
+                        Console.WriteLine(requestStream.Current);
+                         break;
+                }
+
+
+                await _chatRooms.WriteAsync();
+               
             }
             while (await requestStream.MoveNext());
+            
         }
     }
 }

@@ -1,0 +1,44 @@
+{
+  "History": {
+    "2022-04-22T18:57:56.0232078+04:00": {
+      "User": "Dima",
+      "Text": "Fine",
+      "Command": "message"
+    },
+    "2022-04-22T18:57:16.2455256+04:00": {
+      "User": "Roman",
+      "Text": "How are you?",
+      "Command": "message"
+    },
+    "2022-04-22T19:27:11.2641551+04:00": {
+      "User": "Dima",
+      "Text": "Pochemu ya ki9kk online?",
+      "Command": "message"
+    },
+    "2022-04-22T18:55:41.8172648+04:00": {
+      "User": "Dima",
+      "Text": "NewRm",
+      "Command": "message"
+    },
+    "2022-04-22T18:54:28.1107789+04:00": {
+      "User": "Roman",
+      "Text": "NeRoom",
+      "Command": "message"
+    },
+    "2022-04-22T19:00:11.5749293+04:00": {
+      "User": "Pasha",
+      "Text": "Privet, slavyane!",
+      "Command": "message"
+    },
+    "2022-04-22T20:13:31.6358433+04:00": {
+      "User": "Goshik",
+      "Text": "noij-etyhj",
+      "Command": "message"
+    },
+    "2022-04-22T19:15:10.7399855+04:00": {
+      "User": "Dima",
+      "Text": "Pochemu ya ne online?",
+      "Command": "message"
+    }
+  }
+}

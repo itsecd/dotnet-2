@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ChatServer.Converters;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -36,8 +37,15 @@ namespace ChatServer.Repositories
         {
             if (IsRoomExists(nameRoom))
             {
-                using FileStream stream = File.Open(nameRoom + ".json", FileMode.Open);
-                _current[nameRoom] = await JsonSerializer.DeserializeAsync<RoomNetwork>(stream);
+                await using var stream = File.Open(nameRoom + ".json", FileMode.Open);
+                var serializeOptions = new JsonSerializerOptions
+                {
+                    Converters =
+                    {
+                        new UsersBagJsonConverter()
+                    }
+                };
+                _current[nameRoom] = await JsonSerializer.DeserializeAsync<RoomNetwork>(stream, serializeOptions);
                 await stream.DisposeAsync();
             }
 

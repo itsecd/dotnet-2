@@ -7,6 +7,8 @@ namespace ChatServer
     {
         Task BroadcastMessage(Message message, string name = null);
         void Join(string name, IServerStreamWriter<Message> responce);
-        void Remove(string name);
+        void Disconnect(string name);
+
+        public bool FindUser(string userName);
     }
 }
