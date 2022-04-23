@@ -8,8 +8,6 @@ using Telegram.Bot.Types;
 
 namespace TelegramBotServer.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class WebhookController : ControllerBase
     {
 
