@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Telegram.Bot;
 
 namespace TelegramBotServer
 {
@@ -27,12 +28,16 @@ namespace TelegramBotServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient("telegram")
+               .AddTypedClient<ITelegramBotClient>(httpClient
+                   => new TelegramBotClient(Configuration["BotToken"], httpClient));
+
             services.AddTransient<IStartupTask, SetWebHookTask>();
-            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TelegramBotServer", Version = "v1" });
             });
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,11 +50,13 @@ namespace TelegramBotServer
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TelegramBotServer v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseCors();
+
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
