@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using TelegramBotServer.Services;
 
 namespace TelegramBotServer.Controllers
 {
@@ -14,14 +15,9 @@ namespace TelegramBotServer.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromServices] ITelegramBotClient bot, [FromBody] Update update)
+        public async Task<IActionResult> Post([FromServices] CommandHandlerService commandHandler, [FromBody] Update update)
         {
-            var cns = new CancellationToken();
-
-            Message message = await bot.SendTextMessageAsync(
-                chatId: update.Message.Chat.Id,
-                text: "Hello, World!",
-                cancellationToken: cns);
+            await commandHandler.ProcessUpdate(update);
             return Ok();
         }
     }
