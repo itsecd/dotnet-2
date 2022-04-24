@@ -92,10 +92,10 @@ namespace ChatServer.Services
                         var room = _chatRooms.FindRoom(nameRoom);
                         await room.BroadcastMessage(CurrentMessage, userName);
                         break;
-                    //case "disconnect":
-                    //    _chatRooms.FindRoom(nameRoom).Disconnect(requestStream.Current.User);
-                    //    await responseStream.WriteAsync(new Message { Text= $"Пользователь {requestStream.Current.User} отключился!" });
-                    //    break;
+                    case "disconnect":
+                        _chatRooms.FindRoom(nameRoom).Disconnect(requestStream.Current.User);
+                        await responseStream.WriteAsync(new Message { Text = $"Пользователь {requestStream.Current.User} отключился!" });
+                        break;
                     default:
                         Console.WriteLine(requestStream.Current);
                          break;
