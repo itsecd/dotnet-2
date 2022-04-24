@@ -17,7 +17,7 @@ namespace TelegramBotServer.Repository
         
         public XmlEventRepository(IConfiguration config)
         {
-            _filePath = config["XmlDatabaseFile"];
+            _filePath = config["XmlEventDatabaseFile"];
         }
 
         public int AddEvent(Event newEvent)

@@ -8,7 +8,7 @@ namespace TelegramBotServer.Model
     public class Event
     {
         public int Id { get; set; }
-        public Subscriber Subscriber { get; set; }
+        public int SubscriberId { get; set; }
         public DateTime Deadline { get; set; }
     }
 }
