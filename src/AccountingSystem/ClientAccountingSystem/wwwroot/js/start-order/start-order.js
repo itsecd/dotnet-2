@@ -30,7 +30,7 @@ function selectAllItems() {
                 '<td>' + orders[i].price + '</td>' +
                 '<td>' + orders[i].status + '</td>' +
                 '<td>' + new Date(orders[i].date).toDateString() + '</td>';
-            rows += '<td><table>'
+            rows += '<td><table>';
             for (j = 0; j < orders[i].products.length; j++) {
                 rows +=
                     '<tr>' +
@@ -60,7 +60,7 @@ function changeOrder() {
                         phone: customers[i].phoneNumber,
                         address: customers[i].address
                     };
-                    const id = document.getElementById('updateOrderChoose').value
+                    const id = document.getElementById('updateOrderChoose').value;
 
                     const xhttpGetProducts = new XMLHttpRequest();
                     xhttpGetProducts.open('GET', url + 'api/Order/' + id + '/products');
@@ -76,7 +76,7 @@ function changeOrder() {
                         xhttpPut.open('PUT', url + 'api/Order/' + id);
                         xhttpPut.setRequestHeader('Content-Type', 'application/json');
                         xhttpPut.onload = function () {
-                            if (xhttpPut.status == 200) {
+                            if (xhttpPut.status === 200) {
                                 selectAllItems();
                                 getOrdersToChange();
                             } else {
@@ -95,7 +95,7 @@ function changeOrder() {
 
 function changeOrderStatus() {
     if (CheckValidationData('.changeOrderStatus')) {
-        const id = document.getElementById('updateOrderStatusChoose').value
+        const id = document.getElementById('updateOrderStatusChoose').value;
         const xhttp = new XMLHttpRequest();
         xhttp.open('PATCH', url + 'api/Order/' + id);
         const itemToUpdate = {
@@ -104,7 +104,7 @@ function changeOrderStatus() {
         const itemToUpdateJson = JSON.stringify(itemToUpdate);
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.onload = function () {
-            if (xhttp.status == 200) {
+            if (xhttp.status === 200) {
                 selectAllItems();
                 getOrdersToChangeStatus();
             } else {
@@ -129,7 +129,7 @@ function changeProduct() {
         const itemToUpdateJson = JSON.stringify(itemToUpdate);
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.onload = function () {
-            if (xhttp.status == 200) {
+            if (xhttp.status === 200) {
                 selectAllItems();
                 getProductsIdToUpdateProduct();
             } else {
@@ -147,7 +147,7 @@ function deleteOrder() {
         const xhttp = new XMLHttpRequest();
         xhttp.open('DELETE', url + 'api/Order/' + id);
         xhttp.onload = function () {
-            if (xhttp.status == 200) {
+            if (xhttp.status === 200) {
                 selectAllItems();
                 getOrdersToDelete();
             } else {
@@ -165,7 +165,7 @@ function deleteProduct() {
         const xhttp = new XMLHttpRequest();
         xhttp.open('DELETE', url + 'api/Order/' + idOrder + '/products/' + idProduct);
         xhttp.onload = function () {
-            if (xhttp.status == 200) {
+            if (xhttp.status === 200) {
                 selectAllItems();
                 getProductsIdToDeleteProduct();
             } else {
@@ -181,7 +181,7 @@ function getAllPrice() {
     const xhttp = new XMLHttpRequest();
     xhttp.open('GET', url +  'api/Order/all-price');
     xhttp.onload = function () {
-        alert('All Price Orders is ' + xhttp.responseText)
+        alert('All Price Orders is ' + xhttp.responseText);
     }
     xhttp.send();
 }
@@ -190,7 +190,7 @@ function getCountProductMonthly() {
     const xhttp = new XMLHttpRequest();
     xhttp.open('GET', url + 'api/Order/products-monthly');
     xhttp.onload = function () {
-        alert('All Count Products By Order Monthly is ' + xhttp.responseText)
+        alert('All Count Products By Order Monthly is ' + xhttp.responseText);
     }
     xhttp.send();
 }

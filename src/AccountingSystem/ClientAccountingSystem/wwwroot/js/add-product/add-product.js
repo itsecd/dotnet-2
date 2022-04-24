@@ -54,7 +54,7 @@ function addProduct() {
         const itemToInsertJson = JSON.stringify(itemToInsert);
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
-            if (xhttp.status == 200) {
+            if (xhttp.status === 200) {
                 selectAllProducts();
             } else {
                 alert('Customer dont add');

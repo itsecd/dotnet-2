@@ -42,7 +42,7 @@ function addOrder() {
         xhttp.onload = function () {
             const customers = JSON.parse(xhttp.responseText);
             for (let i = 0; i < customers.length; i++) {
-                if (customers[i].customerId == document.getElementById('customerChoose').value) {
+                if (customers[i].customerId === document.getElementById('customerChoose').value) {
                     const customerToInsert = {
                         customerID: customers[i].customerId,
                         name: customers[i].name,
@@ -59,7 +59,7 @@ function addOrder() {
                     const xhttpPost = new XMLHttpRequest();
                     xhttpPost.open('POST', url + 'api/Order/');
                     xhttpPost.onload = function () {
-                        if (xhttpPost.status == 200) {
+                        if (xhttpPost.status === 200) {
                             document.location = 'start-order.html';
                         } else {
                             if (confirm('Order dont add. Close?')) {
@@ -83,7 +83,7 @@ function addOrderAndProduct() {
         xhttp.onload = function () {
             let customers = JSON.parse(xhttp.responseText);
             for (let i = 0; i < customers.length; i++) {
-                if (customers[i].customerId == document.getElementById('customerChoose').value) {
+                if (customers[i].customerId === document.getElementById('customerChoose').value) {
                     const customerToInsert = {
                         customerID: customers[i].customerId,
                         name: customers[i].name,
@@ -100,7 +100,7 @@ function addOrderAndProduct() {
                     const xhttpPost = new XMLHttpRequest();
                     xhttpPost.open('POST', url + 'api/Order/');
                     xhttpPost.onload = function () {
-                        if (xhttpPost.status == 200) {
+                        if (xhttpPost.status === 200) {
                             document.location = 'add-product.html';
                         } else {
                             if (confirm('Order dont add. Close?')) {

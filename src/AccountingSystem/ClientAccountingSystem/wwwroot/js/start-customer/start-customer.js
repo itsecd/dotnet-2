@@ -29,7 +29,7 @@ function selectAllItems() {
 
 function changeCustomer() {
     if (CheckValidationData('.changeDiv')) {
-        const id = document.getElementById('updateCustomerChoose').value
+        const id = document.getElementById('updateCustomerChoose').value;
         const itemToUpdate = {
             name: document.getElementById('updateName').value,
             phone: document.getElementById('updatePhone').value,
