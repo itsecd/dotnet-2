@@ -62,7 +62,7 @@ namespace ChatServer.Services
             var userName = requestStream.Current.User;
             if (_chatRooms.IsRoomExists(nameRoom))
             {
-                
+
                 await _users.ReadAsync();
                 await _chatRooms.ReadAsync(nameRoom);
                 var room = _chatRooms.FindRoom(nameRoom);
@@ -71,12 +71,20 @@ namespace ChatServer.Services
 
                 if (room.FindUser(userName))
                     room.AddUser(userName);
-                
-                if (_users.FindUser(userName))
+
+                if (_users.IsUserExist(userName))
                     _users.AddUser(userName);
                 await _users.WriteAsync();
+
+                await responseStream.WriteAsync(new Message { Text = "Connection success" });
+                await room.BroadcastMessage(new Message { Text = $"{userName} connected" });
             }
-            do
+            else
+            {
+                await responseStream.WriteAsync(new Message { Text = "No connection!" });
+                return;
+            }
+            while (await requestStream.MoveNext())
             {
                 switch (requestStream.Current.Command) {
                     case "message":
@@ -97,7 +105,7 @@ namespace ChatServer.Services
                 await _chatRooms.WriteAsync();
                
             }
-            while (await requestStream.MoveNext());
+            
             
         }
     }

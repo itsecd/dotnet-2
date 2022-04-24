@@ -10,6 +10,6 @@ namespace ChatServer.Repositories
         Task WriteAsync();
         void WriteToFile();
 
-        public bool FindUser(string userName);
+        public bool IsUserExist(string userName);
     }
 }

@@ -10,32 +10,33 @@ namespace ChatServer
     [Serializable]
     public class RoomNetwork : IRoomNetwork
     {
-        private ConcurrentBag<User> _users { get; set; } = new();
-        [NonSerialized] private ConcurrentDictionary<string, IServerStreamWriter<Message>> _online  = new();
-        //public ConcurrentBag<User> User 
+        public ConcurrentBag<User> Users { get; set; } = new();
+
+        [NonSerialized] public ConcurrentDictionary<string, IServerStreamWriter<Message>> Online  = new();
+       
         public ConcurrentDictionary<DateTime, Message> History { get; set; } = new();
 
         public void AddUser(string name) {
-            _users.Add(new User(name, name.GetHashCode()));
+            Users.Add(new User(name, name.GetHashCode()));
         }
-        public ConcurrentBag<User> GetUsers() => _users;
-        public void Join(string name, IServerStreamWriter<Message> responce) => _online.TryAdd(name, responce);
+        
+        public void Join(string name, IServerStreamWriter<Message> responce) => Online.TryAdd(name, responce);
        
         public void Disconnect(string name)
         {
-            _online.TryRemove(name, out _);
+            Online.TryRemove(name, out _);
         }
 
 
         public async Task BroadcastMessage(Message message, string name = null)
         {
             History.TryAdd(DateTime.Now, message);
-            foreach (var user in GetUsers().Where(x => x.Name != name))
+            foreach (var (username, channel) in Online.Where(x => x.Key != name))
             {
-                await _online[user.Name].WriteAsync(message);
+                await channel.WriteAsync(message);
             }
         }
 
-        public bool FindUser(string userName) => _users.Where(x => x.Name == userName).Count() == 0;
+        public bool FindUser(string userName) => Users.Where(x => x.Name == userName).Count() == 0;
     }
 }

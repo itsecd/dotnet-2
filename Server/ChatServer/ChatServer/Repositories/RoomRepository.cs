@@ -12,6 +12,8 @@ namespace ChatServer.Repositories
     public class RoomRepository : IRoomRepository
     {
         private ConcurrentDictionary<string, RoomNetwork> _current = new();
+
+        public ConcurrentDictionary<string, RoomNetwork> Rooms { get { return _current; } set { _current = value; } }
         public void WriteToFile()
         {
             foreach (var (Key, Value) in _current)
@@ -45,8 +47,15 @@ namespace ChatServer.Repositories
                         new UsersBagJsonConverter()
                     }
                 };
-                _current[nameRoom] = await JsonSerializer.DeserializeAsync<RoomNetwork>(stream, serializeOptions);
-                await stream.DisposeAsync();
+                if (_current.ContainsKey(nameRoom))
+                {
+                    var tmp = await JsonSerializer.DeserializeAsync<RoomNetwork>(stream, serializeOptions);
+                    _current[nameRoom].Users = tmp.Users;
+                    _current[nameRoom].History = tmp.History;
+                }      
+                else
+                    AddRoom(nameRoom, await JsonSerializer.DeserializeAsync<RoomNetwork>(stream, serializeOptions));
+                
             }
 
         }
