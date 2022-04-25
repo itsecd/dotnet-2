@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using TelegramBotServer.Model;
-using System.Linq;
 
 namespace TelegramBotServer.Repository
 {
@@ -14,7 +11,7 @@ namespace TelegramBotServer.Repository
     {
         private readonly string _filePath;
         private List<Event> _events;
-        
+
         public XmlEventRepository(IConfiguration config)
         {
             _filePath = config["XmlEventDatabaseFile"];
@@ -31,7 +28,7 @@ namespace TelegramBotServer.Repository
         public void ChangeEvent(int id, Event newEvent)
         {
             ReadFile();
-            var index  = _events.IndexOf(_events.Where(e => e.Id == id).FirstOrDefault());
+            var index = _events.IndexOf(_events.Where(e => e.Id == id).FirstOrDefault());
             _events[index] = newEvent;
             WriteFile();
         }

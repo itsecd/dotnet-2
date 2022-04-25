@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TelegramBotServer.Model;
 
 namespace TelegramBotServer.Repository
 {
     public interface ISubscriberRepository
     {
-        public int AddSubscriber(Subscriber newSub);
+        public long AddSubscriber(Subscriber newSub);
         public void RemoveSubscriber(Subscriber sub);
-        public void ChangeSubscriber(int id, Subscriber newSub);
-        public Subscriber GetSubscriber(int id);
+        public void ChangeSubscriber(long id, Subscriber newSub);
+        public Subscriber GetSubscriber(long id);
         IEnumerable<Subscriber> GetSubscribers();
     }
 }

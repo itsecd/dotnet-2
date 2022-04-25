@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using TelegramBotServer.Model;
 
@@ -18,7 +16,7 @@ namespace TelegramBotServer.Repository
             _filePath = config["XmlSubscriberDatabaseFile"];
         }
 
-        public int AddSubscriber(Subscriber newSub)
+        public long AddSubscriber(Subscriber newSub)
         {
             ReadFile();
             _subs.Add(newSub);
@@ -26,7 +24,7 @@ namespace TelegramBotServer.Repository
             return newSub.Id;
         }
 
-        public void ChangeSubscriber(int id, Subscriber newSub)
+        public void ChangeSubscriber(long id, Subscriber newSub)
         {
             ReadFile();
             var index = _subs.IndexOf(_subs.Where(s => s.Id == id).FirstOrDefault());
@@ -34,7 +32,7 @@ namespace TelegramBotServer.Repository
             WriteFile();
         }
 
-        public Subscriber GetSubscriber(int id)
+        public Subscriber GetSubscriber(long id)
         {
             ReadFile();
             return _subs.Where(s => s.Id == id).FirstOrDefault();
