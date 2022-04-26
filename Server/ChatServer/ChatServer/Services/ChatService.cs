@@ -40,7 +40,7 @@ namespace ChatServer.Services
                     _users.AddUser(userName);
                     room.Join(userName, responseStream);
                     room.AddUser(userName);
-                    _chatRooms.WriteToFile();
+                    await _chatRooms.WriteAsync();
                     await _users.WriteAsync();
                     await responseStream.WriteAsync(new Message { Text = requestStream.Current.Text });
                     await requestStream.MoveNext();

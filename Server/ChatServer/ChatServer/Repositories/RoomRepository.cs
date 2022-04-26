@@ -14,27 +14,7 @@ namespace ChatServer.Repositories
         private ConcurrentDictionary<string, RoomNetwork> _current = new();
 
         public ConcurrentDictionary<string, RoomNetwork> Rooms { get { return _current; } set { _current = value; } }
-        public void WriteToFile()
-        {
-            foreach (var (Key, Value) in _current)
-            {
-                var jsonString = JsonSerializer.Serialize(Value, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(Key + ".json", jsonString);
-            }
-
-        }
-
-        public void ReadFile(string nameRoom)
-        {
-
-            if (_current.ContainsKey(nameRoom))
-            {
-                var jsonString = File.ReadAllText(nameRoom + ".json");
-                _current[nameRoom] = JsonSerializer.Deserialize<RoomNetwork>(jsonString);
-            }
-
-        }
-
+       
         public async Task ReadAsync(string nameRoom)
         {
             if (IsRoomExists(nameRoom))

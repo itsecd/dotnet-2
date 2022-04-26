@@ -6,9 +6,7 @@ namespace ChatServer.Repositories
     {
         void AddUser(string nameUser);
         Task ReadAsync();
-        void ReadFile();
         Task WriteAsync();
-        void WriteToFile();
 
         public bool IsUserExist(string userName);
     }

@@ -37,7 +37,8 @@ namespace ChatServer.Repositories.Tests
         {
             var userRepositories = new UserRepository();
             await userRepositories.ReadAsync();
-            Assert.Equal(3, userRepositories.Users.Count);
+            var actual = userRepositories.Users.ToArray();
+            Assert.True(Array.Exists(actual, x => x.Name == "user4"));
 
         }
 
@@ -46,7 +47,8 @@ namespace ChatServer.Repositories.Tests
         {
             var userRepositories = CreateTestRepository();
             userRepositories.Users.Add(new User("user4", 1));
-            Assert.Equal(4, userRepositories.Users.Count);
+            var actual = userRepositories.Users.ToArray();
+            Assert.True(Array.Exists(actual, x => x.Name == "user4"));
         }
 
         [Fact()]

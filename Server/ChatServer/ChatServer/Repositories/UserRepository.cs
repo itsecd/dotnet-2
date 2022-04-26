@@ -12,24 +12,6 @@ namespace ChatServer.Repositories
         private ConcurrentBag<User> _users = new();
         public ConcurrentBag<User> Users { get { return _users; } set { _users = value; } }
 
-        public void WriteToFile()
-        {
-            var jsonString = JsonSerializer.Serialize(_users, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText("users.json", jsonString);
-        }
-
-        public void ReadFile()
-        {
-
-
-            if (File.Exists("users.json"))
-            {
-                var jsonString = File.ReadAllText("users.json");
-                _users = new ConcurrentBag<User>(JsonSerializer.Deserialize<List<User>>(jsonString));
-            }
-
-        }
-
         public async Task ReadAsync()
         {
             if (File.Exists("users.json"))
