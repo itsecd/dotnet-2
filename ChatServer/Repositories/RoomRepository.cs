@@ -11,7 +11,7 @@ namespace ChatServer.Repositories
         private ConcurrentDictionary<string, RoomNetwork> _current = new();
 
         public ConcurrentDictionary<string, RoomNetwork> Rooms { get { return _current; } set { _current = value; } }
-       
+
         public async Task ReadAsync(string nameRoom)
         {
             if (IsRoomExists(nameRoom))
@@ -29,10 +29,10 @@ namespace ChatServer.Repositories
                     var tmp = await JsonSerializer.DeserializeAsync<RoomNetwork>(stream, serializeOptions);
                     _current[nameRoom].Users = tmp.Users;
                     _current[nameRoom].History = tmp.History;
-                }      
+                }
                 else
                     AddRoom(nameRoom, await JsonSerializer.DeserializeAsync<RoomNetwork>(stream, serializeOptions));
-                
+
             }
 
         }

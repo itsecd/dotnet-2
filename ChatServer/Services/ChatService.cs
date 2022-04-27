@@ -9,7 +9,7 @@ namespace ChatServer.Services
 
         private readonly IRoomRepository _chatRooms;
         private readonly IUserRepository _users;
-        
+
 
         public ChatService(IRoomRepository chatRooms, IUserRepository users)
         {
@@ -44,14 +44,14 @@ namespace ChatServer.Services
             else
             {
                 await responseStream.WriteAsync(new Message { Text = "Неверная команда!" });
-                return;            
+                return;
             }
-            
+
         }
 
         public override async Task Join(IAsyncStreamReader<Message> requestStream, IServerStreamWriter<Message> responseStream, ServerCallContext context)
         {
-            
+
             if (!await requestStream.MoveNext()) return;
             var nameRoom = requestStream.Current.Text;
             var userName = requestStream.Current.User;
@@ -81,7 +81,8 @@ namespace ChatServer.Services
             }
             while (await requestStream.MoveNext())
             {
-                switch (requestStream.Current.Command) {
+                switch (requestStream.Current.Command)
+                {
                     case "message":
                         var CurrentMessage = requestStream.Current;
                         var room = _chatRooms.FindRoom(nameRoom);
@@ -93,15 +94,15 @@ namespace ChatServer.Services
                         break;
                     default:
                         Console.WriteLine(requestStream.Current);
-                         break;
+                        break;
                 }
 
 
                 await _chatRooms.WriteAsync();
-               
+
             }
-            
-            
+
+
         }
     }
 }

@@ -11,16 +11,17 @@ namespace ChatServer
     {
         public ConcurrentBag<User> Users { get; set; } = new();
 
-        [NonSerialized] public ConcurrentDictionary<string, IServerStreamWriter<Message>> Online  = new();
-       
+        [NonSerialized] public ConcurrentDictionary<string, IServerStreamWriter<Message>> Online = new();
+
         public ConcurrentDictionary<DateTime, Message> History { get; set; } = new();
 
-        public void AddUser(string name) {
+        public void AddUser(string name)
+        {
             Users.Add(new User(name, name.GetHashCode()));
         }
-        
+
         public void Join(string name, IServerStreamWriter<Message> responce) => Online.TryAdd(name, responce);
-       
+
         public void Disconnect(string name)
         {
             Online.TryRemove(name, out _);

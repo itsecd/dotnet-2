@@ -1,14 +1,14 @@
-﻿using Xunit;
-using System;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Moq;
+using System;
+using Xunit;
 
 namespace ChatServer.Tests
 {
     public class RoomNetworkTests
     {
 
-        
+
 
         [Fact]
         public void JoinTest()
@@ -36,7 +36,7 @@ namespace ChatServer.Tests
         {
             var testRoom = new RoomNetwork();
 
-            var message1 = new Message { User = "user1", Text = "Hello", Command = "message"};
+            var message1 = new Message { User = "user1", Text = "Hello", Command = "message" };
             var message2 = new Message { User = "user2", Text = "Priveet", Command = "message" };
             var mock = new Mock<IServerStreamWriter<Message>>();
             testRoom.Join("user1", mock.Object);
