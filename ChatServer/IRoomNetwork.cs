@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace ChatServer
 {
+    //коммент
     public interface IRoomNetwork
     {
         Task BroadcastMessage(Message message, string name = null);
