@@ -33,7 +33,7 @@ namespace ChatServer.Repositories.Tests
             var userRepositories = new UserRepository();
             await userRepositories.ReadAsync();
             var actual = userRepositories.Users.ToArray();
-            Assert.True(Array.Exists(actual, x => x.Name == "user4"));
+            Assert.True(Array.Exists(actual, x => x.Name == "user1"));
 
         }
 
