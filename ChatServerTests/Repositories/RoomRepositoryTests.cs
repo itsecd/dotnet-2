@@ -46,7 +46,8 @@ namespace ChatServer.Repositories.Tests
         [Fact()]
         public async void ReadAsyncTest()
         {
-            RoomRepository roomRepository = new();
+            RoomRepository roomRepository = CreateTestRepository();
+            await roomRepository.WriteAsync();
             await roomRepository.ReadAsync("test1");
             await roomRepository.ReadAsync("test2");
             await roomRepository.ReadAsync("test3");
@@ -68,9 +69,10 @@ namespace ChatServer.Repositories.Tests
         }
 
         [Fact()]
-        public void IsRoomExistsTest()
+        public async void IsRoomExistsTest()
         {
             RoomRepository roomRepository = CreateTestRepository();
+            await roomRepository.WriteAsync();
             Assert.True(roomRepository.IsRoomExists("test1"));
         }
 
