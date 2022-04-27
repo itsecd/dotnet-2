@@ -47,7 +47,7 @@ namespace ChatServer.Repositories
             {
                 await using FileStream streamMessage = File.Create(key + ".json");
                 await JsonSerializer.SerializeAsync<RoomNetwork>(streamMessage, value, new JsonSerializerOptions { WriteIndented = true });
-                await streamMessage.DisposeAsync();
+                
             }
 
         }
