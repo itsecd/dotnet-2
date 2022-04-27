@@ -1,5 +1,4 @@
-﻿using Castle.Core.Configuration;
-using ChatServer;
+﻿using ChatServer;
 using ChatServer.Repositories;
 using System;
 using System.Collections.Concurrent;

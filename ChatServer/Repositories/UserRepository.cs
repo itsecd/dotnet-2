@@ -11,11 +11,12 @@ namespace ChatServer.Repositories
     public class UserRepository : IUserRepository
     {
         private ConcurrentBag<User> _users = new();
-        public ConcurrentBag<User> Users {
-            get => _users;  
-            set => _users = value;  
+        public ConcurrentBag<User> Users
+        {
+            get => _users;
+            set => _users = value;
         }
-        
+
         public UserRepository(IConfiguration config = null)
         {
             if (config != null)
@@ -28,7 +29,7 @@ namespace ChatServer.Repositories
         {
             if (File.Exists(_usersFileName))
             {
-                 await using FileStream stream = File.Open(_usersFileName, FileMode.Open);
+                await using FileStream stream = File.Open(_usersFileName, FileMode.Open);
                 _users = new ConcurrentBag<User>(await JsonSerializer.DeserializeAsync<List<User>>(stream));
                 await stream.DisposeAsync();
             }

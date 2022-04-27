@@ -11,10 +11,10 @@ namespace ChatServer.Repositories
     {
         private ConcurrentDictionary<string, RoomNetwork> _current = new();
 
-        public ConcurrentDictionary<string, RoomNetwork> Rooms 
-        { 
-            get =>  _current; 
-            set => _current = value;  
+        public ConcurrentDictionary<string, RoomNetwork> Rooms
+        {
+            get => _current;
+            set => _current = value;
         }
 
         public async Task ReadAsync(string nameRoom)
