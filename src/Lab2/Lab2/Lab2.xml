@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lab2</name>
+    </assembly>
+    <members>
+        <member name="T:Lab2.Model.Customer">
+            <summary>
+            Customer
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Customer.Id">
+            <summary>
+            Customer ID
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Customer.FullName">
+            <summary>
+            Customer's full name
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Customer.PhoneNumber">
+            <summary>
+            Customer's phone number
+            </summary>
+        </member>
+        <member name="T:Lab2.Model.Order">
+            <summary>
+            Order
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.OrderId">
+            <summary>
+            Order ID
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.Products">
+            <summary>
+            Summary order
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.CustomerId">
+            <summary>
+            Customer ID
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.dt">
+            <summary>
+            Data order
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.AmountOrder">
+            <summary>
+            Amount order
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.Status">
+            <summary>
+            Status order
+            </summary>
+        </member>
+        <member name="T:Lab2.Model.Product">
+            <summary>
+            Product
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Product.NameProduct">
+            <summary>
+            Name of product
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Product.CostProduct">
+            <summary>
+            Count of product
+            </summary>
+        </member>
+    </members>
+</doc>
