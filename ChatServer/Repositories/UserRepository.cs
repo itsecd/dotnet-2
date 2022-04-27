@@ -28,7 +28,7 @@ namespace ChatServer.Repositories
         {
             if (File.Exists(_usersFileName))
             {
-                using FileStream stream = File.Open(_usersFileName, FileMode.Open);
+                 await using FileStream stream = File.Open(_usersFileName, FileMode.Open);
                 _users = new ConcurrentBag<User>(await JsonSerializer.DeserializeAsync<List<User>>(stream));
                 await stream.DisposeAsync();
             }
@@ -37,7 +37,7 @@ namespace ChatServer.Repositories
         public async Task WriteAsync()
         {
 
-            using FileStream streamMessage = File.Create(_usersFileName);
+            await using FileStream streamMessage = File.Create(_usersFileName);
             await JsonSerializer.SerializeAsync<ConcurrentBag<User>>(streamMessage, _users, new JsonSerializerOptions { WriteIndented = true });
             await streamMessage.DisposeAsync();
 
