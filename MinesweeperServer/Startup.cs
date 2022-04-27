@@ -14,8 +14,10 @@ namespace MinesweeperServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-            services.AddSingleton<GameRepository>();
-            services.AddSingleton<GameNetwork>();
+            // services.AddSingleton<GameRepository>();
+            // services.AddSingleton<GameNetwork>();
+            services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IGameNetwork, GameNetwork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
