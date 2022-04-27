@@ -34,7 +34,6 @@ namespace MinesweeperClient
         int _flagsCounter;
         private GameStates _gameState;
         ListBox _playerList;
-        Window joinDialog;
         public MainWindow()
         {
             InitializeComponent();
@@ -48,13 +47,6 @@ namespace MinesweeperClient
 
             _flagsLeft = this.FindControl<Label>("FlagsLeft");
             _playerList = this.FindControl<ListBox>("PlayerListBox");
-
-            joinDialog = new DialogWindow();
-            joinDialog.Closing += (s, e) =>
-            {
-                ((Window)s).Hide();
-                e.Cancel = true;
-            };
 
             InitGrid();
             InitInfo();
@@ -171,10 +163,27 @@ namespace MinesweeperClient
             _flagsLeft.Content = $"Flags left: {_flagsCounter}";
         }
 
+        private async void OnJoinClick(object sender, RoutedEventArgs e)
+        {
+            var dialogWindow = new DialogWindow();
+            GameServer serv = new();
+            string[] vals = await dialogWindow.ShowDialog<string[]>(this);
+            if (vals == null)
+                Console.WriteLine("DialogWindow: join cancelled!");
+            else if (vals[0] == null || vals[1] == null)
+                Console.WriteLine("DialogWindow: incorrect input!");
+            else
+            {
+                Console.WriteLine($"Nickname: '{vals[0]}'");
+                Console.WriteLine($"Server address: '{vals[1]}'");
+                serv.Name = vals[0];
+                serv.Address = vals[1];
+                serv.TryConnect();
+            }
+        }
 
         private void OnResetClick(object sender, RoutedEventArgs e)
         {
-            joinDialog.Show();
             Console.WriteLine("Game started!");
             _field.Reset();
             ResetGrid();

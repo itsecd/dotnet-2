@@ -101,30 +101,6 @@ namespace MinesweeperClient.Models
                 for (int x = 0; x < Width; x++)
                     _field[x, y] = _field[x, y] != -1 ? CalcNear(x, y) : -1;
         }
-        // /// <summary>Вывод поля в консоль.</summary>
-        // public void ConsoleOutput(bool full = false)
-        // {
-        //     for (int y = 0; y < Height; y++)
-        //     {
-        //         for (int x = 0; x < Width; x++)
-        //         {
-        //             if (full || _rev[x, y] == RevealStates.Opened)
-        //             {
-        //                 if (_field[x, y] == -1)
-        //                     Console.Write("*");
-        //                 else if (_field[x, y] == 0)
-        //                     Console.Write(" ");
-        //                 else
-        //                     Console.Write(_field[x, y]);
-        //             }
-        //             else if (_rev[x, y] == 0)
-        //                 Console.Write("#");
-        //             else if (_rev[x, y] == RevealStates.Flagged)
-        //                 Console.Write("P");
-        //         }
-        //         Console.WriteLine();
-        //     }
-        // }
         /// <summary>Проверка состояния клетки.</summary>
         public RevealStates RevealState(int x, int y) => _rev[x, y];
         /// <summary>Раскрытие клетки поля.</summary>

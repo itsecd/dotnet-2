@@ -8,13 +8,13 @@ namespace MinesweeperClient
 {
     public partial class DialogWindow : Window
     {
-        TextBox nickname;
-        TextBox servAddress;
+        TextBox nickField;
+        TextBox servField;
         public DialogWindow()
         {
             InitializeComponent();
-            nickname = this.FindControl<TextBox>("nickTextBox");
-            servAddress = this.FindControl<TextBox>("serverTextBox");
+            nickField = this.FindControl<TextBox>("nickBox");
+            servField = this.FindControl<TextBox>("servBox");
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -26,9 +26,7 @@ namespace MinesweeperClient
         }
         private void OnJoinClick(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(nickname.Text);
-            Console.WriteLine(servAddress.Text);
-            Close(new string[] {nickname.Text, servAddress.Text});
+            Close(new string[] { nickField.Text, servField.Text });
         }
     }
 }

@@ -9,8 +9,8 @@
         x:Class="MinesweeperClient.DialogWindow"
         Title="Join the game">
   <StackPanel Spacing="10" Margin="10">
-    <TextBox Name="nickTextBox" Watermark="Nickname" HorizontalAlignment="Center" Width="300"/>
-    <TextBox Name="serverTextBox" Watermark="Server address" HorizontalAlignment="Center" Width="300"/>
+    <TextBox Name="nickBox" Watermark="Nickname" HorizontalAlignment="Center" Width="300"/>
+    <TextBox Name="servBox" Watermark="Server address" HorizontalAlignment="Center" Width="300"/>
     <Button Content="Join" HorizontalAlignment="Center" Click="OnJoinClick"/>
   </StackPanel>
 </Window>

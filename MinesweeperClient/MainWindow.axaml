@@ -11,7 +11,7 @@
         Title="Minesweeper" Background="#696969">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="30" Background="White">
-            <MenuItem Header="Join"/>
+            <MenuItem Header="Join" Click="OnJoinClick"/>
             <MenuItem Header="Leave"/>
             <MenuItem Header="Reset" Click="OnResetClick"/>
             <MenuItem Header="Ready"/>
