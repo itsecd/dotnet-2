@@ -1,4 +1,5 @@
-﻿using ChatServer;
+﻿using Castle.Core.Configuration;
+using ChatServer;
 using ChatServer.Repositories;
 using System;
 using System.Collections.Concurrent;
@@ -15,7 +16,7 @@ namespace ChatServerTests.Repositories
             var user2 = new User("user2", 2);
             var user3 = new User("user3", 3);
 
-            return new UserRepository
+            return new UserRepository()
             {
                 Users = new ConcurrentBag<User> { user1, user2, user3 }
             };

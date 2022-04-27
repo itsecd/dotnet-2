@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using Microsoft.Extensions.Configuration;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,12 +15,20 @@ namespace ChatServer.Repositories
             get => _users;  
             set => _users = value;  
         }
-
+        
+        public UserRepository(IConfiguration config = null)
+        {
+            if (config != null)
+            {
+                _usersFileName = config.GetValue<string>("usersfilepath");
+            }
+        }
+        private readonly string _usersFileName = "users.json";
         public async Task ReadAsync()
         {
-            if (File.Exists("users.json"))
+            if (File.Exists(_usersFileName))
             {
-                using FileStream stream = File.Open("users.json", FileMode.Open);
+                using FileStream stream = File.Open(_usersFileName, FileMode.Open);
                 _users = new ConcurrentBag<User>(await JsonSerializer.DeserializeAsync<List<User>>(stream));
                 await stream.DisposeAsync();
             }
@@ -28,7 +37,7 @@ namespace ChatServer.Repositories
         public async Task WriteAsync()
         {
 
-            using FileStream streamMessage = File.Create("users.json");
+            using FileStream streamMessage = File.Create(_usersFileName);
             await JsonSerializer.SerializeAsync<ConcurrentBag<User>>(streamMessage, _users, new JsonSerializerOptions { WriteIndented = true });
             await streamMessage.DisposeAsync();
 
