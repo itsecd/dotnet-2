@@ -33,7 +33,7 @@ namespace ChatServer.Repositories.Tests
                 }
             };
         }
-        [Fact()]
+        [Fact]
         public async void WriteAsyncTest()
         {
             RoomRepository roomRepository = CreateTestRepository();
@@ -43,7 +43,7 @@ namespace ChatServer.Repositories.Tests
             Assert.True(File.Exists("test3.json"));
         }
 
-        [Fact()]
+        [Fact]
         public async void ReadAsyncTest()
         {
             RoomRepository roomRepository = CreateTestRepository();
@@ -56,7 +56,7 @@ namespace ChatServer.Repositories.Tests
             Assert.True(roomRepository.Rooms.TryGetValue("test3", out _));
         }
 
-        [Fact()]
+        [Fact]
         public void AddRoomTest()
         {
             var user4 = new User("user4", 4);
@@ -68,7 +68,7 @@ namespace ChatServer.Repositories.Tests
             Assert.True(roomRepository.Rooms.TryGetValue("test4", out _));
         }
 
-        [Fact()]
+        [Fact]
         public async void IsRoomExistsTest()
         {
             RoomRepository roomRepository = CreateTestRepository();
@@ -76,7 +76,7 @@ namespace ChatServer.Repositories.Tests
             Assert.True(roomRepository.IsRoomExists("test1"));
         }
 
-        [Fact()]
+        [Fact]
         public void RemoveRoomTest()
         {
             RoomRepository roomRepository = CreateTestRepository();
@@ -85,7 +85,7 @@ namespace ChatServer.Repositories.Tests
             Assert.True(!roomRepository.Rooms.TryGetValue("test1", out _));
         }
 
-        [Fact()]
+        [Fact]
         public void FindRoomTest()
         {
             RoomRepository roomRepository = CreateTestRepository();

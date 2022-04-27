@@ -4,14 +4,11 @@ option csharp_namespace = "ChatServer";
 
 package greet;
 
-// The greeting service definition.
 
 service ChatRoom{
 	rpc Create(stream Message) returns(stream Message); 
 	rpc Join(stream Message) returns (stream Message);
 }
-
-// The request message containing the user's name.
 
 message Message{
 	string user = 1;

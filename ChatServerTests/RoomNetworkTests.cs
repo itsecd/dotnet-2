@@ -10,7 +10,7 @@ namespace ChatServer.Tests
 
         
 
-        [Fact()]
+        [Fact]
         public void JoinTest()
         {
             var testRoom = new RoomNetwork();
@@ -18,7 +18,7 @@ namespace ChatServer.Tests
             Assert.True(testRoom.Online.ContainsKey("user1"));
         }
 
-        [Fact()]
+        [Fact]
         public void AddUserTest()
         {
             var testRoom = new RoomNetwork();
@@ -31,7 +31,7 @@ namespace ChatServer.Tests
             Assert.True(Array.Exists(actual, x => x.Name == "user3"));
         }
 
-        [Fact()]
+        [Fact]
         public async void BroadcastMessageTest()
         {
             var testRoom = new RoomNetwork();
@@ -50,7 +50,7 @@ namespace ChatServer.Tests
 
         }
 
-        [Fact()]
+        [Fact]
         public void DisconnectTest()
         {
             var testRoom = new RoomNetwork();

@@ -19,7 +19,7 @@ namespace ChatServer.Repositories.Tests
             };
         }
 
-        [Fact()]
+        [Fact]
         public async void WriteAsyncTest()
         {
             var users = CreateTestRepository();
@@ -27,7 +27,7 @@ namespace ChatServer.Repositories.Tests
             Assert.True(File.Exists("users.json"));
         }
 
-        [Fact()]
+        [Fact]
         public async void ReadAsyncTest()
         {
             var userRepositories = new UserRepository();
@@ -37,7 +37,7 @@ namespace ChatServer.Repositories.Tests
 
         }
 
-        [Fact()]
+        [Fact]
         public void AddUserTest()
         {
             var userRepositories = CreateTestRepository();
@@ -46,7 +46,7 @@ namespace ChatServer.Repositories.Tests
             Assert.True(Array.Exists(actual, x => x.Name == "user4"));
         }
 
-        [Fact()]
+        [Fact]
         public void IsUserExistTest()
         {
             var userRepositories = CreateTestRepository();
