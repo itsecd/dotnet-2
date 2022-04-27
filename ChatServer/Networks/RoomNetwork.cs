@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChatServer
+namespace ChatServer.Networks
 {
     [Serializable]
     public class RoomNetwork : IRoomNetwork
@@ -20,7 +20,7 @@ namespace ChatServer
             Users.Add(new User(name, name.GetHashCode()));
         }
 
-        public void Join(string name, IServerStreamWriter<Message> responce) => Online.TryAdd(name, responce);
+        public void Join(string name, IServerStreamWriter<Message> response) => Online.TryAdd(name, response);
 
         public void Disconnect(string name)
         {
@@ -37,6 +37,6 @@ namespace ChatServer
             }
         }
 
-        public bool FindUser(string userName) => Users.Where(x => x.Name == userName).Count() == 0;
+        public bool FindUser(string userName) => Users.Count(x => x.Name == userName) == 0;
     }
 }

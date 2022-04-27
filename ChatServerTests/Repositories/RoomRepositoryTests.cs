@@ -1,8 +1,11 @@
-﻿using System.Collections.Concurrent;
+﻿using ChatServer;
+using ChatServer.Networks;
+using ChatServer.Repositories;
+using System.Collections.Concurrent;
 using System.IO;
 using Xunit;
 
-namespace ChatServer.Repositories.Tests
+namespace ChatServerTests.Repositories
 {
 
     public class RoomRepositoryTests

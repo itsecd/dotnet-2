@@ -1,4 +1,5 @@
 ﻿using ChatServer.Converters;
+using ChatServer.Networks;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Text.Json;
@@ -10,7 +11,11 @@ namespace ChatServer.Repositories
     {
         private ConcurrentDictionary<string, RoomNetwork> _current = new();
 
-        public ConcurrentDictionary<string, RoomNetwork> Rooms { get { return _current; } set { _current = value; } }
+        public ConcurrentDictionary<string, RoomNetwork> Rooms 
+        { 
+            get =>  _current; 
+            set => _current = value;  
+        }
 
         public async Task ReadAsync(string nameRoom)
         {
@@ -38,10 +43,10 @@ namespace ChatServer.Repositories
         }
         public async Task WriteAsync()
         {
-            foreach (var (Key, Value) in _current)
+            foreach (var (key, value) in _current)
             {
-                using FileStream streamMessage = File.Create(Key + ".json");
-                await JsonSerializer.SerializeAsync<RoomNetwork>(streamMessage, Value, new JsonSerializerOptions { WriteIndented = true });
+                await using FileStream streamMessage = File.Create(key + ".json");
+                await JsonSerializer.SerializeAsync<RoomNetwork>(streamMessage, value, new JsonSerializerOptions { WriteIndented = true });
                 await streamMessage.DisposeAsync();
             }
 

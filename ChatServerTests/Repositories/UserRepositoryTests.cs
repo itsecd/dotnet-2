@@ -1,9 +1,11 @@
-﻿using System;
+﻿using ChatServer;
+using ChatServer.Repositories;
+using System;
 using System.Collections.Concurrent;
 using System.IO;
 using Xunit;
 
-namespace ChatServer.Repositories.Tests
+namespace ChatServerTests.Repositories
 {
     public class UserRepositoryTests
     {

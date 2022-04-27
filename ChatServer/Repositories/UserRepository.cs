@@ -10,7 +10,10 @@ namespace ChatServer.Repositories
     public class UserRepository : IUserRepository
     {
         private ConcurrentBag<User> _users = new();
-        public ConcurrentBag<User> Users { get { return _users; } set { _users = value; } }
+        public ConcurrentBag<User> Users {
+            get => _users;  
+            set => _users = value;  
+        }
 
         public async Task ReadAsync()
         {
@@ -33,6 +36,6 @@ namespace ChatServer.Repositories
         }
         public void AddUser(string nameUser) => _users.Add(new User(nameUser, nameUser.GetHashCode()));
 
-        public bool IsUserExist(string userName) => _users.Where(x => x.Name == userName).Count() == 0;
+        public bool IsUserExist(string userName) => _users.Count(x => x.Name == userName) == 0;
     }
 }

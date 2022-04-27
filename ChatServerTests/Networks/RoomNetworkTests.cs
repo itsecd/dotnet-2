@@ -1,14 +1,14 @@
-﻿using Grpc.Core;
+﻿using ChatServer;
+using ChatServer.Networks;
+using Grpc.Core;
 using Moq;
 using System;
 using Xunit;
 
-namespace ChatServer.Tests
+namespace ChatServerTests.Networks
 {
     public class RoomNetworkTests
     {
-
-
 
         [Fact]
         public void JoinTest()
