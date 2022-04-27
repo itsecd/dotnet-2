@@ -34,6 +34,7 @@ namespace MinesweeperClient
         int _flagsCounter;
         private GameStates _gameState;
         ListBox _playerList;
+        Window joinDialog;
         public MainWindow()
         {
             InitializeComponent();
@@ -47,6 +48,13 @@ namespace MinesweeperClient
 
             _flagsLeft = this.FindControl<Label>("FlagsLeft");
             _playerList = this.FindControl<ListBox>("PlayerListBox");
+
+            joinDialog = new DialogWindow();
+            joinDialog.Closing += (s, e) =>
+            {
+                ((Window)s).Hide();
+                e.Cancel = true;
+            };
 
             InitGrid();
             InitInfo();
@@ -106,7 +114,30 @@ namespace MinesweeperClient
                             else if (_field[x, y] == 0)
                                 _buttonGrid[y, x].Content = string.Empty;
                             else
-                                _buttonGrid[y, x].Content = _field[x, y].ToString();
+                            {
+                                SolidColorBrush? numColor = _field[x, y] switch
+                                {
+                                    1 => new SolidColorBrush(Color.Parse("#0000ff")),
+                                    2 => new SolidColorBrush(Color.Parse("#008000")),
+                                    3 => new SolidColorBrush(Color.Parse("#ff0000")),
+                                    4 => new SolidColorBrush(Color.Parse("#000080")),
+                                    5 => new SolidColorBrush(Color.Parse("#800000")),
+                                    6 => new SolidColorBrush(Color.Parse("#008080")),
+                                    7 => new SolidColorBrush(Color.Parse("#000000")),
+                                    8 => new SolidColorBrush(Color.Parse("#808080")),
+                                    _ => null
+                                };
+                                _buttonGrid[y, x].Content = new Label
+                                {
+                                    Foreground = numColor, 
+                                    FontSize = 16,
+                                    Content = _field[x, y].ToString(),
+                                    HorizontalAlignment = HorizontalAlignment.Center,
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    VerticalContentAlignment = VerticalAlignment.Center,
+                                    HorizontalContentAlignment = HorizontalAlignment.Center
+                                };
+                            }
                             _buttonGrid[y, x].IsEnabled = false;
                             break;
                         case RevealStates.Flagged:
@@ -143,6 +174,7 @@ namespace MinesweeperClient
 
         private void OnResetClick(object sender, RoutedEventArgs e)
         {
+            joinDialog.Show();
             Console.WriteLine("Game started!");
             _field.Reset();
             ResetGrid();
@@ -155,7 +187,7 @@ namespace MinesweeperClient
             if (_gameState == GameStates.Win || _gameState == GameStates.Lose)
                 return;
             // получение координат нажатой клетки
-            Button button = sender as Button;
+            Button? button = sender as Button;
             if (button.IsEnabled == false)
                 return;
             string[] buttonPos = button.Name.Split("_");

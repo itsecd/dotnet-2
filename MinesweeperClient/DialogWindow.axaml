@@ -1,0 +1,16 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        MinWidth="500" MinHeight="300"
+        Width="500" Height="300"
+        MaxWidth="500" MaxHeight="300"
+        x:Class="MinesweeperClient.DialogWindow"
+        Title="Join the game">
+  <StackPanel Spacing="10" Margin="10">
+    <TextBox Name="nickTextBox" Watermark="Nickname" HorizontalAlignment="Center" Width="300"/>
+    <TextBox Name="serverTextBox" Watermark="Server address" HorizontalAlignment="Center" Width="300"/>
+    <Button Content="Join" HorizontalAlignment="Center" Click="OnJoinClick"/>
+  </StackPanel>
+</Window>
