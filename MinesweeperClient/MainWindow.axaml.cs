@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Layout;
 using Avalonia.Controls;
@@ -34,6 +35,7 @@ namespace MinesweeperClient
         int _flagsCounter;
         private GameStates _gameState;
         ListBox _playerList;
+        List<ListBoxItem> _players = new();
         public MainWindow()
         {
             InitializeComponent();
@@ -47,6 +49,9 @@ namespace MinesweeperClient
 
             _flagsLeft = this.FindControl<Label>("FlagsLeft");
             _playerList = this.FindControl<ListBox>("PlayerListBox");
+            _players.Add(new ListBoxItem { Content = "DimaDivan" });
+            _players.Add(new ListBoxItem { Content = "Gromimolnia" });
+            _playerList.Items = _players;
 
             InitGrid();
             InitInfo();
@@ -121,7 +126,7 @@ namespace MinesweeperClient
                                 };
                                 _buttonGrid[y, x].Content = new Label
                                 {
-                                    Foreground = numColor, 
+                                    Foreground = numColor,
                                     FontSize = 16,
                                     Content = _field[x, y].ToString(),
                                     HorizontalAlignment = HorizontalAlignment.Center,
@@ -165,21 +170,21 @@ namespace MinesweeperClient
 
         private async void OnJoinClick(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine("Join clicked!");
             var dialogWindow = new DialogWindow();
             GameServer serv = new();
             string[] vals = await dialogWindow.ShowDialog<string[]>(this);
             if (vals == null)
-                Console.WriteLine("DialogWindow: join cancelled!");
-            else if (vals[0] == null || vals[1] == null)
-                Console.WriteLine("DialogWindow: incorrect input!");
+                Console.WriteLine("FAILED");
             else
             {
-                Console.WriteLine($"Nickname: '{vals[0]}'");
-                Console.WriteLine($"Server address: '{vals[1]}'");
                 serv.Name = vals[0];
                 serv.Address = vals[1];
-                serv.TryConnect();
+                if (await serv.Join())
+                    Console.WriteLine("SUCCESS");
             }
+            if (await serv.Leave())
+                Console.WriteLine("LEAVE SUCCESS");
         }
 
         private void OnResetClick(object sender, RoutedEventArgs e)
@@ -197,7 +202,7 @@ namespace MinesweeperClient
                 return;
             // получение координат нажатой клетки
             Button? button = sender as Button;
-            if (button.IsEnabled == false)
+            if (button == null || button.Name == null || button.IsEnabled == false)
                 return;
             string[] buttonPos = button.Name.Split("_");
             int x = int.Parse(buttonPos[1]);

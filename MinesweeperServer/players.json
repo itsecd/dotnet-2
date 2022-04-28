@@ -1,16 +1,4 @@
 {
-  "DimaDivan": {
-    "TotalScore": 18,
-    "WinCount": 3,
-    "LoseCount": 1,
-    "WinStreak": 0
-  },
-  "divan": {
-    "TotalScore": 10,
-    "WinCount": 1,
-    "LoseCount": 0,
-    "WinStreak": 1
-  },
   "player2": {
     "TotalScore": 10,
     "WinCount": 2,
@@ -21,6 +9,24 @@
     "TotalScore": 0,
     "WinCount": 1,
     "LoseCount": 2,
+    "WinStreak": 0
+  },
+  "divanchik": {
+    "TotalScore": 0,
+    "WinCount": 0,
+    "LoseCount": 0,
+    "WinStreak": 0
+  },
+  "divan": {
+    "TotalScore": 10,
+    "WinCount": 1,
+    "LoseCount": 0,
+    "WinStreak": 1
+  },
+  "DimaDivan": {
+    "TotalScore": 18,
+    "WinCount": 3,
+    "LoseCount": 1,
     "WinStreak": 0
   }
 }
