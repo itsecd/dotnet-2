@@ -25,7 +25,7 @@ namespace ChatServer.Repositories
             }
         }
         private readonly string _usersFileName = "users.json";
-        public async Task ReadAsync()
+        public async Task ReadAsyncToFile()
         {
             if (File.Exists(_usersFileName))
             {
@@ -35,7 +35,7 @@ namespace ChatServer.Repositories
             }
 
         }
-        public async Task WriteAsync()
+        public async Task WriteAsyncToFile()
         {
 
             await using FileStream streamMessage = File.Create(_usersFileName);

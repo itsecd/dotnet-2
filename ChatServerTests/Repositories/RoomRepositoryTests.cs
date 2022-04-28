@@ -40,7 +40,7 @@ namespace ChatServerTests.Repositories
         public async void WriteAsyncTest()
         {
             RoomRepository roomRepository = CreateTestRepository();
-            await roomRepository.WriteAsync();
+            await roomRepository.WriteAsyncToFile();
             Assert.True(File.Exists("test1.json"));
             Assert.True(File.Exists("test2.json"));
             Assert.True(File.Exists("test3.json"));
@@ -50,10 +50,10 @@ namespace ChatServerTests.Repositories
         public async void ReadAsyncTest()
         {
             RoomRepository roomRepository = CreateTestRepository();
-            await roomRepository.WriteAsync();
-            await roomRepository.ReadAsync("test1");
-            await roomRepository.ReadAsync("test2");
-            await roomRepository.ReadAsync("test3");
+            await roomRepository.WriteAsyncToFile();
+            await roomRepository.ReadAsyncToFile("test1");
+            await roomRepository.ReadAsyncToFile("test2");
+            await roomRepository.ReadAsyncToFile("test3");
             Assert.True(roomRepository.Rooms.TryGetValue("test1", out _));
             Assert.True(roomRepository.Rooms.TryGetValue("test2", out _));
             Assert.True(roomRepository.Rooms.TryGetValue("test3", out _));
@@ -75,7 +75,7 @@ namespace ChatServerTests.Repositories
         public async void IsRoomExistsTest()
         {
             RoomRepository roomRepository = CreateTestRepository();
-            await roomRepository.WriteAsync();
+            await roomRepository.WriteAsyncToFile();
             Assert.True(roomRepository.IsRoomExists("test1"));
         }
 

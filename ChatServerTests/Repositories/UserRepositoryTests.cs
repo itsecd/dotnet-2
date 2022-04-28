@@ -25,7 +25,7 @@ namespace ChatServerTests.Repositories
         public async void WriteAsyncTest()
         {
             var users = CreateTestRepository();
-            await users.WriteAsync();
+            await users.WriteAsyncToFile();
             Assert.True(File.Exists("users.json"));
         }
 
@@ -33,7 +33,7 @@ namespace ChatServerTests.Repositories
         public async void ReadAsyncTest()
         {
             var userRepositories = new UserRepository();
-            await userRepositories.ReadAsync();
+            await userRepositories.ReadAsyncToFile();
             var actual = userRepositories.Users.ToArray();
             Assert.True(Array.Exists(actual, x => x.Name == "user1"));
 

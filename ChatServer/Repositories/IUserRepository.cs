@@ -5,8 +5,8 @@ namespace ChatServer.Repositories
     public interface IUserRepository
     {
         void AddUser(string nameUser);
-        Task ReadAsync();
-        Task WriteAsync();
+        Task ReadAsyncToFile();
+        Task WriteAsyncToFile();
 
         public bool IsUserExist(string userName);
     }

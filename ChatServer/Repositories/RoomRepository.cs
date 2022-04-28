@@ -17,7 +17,7 @@ namespace ChatServer.Repositories
             set => _current = value;
         }
 
-        public async Task ReadAsync(string nameRoom)
+        public async Task ReadAsyncToFile(string nameRoom)
         {
             if (IsRoomExists(nameRoom))
             {
@@ -41,7 +41,7 @@ namespace ChatServer.Repositories
             }
 
         }
-        public async Task WriteAsync()
+        public async Task WriteAsyncToFile()
         {
             foreach (var (key, value) in _current)
             {
