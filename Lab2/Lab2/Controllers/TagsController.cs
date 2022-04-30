@@ -5,6 +5,7 @@ using Lab2.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
 
 namespace Lab2.Controllers
 {
@@ -26,7 +27,7 @@ namespace Lab2.Controllers
         /// <returns>All Tags</returns>
         // GET: api/<TagsController>
         [HttpGet]
-        public ActionResult<List<Tags>> Get() => _tagRepository.GetTags();
+        public async Task<ActionResult<List<Tags>>> Get() => await _tagRepository.GetTags();
       
         /// <summary>
         /// Получение тэга по его индентификатору
@@ -40,7 +41,7 @@ namespace Lab2.Controllers
         {
             try
             {
-                var tag = _tagRepository.GetTags().Single(tag => tag.TagId == id);
+                var tag = _tagRepository.GetTags().Result.Where(tag => tag.TagId == id).Single();
                 return tag;
             }
             catch (NotFoundException)
@@ -85,8 +86,8 @@ namespace Lab2.Controllers
 
             try
             {
-                var tagsIndex = _tagRepository.GetTags().FindIndex(tags => tags.TagId == id);
-                _tagRepository.GetTags()[tagsIndex] = tag;
+                var tagsIndex = _tagRepository.GetTags().Result.FindIndex(tags => tags.TagId == id);
+                _tagRepository.GetTags().Result[tagsIndex] = tag;
                 _tagRepository.SaveFile();
                 return Ok();
             }

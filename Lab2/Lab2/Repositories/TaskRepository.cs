@@ -1,9 +1,7 @@
 ﻿using Lab2.Models;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
@@ -11,9 +9,11 @@ namespace Lab2.Repositories
 {
 	public class TaskRepository: ITaskRepository
 	{
+
         private readonly string _storageFileName;
-        public TaskRepository()
-        { }
+
+        public TaskRepository(){ }
+
          public TaskRepository(IConfiguration configuration)
         {
             _storageFileName = configuration.GetValue<string>("TasksFile");
@@ -32,54 +32,58 @@ namespace Lab2.Repositories
             }
             await DeserializeFile();     
         }
+
         private async Task DeserializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<TaskList>));
             using var fileReader = new FileStream(_storageFileName, FileMode.Open);
             _tasks = (List<TaskList>)xmlSerializer.Deserialize(fileReader);
         }
+
         private async Task SerializeFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<TaskList>));
             using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileWriter, _tasks);
         }
+
         private async Task WriteToFile()
         {
             await SerializeFile();
         }
 
-        public void SaveFile()
+        public async Task SaveFile()
         {
-            WriteToFile();
+            await WriteToFile();
         }
-        public int AddTask(TaskList tasks)
+
+        public async Task<int> AddTask(TaskList tasks)
         {
-            ReadFromFile();
+            await ReadFromFile();
             _tasks.Add(tasks);
-            WriteToFile();
+            await WriteToFile();
             return tasks.TaskId;
         }
 
-        public void RemoveAllTasks()
+        public async Task RemoveAllTasks()
         {
-            ReadFromFile();
+            await ReadFromFile();
             _tasks.RemoveRange(0, _tasks.Count);
-            WriteToFile();
+            await WriteToFile();
 
         }
 
-        public List<TaskList> GetTasks()
+        public async Task<List<TaskList>> GetTasks()
         {
-            ReadFromFile();
+            await ReadFromFile();
             return _tasks;
         }
 
-        public int RemoveTask(int id)
+        public async Task<int> RemoveTask(int id)
         {
-            ReadFromFile();
+            await ReadFromFile();
             _tasks.RemoveAt(id);
-            WriteToFile();
+            await WriteToFile();
             return id; 
         }
     }

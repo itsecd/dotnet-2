@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
 
 namespace Lab2.Controllers
 {
@@ -26,7 +27,7 @@ namespace Lab2.Controllers
         /// </summary>
         /// <returns>All Executors</returns>
         [HttpGet]
-        public ActionResult<List<Executor>> Get() => _executorRepository.GetExecutors();
+        public async Task<ActionResult<List<Executor>>> Get() => await _executorRepository.GetExecutors();
 
         /// <summary>
         /// Получение исполнителя задачи по его индентификатору
@@ -39,7 +40,7 @@ namespace Lab2.Controllers
         { 
             try
             {
-                var executor = _executorRepository.GetExecutors().Single(executor => executor.ExecutorId == id);
+                var executor = _executorRepository.GetExecutors().Result.Where(executor => executor.ExecutorId == id).Single();
                 return executor;
             }
             catch(NotFoundException)
@@ -87,8 +88,8 @@ namespace Lab2.Controllers
            
             try
             {
-                var executorIndex = _executorRepository.GetExecutors().FindIndex(executor => executor.ExecutorId == id);
-                _executorRepository.GetExecutors()[executorIndex] = executor;
+                var executorIndex = _executorRepository.GetExecutors().Result.FindIndex(executor => executor.ExecutorId == id);
+                _executorRepository.GetExecutors().Result[executorIndex] = executor;
                 _executorRepository.SaveFile();
                 return Ok(); 
             }

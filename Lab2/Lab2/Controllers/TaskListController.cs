@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Lab2.Exceptions;
+using System.Threading.Tasks;
 
 namespace Lab2.Controllers
 {
@@ -24,7 +25,7 @@ namespace Lab2.Controllers
         /// <returns>All Tasks</returns>
         // GET: api/<TaskListController>
         [HttpGet]
-        public ActionResult<List<TaskList>> Get() => _taskListRepository.GetTasks();
+        public async Task<ActionResult<List<TaskList>>> Get() => await _taskListRepository.GetTasks();
        
         /// <summary>
         /// Получение задачи по индентификатору
@@ -38,7 +39,7 @@ namespace Lab2.Controllers
 
             try
             {
-                var task = _taskListRepository.GetTasks().Single(task => task.TaskId == id);
+                var task = _taskListRepository.GetTasks().Result.Where(task => task.TaskId == id).Single();
                 return task;
             }
             catch (NotFoundException)
@@ -85,8 +86,8 @@ namespace Lab2.Controllers
 
             try
             {
-                var taskIndex = _taskListRepository.GetTasks().FindIndex(task => task.TaskId == id);
-                _taskListRepository.GetTasks()[taskIndex] = task;
+                var taskIndex = _taskListRepository.GetTasks().Result.FindIndex(task => task.TaskId == id);
+                _taskListRepository.GetTasks().Result[taskIndex] = task;
                 _taskListRepository.SaveFile();
                 return Ok();
             }
