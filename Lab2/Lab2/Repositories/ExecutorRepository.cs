@@ -48,11 +48,6 @@ namespace Lab2.Repositories
             return executor.ExecutorId;
         }
 
-        public void  SaveFile()
-        {
-             WriteToFile();
-        }
-
         public void RemoveAllExecutors()
         {
              ReadFromFile();
