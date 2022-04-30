@@ -9,7 +9,7 @@ namespace Lab2Test
 {
     public class TaskRepositoryTest
     {
-        private TaskList TaskCreate(int id)
+        private Task TaskCreate(int id)
         {
             var executor = new Executor
             {
@@ -23,16 +23,16 @@ namespace Lab2Test
                 Name = "for monday",
                 Color = 3
             };
-            
 
-            TaskList task = new TaskList
+
+            Task task = new Task
             {
                 TaskId = id,
                 Name = "Monday work",
                 Description = "for sale to intermediaries",
                 TaskState = false,
                 MemberOfTask = executor,
-                TagsNames = new List<Tags>() { firstTag}
+                TagsNames = new List<Tags>() { firstTag }
             };
             return task;
         }

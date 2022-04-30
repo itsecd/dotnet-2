@@ -5,17 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Lab2.Exceptions;
-using System.Threading.Tasks;
+
 
 namespace Lab2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TaskListController : ControllerBase
+    public class TaskController : ControllerBase
     {
         private readonly ITaskRepository _taskListRepository;
 
-        public TaskListController(ITaskRepository taskListRepository)
+        public TaskController(ITaskRepository taskListRepository)
         {
             _taskListRepository = taskListRepository;
         }
@@ -25,7 +25,7 @@ namespace Lab2.Controllers
         /// <returns>All Tasks</returns>
         // GET: api/<TaskListController>
         [HttpGet]
-        public async Task<ActionResult<List<TaskList>>> Get() => await _taskListRepository.GetTasks();
+        public ActionResult<List<Task>> Get() => _taskListRepository.GetTasks();
        
         /// <summary>
         /// Получение задачи по индентификатору
@@ -34,12 +34,12 @@ namespace Lab2.Controllers
         /// <returns>Task</returns>
         // GET api/<TaskListController>/5
         [HttpGet("{id:int}")]
-        public ActionResult<TaskList> Get(int id)
+        public ActionResult<Task> Get(int id)
         {
 
             try
             {
-                var task = _taskListRepository.GetTasks().Result.Where(task => task.TaskId == id).Single();
+                var task = _taskListRepository.GetTasks().Single(task => task.TaskId == id);
                 return task;
             }
             catch (NotFoundException)
@@ -60,7 +60,7 @@ namespace Lab2.Controllers
         /// <param name="task">Новая задача</param>
         // POST api/<TaskListController>
         [HttpPost]
-        public IActionResult Post([FromBody] TaskList task)
+        public IActionResult Post([FromBody] Task task)
         {
 
             try
@@ -81,14 +81,12 @@ namespace Lab2.Controllers
         /// <param name="task">Новая задача</param>
         // PUT api/<TaskListController>/5
         [HttpPut("{id:int}")]
-        public IActionResult Put(int id, [FromBody] TaskList task)
+        public IActionResult Put(int id, [FromBody] Task task)
         {
 
             try
             {
-                var taskIndex = _taskListRepository.GetTasks().Result.FindIndex(task => task.TaskId == id);
-                _taskListRepository.GetTasks().Result[taskIndex] = task;
-                _taskListRepository.SaveFile();
+                _taskListRepository.UpdateTask(id, task);
                 return Ok();
             }
             catch (NotFoundException)

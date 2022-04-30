@@ -27,7 +27,7 @@ namespace Lab2.Controllers
         /// </summary>
         /// <returns>All Executors</returns>
         [HttpGet]
-        public async Task<ActionResult<List<Executor>>> Get() => await _executorRepository.GetExecutors();
+        public ActionResult<List<Executor>> Get() =>  _executorRepository.GetExecutors();
 
         /// <summary>
         /// Получение исполнителя задачи по его индентификатору
@@ -40,7 +40,7 @@ namespace Lab2.Controllers
         { 
             try
             {
-                var executor = _executorRepository.GetExecutors().Result.Where(executor => executor.ExecutorId == id).Single();
+                var executor = _executorRepository.GetExecutors().Single(executor => executor.ExecutorId == id);
                 return executor;
             }
             catch(NotFoundException)
@@ -88,9 +88,7 @@ namespace Lab2.Controllers
            
             try
             {
-                var executorIndex = _executorRepository.GetExecutors().Result.FindIndex(executor => executor.ExecutorId == id);
-                _executorRepository.GetExecutors().Result[executorIndex] = executor;
-                _executorRepository.SaveFile();
+                _executorRepository.UpdateExecutor(id, executor);
                 return Ok(); 
             }
             catch(NotFoundException)

@@ -17,7 +17,7 @@ namespace Lab2.Repositories
         }
         private List<Tags> _tags;
 
-        private async Task ReadFromFile()
+        private void ReadFromFile()
         {
             if (_tags != null) return;
 
@@ -26,53 +26,53 @@ namespace Lab2.Repositories
                 _tags = new List<Tags>();
                 return;
             }
-            await DeserializeFile();   
-        }
-        private async Task DeserializeFile()
-        {
             var xmlSerializer = new XmlSerializer(typeof(List<Tags>));
             using var fileReader = new FileStream(_storageFileName, FileMode.Open);
             _tags = (List<Tags>)xmlSerializer.Deserialize(fileReader);
         }
-        private async Task WriteToFile()
-        {
-           await SerializeFile();
-        }
-        private async Task SerializeFile()
+
+        private void WriteToFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<Tags>));
             using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileWriter, _tags);
         }
-        public async Task<int> AddTag(Tags tags)
+
+
+        public int AddTag(Tags tags)
         {
-            await ReadFromFile();
+             ReadFromFile();
             _tags.Add(tags);
-            await WriteToFile();
+             WriteToFile();
             return tags.TagId;
         }
 
-        public async Task RemoveAllTags()
+        public void RemoveAllTags()
         {
-            await ReadFromFile();
+            ReadFromFile();
             _tags.RemoveRange(0, _tags.Count);
-            await WriteToFile();
+            WriteToFile();
 
         }
-        public async Task SaveFile()
+     
+        public List<Tags> GetTags()
         {
-            await WriteToFile();
-        }
-        public async Task<List<Tags>> GetTags()
-        {
-            await ReadFromFile();
+            ReadFromFile();
             return _tags;
         }
-        public async Task<int> RemoveTag(int id)
+        public int RemoveTag(int id)
         {
-            await ReadFromFile();
+            ReadFromFile();
             _tags.RemoveAt(id);
-            await WriteToFile();
+            WriteToFile();
+            return id;
+        }
+        public int UpdateTag(int id, Tags newTag)
+        {
+            ReadFromFile();
+            var tagIndex = _tags.FindIndex(p => p.TagId == id);
+            _tags[tagIndex] = newTag;
+            WriteToFile();
             return id;
         }
 

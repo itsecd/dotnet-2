@@ -6,10 +6,10 @@ namespace Lab2.Repositories
 {
     public interface IExecutorRepository
     {
-        Task<List<Executor>> GetExecutors();
-        Task<int> AddExecutor(Executor executor);
-        Task RemoveAllExecutors();
-        Task<int> RemoveExecutor(int id);
-        Task SaveFile();
+        List<Executor> GetExecutors();
+        int AddExecutor(Executor executor);
+        void RemoveAllExecutors();
+        int RemoveExecutor(int id);
+        int UpdateExecutor(int id, Executor executor);
     }
 }

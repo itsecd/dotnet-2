@@ -6,10 +6,11 @@ namespace Lab2.Repositories
 {
     public interface ITagRepository
     {
-        Task<int> AddTag(Tags tag);
-        Task<List<Tags>> GetTags();
-        Task RemoveAllTags();
-        Task<int> RemoveTag(int id);
-        Task SaveFile();
+        int AddTag(Tags tag);
+        List<Tags> GetTags();
+        void RemoveAllTags();
+        int RemoveTag(int id);
+        int UpdateTag(int id, Tags newTag);
+        
     }
 }

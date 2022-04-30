@@ -10,7 +10,7 @@ namespace Lab2.Repositories
     public class ExecutorRepository: IExecutorRepository
     {
 
-        private string _storageFileName;
+        private readonly string _storageFileName;
         public ExecutorRepository() { }
         public ExecutorRepository(IConfiguration configuration)
         {
@@ -18,7 +18,8 @@ namespace Lab2.Repositories
         }
 
         private List<Executor> _executors;
-        private async Task ReadFromFile()
+
+        private void ReadFromFile()
         {
             if (_executors != null) return;
 
@@ -27,60 +28,58 @@ namespace Lab2.Repositories
                 _executors = new List<Executor>();
                 return;
             }
-            await DeserializeFile();
-        }
-
-        private async Task DeserializeFile()
-        {
             var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
             using var fileReader = new FileStream(_storageFileName, FileMode.Open);
             _executors = (List<Executor>)xmlSerializer.Deserialize(fileReader);
         }
-        private async Task SerializeFile()
+
+        private void WriteToFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
-            using FileStream fileWriter = new FileStream(_storageFileName, FileMode.Create);
+            using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileWriter, _executors);
         }
 
-        private async Task WriteToFile()
+        public int AddExecutor(Executor executor)
         {
-            await SerializeFile();
-        }
-
-        public async Task<int> AddExecutor(Executor executor)
-        {
-            await ReadFromFile();
+             ReadFromFile();
             _executors.Add(executor);
-            await WriteToFile();
+             WriteToFile();
             return executor.ExecutorId;
         }
 
-        public async Task SaveFile()
+        public void  SaveFile()
         {
-            await WriteToFile();
+             WriteToFile();
         }
 
-        public async Task RemoveAllExecutors()
+        public void RemoveAllExecutors()
         {
-            await ReadFromFile();
+             ReadFromFile();
             _executors.RemoveRange(0, _executors.Count);
-            await WriteToFile();
+             WriteToFile();
         }
 
-        public async Task<List<Executor>> GetExecutors()
+        public List<Executor> GetExecutors()
         {
-            await ReadFromFile();
+            ReadFromFile();
             return _executors;
         }
-        public async Task<int> RemoveExecutor(int id)
+        public int RemoveExecutor(int id)
         {
-            await ReadFromFile();
+             ReadFromFile();
             _executors.RemoveAt(id-1);
-            await WriteToFile();
+             WriteToFile();
             return id;
         }
-
+        public int UpdateExecutor(int id, Executor newExecutor)
+        {
+            ReadFromFile();
+            var executorIndex = _executors.FindIndex(p => p.ExecutorId == id);
+            _executors[executorIndex] = newExecutor;
+            WriteToFile();
+            return id; 
+        }
 
     }
 }

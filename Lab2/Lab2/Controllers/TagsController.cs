@@ -27,7 +27,7 @@ namespace Lab2.Controllers
         /// <returns>All Tags</returns>
         // GET: api/<TagsController>
         [HttpGet]
-        public async Task<ActionResult<List<Tags>>> Get() => await _tagRepository.GetTags();
+        public ActionResult<List<Tags>> Get() => _tagRepository.GetTags();
       
         /// <summary>
         /// Получение тэга по его индентификатору
@@ -41,7 +41,7 @@ namespace Lab2.Controllers
         {
             try
             {
-                var tag = _tagRepository.GetTags().Result.Where(tag => tag.TagId == id).Single();
+                var tag = _tagRepository.GetTags().Single(tag => tag.TagId == id);
                 return tag;
             }
             catch (NotFoundException)
@@ -86,9 +86,7 @@ namespace Lab2.Controllers
 
             try
             {
-                var tagsIndex = _tagRepository.GetTags().Result.FindIndex(tags => tags.TagId == id);
-                _tagRepository.GetTags().Result[tagsIndex] = tag;
-                _tagRepository.SaveFile();
+                _tagRepository.UpdateTag(id, tag);
                 return Ok();
             }
             catch (NotFoundException)
