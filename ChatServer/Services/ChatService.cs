@@ -2,6 +2,7 @@
 using ChatServer.Repositories;
 using Grpc.Core;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 namespace ChatServer.Services
 {
@@ -10,6 +11,7 @@ namespace ChatServer.Services
 
         private readonly IRoomRepository _chatRooms;
         private readonly IUserRepository _users;
+        private static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
         private static object _lock = new object();
 
 
@@ -53,16 +55,22 @@ namespace ChatServer.Services
 
         public override async Task Join(IAsyncStreamReader<Message> requestStream, IServerStreamWriter<Message> responseStream, ServerCallContext context)
         {
+            var tcs = new TaskCompletionSource<int>();
 
             if (!await requestStream.MoveNext()) return;
             var nameRoom = requestStream.Current.Text;
             var userName = requestStream.Current.User;
             if (_chatRooms.IsRoomExists(nameRoom))
             {
-                lock(_lock)
+                await semaphoreSlim.WaitAsync();
+                try
                 {
-                    _users.ReadFromFileAsync();
-                    _chatRooms.ReadFromFileAsync(nameRoom);
+                    await _users.ReadFromFileAsync();
+                    await _chatRooms.ReadFromFileAsync(nameRoom);
+                }
+                finally
+                {
+                    semaphoreSlim.Release();
                 }
                 var room = _chatRooms.FindRoom(nameRoom);
 
@@ -73,9 +81,14 @@ namespace ChatServer.Services
 
                 if (_users.IsUserExist(userName))
                     _users.AddUser(userName);
-                lock (_lock)
+                await semaphoreSlim.WaitAsync();
+                try
                 {
-                    _users.WriteAsyncToFile();
+                    await _users.WriteAsyncToFile();
+                }
+                finally
+                {
+                    semaphoreSlim.Release();
                 }
 
                 await responseStream.WriteAsync(new Message { Text = "Connection success" });
@@ -103,12 +116,15 @@ namespace ChatServer.Services
                         Console.WriteLine(requestStream.Current);
                         break;
                 }
-
-                lock (_lock)
+                await semaphoreSlim.WaitAsync();
+                try
                 {
-                    _chatRooms.WriteAsyncToFile();
+                    await _chatRooms.WriteAsyncToFile();
                 }
-
+                finally
+                {
+                    semaphoreSlim.Release();
+                }
 
             }
 
