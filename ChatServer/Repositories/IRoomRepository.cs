@@ -7,7 +7,7 @@ namespace ChatServer.Repositories
     {
         string AddRoom(string nameRoom, RoomNetwork room);
         RoomNetwork FindRoom(string nameRoom);
-        Task ReadAsyncToFile(string nameRoom);
+        Task ReadFromFileAsync(string nameRoom);
         void RemoveRoom(string nameRoom);
         Task WriteAsyncToFile();
 

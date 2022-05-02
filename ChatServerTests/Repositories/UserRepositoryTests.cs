@@ -33,7 +33,7 @@ namespace ChatServerTests.Repositories
         public async void ReadAsyncTest()
         {
             var userRepositories = new UserRepository();
-            await userRepositories.ReadAsyncToFile();
+            await userRepositories.ReadFromFileAsync();
             var actual = userRepositories.Users.ToArray();
             Assert.True(Array.Exists(actual, x => x.Name == "user1"));
 

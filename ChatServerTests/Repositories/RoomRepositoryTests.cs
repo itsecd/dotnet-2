@@ -51,9 +51,9 @@ namespace ChatServerTests.Repositories
         {
             RoomRepository roomRepository = CreateTestRepository();
             await roomRepository.WriteAsyncToFile();
-            await roomRepository.ReadAsyncToFile("test1");
-            await roomRepository.ReadAsyncToFile("test2");
-            await roomRepository.ReadAsyncToFile("test3");
+            await roomRepository.ReadFromFileAsync("test1");
+            await roomRepository.ReadFromFileAsync("test2");
+            await roomRepository.ReadFromFileAsync("test3");
             Assert.True(roomRepository.Rooms.TryGetValue("test1", out _));
             Assert.True(roomRepository.Rooms.TryGetValue("test2", out _));
             Assert.True(roomRepository.Rooms.TryGetValue("test3", out _));

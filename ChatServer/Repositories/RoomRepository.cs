@@ -17,7 +17,7 @@ namespace ChatServer.Repositories
             set => _current = value;
         }
 
-        public async Task ReadAsyncToFile(string nameRoom)
+        public async Task ReadFromFileAsync(string nameRoom)
         {
             if (IsRoomExists(nameRoom))
             {
@@ -47,7 +47,7 @@ namespace ChatServer.Repositories
             {
                 await using FileStream streamMessage = File.Create(key + ".json");
                 await JsonSerializer.SerializeAsync<RoomNetwork>(streamMessage, value, new JsonSerializerOptions { WriteIndented = true });
-                
+
             }
 
         }

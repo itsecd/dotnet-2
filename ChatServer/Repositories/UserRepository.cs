@@ -25,7 +25,7 @@ namespace ChatServer.Repositories
             }
         }
         private readonly string _usersFileName = "users.json";
-        public async Task ReadAsyncToFile()
+        public async Task ReadFromFileAsync()
         {
             if (File.Exists(_usersFileName))
             {
@@ -39,7 +39,7 @@ namespace ChatServer.Repositories
         {
 
             await using FileStream streamMessage = File.Create(_usersFileName);
-            await  JsonSerializer.SerializeAsync<ConcurrentBag<User>>(streamMessage, _users, new JsonSerializerOptions { WriteIndented = true });
+            await JsonSerializer.SerializeAsync<ConcurrentBag<User>>(streamMessage, _users, new JsonSerializerOptions { WriteIndented = true });
 
 
         }

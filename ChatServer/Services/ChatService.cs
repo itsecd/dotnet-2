@@ -10,7 +10,7 @@ namespace ChatServer.Services
 
         private readonly IRoomRepository _chatRooms;
         private readonly IUserRepository _users;
-        private object _lock = new object();
+        private static object _lock = new object();
 
 
         public ChatService(IRoomRepository chatRooms, IUserRepository users)
@@ -37,11 +37,8 @@ namespace ChatServer.Services
                     _users.AddUser(userName);
                     room.Join(userName, responseStream);
                     room.AddUser(userName);
-                    lock (_lock)
-                    {
-                         _chatRooms.WriteAsyncToFile();
-                         _users.WriteAsyncToFile();
-                    }
+                    await _chatRooms.WriteAsyncToFile();
+                    await _users.WriteAsyncToFile();
                     await responseStream.WriteAsync(new Message { Text = requestStream.Current.Text });
                     await requestStream.MoveNext();
                 }
@@ -62,9 +59,11 @@ namespace ChatServer.Services
             var userName = requestStream.Current.User;
             if (_chatRooms.IsRoomExists(nameRoom))
             {
-
-                await _users.ReadAsyncToFile();
-                await _chatRooms.ReadAsyncToFile(nameRoom);
+                lock(_lock)
+                {
+                    _users.ReadFromFileAsync();
+                    _chatRooms.ReadFromFileAsync(nameRoom);
+                }
                 var room = _chatRooms.FindRoom(nameRoom);
 
                 room.Join(userName, responseStream);
@@ -76,9 +75,9 @@ namespace ChatServer.Services
                     _users.AddUser(userName);
                 lock (_lock)
                 {
-                  _users.WriteAsyncToFile();
+                    _users.WriteAsyncToFile();
                 }
-                
+
                 await responseStream.WriteAsync(new Message { Text = "Connection success" });
                 await room.BroadcastMessage(new Message { Text = $"{userName} connected" });
             }
@@ -107,9 +106,9 @@ namespace ChatServer.Services
 
                 lock (_lock)
                 {
-                  _chatRooms.WriteAsyncToFile();
+                    _chatRooms.WriteAsyncToFile();
                 }
-                
+
 
             }
 
