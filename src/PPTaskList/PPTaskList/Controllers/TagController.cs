@@ -32,9 +32,9 @@ namespace PPTask.Controllers
         /// </summary>
         /// <returns>Теги</returns>
         [HttpGet]
-        public IEnumerable<Tags> Get()
+        public IEnumerable<Tag> Get()
         {
-            return (IEnumerable<Tags>)_tagRepository.GetTags().Result;
+            return (IEnumerable<Tag>)_tagRepository.GetTags().Result;
         }
 
         /// <summary>
@@ -43,14 +43,9 @@ namespace PPTask.Controllers
         /// <param name="id">Идентификатор тега</param>
         /// <returns>Тег</returns>
         [HttpGet("{id}")]
-        public Tags Get(int id)
+        public Tag Get(int id)
         {
-            if (id > 0 && _tagRepository.GetTags().Result[id] != null)
-            {
-                return _tagRepository.GetTags().Result[id];
-            }
-            else
-                throw new IndexOutOfRangeException();
+            return _tagRepository.GetTags().Result.Where(tag => tag.TagId == id).Single();
         }
 
         /// <summary>
@@ -58,7 +53,7 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новый тег</param>
         [HttpPost]
-        public void Post([FromBody] Tags value)
+        public void Post([FromBody] Tag value)
         {
             _tagRepository.AddTag(value);
         }
@@ -69,11 +64,13 @@ namespace PPTask.Controllers
         /// <param name="value">Новый тег</param>
         /// /// <param name="id">Идентификатор заменяемого тега</param>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Tags value)
+        public void Put(int id, [FromBody] Tag value)
         {
-            if (id > 0 && _tagRepository.GetTags().Result[id] != null)
+            var tagIndex = _tagRepository.GetTags().Result.FindIndex(tag => tag.TagId == id);
+
+            if (tagIndex > 0)
             {
-                _tagRepository.GetTags().Result[id] = value;
+                _tagRepository.GetTags().Result[tagIndex] = value;
             }
         }
 
@@ -84,8 +81,7 @@ namespace PPTask.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _tagRepository.GetTags().Result.RemoveAt(id);
-            //_tagRepository.RemoveAllTags();
+            _tagRepository.RemoveTag(id);
         }
     }
 }

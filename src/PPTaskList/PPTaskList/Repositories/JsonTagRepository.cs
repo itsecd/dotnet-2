@@ -16,7 +16,7 @@ namespace PPTask.Repositories
             _storageFileName = configuration.GetValue<string>("TagsFile");
         }
 
-        private List<Tags> _tags;
+        private List<Tag> _tags;
 
         private async System.Threading.Tasks.Task ReadFromFileAsync()
         {
@@ -24,46 +24,38 @@ namespace PPTask.Repositories
 
             if (!File.Exists(_storageFileName))
             {
-                _tags = new List<Tags>();
+                _tags = new List<Tag>();
                 return;
             }
 
             using var fileReader = new FileStream(_storageFileName, FileMode.Open);
-            _tags = await JsonSerializer.DeserializeAsync<List<Tags>>(fileReader);
+            _tags = await JsonSerializer.DeserializeAsync<List<Tag>>(fileReader);
         }
 
         private async System.Threading.Tasks.Task WriteToFileAsync()
         {
             using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
-            await JsonSerializer.SerializeAsync<List<Tags>>(fileWriter, _tags);
+            await JsonSerializer.SerializeAsync<List<Tag>>(fileWriter, _tags);
         }
 
-        public async System.Threading.Tasks.Task AddTag(Tags tag)
+        public async System.Threading.Tasks.Task AddTag(Tag tag)
         {
             await ReadFromFileAsync();
             _tags.Add(tag);
             await WriteToFileAsync();
         }
 
-        public async System.Threading.Tasks.Task RemoveAllTags()
+        public async System.Threading.Tasks.Task RemoveTag(int id)
         {
-            await ReadFromFileAsync();
-            _tags.RemoveRange(0, _tags.Count);
-            await WriteToFileAsync();
-
+            if (_tags != null)
+            {
+                await ReadFromFileAsync();
+                _tags.RemoveAll(tag => tag.TagId == id);
+                await WriteToFileAsync();
+            }
         }
 
-        //public async System.Threading.Tasks.Task RemoveTag(int id)
-        //{
-        //    if(_tags != null)
-        //    {
-        //        await ReadFromFileAsync();
-        //        _tags.RemoveAll(tag => tag.)
-        //        await WriteToFileAsync();
-        //    }
-        //}
-
-        public async System.Threading.Tasks.Task<List<Tags>> GetTags()
+        public async System.Threading.Tasks.Task<List<Tag>> GetTags()
         {
             await ReadFromFileAsync();
             return _tags;

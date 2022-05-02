@@ -28,9 +28,9 @@ namespace PPTask.Controllers.Model
         public int ExecutorId { get; set; }
 
         /// <summary>
-        /// Список тегов
+        /// Список идентификаторов тегов
         /// </summary>
-        public List <Tags> Tags { get; set; }
+        public List<int> TagsId { get; set; }
 
         /// <summary>
         /// Конструкор по умолчанию
@@ -44,12 +44,12 @@ namespace PPTask.Controllers.Model
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
-        public Task(string header, string text, int id, List<Tags> tags)
+        public Task(string header, string text, int executorId, List<int> tagsId)
         {
             HeaderText = header;
             TextDescription = text;
-            ExecutorId = id;
-            Tags = tags;
+            ExecutorId = executorId;
+            TagsId = tagsId;
         }
     }
 }

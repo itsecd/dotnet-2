@@ -60,7 +60,6 @@ namespace PPTask.Repositories
             await ReadFromFileAsync();
             _tasks.RemoveRange(0, _tasks.Count);
             await WriteToFileAsync();
-
         }
 
         public async System.Threading.Tasks.Task<List<Task>> GetTasks()
