@@ -11,8 +11,7 @@ namespace ChatServer.Services
 
         private readonly IRoomRepository _chatRooms;
         private readonly IUserRepository _users;
-        private static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
-        private static object _lock = new object();
+        private static readonly SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
 
 
         public ChatService(IRoomRepository chatRooms, IUserRepository users)
@@ -30,7 +29,6 @@ namespace ChatServer.Services
                 if (_chatRooms.IsRoomExists(requestStream.Current.Text))
                 {
                     await responseStream.WriteAsync(new Message { Text = "Данная комната существует!" });
-                    return;
                 }
                 else
                 {
@@ -48,21 +46,18 @@ namespace ChatServer.Services
             else
             {
                 await responseStream.WriteAsync(new Message { Text = "Неверная команда!" });
-                return;
             }
 
         }
 
         public override async Task Join(IAsyncStreamReader<Message> requestStream, IServerStreamWriter<Message> responseStream, ServerCallContext context)
         {
-            var tcs = new TaskCompletionSource<int>();
-
             if (!await requestStream.MoveNext()) return;
             var nameRoom = requestStream.Current.Text;
             var userName = requestStream.Current.User;
             if (_chatRooms.IsRoomExists(nameRoom))
             {
-                await semaphoreSlim.WaitAsync();
+                await SemaphoreSlim.WaitAsync();
                 try
                 {
                     await _users.ReadFromFileAsync();
@@ -70,7 +65,7 @@ namespace ChatServer.Services
                 }
                 finally
                 {
-                    semaphoreSlim.Release();
+                    SemaphoreSlim.Release();
                 }
                 var room = _chatRooms.FindRoom(nameRoom);
 
@@ -81,14 +76,14 @@ namespace ChatServer.Services
 
                 if (_users.IsUserExist(userName))
                     _users.AddUser(userName);
-                await semaphoreSlim.WaitAsync();
+                await SemaphoreSlim.WaitAsync();
                 try
                 {
                     await _users.WriteAsyncToFile();
                 }
                 finally
                 {
-                    semaphoreSlim.Release();
+                    SemaphoreSlim.Release();
                 }
 
                 await responseStream.WriteAsync(new Message { Text = "Connection success" });
@@ -104,9 +99,9 @@ namespace ChatServer.Services
                 switch (requestStream.Current.Command)
                 {
                     case "message":
-                        var CurrentMessage = requestStream.Current;
+                        var currentMessage = requestStream.Current;
                         var room = _chatRooms.FindRoom(nameRoom);
-                        await room.BroadcastMessage(CurrentMessage, userName);
+                        await room.BroadcastMessage(currentMessage, userName);
                         break;
                     case "disconnect":
                         _chatRooms.FindRoom(nameRoom).Disconnect(requestStream.Current.User);
@@ -116,14 +111,14 @@ namespace ChatServer.Services
                         Console.WriteLine(requestStream.Current);
                         break;
                 }
-                await semaphoreSlim.WaitAsync();
+                await SemaphoreSlim.WaitAsync();
                 try
                 {
                     await _chatRooms.WriteAsyncToFile();
                 }
                 finally
                 {
-                    semaphoreSlim.Release();
+                    SemaphoreSlim.Release();
                 }
 
             }
