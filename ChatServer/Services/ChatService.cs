@@ -11,7 +11,7 @@ namespace ChatServer.Services
 
         private readonly IRoomRepository _chatRooms;
         private readonly IUserRepository _users;
-        private readonly static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
+        private  static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
 
 
         public ChatService(IRoomRepository chatRooms, IUserRepository users)
