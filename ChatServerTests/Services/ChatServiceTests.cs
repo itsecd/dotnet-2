@@ -1,4 +1,6 @@
-﻿using ChatServer.Repositories;
+﻿using ChatServer;
+using ChatServer.Repositories;
+using ChatServer.Services;
 using Grpc.Core;
 using Moq;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ChatServer.Services.Tests
+namespace ChatServerTests.Services
 {
     public class ChatServiceTests
     {
@@ -19,12 +21,12 @@ namespace ChatServer.Services.Tests
             File.WriteAllText("room2.json", "{\r\n  \"Users\": [\r\n    {\r\n      \"Name\": \"user2\",\r\n      \"ID\": 1110544761\r\n    }\r\n  ],\r\n  \"History\": {}\r\n}");
 
             var messages = new List<Message>
-    {
-        new() { Command  = "create", Text = "room1", User = "user1" },
-        new() { Command  = "create", Text = "room2", User = "user2" },
-        new() { Command  = "create", Text = "room2", User = "user3" },
-        new() { Command  = "create", Text = "room2", User = "user4" }
-    };
+            {
+                new() { Command  = "create", Text = "room1", User = "user1" },
+                new() { Command  = "create", Text = "room2", User = "user2" },
+                new() { Command  = "create", Text = "room2", User = "user3" },
+                new() { Command  = "create", Text = "room2", User = "user4" }
+            };
 
             Task.WaitAll(messages.Select(message => Task.Run(async () =>
             {

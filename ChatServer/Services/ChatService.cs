@@ -107,9 +107,6 @@ namespace ChatServer.Services
                         _chatRooms.FindRoom(nameRoom).Disconnect(requestStream.Current.User);
                         await responseStream.WriteAsync(new Message { Text = $"Пользователь {requestStream.Current.User} отключился!" });
                         break;
-                    default:
-                        Console.WriteLine(requestStream.Current);
-                        break;
                 }
                 await SemaphoreSlim.WaitAsync();
                 try
