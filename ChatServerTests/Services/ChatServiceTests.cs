@@ -35,8 +35,7 @@ namespace ChatServerTests.Services
 
                 var roomsRepository = new RoomRepository();
                 var usersRepository = new UserRepository();
-                var chatService = new ChatService(roomsRepository, usersRepository);
-
+                var chatService = new ChatService(roomsRepository, usersRepository,null);
                 var isFirstCall = true;
                 asyncStreamReader.Setup(x => x.MoveNext(It.IsAny<CancellationToken>()))
                     .ReturnsAsync(() =>

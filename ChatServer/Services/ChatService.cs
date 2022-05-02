@@ -1,6 +1,7 @@
 ﻿using ChatServer.Networks;
 using ChatServer.Repositories;
 using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,10 +13,12 @@ namespace ChatServer.Services
         private readonly IRoomRepository _chatRooms;
         private readonly IUserRepository _users;
         private  static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
+        private readonly ILogger<ChatService> _logger;
 
 
-        public ChatService(IRoomRepository chatRooms, IUserRepository users)
+        public ChatService(IRoomRepository chatRooms, IUserRepository users, ILogger<ChatService> logger)
         {
+            _logger = logger;
             _chatRooms = chatRooms;
             _users = users;
         }
@@ -108,7 +111,7 @@ namespace ChatServer.Services
                         await responseStream.WriteAsync(new Message { Text = $"Пользователь {requestStream.Current.User} отключился!" });
                         break;
                     default:
-                        Console.WriteLine(requestStream.Current);
+                        _logger.LogInformation(requestStream.Current.Text);
                         break;
                 }
                 await SemaphoreSlim.WaitAsync();
