@@ -2,8 +2,6 @@
 using ChatServer.Repositories;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading;
 using System.Threading.Tasks;
 namespace ChatServer.Services
 {
@@ -12,7 +10,6 @@ namespace ChatServer.Services
 
         private readonly IRoomRepository _chatRooms;
         private readonly IUserRepository _users;
-        private  static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly ILogger<ChatService> _logger;
 
 
@@ -60,16 +57,9 @@ namespace ChatServer.Services
             var userName = requestStream.Current.User;
             if (_chatRooms.IsRoomExists(nameRoom))
             {
-                await SemaphoreSlim.WaitAsync();
-                try
-                {
-                    await _users.ReadFromFileAsync();
-                    await _chatRooms.ReadFromFileAsync(nameRoom);
-                }
-                finally
-                {
-                    SemaphoreSlim.Release();
-                }
+                await _users.ReadFromFileAsync();
+                await _chatRooms.ReadFromFileAsync(nameRoom);
+
                 var room = _chatRooms.FindRoom(nameRoom);
 
                 room.Join(userName, responseStream);
@@ -79,16 +69,7 @@ namespace ChatServer.Services
 
                 if (_users.IsUserExist(userName))
                     _users.AddUser(userName);
-                await SemaphoreSlim.WaitAsync();
-                try
-                {
-                    await _users.WriteAsyncToFile();
-                }
-                finally
-                {
-                    SemaphoreSlim.Release();
-                }
-
+                await _users.WriteAsyncToFile();
                 await responseStream.WriteAsync(new Message { Text = "Connection success" });
                 await room.BroadcastMessage(new Message { Text = $"{userName} connected" });
             }
@@ -114,15 +95,9 @@ namespace ChatServer.Services
                         _logger.LogInformation(requestStream.Current.Text);
                         break;
                 }
-                await SemaphoreSlim.WaitAsync();
-                try
-                {
-                    await _chatRooms.WriteAsyncToFile();
-                }
-                finally
-                {
-                    SemaphoreSlim.Release();
-                }
+
+                await _chatRooms.WriteAsyncToFile();
+
 
             }
 

@@ -3,6 +3,7 @@ using ChatServer.Networks;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ChatServer.Repositories
@@ -10,6 +11,7 @@ namespace ChatServer.Repositories
     public class RoomRepository : IRoomRepository
     {
         private ConcurrentDictionary<string, RoomNetwork> _current = new();
+        private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
 
         public ConcurrentDictionary<string, RoomNetwork> Rooms
         {
@@ -19,35 +21,50 @@ namespace ChatServer.Repositories
 
         public async Task ReadFromFileAsync(string nameRoom)
         {
-            if (IsRoomExists(nameRoom))
+            await SemaphoreSlim.WaitAsync();
+            try
             {
-                await using var stream = File.Open(nameRoom + ".json", FileMode.Open);
-                var serializeOptions = new JsonSerializerOptions
+                if (IsRoomExists(nameRoom))
                 {
-                    Converters =
+                    await using var stream = File.Open(nameRoom + ".json", FileMode.Open);
+                    var serializeOptions = new JsonSerializerOptions
+                    {
+                        Converters =
                     {
                         new UsersBagJsonConverter()
                     }
-                };
-                if (_current.ContainsKey(nameRoom))
-                {
-                    var tmp = await JsonSerializer.DeserializeAsync<RoomNetwork>(stream, serializeOptions);
-                    _current[nameRoom].Users = tmp.Users;
-                    _current[nameRoom].History = tmp.History;
+                    };
+                    if (_current.ContainsKey(nameRoom))
+                    {
+                        var tmp = await JsonSerializer.DeserializeAsync<RoomNetwork>(stream, serializeOptions);
+                        _current[nameRoom].Users = tmp.Users;
+                        _current[nameRoom].History = tmp.History;
+                    }
+                    else
+                        AddRoom(nameRoom, await JsonSerializer.DeserializeAsync<RoomNetwork>(stream, serializeOptions));
+
                 }
-                else
-                    AddRoom(nameRoom, await JsonSerializer.DeserializeAsync<RoomNetwork>(stream, serializeOptions));
-
             }
-
+            finally
+            {
+                SemaphoreSlim.Release();
+            }
         }
         public async Task WriteAsyncToFile()
         {
-            foreach (var (key, value) in _current)
+            await SemaphoreSlim.WaitAsync();
+            try
             {
-                await using FileStream streamMessage = File.Create(key + ".json");
-                await JsonSerializer.SerializeAsync<RoomNetwork>(streamMessage, value, new JsonSerializerOptions { WriteIndented = true });
+                foreach (var (key, value) in _current)
+                {
+                    await using FileStream streamMessage = File.Create(key + ".json");
+                    await JsonSerializer.SerializeAsync<RoomNetwork>(streamMessage, value, new JsonSerializerOptions { WriteIndented = true });
 
+                }
+            }
+            finally
+            {
+                SemaphoreSlim.Release();
             }
 
         }
