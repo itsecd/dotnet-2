@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,7 +23,7 @@ namespace GomokuConsoleClient
             _stream = client.Play();
             _id = id;
 
-            _responseTask = Task.Run(async ()=>
+            _responseTask = Task.Run(async () =>
             {
                 while (await _stream.ResponseStream.MoveNext(CancellationToken.None))
                 {
@@ -38,7 +35,7 @@ namespace GomokuConsoleClient
         public async Task Login(string login)
         {
             var loginRequest = new LoginRequest { Login = login };
-            var request = new Request { LoginRequest = loginRequest};
+            var request = new Request { LoginRequest = loginRequest };
             await _stream.RequestStream.WriteAsync(request);
         }
 

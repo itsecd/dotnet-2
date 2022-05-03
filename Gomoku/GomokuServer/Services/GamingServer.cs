@@ -11,7 +11,7 @@ namespace GomokuServer.Services
     public sealed class GamingServer
     {
         private readonly ConcurrentDictionary<string, Player> _players = new();
-        private readonly object _waitingPlayerLock =  new();
+        private readonly object _waitingPlayerLock = new();
         private Player? _waitingPlayer;
 
         public async Task Play(IAsyncStreamReader<Request> requestStream, IServerStreamWriter<Reply> responseStream)
@@ -23,6 +23,7 @@ namespace GomokuServer.Services
                 return;
 
             var player = Login(requestStream.Current.LoginRequest, responseStream);
+            
             try
             {
                 var loginReply = new LoginReply { Success = player is not null };
@@ -44,7 +45,7 @@ namespace GomokuServer.Services
                             break;
                         case Request.RequestOneofCase.MakeTurnRequest:
                             player.Session?.MakeTurn(player, requestStream.Current.MakeTurnRequest);
-                            break; 
+                            break;
                         default: throw new ApplicationException();
                     }
 
@@ -57,9 +58,10 @@ namespace GomokuServer.Services
             }
         }
 
-        private Player? Login(LoginRequest loginRequest, IServerStreamWriter<Reply> responseStream) {
+        private Player? Login(LoginRequest loginRequest, IServerStreamWriter<Reply> responseStream)
+        {
             var player = new Player(loginRequest.Login, responseStream);
-            return _players.TryAdd(player.Login, player)? player: null;
+            return _players.TryAdd(player.Login, player) ? player : null;
         }
 
         private void FindOpponent(Player player, FindOpponentRequest findOpponentRequest)
@@ -67,7 +69,7 @@ namespace GomokuServer.Services
             GamingSession session;
             lock (_waitingPlayerLock)
             {
-                if(_waitingPlayer is null)
+                if (_waitingPlayer is null)
                 {
                     _waitingPlayer = player;
                     return;
@@ -78,6 +80,7 @@ namespace GomokuServer.Services
             }
             session.Start();
         }
+
     }
 }
 
