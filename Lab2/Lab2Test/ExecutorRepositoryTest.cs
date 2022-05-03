@@ -34,5 +34,20 @@ namespace Lab2Test
             repository.AddExecutor(executor);
             Assert.Equal(8, repository.RemoveExecutor(8));
         }
+        [Fact]
+        public void UpdateExecutorTest()
+        {
+            var executor = new Executor
+            {
+                ExecutorId = 9,
+                Name = "Sergey",
+                Surname = "Sergeev"
+            };
+
+            ExecutorRepository repository = new();
+            repository.AddExecutor(executor);
+            Assert.Equal(9, repository.UpdateExecutor(9, executor));
+            repository.RemoveExecutor(9);
+        }
     }
 }

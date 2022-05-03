@@ -1,9 +1,7 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 using Lab2.Repositories;
 using Lab2.Models;
 using System.Collections.Generic;
-
 
 namespace Lab2Test
 {
@@ -41,15 +39,24 @@ namespace Lab2Test
         public void AddTaskTest()
         {
             TaskRepository repository = new();
-            Assert.Equal(1, repository.AddTask(TaskCreate(1)));
-            repository.RemoveTask(1);
+            Assert.Equal(3, repository.AddTask(TaskCreate(3)));
+            repository.RemoveTask(3);
         }
         [Fact]
         public void RemoveTaskTest()
         {
             TaskRepository repository = new();
-            repository.AddTask(TaskCreate(2));
-            Assert.Equal(2, repository.RemoveTask(2));
+            repository.AddTask(TaskCreate(1));
+            Assert.Equal(1, repository.RemoveTask(1));
         }
+        [Fact]
+        public void UpdateTaskTest()
+        {
+            TaskRepository repository = new();
+            repository.AddTask(TaskCreate(1));
+            Assert.Equal(1, repository.UpdateTask(1, TaskCreate(1)));
+            repository.RemoveTask(1);
+        }
+
     }
 }

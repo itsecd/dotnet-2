@@ -32,5 +32,20 @@ namespace Lab2Test
             repository.AddTag(tag);
             Assert.Equal(2, repository.RemoveTag(2));
         }
+        [Fact]
+        public void UpdateTagTest()
+        {
+            var tag = new Tags
+            {
+                TagId = 2,
+                Name = "next",
+                Color = 3
+            };
+
+            TagRepository repository = new();
+            repository.AddTag(tag);
+            Assert.Equal(2, repository.UpdateTag(2, tag));
+            repository.RemoveTag(2);
+        }
     }
 }

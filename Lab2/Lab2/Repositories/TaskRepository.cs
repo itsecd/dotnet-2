@@ -9,13 +9,16 @@ namespace Lab2.Repositories
 	public class TaskRepository: ITaskRepository
 	{
 
-        private readonly string _storageFileName;
+        private readonly string _storageFileName = "task.xml";
 
         public TaskRepository(){ }
 
-         public TaskRepository(IConfiguration configuration)
+         public TaskRepository(IConfiguration configuration = null)
         {
-            _storageFileName = configuration.GetValue<string>("TasksFile");
+            if (configuration != null)
+            {
+                _storageFileName = configuration.GetValue<string>("TasksFile");
+            }
         }
 
         private List<Task> _tasks;

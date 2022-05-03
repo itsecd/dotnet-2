@@ -9,11 +9,14 @@ namespace Lab2.Repositories
 {
     public class TagRepository:ITagRepository
     {
-        private readonly string _storageFileName;
+        private readonly string _storageFileName = "tag.xml" ;
         public TagRepository() { }
-        public TagRepository(IConfiguration configuration)
+        public TagRepository(IConfiguration configuration = null)
         {
-            _storageFileName = configuration.GetValue<string>("TagsFile");
+            if (configuration != null)
+            {
+                _storageFileName = configuration.GetValue<string>("TagsFile");
+            }
         }
         private List<Tags> _tags;
 

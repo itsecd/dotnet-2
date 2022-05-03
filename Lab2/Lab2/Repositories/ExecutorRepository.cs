@@ -10,11 +10,14 @@ namespace Lab2.Repositories
     public class ExecutorRepository: IExecutorRepository
     {
 
-        private readonly string _storageFileName;
+        private readonly string _storageFileName = "executors.xml";
         public ExecutorRepository() { }
-        public ExecutorRepository(IConfiguration configuration)
+        public ExecutorRepository(IConfiguration configuration = null)
         {
-            _storageFileName = configuration.GetValue<string>("ExecutorsFile");
+            if (configuration != null)
+            {
+                _storageFileName = configuration.GetValue<string>("ExecutorsFile");
+            }
         }
 
         private List<Executor> _executors;
