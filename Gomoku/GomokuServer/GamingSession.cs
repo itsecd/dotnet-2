@@ -12,6 +12,15 @@ namespace GomokuServer
 
         public Player FirstPlayer { get; }
 
+        public enum PlayersCage
+        {
+            Empty = 0,
+            FirstPlayer,
+            SecondPlayer
+        }
+
+        private PlayersCage[,] _field = new PlayersCage[15, 15];
+
         public Player SecondPlayer { get; }
 
         private readonly Timer _timer = new(_timeout.TotalMilliseconds) { AutoReset = false };
@@ -23,6 +32,10 @@ namespace GomokuServer
 
             SecondPlayer = secondPlayer;
             SecondPlayer.Session = this;
+
+            for (var i = 0; i < 15; ++i)
+                for (var j = 0; j < 15; ++j)
+                    _field[i, j] = PlayersCage.Empty;
 
             _timer.Elapsed += OnTimeout;
         }
@@ -48,7 +61,30 @@ namespace GomokuServer
 
         public void MakeTurn(Player player, MakeTurnRequest makeTurnRequest)
         {
+            var point = makeTurnRequest.Point;
 
+            bool firstPlayer = false;
+
+            if (player == FirstPlayer)
+                firstPlayer = true;
+
+            if (_field[point.X, point.Y] == PlayersCage.Empty)
+                if (firstPlayer)
+                    _field[point.X, point.Y] = PlayersCage.FirstPlayer;
+                else
+                    _field[point.X, point.Y] = PlayersCage.SecondPlayer;
+
+            if (firstPlayer)
+                SendMakeTurnReply(SecondPlayer, point);
+            else
+                SendMakeTurnReply(FirstPlayer, point);
+
+            //for (var i = 0; i < 15; ++i)
+            //{
+            //    Console.WriteLine("\n");
+            //    for (var j = 0; j < 15; ++j)
+            //        Console.Write($"{_field[i, j]} ");
+            //}
         }
 
         private void OnTimeout(object sender, ElapsedEventArgs e)
@@ -70,6 +106,13 @@ namespace GomokuServer
         {
             var activePlayerReply = new ActivePlayerReply { YourTurn = yourTurn };
             var reply = new Reply { ActivePlayerReply = activePlayerReply };
+            player.WriteAsync(reply);
+        }
+
+        private static void SendMakeTurnReply(Player player, Point point)
+        {
+            var makeTurnReply = new MakeTurnReply { Point = point, YourTurn = true };
+            var reply = new Reply { MakeTurnReply = makeTurnReply };
             player.WriteAsync(reply);
         }
     }
