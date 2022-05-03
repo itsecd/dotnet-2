@@ -3,14 +3,16 @@ using PPTask.Controllers.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Threading.Tasks;
+using System.Threading;
+
+
 
 namespace PPTask.Repositories
 {
     /// <summary>
     /// Класс сериализации и десериализации исполнителей в формате json 
     /// </summary>
-    public class JsonExecutorRepository: IExecutorRepository
+    public class JsonExecutorRepository: TimedHostedService, IExecutorRepository
     {
         /// <summary>
         /// Название файла хранения
@@ -29,6 +31,15 @@ namespace PPTask.Repositories
         /// Список исполнителей
         /// </summary>
         private List<Executor> _executors;
+
+
+        public override void DoWork(object? state)
+        {
+            var count = Interlocked.Increment(ref executionCount);
+
+            WriteToFileAsync();
+        }
+
 
         /// <summary>
         /// Асинхронный метод чтения из файла
@@ -67,7 +78,7 @@ namespace PPTask.Repositories
         {
             await ReadFromFileAsync();
             _executors.Add(executor);
-            await WriteToFileAsync();
+            //await WriteToFileAsync();
         }
 
         /// <summary>
@@ -81,7 +92,7 @@ namespace PPTask.Repositories
             {
                 await ReadFromFileAsync();
                 _executors.RemoveAll(executor => executor.ExecutorId == id);
-                await WriteToFileAsync();
+                //await WriteToFileAsync();
             }
         }
 

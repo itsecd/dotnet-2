@@ -32,9 +32,16 @@ namespace PPTask.Controllers
         /// </summary>
         /// <returns>Теги</returns>
         [HttpGet]
-        public IEnumerable<Tag> Get()
+        public ActionResult<List<Tag>> Get()
         {
-            return (IEnumerable<Tag>)_tagRepository.GetTags().Result;
+            try
+            {
+                return _tagRepository.GetTags().Result;
+            }
+            catch
+            {
+                return Problem();
+            }
         }
 
         /// <summary>
@@ -43,9 +50,24 @@ namespace PPTask.Controllers
         /// <param name="id">Идентификатор тега</param>
         /// <returns>Тег</returns>
         [HttpGet("{id}")]
-        public Tag Get(int id)
+        public ActionResult <Tag> Get(int id)
         {
-            return _tagRepository.GetTags().Result.Where(tag => tag.TagId == id).Single();
+            try
+            {
+                return _tagRepository.GetTags().Result.Where(tag => tag.TagId == id).Single();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
         }
 
         /// <summary>
@@ -53,9 +75,17 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новый тег</param>
         [HttpPost]
-        public void Post([FromBody] Tag value)
+        public ActionResult<int> Post([FromBody] Tag value)
         {
-            _tagRepository.AddTag(value);
+           try
+           {
+                _tagRepository.AddTag(value);
+                return Ok();
+           }
+           catch
+           {
+                return Problem();
+           }
         }
 
         /// <summary>
@@ -64,13 +94,26 @@ namespace PPTask.Controllers
         /// <param name="value">Новый тег</param>
         /// /// <param name="id">Идентификатор заменяемого тега</param>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Tag value)
+        public ActionResult Put(int id, [FromBody] Tag value)
         {
-            var tagIndex = _tagRepository.GetTags().Result.FindIndex(tag => tag.TagId == id);
-
-            if (tagIndex > 0)
+            try
             {
+                var tagIndex = _tagRepository.GetTags().Result.FindIndex(tag => tag.TagId == id);
                 _tagRepository.GetTags().Result[tagIndex] = value;
+                return Ok();
+
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
             }
         }
 
@@ -79,9 +122,25 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="id">Идентификатор удаляемого тега</param>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _tagRepository.RemoveTag(id);
+            try
+            {
+                _tagRepository.RemoveTag(id);
+                return Ok();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
         }
     }
 }

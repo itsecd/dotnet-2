@@ -3,6 +3,7 @@ using PPTask.Controllers.Model;
 using PPTask.Repositories;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace PPTask.Controllers
 {
@@ -31,9 +32,16 @@ namespace PPTask.Controllers
         /// </summary>
         /// <returns>Исполнители</returns>
         [HttpGet]
-        public IEnumerable<Executor> Get()
+        public ActionResult<List<Executor>> Get()
         {
-            return (IEnumerable<Executor>)_executorRepository.GetExecutors().Result;
+            try
+            {
+                return _executorRepository.GetExecutors().Result;
+            }
+            catch
+            {
+                return Problem();
+            }
         }
 
         /// <summary>
@@ -42,9 +50,24 @@ namespace PPTask.Controllers
         /// <param name="id">Идентификатор исполнителя</param>
         /// <returns>Исполнитель</returns>
         [HttpGet("{id}")]
-        public Executor Get(int id)
+        public ActionResult<Executor> Get(int id)
         {
-            return _executorRepository.GetExecutors().Result.Where(executor => executor.ExecutorId == id).Single();
+            try
+            {
+                return _executorRepository.GetExecutors().Result.Where(executor => executor.ExecutorId == id).Single();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
         }
 
         /// <summary>
@@ -52,9 +75,17 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новый исполнитель</param>
         [HttpPost]
-        public void Post([FromBody] Executor value)
+        public ActionResult<int> Post([FromBody] Executor value)
         {
-            _executorRepository.AddExecutor(value);
+            try
+            {
+                _executorRepository.AddExecutor(value);
+                return Ok();
+            }
+            catch 
+            {
+                return Problem();
+            }
         }
 
         /// <summary>
@@ -63,13 +94,26 @@ namespace PPTask.Controllers
         /// <param name="value">Новый исполнитель</param>
         /// /// <param name="id">Идентификатор заменяемого исполнителя</param>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Executor value)
+        public ActionResult Put(int id, [FromBody] Executor value)
         {
-            var executorIndex = _executorRepository.GetExecutors().Result.FindIndex(executor => executor.ExecutorId == id);
-            
-            if(executorIndex > 0)
+            try
             {
+                var executorIndex = _executorRepository.GetExecutors().Result.FindIndex(executor => executor.ExecutorId == id);
                 _executorRepository.GetExecutors().Result[executorIndex] = value;
+                return Ok();
+
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
             }
         }
 
@@ -78,9 +122,25 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="id">Идентификатор удаляемого исполнителя</param>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _executorRepository.RemoveExecutor(id);
+            try
+            {
+                _executorRepository.RemoveExecutor(id);
+                return Ok();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
         }
     }
 }
