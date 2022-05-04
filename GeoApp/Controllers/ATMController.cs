@@ -1,11 +1,13 @@
 ﻿using GeoApp.Model;
 using GeoApp.Repository;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace GeoApp.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors("ATM")]
     [ApiController]
     public class ATMController : ControllerBase
     {
