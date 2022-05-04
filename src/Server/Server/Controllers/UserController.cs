@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Server.Model;
 using Server.Repositories;
 using System.Collections.Generic;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,57 +15,138 @@ namespace Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly IJSONRepository<User> _userRepositiry;
-        private readonly List<Task> tasks;
+        //private readonly List<Task> tasks;
         public UserController(IJSONRepository<User> userRepository) => _userRepositiry = userRepository;
-        // GET: api/<UserController>
+
+        /// <summary>
+        /// Getting all users
+        /// </summary>
+        /// <returns>Users</returns>
+        /// <response code="200">Success</response>
+        /// <response code="404">Users not found</response>
         [HttpGet]
+        [ProducesResponseType(typeof(List<User>), 200)]
+        [ProducesResponseType(typeof(List<User>), 404)]
         public IEnumerable<User> Get()
         {
-            return _userRepositiry.Get();
+            List<User> users = (List<User>)_userRepositiry.Get();
+            if(users == null)
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+            Response.StatusCode=200;
+            return users;
         }
 
-        // GET api/<UserController>/5
+        /// <summary>
+        /// Getting a user by unique id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>User</returns>
+        /// <response code="200">Success</response>
+        /// <response code="404">A user event with this ID was not found</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(User), 200)]
+        [ProducesResponseType(typeof(User), 404)]
         public User Get(int id)
         {
-            return _userRepositiry.Get(id);
+            User user = _userRepositiry.Get(id);
+            if(user == null)
+            {
+                Response.StatusCode = 404;
+            }
+            Response.StatusCode = 200;
+            return user;
         }
 
-        [HttpGet("byName={name}")]
-        public User Get(string name)
-        {
-            return _userRepositiry.Get(name);
-        }
-
-        // POST api/<UserController>
+        /// <summary>
+        /// Create a user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <response code="200">Success</response>
+        /// <response code="409">A user with this name already exists</response>
         [HttpPost]
+        [ProducesResponseType(typeof(User), 200)]
+        [ProducesResponseType(typeof(User), 409)]
         public void Post([FromBody] User user)
         {
+            List<User> users = (List<User>)_userRepositiry.Get();
+            if(users.Exists(us => us.Name == user.Name))
+            {
+                Response.StatusCode = 409;
+                return;
+            }
             _userRepositiry.Add(user);
+            Response.StatusCode = 200;
         }
 
-        // PUT api/<UserController>/5
+        /// <summary>
+        /// Update a user by unique id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <response code="200">Success</response>
+        /// <response code="404">A user with this ID was not found</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(User), 200)]
+        [ProducesResponseType(typeof(User), 404)]
+        [ProducesResponseType(typeof(User), 409)]
         public void Put(int id, [FromBody] User user)
         {
-            if (_userRepositiry.Update(id, user))
+            User us = _userRepositiry.Get(id);
+            if (us == null)
             {
-                HttpContext.Response.StatusCode = 200;
+                Response.StatusCode = 404;
+                return;
             }
-            else HttpContext.Response.StatusCode = 404;
+            List<User> users = (List<User>)_userRepositiry.Get();
+            if(users.Exists(u => u.Name == user.Name && u.Id != id))
+            {
+                Response.StatusCode = 409;
+                return;
+            }
+            _userRepositiry.Update(id, user);
+            Response.StatusCode = 200;
         }
 
-        // DELETE api/<UserController>/5
+        /// <summary>
+        /// Deleting a user by unique id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <response code="200">Success</response>
+        /// <response code="404">A user with this ID was not found</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(User), 200)]
+        [ProducesResponseType(typeof(User), 404)]
         public void Delete(int id)
         {
+            if(_userRepositiry.Get(id) == null)
+            {
+                Response.StatusCode = 404;
+                return;
+            }
             _userRepositiry.Delete(id);
+            Response.StatusCode = 200;
         }
 
+        /// <summary>
+        /// Deleting all users
+        /// </summary>
+        /// <returns>Users</returns>
+        /// <response code="200">Success</response>
+        /// <response code="404">Users not found</response>
         [HttpDelete]
+        [ProducesResponseType(typeof(List<User>), 200)]
+        [ProducesResponseType(typeof(List<User>), 404)]
         public void Delete()
         {
+            if(_userRepositiry.Get() == null)
+            {
+                Response.StatusCode = 404;
+                return;
+            }
             _userRepositiry.DeleteAll();
+            Response.StatusCode = 200;
         }
     }
 }
