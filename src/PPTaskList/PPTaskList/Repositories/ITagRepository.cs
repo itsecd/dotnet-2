@@ -13,19 +13,24 @@ namespace PPTask.Repositories
         /// </summary>
         /// <param name="tag">Тег</param>
         /// <returns> Task </returns>
-        System.Threading.Tasks.Task AddTag(Tag tag);
+        void AddTag(Tag tag);
 
         /// <summary>
         /// Метод получения всех тегов 
         /// </summary>
         /// <returns>Список тегов</returns>
-        System.Threading.Tasks.Task<List<Tag>> GetTags();
+        List<Tag> GetTags();
 
         /// <summary>
         /// Метод удаления тега  
         /// </summary>
         /// <param name="id">Идентификатор тега</param>
         ///  <returns> Task </returns>
-        System.Threading.Tasks.Task RemoveTag(int id);
+        void RemoveTag(int id);
+
+        /// <summary>
+        /// Метод записи данных в файл 
+        /// </summary>
+        System.Threading.Tasks.Task WriteToFileAsync()
     }
 }

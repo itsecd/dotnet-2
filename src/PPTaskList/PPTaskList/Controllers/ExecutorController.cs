@@ -36,7 +36,7 @@ namespace PPTask.Controllers
         {
             try
             {
-                return _executorRepository.GetExecutors().Result;
+                return _executorRepository.GetExecutors();
             }
             catch
             {
@@ -49,20 +49,13 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="id">Идентификатор исполнителя</param>
         /// <returns>Исполнитель</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public ActionResult<Executor> Get(int id)
         {
             try
             {
-                return _executorRepository.GetExecutors().Result.Where(executor => executor.ExecutorId == id).Single();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return BadRequest();
+                return _executorRepository.GetExecutors().Where(executor => executor.ExecutorId == id).Single();
+                if(id < 0) return NotFound();
             }
             catch
             {
@@ -75,11 +68,11 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новый исполнитель</param>
         [HttpPost]
-        public ActionResult<int> Post([FromBody] Executor value)
+        public ActionResult Post([FromBody] Executor value)
         {
             try
             {
-                _executorRepository.AddExecutor(value);
+                _executorRepository.AddExecutor(new Executor {Name = value.Name});
                 return Ok();
             }
             catch 
@@ -93,13 +86,13 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новый исполнитель</param>
         /// /// <param name="id">Идентификатор заменяемого исполнителя</param>
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public ActionResult Put(int id, [FromBody] Executor value)
         {
             try
             {
-                var executorIndex = _executorRepository.GetExecutors().Result.FindIndex(executor => executor.ExecutorId == id);
-                _executorRepository.GetExecutors().Result[executorIndex] = value;
+                var executorIndex = _executorRepository.GetExecutors().FindIndex(executor => executor.ExecutorId == id);
+                _executorRepository.GetExecutors()[executorIndex] = new Executor {Name = value.Name};
                 return Ok();
 
             }
@@ -121,7 +114,7 @@ namespace PPTask.Controllers
         /// Метод удаления исполнителя 
         /// </summary>
         /// <param name="id">Идентификатор удаляемого исполнителя</param>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
             try

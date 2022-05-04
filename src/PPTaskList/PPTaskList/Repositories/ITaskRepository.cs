@@ -13,19 +13,24 @@ namespace PPTask.Repositories
         /// </summary>
         /// <param name="task">Задача</param>
         /// <returns> Task </returns>
-        System.Threading.Tasks.Task AddTask(Task task);
+        void AddTask(Task task);
 
         /// <summary>
         /// Метод получения всех задач 
         /// </summary>
         /// <returns>Список задач</returns>
-        System.Threading.Tasks.Task<List<Task>> GetTasks();
+        List<Task> GetTasks();
 
         /// <summary>
         /// Метод удаления задачи  
         /// </summary>
         /// <param name="id">Идентификатор задачи</param>
         ///  <returns> Task </returns>
-        System.Threading.Tasks.Task RemoveTask(int id);
+        void RemoveTask(int id);
+
+        /// <summary>
+        /// Метод записи данных в файл 
+        /// </summary>
+        System.Threading.Tasks.Task WriteToFileAsync()
     }
 }

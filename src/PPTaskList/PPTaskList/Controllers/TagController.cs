@@ -36,7 +36,7 @@ namespace PPTask.Controllers
         {
             try
             {
-                return _tagRepository.GetTags().Result;
+                return _tagRepository.GetTags();
             }
             catch
             {
@@ -49,20 +49,13 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="id">Идентификатор тега</param>
         /// <returns>Тег</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public ActionResult <Tag> Get(int id)
         {
             try
             {
-                return _tagRepository.GetTags().Result.Where(tag => tag.TagId == id).Single();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return BadRequest();
+                return _tagRepository.GetTags().Where(tag => tag.TagId == id).Single();
+                if(id < 0) return NotFound();
             }
             catch
             {
@@ -75,11 +68,11 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новый тег</param>
         [HttpPost]
-        public ActionResult<int> Post([FromBody] Tag value)
+        public ActionResult Post([FromBody] Tag value)
         {
            try
            {
-                _tagRepository.AddTag(value);
+                _tagRepository.AddTag(new Tag {TagColour = value.TagColour, TagStatus = value.TagStatus});
                 return Ok();
            }
            catch
@@ -93,13 +86,13 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новый тег</param>
         /// /// <param name="id">Идентификатор заменяемого тега</param>
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public ActionResult Put(int id, [FromBody] Tag value)
         {
             try
             {
-                var tagIndex = _tagRepository.GetTags().Result.FindIndex(tag => tag.TagId == id);
-                _tagRepository.GetTags().Result[tagIndex] = value;
+                var tagIndex = _tagRepository.GetTags().FindIndex(tag => tag.TagId == id);
+                _tagRepository.GetTags()[tagIndex] = new Tag {TagColour = value.TagColour, TagStatus = value.TagStatus};
                 return Ok();
 
             }
@@ -121,7 +114,7 @@ namespace PPTask.Controllers
         /// Метод удаления тега 
         /// </summary>
         /// <param name="id">Идентификатор удаляемого тега</param>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
             try

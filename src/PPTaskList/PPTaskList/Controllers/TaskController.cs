@@ -37,7 +37,7 @@ namespace PPTask.Controllers
         {
             try
             {
-                return _taskRepository.GetTasks().Result;
+                return _taskRepository.GetTasks();
             }
             catch
             {
@@ -50,20 +50,13 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="id">Идентификатор задачи</param>
         /// <returns>Задача</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public ActionResult <Task> Get(int id)
         {
             try
             {
-                return _taskRepository.GetTasks().Result.Where(task => task.TaskId == id).Single();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return BadRequest();
+                return _taskRepository.GetTasks().Where(task => task.TaskId == id).Single();
+                if(id < 0) return NotFound();
             }
             catch
             {
@@ -76,11 +69,12 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новая задача</param>
         [HttpPost]
-        public ActionResult<int> Post([FromBody] Task value)
+        public ActionResult Post([FromBody] Task value)
         {
             try
             {
-                _taskRepository.AddTask(value);
+                _taskRepository.AddTask(new Task {HeaderText = value.HeaderText,TextDescription =value.TextDescription,
+                    ExecutorId = value.ExecutorId, TagId = value.TagId });
                 return Ok();
             }
             catch
@@ -94,13 +88,14 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новая задача</param>
         /// /// <param name="id">Идентификатор заменяемой задачи</param>
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public ActionResult Put(int id, [FromBody] Task value)
         {
             try
             {
-                var taskIndex = _taskRepository.GetTasks().Result.FindIndex(task => task.TaskId == id);
-                _taskRepository.GetTasks().Result[taskIndex] = value;
+                var taskIndex = _taskRepository.GetTasks().FindIndex(task => task.TaskId == id);
+                _taskRepository.GetTasks()[taskIndex] = new Task {HeaderText = value.HeaderText,TextDescription =value.TextDescription,
+                    ExecutorId = value.ExecutorId, TagId = value.TagId };
                 return Ok();
 
             }
@@ -122,7 +117,7 @@ namespace PPTask.Controllers
         /// Метод удаления задачи 
         /// </summary>
         /// <param name="id">Идентификатор удаляемой задачи</param>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
             try
@@ -148,7 +143,7 @@ namespace PPTask.Controllers
         /// Метод получения всех задач для конкретного исполнителя 
         /// </summary>
         /// <returns>Задачи</returns>
-        [HttpGet("{id}/tasks")]
+        [HttpGet("{id:int}/tasks")]
         public ActionResult<List<Task>> GetTasks(int id)
         {
             try

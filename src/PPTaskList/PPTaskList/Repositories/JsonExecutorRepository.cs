@@ -12,7 +12,7 @@ namespace PPTask.Repositories
     /// <summary>
     /// Класс сериализации и десериализации исполнителей в формате json 
     /// </summary>
-    public class JsonExecutorRepository: TimedHostedService, IExecutorRepository
+    public class JsonExecutorRepository: IExecutorRepository
     {
         /// <summary>
         /// Название файла хранения
@@ -20,34 +20,16 @@ namespace PPTask.Repositories
         private readonly string _storageFileName;
 
         /// <summary>
+        /// Список исполнителей
+        /// </summary>
+        private List<Executor> _executors;
+
+        /// <summary>
         /// Получение файла хранения
         /// </summary>
         public JsonExecutorRepository(IConfiguration configuration)
         {
             _storageFileName = configuration.GetValue<string>("ExecutorsFile");
-        }
-
-        /// <summary>
-        /// Список исполнителей
-        /// </summary>
-        private List<Executor> _executors;
-
-
-        public override void DoWork(object? state)
-        {
-            var count = Interlocked.Increment(ref executionCount);
-
-            WriteToFileAsync();
-        }
-
-
-        /// <summary>
-        /// Асинхронный метод чтения из файла
-        /// </summary>
-        /// <returns> Task </returns>
-        private async System.Threading.Tasks.Task ReadFromFileAsync()
-        {
-            if (_executors != null) return;
 
             if (!File.Exists(_storageFileName))
             {
@@ -55,54 +37,49 @@ namespace PPTask.Repositories
                 return;
             }
 
-            using var fileReader = new FileStream(_storageFileName, FileMode.Open);
-            _executors = await JsonSerializer.DeserializeAsync<List<Executor>>(fileReader);
+            var repositoryJson = File.ReadAllText(_storageFileName);
+            _executors = JsonSerializer.Deserialize<List<Executor>>(repositoryJson);
         }
 
         /// <summary>
         /// Асинхронный метод записи в файл
         /// </summary>
         /// <returns> Task </returns>
-        private async System.Threading.Tasks.Task WriteToFileAsync()
+        public async System.Threading.Tasks.Task WriteToFileAsync()
         {
-            using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
+            await using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
             await JsonSerializer.SerializeAsync<List<Executor>>(fileWriter, _executors);
         }
 
         /// <summary>
-        /// Мнтод добавления исполнителя 
+        /// Мeтод добавления исполнителя 
         /// </summary>
         /// <param name="executor">Исполнитель</param>
-        /// <returns> Task </returns>
-        public async System.Threading.Tasks.Task AddExecutor(Executor executor)
+        public void AddExecutor(Executor executor)
         {
-            await ReadFromFileAsync();
+            var maxId = _executors.Max(ex => ex.ExecutorId);
+            executor.ExecutorId = maxId + 1;
             _executors.Add(executor);
-            //await WriteToFileAsync();
         }
 
         /// <summary>
-        /// Мнтод удаления исполнителя  
+        /// Мeтод удаления исполнителя  
         /// </summary>
         /// <param name="id">Идентификатор исполнителя</param>
-        ///  <returns> Task </returns>
-        public async System.Threading.Tasks.Task RemoveExecutor(int id)
+        public void RemoveExecutor(int id)
         {
             if (_executors != null)
             {
-                await ReadFromFileAsync();
                 _executors.RemoveAll(executor => executor.ExecutorId == id);
-                //await WriteToFileAsync();
             }
         }
 
         /// <summary>
-        /// Мнтод получения всех исполнителей 
+        /// Мeтод получения всех исполнителей 
         /// </summary>
         /// <returns>Список исполнителей</returns>
-        public async System.Threading.Tasks.Task<List<Executor>> GetExecutors()
+        public List<Executor> GetExecutors()
         {
-            await ReadFromFileAsync();
             return _executors;
         }
     }

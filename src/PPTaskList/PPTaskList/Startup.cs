@@ -39,6 +39,9 @@ namespace PPTask
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
+            services.AddHostedService<IExecutorRepository>;
+            services.AddHostedService<ITaskRepository>;
+            services.AddHostedService<ITagRepository>;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
