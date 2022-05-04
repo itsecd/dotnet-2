@@ -1,4 +1,5 @@
-﻿using Server.Model;
+﻿using Microsoft.Extensions.Configuration;
+using Server.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,15 +10,20 @@ namespace Server.Repositories
     public class JSONUserRepository : IJSONRepository<User>
     {
         public List<User> entyties { get; set; } = new();
-        private string _storageFileName = "users.json";
+        private string _storageFileName;
         private object _locker = new();
 
+        public JSONUserRepository(IConfiguration configuration)
+        {
+            _storageFileName = configuration.GetSection("FileConfiguration").Get<FileConfiguration>().FileOfUsers;
+        }
         public void Add(User user)
         {
             lock (_locker)
             {
                 Load();
                 entyties.Add(user);
+                user.Id = entyties.Max(us => us.Id) + 1;
                 Save();
             }
         }
@@ -58,15 +64,6 @@ namespace Server.Repositories
             }
         }
 
-        public User Get(string name)
-        {
-            lock (_locker)
-            {
-                Load();
-                return entyties.Exists(user => user.Name == name) ? entyties.Single(user => user.Name == name) : null;
-            }
-        }
-
         public void Load()
         {
             if (!File.Exists(_storageFileName) || new FileInfo(_storageFileName).Length == 0)
@@ -74,9 +71,9 @@ namespace Server.Repositories
                 entyties = new List<User>();
                 return;
             }
-            using (var fileReader = new StreamReader(_storageFileName))
+            using (var reader = new StreamReader(_storageFileName))
             {
-                string jsonString = fileReader.ReadToEnd();
+                string jsonString = reader.ReadToEnd();
                 entyties = JsonSerializer.Deserialize<List<User>>(jsonString);
             }
         }
@@ -84,13 +81,13 @@ namespace Server.Repositories
         public void Save()
         {
             string jsonString = JsonSerializer.Serialize(entyties);
-            using (var fileWriter = new StreamWriter(_storageFileName))
+            using (var writer = new StreamWriter(_storageFileName))
             {
-                fileWriter.Write(jsonString);
+                writer.Write(jsonString);
             }
         }
 
-        public bool Update(int id, User user)
+        public void Update(int id, User user)
         {
             lock (_locker)
             {
@@ -100,9 +97,7 @@ namespace Server.Repositories
                     entyties.Single(us => us.Id == id).Name = user.Name;
                     entyties.Single(us => us.Id == id).Toggle = user.Toggle;
                     Save();
-                    return true;
                 }
-                else return false;
             }
         }
     }

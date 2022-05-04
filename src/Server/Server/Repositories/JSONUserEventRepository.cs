@@ -1,4 +1,5 @@
-﻿using Server.Model;
+﻿using Microsoft.Extensions.Configuration;
+using Server.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,15 +10,20 @@ namespace Server.Repositories
     public class JSONUserEventRepository : IJSONRepository<UserEvent>
     {
         public List<UserEvent> entyties { get; set; } = new();
-        private string _storageFileName = "events.json";
+        private string _storageFileName;
         private object _locker = new();
-
+        
+        public JSONUserEventRepository(IConfiguration configuration)
+        {
+            _storageFileName = configuration.GetSection("FileConfiguration").Get<FileConfiguration>().FileOfEvents;
+        }
         public void Add(UserEvent uEvent)
         {
             lock (_locker)
             {
                 Load();
                 entyties.Add(uEvent);
+                uEvent.Id = entyties.Max(evnt => evnt.Id) + 1;
                 Save();
             }
         }
@@ -54,16 +60,7 @@ namespace Server.Repositories
             lock (_locker)
             {
                 Load();
-                return entyties.Single(userEvent => userEvent.Id == id);
-            }
-        }
-
-        public UserEvent Get(string name)
-        {
-            lock (_locker)
-            {
-                Load();
-                return entyties.Single(userEvent => userEvent.EventName == name);
+                return entyties.Exists(userEvent => userEvent.Id == id) ? entyties.Single(userEvent => userEvent.Id == id) : null;
             }
         }
 
@@ -90,18 +87,20 @@ namespace Server.Repositories
             }
         }
 
-        public bool Update(int id, UserEvent uEvent)
+        public void Update(int id, UserEvent uEvent)
         {
             lock (_locker)
             {
                 Load();
-                UserEvent userEvent = entyties.Single(us => us.Id == id);
-                userEvent.User = uEvent.User;
-                userEvent.EventName = uEvent.EventName;
-                userEvent.DateNTime = uEvent.DateNTime;
-                userEvent.EventFrequency = uEvent.EventFrequency;
-                Save();
-                return true;
+                if (entyties.Exists(uEvnt => uEvent.Id == id))
+                {
+                    UserEvent userEvent = entyties.Single(us => us.Id == id);
+                    userEvent.User = uEvent.User;
+                    userEvent.EventName = uEvent.EventName;
+                    userEvent.DateNTime = uEvent.DateNTime;
+                    userEvent.EventFrequency = uEvent.EventFrequency;
+                    Save();
+                }
             }
         }
     }
