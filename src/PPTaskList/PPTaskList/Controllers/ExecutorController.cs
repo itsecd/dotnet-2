@@ -20,11 +20,17 @@ namespace PPTask.Controllers
         private readonly IExecutorRepository _executorRepository;
 
         /// <summary>
+        /// Репозиторий задач
+        /// </summary>
+        private readonly ITaskRepository _taskRepository;
+
+        /// <summary>
         /// Конструктор с параметрами. В качестве параметра принимает репозиторий.
         /// </summary>
-        public ExecutorController(IExecutorRepository executorRepository)
+        public ExecutorController(IExecutorRepository executorRepository, ITaskRepository taskRepository)
         {
             _executorRepository = executorRepository;
+            _taskRepository = taskRepositoryж
         }
 
         /// <summary>
@@ -63,6 +69,23 @@ namespace PPTask.Controllers
             }
         }
 
+        /// <summary>
+        /// Метод получения всех задач для конкретного исполнителя 
+        /// </summary>
+        /// <returns>Задачи</returns>
+        [HttpGet("{id:int}/executor")]
+        public ActionResult<List<Task>> GetTasks(int id)
+        {
+            try
+            {
+                if(id < -1) return NotFound();
+                return _taskRepository.GetTasks().FindAll(task => task.ExecutorId == id);
+            }
+            catch
+            {
+                return Problem();
+            }
+        }
         /// <summary>
         /// Метод добавления исполнителя 
         /// </summary>

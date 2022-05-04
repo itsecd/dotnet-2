@@ -74,7 +74,7 @@ namespace PPTask.Controllers
             try
             {
                 _taskRepository.AddTask(new Task {HeaderText = value.HeaderText,TextDescription =value.TextDescription,
-                    ExecutorId = value.ExecutorId, TagId = value.TagId });
+                    ExecutorId = value.ExecutorId, TagsId = value.TagsId });
                 return Ok();
             }
             catch
@@ -97,7 +97,7 @@ namespace PPTask.Controllers
                 if(taskIndex < -1 || id < -1 ) return NotFound();
 
                 _taskRepository.GetTasks()[taskIndex] = new Task {HeaderText = value.HeaderText,TextDescription =value.TextDescription,
-                    ExecutorId = value.ExecutorId, TagId = value.TagId };
+                    ExecutorId = value.ExecutorId, TagsId = value.TagId };
                 return Ok();
 
             }
@@ -121,24 +121,6 @@ namespace PPTask.Controllers
 
                 _taskRepository.RemoveTask(id);
                 return Ok();
-            }
-            catch
-            {
-                return Problem();
-            }
-        }
-
-        /// <summary>
-        /// Метод получения всех задач для конкретного исполнителя 
-        /// </summary>
-        /// <returns>Задачи</returns>
-        [HttpGet("{id:int}/tasks")]
-        public ActionResult<List<Task>> GetTasks(int id)
-        {
-            try
-            {
-                if(id < -1) return NotFound();
-                return _taskRepository.GetTasks().Result.FindAll(task => task.ExecutorId == id);
             }
             catch
             {
