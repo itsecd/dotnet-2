@@ -5,5 +5,14 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Toggle { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is User user)
+            {
+                return user.Name == Name;
+            }
+            return false;
+        }
     }
 }

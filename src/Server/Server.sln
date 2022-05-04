@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgBot", "TgBot\TgBot.csproj", "{960768C6-D77D-4194-B60A-EE7FFD2F555B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Examples.WebHook", "TelegramBot\Telegram.Bot.Examples.WebHook\Telegram.Bot.Examples.WebHook.csproj", "{4D645FCD-476C-4F22-ABF3-7FA2DEE26B82}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{960768C6-D77D-4194-B60A-EE7FFD2F555B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{960768C6-D77D-4194-B60A-EE7FFD2F555B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{960768C6-D77D-4194-B60A-EE7FFD2F555B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D645FCD-476C-4F22-ABF3-7FA2DEE26B82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D645FCD-476C-4F22-ABF3-7FA2DEE26B82}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D645FCD-476C-4F22-ABF3-7FA2DEE26B82}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D645FCD-476C-4F22-ABF3-7FA2DEE26B82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

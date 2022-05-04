@@ -20,5 +20,16 @@ namespace Server.Model
             every7Days = 7,
 
         };
+
+        public override bool Equals(object obj)
+        {
+            if (obj is UserEvent userEvent)
+            {
+                return userEvent.User.Equals(User) &&
+                    userEvent.EventName == EventName &&
+                    userEvent.DateNTime == DateNTime;
+            }
+            return false;
+        }
     }
 }
