@@ -11,5 +11,6 @@ namespace Lab2.Repositories
         void RemoveAllExecutors();
         int RemoveExecutor(int id);
         int UpdateExecutor(int id, Executor executor);
+        void WriteToFile();
     }
 }
