@@ -55,8 +55,8 @@ namespace PPTask.Controllers
         {
             try
             {
-                return _taskRepository.GetTasks().Where(task => task.TaskId == id).Single();
                 if(id < -1) return NotFound();
+                return _taskRepository.GetTasks().Single(task => task.TaskId == id);
             }
             catch
             {
@@ -69,7 +69,7 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новая задача</param>
         [HttpPost]
-        public ActionResult Post([FromBody] Task value)
+        public ActionResult Post([FromBody] TaskDto value)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace PPTask.Controllers
         /// <param name="value">Новая задача</param>
         /// /// <param name="id">Идентификатор заменяемой задачи</param>
         [HttpPut("{id:int}")]
-        public ActionResult Put(int id, [FromBody] Task value)
+        public ActionResult Put(int id, [FromBody] TaskDto value)
         {
             try
             {

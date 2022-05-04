@@ -54,8 +54,8 @@ namespace PPTask.Controllers
         {
             try
             {
-                return _tagRepository.GetTags().Where(tag => tag.TagId == id).Single();
                 if(id < -1) return NotFound();
+                return _tagRepository.GetTags().Single(tag => tag.TagId == id);
             }
             catch
             {
@@ -68,7 +68,7 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новый тег</param>
         [HttpPost]
-        public ActionResult Post([FromBody] Tag value)
+        public ActionResult Post([FromBody] TagDto value)
         {
            try
            {
@@ -87,7 +87,7 @@ namespace PPTask.Controllers
         /// <param name="value">Новый тег</param>
         /// /// <param name="id">Идентификатор заменяемого тега</param>
         [HttpPut("{id:int}")]
-        public ActionResult Put(int id, [FromBody] Tag value)
+        public ActionResult Put(int id, [FromBody] TagDto value)
         {
             try
             {

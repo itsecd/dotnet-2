@@ -54,8 +54,8 @@ namespace PPTask.Controllers
         {
             try
             {
-                return _executorRepository.GetExecutors().Where(executor => executor.ExecutorId == id).Single();
                 if(id < -1) return NotFound();
+                return _executorRepository.GetExecutors().Single(executor => executor.ExecutorId == id);
             }
             catch
             {
@@ -68,7 +68,7 @@ namespace PPTask.Controllers
         /// </summary>
         /// <param name="value">Новый исполнитель</param>
         [HttpPost]
-        public ActionResult Post([FromBody] Executor value)
+        public ActionResult Post([FromBody] ExecutorDto value)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace PPTask.Controllers
         /// <param name="value">Новый исполнитель</param>
         /// /// <param name="id">Идентификатор заменяемого исполнителя</param>
         [HttpPut("{id:int}")]
-        public ActionResult Put(int id, [FromBody] Executor value)
+        public ActionResult Put(int id, [FromBody] ExecutorDto value)
         {
             try
             {
