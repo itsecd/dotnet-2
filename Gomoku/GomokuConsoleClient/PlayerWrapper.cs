@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,21 +14,24 @@ namespace GomokuConsoleClient
 {
     sealed class PlayerWrapper : IAsyncDisposable
     {
+        
+        public List<Reply> Replies { get; } = new();
+
         private readonly AsyncDuplexStreamingCall<Request, Reply> _stream;
-        private readonly int _id;
         private readonly Task _responseTask;
 
-        public PlayerWrapper(GrpcChannel channel, int id)
+        public PlayerWrapper(GrpcChannel channel)
         {
             var client = new GomokuClient(channel);
             _stream = client.Play();
-            _id = id;
 
             _responseTask = Task.Run(async () =>
             {
                 while (await _stream.ResponseStream.MoveNext(CancellationToken.None))
                 {
-                    Console.WriteLine($"{id} {_stream.ResponseStream.Current}");
+                    var reply = _stream.ResponseStream.Current;
+
+                    Replies.Add(reply);
                 }
             });
         }

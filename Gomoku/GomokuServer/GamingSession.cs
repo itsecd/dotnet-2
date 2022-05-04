@@ -8,22 +8,26 @@ namespace GomokuServer
 {
     public sealed class GamingSession
     {
-        private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(5);
+        private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(10);
 
         public Player FirstPlayer { get; }
 
-        public enum PlayersCage
+        public Player SecondPlayer { get; }
+
+        private enum Cell
         {
             Empty = 0,
             FirstPlayer,
             SecondPlayer
         }
 
-        private PlayersCage[,] _field = new PlayersCage[15, 15];
-
-        public Player SecondPlayer { get; }
+        private readonly Cell[,] _field = new Cell[15, 15];
 
         private readonly Timer _timer = new(_timeout.TotalMilliseconds) { AutoReset = false };
+
+        private bool _isTimerActive;
+
+        private bool _isFirstTurn;
 
         public GamingSession(Player firstPlayer, Player secondPlayer)
         {
@@ -33,66 +37,83 @@ namespace GomokuServer
             SecondPlayer = secondPlayer;
             SecondPlayer.Session = this;
 
-            for (var i = 0; i < 15; ++i)
-                for (var j = 0; j < 15; ++j)
-                    _field[i, j] = PlayersCage.Empty;
-
             _timer.Elapsed += OnTimeout;
         }
 
+
         public void Start()
         {
+            _isFirstTurn = true;
+
             Task.Run(() =>
             {
                 SendFindOpponentReply(FirstPlayer, SecondPlayer.Login);
                 SendActivePlayerReply(FirstPlayer, true);
-                Console.WriteLine("FirstPlayer");
             });
 
             Task.Run(() =>
             {
                 SendFindOpponentReply(SecondPlayer, FirstPlayer.Login);
                 SendActivePlayerReply(SecondPlayer, false);
-                Console.WriteLine("SecondPlayer");
             });
 
+            _isTimerActive = true;
             _timer.Start();
         }
 
         public void MakeTurn(Player player, MakeTurnRequest makeTurnRequest)
         {
-            var point = makeTurnRequest.Point;
+            lock (_timer)
+            {
 
-            bool firstPlayer = false;
+                var activePlayer = _isFirstTurn ? FirstPlayer : SecondPlayer;
 
-            if (player == FirstPlayer)
-                firstPlayer = true;
+                if (player != activePlayer)
+                    throw new ApplicationException("Not your turn");
 
-            if (_field[point.X, point.Y] == PlayersCage.Empty)
-                if (firstPlayer)
-                    _field[point.X, point.Y] = PlayersCage.FirstPlayer;
-                else
-                    _field[point.X, point.Y] = PlayersCage.SecondPlayer;
+                var point = makeTurnRequest.Point;
 
-            if (firstPlayer)
-                SendMakeTurnReply(SecondPlayer, point);
-            else
-                SendMakeTurnReply(FirstPlayer, point);
+                if (_field[point.X, point.Y] != Cell.Empty)
+                    throw new ApplicationException("Cell is busy");
 
-            //for (var i = 0; i < 15; ++i)
-            //{
-            //    Console.WriteLine("\n");
-            //    for (var j = 0; j < 15; ++j)
-            //        Console.Write($"{_field[i, j]} ");
-            //}
+                _timer.Stop();
+                _isTimerActive = false;
+
+
+                _field[point.X, point.Y] = _isFirstTurn ? Cell.FirstPlayer : Cell.SecondPlayer;
+
+                SendMakeTurnReply(FirstPlayer, point, _isFirstTurn);
+
+                SendMakeTurnReply(SecondPlayer, point, !_isFirstTurn);
+
+                //game over 
+
+                ChangeActivePlayer();
+
+                _isTimerActive = true;
+                _timer.Start();
+            }
+
         }
 
         private void OnTimeout(object sender, ElapsedEventArgs e)
         {
+            Console.WriteLine("timer");
+
             lock (_timer)
             {
-                Console.WriteLine(_timer.Enabled);
+                if (!_isTimerActive)
+                    return;
+
+                ChangeActivePlayer();
             }
+        }
+
+        private void ChangeActivePlayer()
+        {
+            _isFirstTurn = !_isFirstTurn;
+            SendActivePlayerReply(FirstPlayer, _isFirstTurn);
+            SendActivePlayerReply(SecondPlayer, !_isFirstTurn);
         }
 
         private static void SendFindOpponentReply(Player player, string login)
@@ -109,9 +130,9 @@ namespace GomokuServer
             player.WriteAsync(reply);
         }
 
-        private static void SendMakeTurnReply(Player player, Point point)
+        private static void SendMakeTurnReply(Player player, Point point, bool yourTurn)
         {
-            var makeTurnReply = new MakeTurnReply { Point = point, YourTurn = true };
+            var makeTurnReply = new MakeTurnReply { Point = point, YourTurn = yourTurn };
             var reply = new Reply { MakeTurnReply = makeTurnReply };
             player.WriteAsync(reply);
         }

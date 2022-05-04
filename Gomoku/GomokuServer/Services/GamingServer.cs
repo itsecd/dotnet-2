@@ -75,7 +75,7 @@ namespace GomokuServer.Services
                     return;
                 }
 
-                session = new GamingSession(player, _waitingPlayer);
+                session = new GamingSession(_waitingPlayer, player);
                 _waitingPlayer = null;
             }
             session.Start();

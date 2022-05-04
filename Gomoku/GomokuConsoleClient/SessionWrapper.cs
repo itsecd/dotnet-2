@@ -15,8 +15,8 @@ namespace GomokuConsoleClient
 
         public SessionWrapper(GrpcChannel channel)
         {
-            FirstPlayer = new PlayerWrapper(channel, 0);
-            SecondPlayer = new PlayerWrapper(channel, 1);
+            FirstPlayer = new PlayerWrapper(channel);
+            SecondPlayer = new PlayerWrapper(channel);
         }
 
         public async ValueTask DisposeAsync()
