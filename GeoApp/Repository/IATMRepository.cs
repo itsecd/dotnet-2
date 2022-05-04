@@ -6,7 +6,7 @@ namespace GeoApp.Repository
 {
     public interface IATMRepository
     {
-        void InsertATM(ATM ATM);
+        ATM InsertATM(ATM ATM);
         ATM GetATMById(string id);
 
         ATM ChangeBalanceById(string id, int balance);

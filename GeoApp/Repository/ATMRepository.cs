@@ -11,11 +11,17 @@ namespace GeoApp.Repository
 
         private List<ATM> _ATMs;
 
-        public void InsertATM(ATM ATM)
+        public ATM InsertATM(ATM ATM)
         {
             ReadFromFile();
+            foreach (ATM atm in _ATMs)
+            {
+                if (ATM.Id == atm.Id)
+                    return null;
+            }
             _ATMs.Add(ATM);
             WriteToFile();
+            return ATM;
         }
 
         public ATM GetATMById(string id)
@@ -31,8 +37,10 @@ namespace GeoApp.Repository
 
         public ATM DeleteATMById(string id)
         {
+            ReadFromFile();
             var DeletedATM = _ATMs.Find(ATM => ATM.Id == id);
             _ATMs.RemoveAll(ATM => ATM.Id == id);
+            WriteToFile();
             return DeletedATM;
         }
 

@@ -41,8 +41,9 @@ namespace GeoApp.Controllers
         [HttpPost]
         public ActionResult<ATM> Post([FromBody] ATM ATM)
         {
-            _ATMRepository.InsertATM(ATM);
-            return ATM;
+            if (_ATMRepository.InsertATM(ATM) != null)
+                return ATM;
+            return Conflict();
         }
 
         // PUT api/<ATMController>/5
