@@ -55,7 +55,7 @@ namespace PPTask.Controllers
             try
             {
                 return _tagRepository.GetTags().Where(tag => tag.TagId == id).Single();
-                if(id < 0) return NotFound();
+                if(id < -1) return NotFound();
             }
             catch
             {
@@ -92,17 +92,11 @@ namespace PPTask.Controllers
             try
             {
                 var tagIndex = _tagRepository.GetTags().FindIndex(tag => tag.TagId == id);
+                if(tagIndex < -1 || id < -1 ) return NotFound();
+
                 _tagRepository.GetTags()[tagIndex] = new Tag {TagColour = value.TagColour, TagStatus = value.TagStatus};
                 return Ok();
 
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return BadRequest();
             }
             catch
             {
@@ -119,16 +113,11 @@ namespace PPTask.Controllers
         {
             try
             {
+                var tagIndex = _tagRepository.GetTags().FindIndex(tag => tag.TagId == id);
+                if(tagIndex < -1) return NotFound();
+
                 _tagRepository.RemoveTag(id);
                 return Ok();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return BadRequest();
             }
             catch
             {

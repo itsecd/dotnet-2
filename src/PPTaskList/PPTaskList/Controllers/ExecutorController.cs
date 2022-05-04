@@ -55,7 +55,7 @@ namespace PPTask.Controllers
             try
             {
                 return _executorRepository.GetExecutors().Where(executor => executor.ExecutorId == id).Single();
-                if(id < 0) return NotFound();
+                if(id < -1) return NotFound();
             }
             catch
             {
@@ -92,17 +92,11 @@ namespace PPTask.Controllers
             try
             {
                 var executorIndex = _executorRepository.GetExecutors().FindIndex(executor => executor.ExecutorId == id);
+                if(executorIndex < -1 || id < -1 ) return NotFound();
+
                 _executorRepository.GetExecutors()[executorIndex] = new Executor {Name = value.Name};
                 return Ok();
 
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return BadRequest();
             }
             catch
             {
@@ -119,16 +113,11 @@ namespace PPTask.Controllers
         {
             try
             {
+                var executorIndex = _executorRepository.GetExecutors().FindIndex(executor => executor.ExecutorId == id);
+                if(executorIndex < -1) return NotFound();
+
                 _executorRepository.RemoveExecutor(id);
                 return Ok();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return BadRequest();
             }
             catch
             {

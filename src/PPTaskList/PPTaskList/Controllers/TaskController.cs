@@ -56,7 +56,7 @@ namespace PPTask.Controllers
             try
             {
                 return _taskRepository.GetTasks().Where(task => task.TaskId == id).Single();
-                if(id < 0) return NotFound();
+                if(id < -1) return NotFound();
             }
             catch
             {
@@ -94,18 +94,12 @@ namespace PPTask.Controllers
             try
             {
                 var taskIndex = _taskRepository.GetTasks().FindIndex(task => task.TaskId == id);
+                if(taskIndex < -1 || id < -1 ) return NotFound();
+
                 _taskRepository.GetTasks()[taskIndex] = new Task {HeaderText = value.HeaderText,TextDescription =value.TextDescription,
                     ExecutorId = value.ExecutorId, TagId = value.TagId };
                 return Ok();
 
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return BadRequest();
             }
             catch
             {
@@ -122,16 +116,11 @@ namespace PPTask.Controllers
         {
             try
             {
+                var taskIndex = _taskRepository.GetTasks().FindIndex(task => task.TaskId == id);
+                if(taskIndex < -1) return NotFound();
+
                 _taskRepository.RemoveTask(id);
                 return Ok();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return BadRequest();
             }
             catch
             {
@@ -148,15 +137,8 @@ namespace PPTask.Controllers
         {
             try
             {
+                if(id < -1) return NotFound();
                 return _taskRepository.GetTasks().Result.FindAll(task => task.ExecutorId == id);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return BadRequest();
             }
             catch
             {
