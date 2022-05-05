@@ -1,4 +1,4 @@
-namespace Telegram.Bot.Examples.WebHook;
+namespace TgBot;
 
 public static class Program
 {

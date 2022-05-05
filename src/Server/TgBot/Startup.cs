@@ -1,6 +1,8 @@
-using Telegram.Bot.Examples.WebHook.Services;
 
-namespace Telegram.Bot.Examples.WebHook;
+using Telegram.Bot;
+using TgBot.Services;
+
+namespace TgBot;
 
 public class Startup
 {
@@ -21,6 +23,7 @@ public class Startup
                     => new TelegramBotClient(BotConfig.BotToken, httpClient));
 
         services.AddScoped<HandleUpdateService>();
+        services.AddScoped<HandleNotifyService>();
         services.AddControllers()
                 .AddNewtonsoftJson();
     }
@@ -40,7 +43,7 @@ public class Startup
             var token = BotConfig.BotToken;
             endpoints.MapControllerRoute(name: "tgwebhook",
                                          pattern: $"bot/{token}",
-                                         new { controller = "Webhook", action = "Post" });
+                                         new { controller = "Chat", action = "Post" });
             endpoints.MapControllers();
         });
     }
