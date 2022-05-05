@@ -1,16 +1,12 @@
 using System.Text;
-using System.Net.Http;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.InlineQueryResults;
-using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
-using System.Text.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Telegram.Bot;
 
-namespace Telegram.Bot.Examples.WebHook.Services;
+namespace TgBot.Services;
 
 public class HandleUpdateService
 {
@@ -65,6 +61,7 @@ public class HandleUpdateService
             "/enable"   => SetEnableMode(_botClient, message),
             "/disable"  => SetDisableMode(_botClient, message),
             "/signOut"  => DeleteUser(_botClient, message),
+            "/test"     => TestRequest(_botClient, message),
             _           => Usage(_botClient, message)
         };
         Message sentMessage = await action;
@@ -77,6 +74,25 @@ public class HandleUpdateService
             string str = $"Your confirmation code: {code}";
             return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                   text: str);
+        }
+
+        async Task<Message> TestRequest(ITelegramBotClient bot, Message message)
+        {
+            await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+            Server.Model.UserEvent userEvent = new Server.Model.UserEvent();
+            userEvent.Id = 1;
+            userEvent.User = new Server.Model.User();
+            userEvent.User.Id = 1;
+            userEvent.User.ChatId = message.Chat.Id;
+            userEvent.User.Name = message.Chat.Username;
+            userEvent.User.Toggle = true;
+            userEvent.EventName = "VAM PIZDA";
+            userEvent.DateNTime = DateTime.Now;
+            userEvent.EventFrequency = Server.Model.UserEvent.Frequency.everyDay;
+            HttpClient client = new HttpClient();
+            var response = await client.PostAsync($"https://e20e-82-179-50-182.eu.ngrok.io/bot/", new StringContent(JsonConvert.SerializeObject(userEvent), Encoding.UTF8, "application/json"));
+            return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
+                                                      text: "a");
         }
 
         async Task<Message> SetEnableMode(ITelegramBotClient bot, Message message)
