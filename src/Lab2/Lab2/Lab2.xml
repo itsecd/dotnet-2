@@ -74,5 +74,47 @@
             Count of product
             </summary>
         </member>
+        <member name="T:Lab2.Repository.CustomerRepository">
+            <summary>
+            Customer Repository
+            </summary>
+        </member>
+        <member name="M:Lab2.Repository.CustomerRepository.AddCustomer(Lab2.Model.Customer)">
+            <summary>
+            Method for adding customer
+            </summary>
+            <param name="customer">Customer</param>
+        </member>
+        <member name="M:Lab2.Repository.CustomerRepository.ReplaceCustomer(Lab2.Model.Customer,System.Int32)">
+            <summary>
+            Method for replacing customer
+            </summary>
+            <param name="customer"></param>
+            <param name="id"></param>
+        </member>
+        <member name="M:Lab2.Repository.CustomerRepository.GetAllCustomers">
+            <summary>
+            Method get all customers
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Repository.CustomerRepository.GetCustomer(System.Int32)">
+            <summary>
+            Method for get certain customer
+            </summary>
+            <param name="id">Customer ID</param>
+            <returns>Customer</returns>
+        </member>
+        <member name="M:Lab2.Repository.CustomerRepository.DeleteCustomer(System.Int32)">
+            <summary>
+            Method for delete customer
+            </summary>
+            <param name="id">Customer ID</param>
+        </member>
+        <member name="M:Lab2.Repository.CustomerRepository.DeleteAllCustomers">
+            <summary>
+            Method for delete all customers
+            </summary>
+        </member>
     </members>
 </doc>

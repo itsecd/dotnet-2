@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lab2.Model;
 using Lab2.Repository;
@@ -14,21 +12,17 @@ namespace Lab2.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerRepository _repository;
-        private readonly ILogger<CustomerController> _logger;
-        public CustomerController(ICustomerRepository repository, ILogger<CustomerController> logger)
+        public CustomerController(ICustomerRepository repository)
         {
             _repository = repository;
-            _logger = logger;
         }
         // GET: api/<CustomerController>
         [HttpGet]
         public  IEnumerable<Customer> GetAllAsync() 
         {
-            _logger.LogInformation("Method get is invoked!");
             return _repository.GetAllCustomers();
         }
-
-        // GET api/<CustomerController>/5
+        // GET api/<CustomerController>/
         [HttpGet("{id}")]
         public Customer GetAsync(int id) 
         {
@@ -39,26 +33,22 @@ namespace Lab2.Controllers
         [HttpPost]
         public void Post([FromBody] Customer customer) 
         {
-            _logger.LogWarning("Method post is invoked!");
              _repository.AddCustomer(customer);
-            
         }
 
         // PUT api/<CustomerController>/5
 
         [HttpPut("{id}")]
-        public void Put([FromBody] Customer customer, int id)
+        public void Put(int id, [FromBody] Customer customer)
         {
-            _repository.ReplaceCustomer(customer, id);
+            _repository.ReplaceCustomer(id, customer);
         }
-
         // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
         public void Delete(int id) 
         {
             _repository.DeleteCustomer(id);
         }
-        
         [HttpDelete]
         public async Task DeleteAll()
         {

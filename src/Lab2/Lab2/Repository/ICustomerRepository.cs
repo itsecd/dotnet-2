@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Lab2.Model;
 
 namespace Lab2.Repository
@@ -7,12 +6,13 @@ namespace Lab2.Repository
     public interface ICustomerRepository
     {
         List<Customer> GetAllCustomers();
-        public void AddCustomer(Customer customer);
-        public Customer GetCustomer(int id);
-        public void DeleteAllCustomers();
-        public void DeleteCustomer(int id);
-        public void ReplaceCustomer(Customer customer, int id);
-
+        void AddCustomer(Customer customer);
+        Customer GetCustomer(int id);
+        void DeleteAllCustomers();
+        void DeleteCustomer(int id);
+        void ReplaceCustomer(int id, Customer customer);
+        void ReadFromFileCustomers();
+        void WriteToFileCustomers();
 
 
     }

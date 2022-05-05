@@ -1,18 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Lab2.Repository;
+using Lab2.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace Lab2
@@ -31,6 +26,7 @@ namespace Lab2
         {
             services.AddSingleton<ICustomerRepository,CustomerRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
+            services.AddHostedService<TimedHostedService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -39,7 +35,7 @@ namespace Lab2
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
         }
-
+        //
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
