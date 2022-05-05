@@ -15,7 +15,7 @@ namespace Server.Repositories
 
         public JSONUserRepository(IConfiguration configuration)
         {
-            _storageFileName = configuration.GetSection("FileConfiguration").Get<FileConfiguration>().FileOfUsers;
+            _storageFileName = configuration.GetSection("Files").Get<FileConfiguration>().FileOfUsers;
         }
         public void Add(User user)
         {
@@ -94,8 +94,10 @@ namespace Server.Repositories
                 Load();
                 if (entyties.Exists(user => user.Id == id))
                 {
-                    entyties.Single(us => us.Id == id).Name = user.Name;
-                    entyties.Single(us => us.Id == id).Toggle = user.Toggle;
+                    User us = entyties.Single(us => us.Id == id);
+                    us.Name = user.Name;
+                    us.ChatId = user.ChatId;
+                    us.Toggle = user.Toggle;
                     Save();
                 }
             }

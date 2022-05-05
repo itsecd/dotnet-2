@@ -15,7 +15,7 @@ namespace Server.Repositories
         
         public JSONUserEventRepository(IConfiguration configuration)
         {
-            _storageFileName = configuration.GetSection("FileConfiguration").Get<FileConfiguration>().FileOfEvents;
+            _storageFileName = configuration.GetSection("Files").Get<FileConfiguration>().FileOfEvents;
         }
         public void Add(UserEvent uEvent)
         {

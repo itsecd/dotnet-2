@@ -21,7 +21,7 @@ namespace Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            FileConfig = Configuration.GetSection("FileConfiguration").Get<FileConfiguration>();
+            FileConfig = Configuration.GetSection("Files").Get<FileConfiguration>();
         }
 
         public IConfiguration Configuration { get; }
