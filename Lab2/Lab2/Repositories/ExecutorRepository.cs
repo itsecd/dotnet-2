@@ -31,6 +31,17 @@ namespace Lab2.Repositories
             _executors = (List<Executor>)xmlSerializer.Deserialize(fileReader);
         }
 
+         public ExecutorRepository()
+        {
+            if (!File.Exists(_storageFileName))
+            {
+                _executors = new List<Executor>();
+                return;
+            }
+            var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
+            using var fileReader = new FileStream(_storageFileName, FileMode.Open);
+            _executors = (List<Executor>)xmlSerializer.Deserialize(fileReader);
+        }
         
         public void WriteToFile()
         {
