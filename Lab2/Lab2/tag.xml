@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ArrayOfTags xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Tags>
+    <TagId>1</TagId>
+    <Name>Rera</Name>
+    <Color>3</Color>
+  </Tags>
+  <Tags>
+    <TagId>2</TagId>
+    <Name>ghy</Name>
+    <Color>4</Color>
+  </Tags>
+</ArrayOfTags>

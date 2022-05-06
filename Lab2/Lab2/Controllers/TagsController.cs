@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Lab2.Models;
+﻿using Lab2.Models;
 using Lab2.Repositories;
-using Lab2.Exceptions;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using System.Threading.Tasks;
 
 namespace Lab2.Controllers
 {
@@ -20,7 +18,7 @@ namespace Lab2.Controllers
         {
             _tagRepository = tagRepository;
         }
-       
+
         /// <summary>
         /// Получение всех тэгов
         /// </summary>
@@ -28,7 +26,7 @@ namespace Lab2.Controllers
         // GET: api/<TagsController>
         [HttpGet]
         public ActionResult<List<Tags>> Get() => _tagRepository.GetTags();
-      
+
         /// <summary>
         /// Получение тэга по его индентификатору
         /// </summary>
@@ -36,17 +34,18 @@ namespace Lab2.Controllers
         /// <returns>Tag</returns>
         // GET api/<TagsController>/5
         [HttpGet("{id:int}")]
-       
+
         public ActionResult<Tags> Get(int id)
         {
             try
             {
+                if (id < -1)
+                {
+                    return NotFound();
+                }
+
                 var tag = _tagRepository.GetTags().Single(tag => tag.TagId == id);
                 return tag;
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
             }
             catch
             {
@@ -60,12 +59,12 @@ namespace Lab2.Controllers
         /// <param name="tag">Новый тэг</param>
         // POST api/<TagsController>
         [HttpPost]
-        public IActionResult Post([FromBody] Tags tag)
+        public IActionResult Post([FromBody] TagDto tag)
         {
 
             try
             {
-                _tagRepository.AddTag(tag);
+                _tagRepository.AddTag(new Tags { Name = tag.Name, Color = tag.Color });
                 return CreatedAtAction(nameof(Post), tag);
             }
             catch
@@ -89,10 +88,6 @@ namespace Lab2.Controllers
                 _tagRepository.UpdateTag(id, tag);
                 return Ok();
             }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
             catch (ArgumentOutOfRangeException)
             {
                 return BadRequest();
@@ -103,7 +98,7 @@ namespace Lab2.Controllers
             }
 
         }
-       
+
         /// <summary>
         /// Удаление всех тэгов
         /// </summary>
@@ -135,10 +130,6 @@ namespace Lab2.Controllers
                 _tagRepository.RemoveTag(id);
                 return Ok();
             }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
             catch (ArgumentOutOfRangeException)
             {
                 return BadRequest();
@@ -148,6 +139,6 @@ namespace Lab2.Controllers
                 return Problem();
             }
         }
-    
+
     }
 }

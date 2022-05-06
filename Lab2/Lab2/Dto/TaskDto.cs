@@ -1,18 +1,12 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-
-namespace Lab2.Models
+namespace Lab2.Dto
 {
     /// <summary>
-    /// Модель запроса задачи
+    /// Исполнитель задачи
     /// </summary>
-    public class Task
+    public class TaskDto
     {
-        /// <summary>
-        /// id задачи
-        /// </summary>
-        public int TaskId { get; set; }
         /// <summary>
         /// имя задачи
         /// </summary>
@@ -35,17 +29,5 @@ namespace Lab2.Models
         /// </summary>
         public List<int> TagsId { get; set; }
 
-        public Task()
-        {
-            Name = string.Empty;
-            Description = string.Empty;
-        }
-        public Task(string name, string description, int executorId, List<int> tagsId)
-        {
-            Name = name;
-            Description = description;
-            ExecutorId = executorId;
-            TagsId = tagsId;
-        }
     }
 }

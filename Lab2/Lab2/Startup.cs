@@ -1,10 +1,11 @@
+
+using Lab2.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Lab2.Repositories;
 
 namespace Lab2
 {
@@ -28,6 +29,8 @@ namespace Lab2
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Lab2", Version = "v1" });
             });
+            services.AddHostedService<TimeredHostedService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +41,7 @@ namespace Lab2
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Lab2 v1"));
+
             }
 
             app.UseHttpsRedirection();

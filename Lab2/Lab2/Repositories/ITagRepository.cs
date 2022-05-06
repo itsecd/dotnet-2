@@ -1,6 +1,5 @@
 ﻿using Lab2.Models;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Lab2.Repositories
 {
@@ -11,6 +10,7 @@ namespace Lab2.Repositories
         void RemoveAllTags();
         int RemoveTag(int id);
         int UpdateTag(int id, Tags newTag);
-        
+        void WriteToFile();
+
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Lab2.Models;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Lab2.Repositories
 {

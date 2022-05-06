@@ -1,30 +1,25 @@
 ﻿using Lab2.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+
 
 namespace Lab2.Repositories
 {
-    public class ExecutorRepository: IExecutorRepository
+    public class ExecutorRepository : IExecutorRepository
     {
 
         private readonly string _storageFileName = "executors.xml";
-        public ExecutorRepository() { }
+        private List<Executor> _executors;
+
         public ExecutorRepository(IConfiguration configuration = null)
         {
-            if (configuration != null)
+            if (configuration is not null)
             {
                 _storageFileName = configuration.GetValue<string>("ExecutorsFile");
             }
-        }
-
-        private List<Executor> _executors;
-
-        private void ReadFromFile()
-        {
-            if (_executors != null) return;
 
             if (!File.Exists(_storageFileName))
             {
@@ -36,7 +31,19 @@ namespace Lab2.Repositories
             _executors = (List<Executor>)xmlSerializer.Deserialize(fileReader);
         }
 
-        private void WriteToFile()
+        public ExecutorRepository()
+        {
+            if (!File.Exists(_storageFileName))
+            {
+                _executors = new List<Executor>();
+                return;
+            }
+            var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
+            using var fileReader = new FileStream(_storageFileName, FileMode.Open);
+            _executors = (List<Executor>)xmlSerializer.Deserialize(fileReader);
+        }
+
+        public void WriteToFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
             using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
@@ -45,38 +52,31 @@ namespace Lab2.Repositories
 
         public int AddExecutor(Executor executor)
         {
-             ReadFromFile();
+            var maxId = _executors.Max(ex => ex.ExecutorId);
+            executor.ExecutorId = maxId + 1;
             _executors.Add(executor);
-             WriteToFile();
             return executor.ExecutorId;
         }
 
         public void RemoveAllExecutors()
         {
-             ReadFromFile();
             _executors.RemoveRange(0, _executors.Count);
-             WriteToFile();
         }
 
         public List<Executor> GetExecutors()
         {
-            ReadFromFile();
             return _executors;
         }
         public int RemoveExecutor(int id)
         {
-             ReadFromFile();
-            _executors.RemoveAt(id-1);
-             WriteToFile();
+            _executors.RemoveAt(id - 1);
             return id;
         }
         public int UpdateExecutor(int id, Executor newExecutor)
         {
-            ReadFromFile();
             var executorIndex = _executors.FindIndex(p => p.ExecutorId == id);
             _executors[executorIndex] = newExecutor;
-            WriteToFile();
-            return id; 
+            return id;
         }
 
     }

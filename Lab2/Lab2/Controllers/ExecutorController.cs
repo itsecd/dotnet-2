@@ -1,11 +1,9 @@
-﻿using Lab2.Exceptions;
-using Lab2.Models;
+﻿using Lab2.Models;
 using Lab2.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using System.Threading.Tasks;
 
 namespace Lab2.Controllers
 {
@@ -15,10 +13,13 @@ namespace Lab2.Controllers
     {
 
         private readonly IExecutorRepository _executorRepository;
+        private readonly ITaskRepository _taskRepository;
 
-        public ExecutorController(IExecutorRepository executorRepository)
+
+        public ExecutorController(IExecutorRepository executorRepository, ITaskRepository taskRepository)
         {
             _executorRepository = executorRepository;
+            _taskRepository = taskRepository;
         }
 
         // GET: api/<ExecutorController>
@@ -27,7 +28,7 @@ namespace Lab2.Controllers
         /// </summary>
         /// <returns>All Executors</returns>
         [HttpGet]
-        public ActionResult<List<Executor>> Get() =>  _executorRepository.GetExecutors();
+        public ActionResult<List<Executor>> Get() => _executorRepository.GetExecutors();
 
         /// <summary>
         /// Получение исполнителя задачи по его индентификатору
@@ -37,22 +38,23 @@ namespace Lab2.Controllers
         // GET api/<ExecutorController>/5
         [HttpGet("{id:int}")]
         public ActionResult<Executor> Get(int id)
-        { 
+        {
             try
             {
+                if (id < -1)
+                {
+                    return NotFound();
+                }
+
                 var executor = _executorRepository.GetExecutors().Single(executor => executor.ExecutorId == id);
                 return executor;
-            }
-            catch(NotFoundException)
-            {
-                return NotFound();
             }
             catch
             {
                 return Problem();
             }
         }
-        
+
 
         /// <summary>
         /// Добавление исполнителя задачи
@@ -60,12 +62,13 @@ namespace Lab2.Controllers
         /// <param name="executor">Новый исполнитель задач</param>
         // POST api/<ExecutorController>
         [HttpPost]
-        public IActionResult Post([FromBody] Executor executor)
+        public IActionResult Post([FromBody] ExecutorDto executor)
         {
 
             try
             {
-                _executorRepository.AddExecutor(executor);
+
+                _executorRepository.AddExecutor(new Executor { Name = executor.Name, Surname = executor.Surname });
                 return CreatedAtAction(nameof(Post), executor);
             }
             catch
@@ -73,7 +76,7 @@ namespace Lab2.Controllers
                 return Problem();
             }
         }
-    
+
 
         // PUT api/<ExecutorController>/5
         /// <summary>
@@ -85,17 +88,13 @@ namespace Lab2.Controllers
 
         public IActionResult Put(int id, [FromBody] Executor executor)
         {
-           
+
             try
             {
                 _executorRepository.UpdateExecutor(id, executor);
-                return Ok(); 
+                return Ok();
             }
-            catch(NotFoundException)
-            {
-                return NotFound();
-            }
-            catch(ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 return BadRequest();
             }
@@ -103,10 +102,9 @@ namespace Lab2.Controllers
             {
                 return Problem();
             }
-            
+
 
         }
-     
 
         /// <summary>
         /// Удаление всех исполнителей задач
@@ -126,22 +124,18 @@ namespace Lab2.Controllers
                 return Problem();
             }
         }
-       
+
         /// <summary>
         /// Удаление исполнителя задачи по идентификатору
         /// </summary>
         /// <param name="id">Идентификатор</param>
         [HttpDelete("{id:int}")]
-        public IActionResult Delete(int id) 
-        { 
+        public IActionResult Delete(int id)
+        {
             try
             {
                 _executorRepository.RemoveExecutor(id);
                 return Ok();
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -152,6 +146,6 @@ namespace Lab2.Controllers
                 return Problem();
             }
         }
-      
+
     }
 }

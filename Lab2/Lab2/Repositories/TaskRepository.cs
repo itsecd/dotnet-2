@@ -1,31 +1,29 @@
 ﻿using Lab2.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
-using Microsoft.Extensions.Configuration;
 
 namespace Lab2.Repositories
 {
-	public class TaskRepository: ITaskRepository
-	{
+    public class TaskRepository : ITaskRepository
+    {
 
         private readonly string _storageFileName = "task.xml";
+        private List<Task> _tasks;
 
-        public TaskRepository(){ }
 
-         public TaskRepository(IConfiguration configuration = null)
+        public TaskRepository(IConfiguration configuration = null)
         {
             if (configuration != null)
             {
                 _storageFileName = configuration.GetValue<string>("TasksFile");
             }
-        }
-
-        private List<Task> _tasks;
-
-        private void ReadFromFile()
-        {
-            if (_tasks != null) return;
+            if (_tasks != null)
+            {
+                return;
+            }
 
             if (!File.Exists(_storageFileName))
             {
@@ -33,11 +31,11 @@ namespace Lab2.Repositories
                 return;
             }
             var xmlSerializer = new XmlSerializer(typeof(List<Task>));
-            using var fileReader = new FileStream(_storageFileName, FileMode.Open);
+            using var fileReader = new FileStream(_storageFileName, FileMode.OpenOrCreate);
             _tasks = (List<Task>)xmlSerializer.Deserialize(fileReader);
         }
 
-        private void WriteToFile()
+        public void WriteToFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<Task>));
             using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
@@ -46,40 +44,32 @@ namespace Lab2.Repositories
 
         public int AddTask(Task tasks)
         {
-            ReadFromFile();
+            var maxId = _tasks.Max(t => t.TaskId);
+            tasks.TaskId = maxId + 1;
             _tasks.Add(tasks);
-            WriteToFile();
             return tasks.TaskId;
         }
 
         public void RemoveAllTasks()
         {
-            ReadFromFile();
             _tasks.RemoveRange(0, _tasks.Count);
-            WriteToFile();
-
         }
 
         public List<Task> GetTasks()
         {
-            ReadFromFile();
             return _tasks;
         }
 
         public int RemoveTask(int id)
         {
-            ReadFromFile();
             _tasks.RemoveAt(id);
-            WriteToFile();
-            return id; 
+            return id;
         }
 
         public int UpdateTask(int id, Task newTask)
         {
-            ReadFromFile();
             var taskIndex = _tasks.FindIndex(p => p.TaskId == id);
             _tasks[taskIndex] = newTask;
-            WriteToFile();
             return id;
         }
 

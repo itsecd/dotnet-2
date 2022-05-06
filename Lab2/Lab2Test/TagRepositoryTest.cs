@@ -1,6 +1,6 @@
-﻿using Xunit;
+﻿using Lab2.Models;
 using Lab2.Repositories;
-using Lab2.Models;
+using Xunit;
 
 namespace Lab2Test
 {
@@ -11,13 +11,13 @@ namespace Lab2Test
         {
             var tag = new Tags
             {
-                TagId = 3,
+                TagId = 4,
                 Name = "for boss",
                 Color = 3
             };
             var tagRepository = new TagRepository();
-            Assert.Equal(3, tagRepository.AddTag(tag));
-            tagRepository.RemoveTag(3);
+            Assert.Equal(4, tagRepository.AddTag(tag));
+            tagRepository.RemoveTag(4);
         }
         [Fact]
         public void RemoveTagTest()

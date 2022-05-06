@@ -1,7 +1,7 @@
-﻿using Xunit;
+﻿using Lab2.Models;
 using Lab2.Repositories;
-using Lab2.Models;
 using System.Collections.Generic;
+using Xunit;
 
 namespace Lab2Test
 {
@@ -15,13 +15,7 @@ namespace Lab2Test
                 Name = "Valera",
                 Surname = "Koshkin"
             };
-            Tags firstTag = new Tags
-            {
-                TagId = 1,
-                Name = "for monday",
-                Color = 3
-            };
-
+            var firstTagId = 1;
 
             Task task = new Task
             {
@@ -29,8 +23,8 @@ namespace Lab2Test
                 Name = "Monday work",
                 Description = "for sale to intermediaries",
                 TaskState = false,
-                MemberOfTask = executor,
-                TagsNames = new List<Tags>() { firstTag }
+                ExecutorId = executor.ExecutorId,
+                TagsId = new List<int>() { firstTagId }
             };
             return task;
         }
@@ -39,8 +33,8 @@ namespace Lab2Test
         public void AddTaskTest()
         {
             TaskRepository repository = new();
-            Assert.Equal(3, repository.AddTask(TaskCreate(3)));
-            repository.RemoveTask(3);
+            Assert.Equal(4, repository.AddTask(TaskCreate(3)));
+            repository.RemoveTask(4);
         }
         [Fact]
         public void RemoveTaskTest()

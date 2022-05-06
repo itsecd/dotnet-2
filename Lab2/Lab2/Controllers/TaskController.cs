@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Lab2.Dto;
 using Lab2.Models;
 using Lab2.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using Lab2.Exceptions;
-
 
 namespace Lab2.Controllers
 {
@@ -26,7 +25,7 @@ namespace Lab2.Controllers
         // GET: api/<TaskListController>
         [HttpGet]
         public ActionResult<List<Task>> Get() => _taskListRepository.GetTasks();
-       
+
         /// <summary>
         /// Получение задачи по индентификатору
         /// </summary>
@@ -39,12 +38,13 @@ namespace Lab2.Controllers
 
             try
             {
+                if (id < -1)
+                {
+                    return NotFound();
+                }
+
                 var task = _taskListRepository.GetTasks().Single(task => task.TaskId == id);
                 return task;
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
             }
             catch
             {
@@ -60,12 +60,18 @@ namespace Lab2.Controllers
         /// <param name="task">Новая задача</param>
         // POST api/<TaskListController>
         [HttpPost]
-        public IActionResult Post([FromBody] Task task)
+        public IActionResult Post([FromBody] TaskDto task)
         {
 
             try
             {
-                _taskListRepository.AddTask(task);
+                _taskListRepository.AddTask(new Task
+                {
+                    Name = task.Name,
+                    Description = task.Description,
+                    ExecutorId = task.ExecutorId,
+                    TagsId = task.TagsId
+                });
                 return CreatedAtAction(nameof(Post), task);
             }
             catch
@@ -89,10 +95,6 @@ namespace Lab2.Controllers
                 _taskListRepository.UpdateTask(id, task);
                 return Ok();
             }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
             catch (ArgumentOutOfRangeException)
             {
                 return BadRequest();
@@ -104,7 +106,7 @@ namespace Lab2.Controllers
 
 
         }
-       
+
         /// <summary>
         /// Удаление всех задач
         /// </summary>
@@ -129,17 +131,13 @@ namespace Lab2.Controllers
         /// <param name="id">Идентификатор</param>
         // DELETE api/<TaskListController>/5
         [HttpDelete("{id:int}")]
-       
+
         public IActionResult Delete(int id)
         {
             try
             {
                 _taskListRepository.RemoveTask(id);
                 return Ok();
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -149,7 +147,7 @@ namespace Lab2.Controllers
             {
                 return Problem();
             }
-        
+
         }
 
     }

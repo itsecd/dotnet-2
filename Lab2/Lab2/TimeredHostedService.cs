@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Lab2.Repositories;
+using Microsoft.Extensions.Hosting;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Lab2.Repositories;
-using Microsoft.Extensions.Hosting;
 
 namespace Lab2
 {
-    public class TimeredHostedService: IHostedService, IDisposable
+    public class TimeredHostedService : IHostedService, IDisposable
     {
         private Timer _timer = null!;
 
@@ -31,11 +31,11 @@ namespace Lab2
             return Task.CompletedTask;
         }
 
-        private async void DoWork(object? state)
+        private void DoWork(object? state)
         {
-            await _executorRepository.WriteToFile();
-            await _tagRepository.WriteToFile();
-            await _taskRepository.WriteToFile();
+            _executorRepository.WriteToFile();
+            _tagRepository.WriteToFile();
+            _taskRepository.WriteToFile();
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

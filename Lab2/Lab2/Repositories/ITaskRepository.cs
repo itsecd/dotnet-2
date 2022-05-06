@@ -9,6 +9,7 @@ namespace Lab2.Repositories
         List<Task> GetTasks();
         void RemoveAllTasks();
         int RemoveTask(int id);
-        int UpdateTask(int id, Task newTask); 
+        int UpdateTask(int id, Task newTask);
+        void WriteToFile();
     }
 }
