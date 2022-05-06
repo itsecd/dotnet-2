@@ -13,14 +13,15 @@ namespace Lab2Test
         {
             var executor = new Executor
             {
-                ExecutorId = 10,
+                ExecutorId = 1,
                 Name = "Pavel",
                 Surname = "Pavlov"
             };
             ExecutorRepository executorRepository = new();
-            Assert.Equal(10, executorRepository.AddExecutor(executor));
-            executorRepository.RemoveExecutor(10);
+            Assert.Equal(1, executorRepository.AddExecutor(executor));
+            executorRepository.RemoveExecutor(1);
         }
+
         [Fact]
         public void RemoveExecutorTest()
         {
@@ -34,6 +35,7 @@ namespace Lab2Test
             repository.AddExecutor(executor);
             Assert.Equal(4, repository.RemoveExecutor(4));
         }
+
         [Fact]
         public void UpdateExecutorTest()
         {

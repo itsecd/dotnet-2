@@ -11,14 +11,17 @@ namespace Lab2.Dto
         /// имя задачи
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// описание задачи
         /// </summary>
         public string Description { get; set; }
+
         /// <summary>
         /// статус завершенности задачи
         /// </summary>
         public bool TaskState { get; set; }
+
         /// <summary>
         /// Идентификатор исполнителя
         /// </summary>

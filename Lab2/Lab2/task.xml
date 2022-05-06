@@ -2,32 +2,12 @@
 <ArrayOfTask xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Task>
     <TaskId>1</TaskId>
-    <Name>yy</Name>
-    <Description>hh</Description>
-    <TaskState>true</TaskState>
-    <ExecutorId>1</ExecutorId>
-    <TagsId>
-      <int>1</int>
-    </TagsId>
-  </Task>
-  <Task>
-    <TaskId>2</TaskId>
-    <Name>bvx</Name>
-    <Description>iii</Description>
+    <Name>2</Name>
+    <Description>string</Description>
     <TaskState>false</TaskState>
-    <ExecutorId>1</ExecutorId>
+    <ExecutorId>0</ExecutorId>
     <TagsId>
-      <int>1</int>
-    </TagsId>
-  </Task>
-  <Task>
-    <TaskId>3</TaskId>
-    <Name>имя</Name>
-    <Description>описание</Description>
-    <TaskState>false</TaskState>
-    <ExecutorId>2</ExecutorId>
-    <TagsId>
-      <int>2</int>
+      <int>0</int>
     </TagsId>
   </Task>
 </ArrayOfTask>

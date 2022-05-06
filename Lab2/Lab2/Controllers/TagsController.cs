@@ -1,19 +1,27 @@
-﻿using Lab2.Models;
+﻿using Lab2.Dto;
+using Lab2.Models;
 using Lab2.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Lab2.Controllers
 {
+    /// <summary>
+    /// Контроллер для тегов
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class TagsController : ControllerBase
     {
-
+        /// <summary>
+        /// Репозиторий тегов
+        /// </summary>
         private readonly ITagRepository _tagRepository;
 
+        /// <summary>
+        /// Конструктор с параметром
+        /// </summary>
         public TagsController(ITagRepository tagRepository)
         {
             _tagRepository = tagRepository;
@@ -23,18 +31,15 @@ namespace Lab2.Controllers
         /// Получение всех тэгов
         /// </summary>
         /// <returns>All Tags</returns>
-        // GET: api/<TagsController>
         [HttpGet]
         public ActionResult<List<Tags>> Get() => _tagRepository.GetTags();
 
         /// <summary>
-        /// Получение тэга по его индентификатору
+        /// Получение тэга по его идентификатору
         /// </summary>
         /// <param name="id">Идентификатор</param>
         /// <returns>Tag</returns>
-        // GET api/<TagsController>/5
         [HttpGet("{id:int}")]
-
         public ActionResult<Tags> Get(int id)
         {
             try
@@ -43,8 +48,7 @@ namespace Lab2.Controllers
                 {
                     return NotFound();
                 }
-
-                var tag = _tagRepository.GetTags().Single(tag => tag.TagId == id);
+                var tag = _tagRepository.Get(id);
                 return tag;
             }
             catch
@@ -57,7 +61,6 @@ namespace Lab2.Controllers
         /// Добавление тэга
         /// </summary>
         /// <param name="tag">Новый тэг</param>
-        // POST api/<TagsController>
         [HttpPost]
         public IActionResult Post([FromBody] TagDto tag)
         {
@@ -78,14 +81,13 @@ namespace Lab2.Controllers
         /// </summary>
         /// <param name="id">Идентификатор</param>
         /// <param name="tag">Новый тэг</param>
-        // PUT api/<TagsController>/5
         [HttpPut("{id:int}")]
-        public IActionResult Put(int id, [FromBody] Tags tag)
+        public IActionResult Put(int id, [FromBody] TagDto tag)
         {
 
             try
             {
-                _tagRepository.UpdateTag(id, tag);
+                _tagRepository.UpdateTag(id, new Tags { TagId = id, Name = tag.Name, Color = tag.Color });
                 return Ok();
             }
             catch (ArgumentOutOfRangeException)
@@ -102,7 +104,6 @@ namespace Lab2.Controllers
         /// <summary>
         /// Удаление всех тэгов
         /// </summary>
-        // DELETE api/<TagsController>/5
         [HttpDelete]
         public IActionResult Delete()
         {
@@ -121,7 +122,6 @@ namespace Lab2.Controllers
         /// Удаление тэга по идентификатору
         /// </summary>
         /// <param name="id">Идентификатор</param>
-        // DELETE api/<TaskListController>/5
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {

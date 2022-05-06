@@ -2,27 +2,7 @@
 <ArrayOfExecutor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Executor>
     <ExecutorId>1</ExecutorId>
-    <Name>ear</Name>
-    <Surname>fres</Surname>
-  </Executor>
-  <Executor>
-    <ExecutorId>2</ExecutorId>
-    <Name>string</Name>
+    <Name>к</Name>
     <Surname>string</Surname>
-  </Executor>
-  <Executor>
-    <ExecutorId>3</ExecutorId>
-    <Name>tr</Name>
-    <Surname>hhhhh</Surname>
-  </Executor>
-  <Executor>
-    <ExecutorId>4</ExecutorId>
-    <Name>p</Name>
-    <Surname>r</Surname>
-  </Executor>
-  <Executor>
-    <ExecutorId>5</ExecutorId>
-    <Name>Алексей</Name>
-    <Surname>Алексеев</Surname>
   </Executor>
 </ArrayOfExecutor>

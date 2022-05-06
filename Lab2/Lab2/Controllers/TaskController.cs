@@ -4,46 +4,52 @@ using Lab2.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
 
 namespace Lab2.Controllers
 {
+    /// <summary>
+    /// Контроллер для задач
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
     {
+        /// <summary>
+        /// Репозиторий задач
+        /// </summary>
         private readonly ITaskRepository _taskListRepository;
 
+        /// <summary>
+        /// Конструктор с параметром
+        /// </summary>
         public TaskController(ITaskRepository taskListRepository)
         {
             _taskListRepository = taskListRepository;
         }
+
         /// <summary>
         /// Получение всех задач
         /// </summary>
         /// <returns>All Tasks</returns>
-        // GET: api/<TaskListController>
         [HttpGet]
         public ActionResult<List<Task>> Get() => _taskListRepository.GetTasks();
 
         /// <summary>
-        /// Получение задачи по индентификатору
+        /// Получение задачи по идентификатору
         /// </summary>
         /// <param name="id">Идентификатор</param>
         /// <returns>Task</returns>
-        // GET api/<TaskListController>/5
         [HttpGet("{id:int}")]
         public ActionResult<Task> Get(int id)
         {
-
             try
             {
                 if (id < -1)
                 {
                     return NotFound();
                 }
-
-                var task = _taskListRepository.GetTasks().Single(task => task.TaskId == id);
+                var task = _taskListRepository.Get(id);
                 return task;
             }
             catch
@@ -58,7 +64,6 @@ namespace Lab2.Controllers
         /// Добавление задачи
         /// </summary>
         /// <param name="task">Новая задача</param>
-        // POST api/<TaskListController>
         [HttpPost]
         public IActionResult Post([FromBody] TaskDto task)
         {
@@ -85,14 +90,20 @@ namespace Lab2.Controllers
         /// </summary>
         /// <param name="id">Идентификатор</param>
         /// <param name="task">Новая задача</param>
-        // PUT api/<TaskListController>/5
         [HttpPut("{id:int}")]
-        public IActionResult Put(int id, [FromBody] Task task)
+        public IActionResult Put(int id, [FromBody] TaskDto task)
         {
 
             try
             {
-                _taskListRepository.UpdateTask(id, task);
+                _taskListRepository.UpdateTask(id, new Task
+                {
+                    TaskId = id,
+                    Name = task.Name,
+                    Description = task.Description,
+                    ExecutorId = task.ExecutorId,
+                    TagsId = task.TagsId
+                });
                 return Ok();
             }
             catch (ArgumentOutOfRangeException)
@@ -103,14 +114,11 @@ namespace Lab2.Controllers
             {
                 return Problem();
             }
-
-
         }
 
         /// <summary>
         /// Удаление всех задач
         /// </summary>
-        // DELETE api/<TaskListController>/5
         [HttpDelete]
         public IActionResult Delete()
         {
@@ -129,7 +137,6 @@ namespace Lab2.Controllers
         /// Удаление задачи по идентификатору
         /// </summary>
         /// <param name="id">Идентификатор</param>
-        // DELETE api/<TaskListController>/5
         [HttpDelete("{id:int}")]
 
         public IActionResult Delete(int id)
@@ -147,9 +154,7 @@ namespace Lab2.Controllers
             {
                 return Problem();
             }
-
         }
-
     }
 }
 

@@ -33,9 +33,10 @@ namespace Lab2Test
         public void AddTaskTest()
         {
             TaskRepository repository = new();
-            Assert.Equal(4, repository.AddTask(TaskCreate(3)));
-            repository.RemoveTask(4);
+            Assert.Equal(5, repository.AddTask(TaskCreate(5)));
+            repository.RemoveTask(5);
         }
+
         [Fact]
         public void RemoveTaskTest()
         {
@@ -43,6 +44,7 @@ namespace Lab2Test
             repository.AddTask(TaskCreate(1));
             Assert.Equal(1, repository.RemoveTask(1));
         }
+
         [Fact]
         public void UpdateTaskTest()
         {

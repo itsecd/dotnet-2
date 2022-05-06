@@ -11,14 +11,15 @@ namespace Lab2Test
         {
             var tag = new Tags
             {
-                TagId = 4,
+                TagId = 2,
                 Name = "for boss",
                 Color = 3
             };
             var tagRepository = new TagRepository();
-            Assert.Equal(4, tagRepository.AddTag(tag));
-            tagRepository.RemoveTag(4);
+            Assert.Equal(2, tagRepository.AddTag(tag));
+            tagRepository.RemoveTag(2);
         }
+
         [Fact]
         public void RemoveTagTest()
         {
@@ -32,6 +33,7 @@ namespace Lab2Test
             repository.AddTag(tag);
             Assert.Equal(2, repository.RemoveTag(2));
         }
+
         [Fact]
         public void UpdateTagTest()
         {

@@ -8,11 +8,11 @@ namespace Lab2
 {
     public class TimeredHostedService : IHostedService, IDisposable
     {
-        private Timer _timer = null!;
+        private Timer _timer;
 
-        private IExecutorRepository _executorRepository;
-        private ITagRepository _tagRepository;
-        private ITaskRepository _taskRepository;
+        private readonly IExecutorRepository _executorRepository;
+        private readonly ITagRepository _tagRepository;
+        private readonly ITaskRepository _taskRepository;
 
         public TimeredHostedService(IExecutorRepository executorRepository,
             ITagRepository tagRepository,
@@ -27,11 +27,10 @@ namespace Lab2
         {
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
                 TimeSpan.FromSeconds(5));
-
             return Task.CompletedTask;
         }
 
-        private void DoWork(object? state)
+        private void DoWork(object state)
         {
             _executorRepository.WriteToFile();
             _tagRepository.WriteToFile();
@@ -41,7 +40,6 @@ namespace Lab2
         public Task StopAsync(CancellationToken stoppingToken)
         {
             _timer?.Change(Timeout.Infinite, 0);
-
             return Task.CompletedTask;
         }
 
