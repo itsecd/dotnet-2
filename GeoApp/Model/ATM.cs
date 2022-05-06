@@ -4,10 +4,8 @@ namespace GeoApp.Model
 {
     public class Coords
     {
-        public double x { get; set; }
-        public double y { get; set; }
-
-        public Coords() { }
+        public double X { get; set; }
+        public double Y { get; set; }
     }
 
     public class ATM

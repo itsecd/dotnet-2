@@ -11,48 +11,44 @@ namespace GeoApp.Repository
 
         private List<ATM> _ATMs;
 
-        public ATM InsertATM(ATM ATM)
+        public ATM InsertATM(ATM atmToInsert)
         {
             ReadFromFile();
-            foreach (ATM atm in _ATMs)
-            {
-                if (ATM.Id == atm.Id)
-                    return null;
-            }
-            _ATMs.Add(ATM);
+            var atm = _ATMs.Find(atm => atm.Id == atmToInsert.Id);
+            if (atm != null)
+                return null;
+            _ATMs.Add(atmToInsert);
             WriteToFile();
-            return ATM;
+            return atmToInsert;
         }
 
         public ATM GetATMById(string id)
         {
             ReadFromFile();
-            foreach (ATM ATM in _ATMs)
-            {
-                if (ATM.Id == id)
-                    return ATM;
-            }
+            var atm = _ATMs.Find(atm => atm.Id == id);
+            if (atm != null)
+                return atm;
             return null;
         }
 
         public ATM DeleteATMById(string id)
         {
             ReadFromFile();
-            var DeletedATM = _ATMs.Find(ATM => ATM.Id == id);
-            _ATMs.RemoveAll(ATM => ATM.Id == id);
+            var deletedATM = _ATMs.Find(atm => atm.Id == id);
+            _ATMs.RemoveAll(atm => atm.Id == id);
             WriteToFile();
-            return DeletedATM;
+            return deletedATM;
         }
 
         public ATM ChangeBalanceById(string id, int balance)
         {
             ReadFromFile();
-            var tmp = GetATMById(id);
-            if (tmp != null)
+            var atm = GetATMById(id);
+            if (atm != null)
             {
-                tmp.Balance = balance;
+                atm.Balance = balance;
                 WriteToFile();
-                return tmp;
+                return atm;
             }
             return null;            
         }

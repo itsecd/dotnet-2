@@ -11,25 +11,25 @@ namespace GeoApp.Controllers
     [ApiController]
     public class ATMController : ControllerBase
     {
-        private readonly IATMRepository _ATMRepository;
+        private readonly IATMRepository _atmRepository;
 
         public ATMController(IATMRepository ATMrepository)
         {
-            _ATMRepository = ATMrepository;
+            _atmRepository = ATMrepository;
         }
 
         // GET: api/<ATMController>
         [HttpGet]
         public IEnumerable<ATM> Get()
         {
-            return _ATMRepository.GetAllATMs();
+            return _atmRepository.GetAllATMs();
         }
 
         // GET api/<ATMController>/5
         [HttpGet("{id}")]
         public ActionResult<ATM> Get(string id)
         {
-            var tmp = _ATMRepository.GetATMById(id);
+            var tmp = _atmRepository.GetATMById(id);
             if (tmp != null)
             {
                 return tmp;
@@ -41,7 +41,7 @@ namespace GeoApp.Controllers
         [HttpPost]
         public ActionResult<ATM> Post([FromBody] ATM ATM)
         {
-            if (_ATMRepository.InsertATM(ATM) != null)
+            if (_atmRepository.InsertATM(ATM) != null)
                 return ATM;
             return Conflict();
         }
@@ -50,7 +50,7 @@ namespace GeoApp.Controllers
         [HttpPut("{id}")]
         public ActionResult<ATM> Put(string id, [FromBody] int balance)
         {
-            var tmp = _ATMRepository.ChangeBalanceById(id, balance);
+            var tmp = _atmRepository.ChangeBalanceById(id, balance);
             if (tmp != null)
                 return tmp;
             return NotFound();
@@ -60,7 +60,7 @@ namespace GeoApp.Controllers
         [HttpDelete("{id}")]
         public ActionResult<ATM> Delete(string id)
         {
-            var tmp = _ATMRepository.DeleteATMById(id);
+            var tmp = _atmRepository.DeleteATMById(id);
             if (tmp != null)
                 return tmp;
             return NotFound();
