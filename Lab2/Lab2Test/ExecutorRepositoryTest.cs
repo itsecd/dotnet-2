@@ -13,13 +13,13 @@ namespace Lab2Test
         {
             var executor = new Executor
             {
-                ExecutorId = 1,
+                ExecutorId = 4,
                 Name = "Pavel",
                 Surname = "Pavlov"
             };
             ExecutorRepository executorRepository = new();
-            Assert.Equal(1, executorRepository.AddExecutor(executor));
-            executorRepository.RemoveExecutor(1);
+            Assert.Equal(4, executorRepository.AddExecutor(executor));
+            executorRepository.RemoveExecutor(4);
         }
 
         [Fact]
@@ -27,13 +27,13 @@ namespace Lab2Test
         {
             var executor = new Executor
             {
-                ExecutorId = 4,
+                ExecutorId = 3,
                 Name = "Pavel",
                 Surname = "Pavlov"
             };
             ExecutorRepository repository = new();
             repository.AddExecutor(executor);
-            Assert.Equal(4, repository.RemoveExecutor(4));
+            Assert.Equal(3, repository.RemoveExecutor(3));
         }
 
         [Fact]
@@ -41,15 +41,15 @@ namespace Lab2Test
         {
             var executor = new Executor
             {
-                ExecutorId = 5,
+                ExecutorId = 9,
                 Name = "Sergey",
                 Surname = "Sergeev"
             };
 
             ExecutorRepository repository = new();
             repository.AddExecutor(executor);
-            Assert.Equal(5, repository.UpdateExecutor(5, executor));
-            repository.RemoveExecutor(5);
+            Assert.Equal(9, repository.UpdateExecutor(9, executor));
+            repository.RemoveExecutor(9);
         }
     }
 }

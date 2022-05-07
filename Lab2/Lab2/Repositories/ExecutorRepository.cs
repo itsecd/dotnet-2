@@ -69,7 +69,6 @@ namespace Lab2.Repositories
         ///<returns>Идентификатор исполнителя задачи</returns>
         public int AddExecutor(Executor executor)
         {
-            var id = executor.ExecutorId;
             if (executor.ExecutorId == default)
             {
                 if (_executors.Count == 0)
@@ -83,13 +82,7 @@ namespace Lab2.Repositories
                     _executors.Add(executor);
                 }
             }
-            else
-            {
-                var maxId = _executors.Max(t => t.ExecutorId);
-                executor.ExecutorId = maxId + 1;
-                _executors.Add(executor);
-            };
-            return id;
+            return executor.ExecutorId;
         }
 
         /// <summary>

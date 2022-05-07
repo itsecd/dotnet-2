@@ -64,29 +64,22 @@ namespace Lab2.Repositories
         /// </summary>
         /// <param name="task">Задача</param>
         ///<returns>Идентификатор задачи</returns>
-        public int AddTask(Task tasks)
+        public int AddTask(Task task)
         {
-            var id = tasks.TaskId;
-            if (tasks.TaskId == default)
+            if (task.TaskId == default)
             {
                 if (_tasks.Count == 0)
                 {
-                    tasks.TaskId = 1;
-                    _tasks.Add(tasks);
+                    task.TaskId = 1;
+                    _tasks.Add(task);
                 }
                 else
                 {
-                    tasks.TaskId = _tasks.Max(t => t.TaskId) + 1;
-                    _tasks.Add(tasks);
+                    task.TaskId = _tasks.Max(t => t.TaskId) + 1;
+                    _tasks.Add(task);
                 }
             }
-            else
-            {
-                var maxId = _tasks.Max(t => t.TaskId);
-                tasks.TaskId = maxId + 1;
-                _tasks.Add(tasks);
-            }
-            return id;
+            return task.TaskId;
         }
 
         /// <summary>

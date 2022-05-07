@@ -62,31 +62,24 @@ namespace Lab2.Repositories
         /// <summary>
         /// Мeтод добавления тэга 
         /// </summary>
-        /// <param name="tags">Тэг</param>
+        /// <param name="tag">Тэг</param>
         ///<returns>Идентификатор тэг</returns>
-        public int AddTag(Tags tags)
+        public int AddTag(Tags tag)
         {
-            var id = tags.TagId;
-            if (tags.TagId == default)
+            if (tag.TagId == default)
             {
                 if (_tags.Count == 0)
                 {
-                    tags.TagId = 1;
-                    _tags.Add(tags);
+                    tag.TagId = 1;
+                    _tags.Add(tag);
                 }
                 else
                 {
-                    tags.TagId = _tags.Max(t => t.TagId) + 1;
-                    _tags.Add(tags);
+                    tag.TagId = _tags.Max(t => t.TagId) + 1;
+                    _tags.Add(tag);
                 }
             }
-            else
-            {
-                var maxId = _tags.Max(t => t.TagId);
-                tags.TagId = maxId + 1;
-                _tags.Add(tags);
-            }
-            return id;
+            return tag.TagId;
         }
 
         /// <summary>

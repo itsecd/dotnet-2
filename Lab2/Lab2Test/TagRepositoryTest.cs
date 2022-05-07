@@ -11,13 +11,13 @@ namespace Lab2Test
         {
             var tag = new Tags
             {
-                TagId = 2,
+                TagId = 40,
                 Name = "for boss",
                 Color = 3
             };
             var tagRepository = new TagRepository();
-            Assert.Equal(2, tagRepository.AddTag(tag));
-            tagRepository.RemoveTag(2);
+            Assert.Equal(40, tagRepository.AddTag(tag));
+            tagRepository.RemoveTag(40);
         }
 
         [Fact]
@@ -25,13 +25,13 @@ namespace Lab2Test
         {
             var tag = new Tags
             {
-                TagId = 2,
+                TagId = 4,
                 Name = "for boss",
                 Color = 3
             };
             TagRepository repository = new();
             repository.AddTag(tag);
-            Assert.Equal(2, repository.RemoveTag(2));
+            Assert.Equal(4, repository.RemoveTag(4));
         }
 
         [Fact]
@@ -39,15 +39,15 @@ namespace Lab2Test
         {
             var tag = new Tags
             {
-                TagId = 2,
+                TagId = 8,
                 Name = "next",
                 Color = 3
             };
 
             TagRepository repository = new();
             repository.AddTag(tag);
-            Assert.Equal(2, repository.UpdateTag(2, tag));
-            repository.RemoveTag(2);
+            Assert.Equal(8, repository.UpdateTag(8, tag));
+            repository.RemoveTag(8);
         }
     }
 }

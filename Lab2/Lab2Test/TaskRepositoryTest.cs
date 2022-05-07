@@ -33,25 +33,25 @@ namespace Lab2Test
         public void AddTaskTest()
         {
             TaskRepository repository = new();
-            Assert.Equal(5, repository.AddTask(TaskCreate(5)));
-            repository.RemoveTask(5);
+            Assert.Equal(15, repository.AddTask(TaskCreate(15)));
+            repository.RemoveTask(15);
         }
 
         [Fact]
         public void RemoveTaskTest()
         {
             TaskRepository repository = new();
-            repository.AddTask(TaskCreate(1));
-            Assert.Equal(1, repository.RemoveTask(1));
+            repository.AddTask(TaskCreate(5));
+            Assert.Equal(5, repository.RemoveTask(5));
         }
 
         [Fact]
         public void UpdateTaskTest()
         {
             TaskRepository repository = new();
-            repository.AddTask(TaskCreate(1));
-            Assert.Equal(1, repository.UpdateTask(1, TaskCreate(1)));
-            repository.RemoveTask(1);
+            repository.AddTask(TaskCreate(17));
+            Assert.Equal(17, repository.UpdateTask(17, TaskCreate(17)));
+            repository.RemoveTask(17);
         }
 
     }
