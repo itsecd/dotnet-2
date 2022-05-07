@@ -1,5 +1,6 @@
 ﻿using Lab2.Models;
 using Lab2.Repositories;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -29,12 +30,58 @@ namespace Lab2Test
             return task;
         }
 
+        private Task TaskCreate()
+        {
+            var executor = new Executor
+            {
+                ExecutorId = 1,
+                Name = "Valera",
+                Surname = "Koshkin"
+            };
+            var firstTagId = 1;
+
+            Task task = new Task
+            {
+                Name = "Monday work",
+                Description = "for sale to intermediaries",
+                TaskState = false,
+                ExecutorId = executor.ExecutorId,
+                TagsId = new List<int>() { firstTagId }
+            };
+            return task;
+        }
+
+        [Fact]
+        public void AddTaskWithoutIdTest()
+        {
+            TaskRepository taskRepository = new();
+            if (taskRepository.GetTasks().Count == 0)
+            {
+                TaskCreate().TaskId = 1;
+                Assert.Equal(1, taskRepository.AddTask(TaskCreate()));
+                taskRepository.RemoveTask(1);
+            }
+            else
+            {
+                int count = taskRepository.GetTasks().Count;
+                Assert.Equal(count + 1, taskRepository.AddTask(TaskCreate()));
+                taskRepository.RemoveTask(count + 1);
+            }
+        }
+
         [Fact]
         public void AddTaskTest()
         {
-            TaskRepository repository = new();
-            Assert.Equal(15, repository.AddTask(TaskCreate(15)));
-            repository.RemoveTask(15);
+            TaskRepository taskRepository = new();
+            if (taskRepository.GetTasks().FindIndex(t => t.TaskId == 17) == -1)
+            {
+                Assert.Equal(17, taskRepository.AddTask(TaskCreate(17)));
+                taskRepository.RemoveTask(17);
+            }
+            else
+            {
+                throw new Exception("This ID already exists");
+            }
         }
 
         [Fact]
@@ -44,15 +91,5 @@ namespace Lab2Test
             repository.AddTask(TaskCreate(5));
             Assert.Equal(5, repository.RemoveTask(5));
         }
-
-        [Fact]
-        public void UpdateTaskTest()
-        {
-            TaskRepository repository = new();
-            repository.AddTask(TaskCreate(17));
-            Assert.Equal(17, repository.UpdateTask(17, TaskCreate(17)));
-            repository.RemoveTask(17);
-        }
-
     }
 }

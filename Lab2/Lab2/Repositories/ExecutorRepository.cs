@@ -109,8 +109,8 @@ namespace Lab2.Repositories
         /// <returns>Идентификатор исполнителя</returns>
         public int RemoveExecutor(int id)
         {
-            var DeletedExecutor = Get(id);
-            _executors.Remove(DeletedExecutor);
+            var deletedExecutor = Get(id);
+            _executors.Remove(deletedExecutor);
             return id;
         }
 

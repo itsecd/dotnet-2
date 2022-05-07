@@ -104,8 +104,8 @@ namespace Lab2.Repositories
         /// </summary>
         public int RemoveTag(int id)
         {
-            var DeletedTag = Get(id);
-            _tags.Remove(DeletedTag);
+            var deletedTag = Get(id);
+            _tags.Remove(deletedTag);
             return id;
         }
 

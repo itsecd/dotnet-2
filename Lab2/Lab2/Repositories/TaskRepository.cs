@@ -105,8 +105,8 @@ namespace Lab2.Repositories
         /// <returns>Идентификатор задачи</returns>
         public int RemoveTask(int id)
         {
-            var DeletedTask = Get(id);
-            _tasks.Remove(DeletedTask);
+            var deletedTask = Get(id);
+            _tasks.Remove(deletedTask);
             return id;
         }
 

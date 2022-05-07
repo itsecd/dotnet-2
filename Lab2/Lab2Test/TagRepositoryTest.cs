@@ -1,23 +1,56 @@
 ﻿using Lab2.Models;
 using Lab2.Repositories;
 using Xunit;
+using System.Linq;
+using System;
 
 namespace Lab2Test
 {
     public class TagRepositoryTest
     {
         [Fact]
+        public void AddTagWithoutTest()
+        {
+            TagRepository tagRepository = new ();
+            var tag = new Tags
+            {
+                Name = "for boss",
+                Color = 3
+            };
+            if (tagRepository.GetTags().Count == 0)
+            {
+                tag.TagId = 1;
+                Assert.Equal(1, tagRepository.AddTag(tag));
+                tagRepository.RemoveTag(1);
+            }
+            else
+            {
+                int count = tagRepository.GetTags().Count;
+                Assert.Equal(count+1, tagRepository.AddTag(tag));
+                tagRepository.RemoveTag(count + 1);
+            }
+
+        }
+
+        [Fact]
         public void AddTagTest()
         {
             var tag = new Tags
             {
-                TagId = 40,
+                TagId = 10,
                 Name = "for boss",
                 Color = 3
             };
             var tagRepository = new TagRepository();
-            Assert.Equal(40, tagRepository.AddTag(tag));
-            tagRepository.RemoveTag(40);
+            if(tagRepository.GetTags().FindIndex(t => t.TagId == 10) == -1)
+            {
+                Assert.Equal(10, tagRepository.AddTag(tag));
+                tagRepository.RemoveTag(10);
+            }
+            else
+            {
+                throw new Exception("This ID already exists");
+            }
         }
 
         [Fact]
@@ -32,22 +65,6 @@ namespace Lab2Test
             TagRepository repository = new();
             repository.AddTag(tag);
             Assert.Equal(4, repository.RemoveTag(4));
-        }
-
-        [Fact]
-        public void UpdateTagTest()
-        {
-            var tag = new Tags
-            {
-                TagId = 8,
-                Name = "next",
-                Color = 3
-            };
-
-            TagRepository repository = new();
-            repository.AddTag(tag);
-            Assert.Equal(8, repository.UpdateTag(8, tag));
-            repository.RemoveTag(8);
         }
     }
 }
