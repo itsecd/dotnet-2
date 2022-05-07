@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using Lab2.Exeptions;
 using Lab2.Model;
 using Microsoft.Extensions.Configuration;
 
@@ -40,15 +41,34 @@ namespace Lab2.Repository
         }
         public void AddCustomer(Customer customer)
         {
+            if (_customers.Count == 0)
+            {
+                customer.Id = 1;
+            }
+            else
+            {
+                customer.Id = _customers.Max(custom => custom.Id) + 1;
+            }
             _customers.Add(customer);           
         }
-        public void ReplaceCustomer(int id, Customer customer)
+        public int ReplaceCustomer(int id, Customer customer)
         {
+            if (id < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
             var customerIndex = _customers.FindIndex(customer => customer.Id == id);
             if (customerIndex > 0)
             {
-                _customers[customerIndex] = customer;
+                Customer newCustomer = _customers[customerIndex];
+                newCustomer.FullName = customer.FullName;
+                newCustomer.PhoneNumber = customer.PhoneNumber;
             }
+            else
+            {
+                throw new NotFoundException();
+            }
+            return id;
         }
         public List<Customer> GetAllCustomers()
         {
@@ -56,13 +76,30 @@ namespace Lab2.Repository
         }
         public Customer GetCustomer(int id)
         {
-            Customer customer =  _customers.Where(customer => customer.Id == id).Single();
-            return customer;
+            if( id < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            IEnumerable<Customer> customers =  _customers.Where(customer => customer.Id == id);
+            if(!customers.Any())
+            {
+                throw new NotFoundException();
+            }
+            return customers.Single();
         }
-        public void DeleteCustomer(int id)
+        public int DeleteCustomer(int id)
         {
-            _customers.Remove(_customers.Single(customer => customer.Id == id));
-
+            if (id < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            Customer customer = GetCustomer(id);
+            if(customer == null)
+            {
+                throw new NotFoundException();
+            }
+            _customers.Remove(customer);
+            return id;
         }
         public void DeleteAllCustomers()
         {

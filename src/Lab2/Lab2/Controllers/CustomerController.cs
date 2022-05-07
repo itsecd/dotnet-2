@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using Lab2.Exeptions;
 using Lab2.Model;
 using Lab2.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
 namespace Lab2.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class CustomerController : ControllerBase
@@ -16,44 +16,81 @@ namespace Lab2.Controllers
         {
             _repository = repository;
         }
-        // GET: api/<CustomerController>
         [HttpGet]
-        public  IEnumerable<Customer> GetAllAsync() 
+        public IEnumerable<Customer> GetAll() 
         {
             return _repository.GetAllCustomers();
         }
-        // GET api/<CustomerController>/
         [HttpGet("{id}")]
-        public Customer GetAsync(int id) 
+        public ActionResult<Customer> Get(int id) 
         {
-            return _repository.GetCustomer(id);
+            try
+            {
+                return _repository.GetCustomer(id);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
+           
         }
-
-        // POST api/<CustomerController>
         [HttpPost]
         public void Post([FromBody] Customer customer) 
         {
              _repository.AddCustomer(customer);
         }
-
-        // PUT api/<CustomerController>/5
-
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Customer customer)
+        public ActionResult<int> Put(int id, [FromBody] Customer customer)
         {
-            _repository.ReplaceCustomer(id, customer);
+            try
+            {
+               return _repository.ReplaceCustomer(id, customer);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
         }
-        // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id) 
+        public ActionResult<int> Delete(int id) 
         {
-            _repository.DeleteCustomer(id);
+            try
+            {
+                return _repository.DeleteCustomer(id);
+            }
+            catch(NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
         }
         [HttpDelete]
-        public async Task DeleteAll()
+        public void DeleteAll()
         {
             _repository.DeleteAllCustomers();
-
         }
     }
 }

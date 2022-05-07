@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿
 namespace Lab2.Model
 {
     /// <summary>
@@ -22,6 +18,8 @@ namespace Lab2.Model
         /// Customer's phone number
         /// </summary>
         public string PhoneNumber { get; set; }
-       
+        
+
+
     }
 }

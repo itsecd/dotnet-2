@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Lab2.Exeptions;
 using Lab2.Model;
 using Lab2.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Lab2.Controllers
 {
@@ -20,15 +18,31 @@ namespace Lab2.Controllers
         }
         // GET: api/<OrderController>
         [HttpGet]
-        public IEnumerable<Order> Get()
+        public IEnumerable<Order> GetAll()
         {
             return _repository.GetAllOrders();
         }
         // GET api/<OrderController>/
         [HttpGet("{id}")]
-        public Order Get(int id)
+        public ActionResult<Order> Get(int id)
         {
-            return _repository.GetOrder(id);
+            try
+            {
+                return _repository.GetOrder(id);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
+            
         }
         // POST api/<OrderController>
         [HttpPost]
@@ -38,15 +52,46 @@ namespace Lab2.Controllers
         }
         // PUT api/<OrderController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Order order)
+        public ActionResult<int> Put(int id, [FromBody] Order order)
         {
-            _repository.ReplaceOrder(id, order);
+            try
+            {
+               return _repository.ReplaceOrder(id, order);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
+
         }
         // DELETE api/<OrderController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<int> Delete(int id)
         {
-            _repository.DeleteOrder(id);
+            try
+            {
+                return _repository.DeleteOrder(id);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return Problem();
+            }
         }
         [HttpDelete]
         public void DeleteAll()

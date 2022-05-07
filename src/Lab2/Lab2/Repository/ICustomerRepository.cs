@@ -9,11 +9,9 @@ namespace Lab2.Repository
         void AddCustomer(Customer customer);
         Customer GetCustomer(int id);
         void DeleteAllCustomers();
-        void DeleteCustomer(int id);
-        void ReplaceCustomer(int id, Customer customer);
+        int DeleteCustomer(int id);
+        int ReplaceCustomer(int id, Customer customer);
         void ReadFromFileCustomers();
         void WriteToFileCustomers();
-
-
     }
 }
