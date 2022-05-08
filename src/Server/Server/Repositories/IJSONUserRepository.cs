@@ -5,7 +5,7 @@ namespace Server.Repositories
 {
     public interface IJSONUserRepository
     {
-        public List<User> entyties { get; }
+        public List<User> Users { get; }
         public User GetUser(int id);
         public IEnumerable<User> GetUsers();
         public void AddUser(User element);

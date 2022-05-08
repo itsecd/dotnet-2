@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using Server.Model;
 using Server.Repositories;
 using System.Collections.Generic;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Server.Controllers
 {
@@ -15,7 +10,6 @@ namespace Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly IJSONUserRepository _userRepositiry;
-        //private readonly List<Task> tasks;
         public UserController(IJSONUserRepository userRepository) => _userRepositiry = userRepository;
 
         /// <summary>
@@ -29,7 +23,7 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(List<User>), 404)]
         public IEnumerable<User> Get()
         {
-            List<User> users = (List<User>)_userRepositiry.GetUsers();
+            var users = (List<User>)_userRepositiry.GetUsers();
             if(users == null)
             {
                 Response.StatusCode = 404;
@@ -51,7 +45,7 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(User), 404)]
         public User Get(int id)
         {
-            User user = _userRepositiry.GetUser(id);
+            var user = _userRepositiry.GetUser(id);
             if(user == null)
             {
                 Response.StatusCode = 404;
@@ -68,10 +62,11 @@ namespace Server.Controllers
         /// <response code="409">A user with this name already exists</response>
         [HttpPost]
         [ProducesResponseType(typeof(User), 200)]
+        [ProducesResponseType(typeof(User), 404)]
         [ProducesResponseType(typeof(User), 409)]
         public void Post([FromBody] User user)
         {
-            List<User> users = (List<User>)_userRepositiry.GetUsers();
+            var users = (List<User>)_userRepositiry.GetUsers();
             if(users.Exists(us => us.Name == user.Name))
             {
                 Response.StatusCode = 409;
@@ -87,14 +82,14 @@ namespace Server.Controllers
         /// <param name="id"></param>
         /// <response code="200">Success</response>
         /// <response code="404">A user with this ID was not found</response>
+        /// <response code="409">A user with this new name already exist</response>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(User), 200)]
         [ProducesResponseType(typeof(User), 404)]
         [ProducesResponseType(typeof(User), 409)]
         public void Put(int id, [FromBody] User user)
         {
-            User us = _userRepositiry.GetUser(id);
-            if (us == null)
+            if (_userRepositiry.GetUser(id) == null)
             {
                 Response.StatusCode = 404;
                 return;
@@ -137,14 +132,8 @@ namespace Server.Controllers
         /// <response code="404">Users not found</response>
         [HttpDelete]
         [ProducesResponseType(typeof(List<User>), 200)]
-        [ProducesResponseType(typeof(List<User>), 404)]
         public void Delete()
         {
-            if(_userRepositiry.GetUsers() == null)
-            {
-                Response.StatusCode = 404;
-                return;
-            }
             _userRepositiry.DeleteAllUsers();
             Response.StatusCode = 200;
         }

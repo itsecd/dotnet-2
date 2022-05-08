@@ -9,7 +9,6 @@ namespace Server.Services
 {
     public class ReposHostedService : IHostedService, IDisposable
     {
-        private int executionCount = 0;
         private readonly ILogger<ReposHostedService> _logger;
         private readonly IJSONUserRepository _userRepository;
         private readonly IJSONUserEventRepository _userEventRepository;
@@ -25,33 +24,27 @@ namespace Server.Services
 
         public Task StartAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Timed Hosted Service running.");
+            _logger.LogInformation("Repos Hosted Service running.");
             _userEventRepository.LoadData();
             _userRepository.LoadData();
-            _timer = new Timer(DoWork, null, TimeSpan.Zero,
-            TimeSpan.FromSeconds(10));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
 
             return Task.CompletedTask;
         }
         private void DoWork(object state)
         {
-            var count = Interlocked.Increment(ref executionCount);
             _userEventRepository.SaveData();
             _userRepository.SaveData();
-            _logger.LogInformation(
-            "Timed Hosted Service is working. Count: {Count}", count);
+            _logger.LogInformation("Repos Hosted Service is working.");
         }
         public Task StopAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Timed Hosted Service is stopping.");
+            _logger.LogInformation("Repos Hosted Service is stopping.");
             _timer?.Change(Timeout.Infinite, 0);
             _userEventRepository.SaveData();
             _userRepository.SaveData();
             return Task.CompletedTask;
         }
-        public void Dispose()
-        {
-            _timer?.Dispose();
-        }
+        public void Dispose() => _timer?.Dispose();
     }
 }

@@ -5,7 +5,7 @@ namespace Server.Repositories
 {
     public interface IJSONUserEventRepository
     {
-        public List<UserEvent> entyties { get; }
+        public List<UserEvent> UserEvents { get; }
         public UserEvent GetUserEvent(int id);
         public IEnumerable<UserEvent> GetUserEvents();
         public void AddUserEvent(UserEvent element);
