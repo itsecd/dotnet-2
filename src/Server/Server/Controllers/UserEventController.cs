@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Server.Exceptions;
 using Server.Model;
 using Server.Repositories;
 using System.Collections.Generic;
@@ -26,14 +27,17 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(List<UserEvent>), 404)]
         public IEnumerable<UserEvent> Get()
         {
-            List<UserEvent> userEvents = (List<UserEvent>)_userEventRepository.GetUserEvents();
-            if (userEvents == null)
+            try
+            {
+                var userEvents = _userEventRepository.GetUserEvents();
+                Response.StatusCode = 200;
+                return userEvents;
+            }
+            catch (NotFoundException)
             {
                 Response.StatusCode = 404;
                 return null;
             }
-            Response.StatusCode = 200;
-            return userEvents;
         }
 
         /// <summary>
@@ -48,13 +52,17 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(UserEvent), 404)]
         public UserEvent Get(int id)
         {
-            UserEvent userEvent = _userEventRepository.GetUserEvent(id);
-            if (userEvent == null)
+            try
+            {
+                var userEvent = _userEventRepository.GetUserEvent(id);
+                Response.StatusCode = 200;
+                return userEvent;
+            }
+            catch (NotFoundException)
             {
                 Response.StatusCode = 404;
+                return null;
             }
-            Response.StatusCode = 200;
-            return userEvent;
         }
 
         /// <summary>
@@ -62,20 +70,28 @@ namespace Server.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <response code="200">Success</response>
+        /// <responce code="404">User events not found</responce>
         /// <response code="409">This event already exists</response>
         [HttpPost]
         [ProducesResponseType(typeof(UserEvent), 200)]
+        [ProducesResponseType(typeof(UserEvent), 404)]
         [ProducesResponseType(typeof(UserEvent), 409)]
         public void Post([FromBody] UserEvent userEvent)
         {
-            List<UserEvent> userEvents = (List<UserEvent>)_userEventRepository.GetUserEvents();
-            if (userEvents.Contains(userEvent))
+            try
+            {
+                _userEventRepository.AddUserEvent(userEvent);
+                Response.StatusCode = 200;
+            }
+            catch (NotFoundException)
+            {
+                Response.StatusCode = 404;
+            }
+            catch (AlreadyExistException)
             {
                 Response.StatusCode = 409;
-                return;
             }
-            _userEventRepository.AddUserEvent(userEvent);
-            Response.StatusCode = 200;
+            
         }
 
         /// <summary>
@@ -90,21 +106,20 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(UserEvent), 409)]
         public void Put(int id, [FromBody] UserEvent userEvent)
         {
-            _userEventRepository.UpdateUserEvent(id, userEvent);
-            UserEvent uEvent = _userEventRepository.GetUserEvent(id);
-            if (uEvent == null)
+            try
+            {
+                _userEventRepository.UpdateUserEvent(id, userEvent);
+                Response.StatusCode = 200;
+            }
+            catch (NotFoundException)
             {
                 Response.StatusCode = 404;
-                return;
             }
-            List<UserEvent> userEvents = (List<UserEvent>)_userEventRepository.GetUserEvents();
-            if (userEvents.Where(uEvnt => uEvnt.Equals(userEvent)).Count() > 1)
+            catch (AlreadyExistException)
             {
                 Response.StatusCode = 409;
-                return;
             }
-            _userEventRepository.UpdateUserEvent(id, userEvent);
-            Response.StatusCode = 200;
+            
         }
 
         /// <summary>
@@ -118,14 +133,15 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(UserEvent), 404)]
         public void Delete(int id)
         {
-           
-            if (_userEventRepository.GetUserEvent(id) == null)
+            try           
+            {
+                _userEventRepository.DeleteUserEvent(id);
+                Response.StatusCode = 200;
+            }
+            catch (NotFoundException)
             {
                 Response.StatusCode = 404;
-                return;
             }
-            _userEventRepository.DeleteUserEvent(id);
-            Response.StatusCode = 200;
         }
 
         /// <summary>
@@ -139,13 +155,16 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(List<UserEvent>), 404)]
         public void Delete()
         {
-            if (_userEventRepository.GetUserEvents() == null)
+            try
+            {
+                _userEventRepository.DeleteAllUserEvents();
+                Response.StatusCode = 200;
+            }
+            catch (NotFoundException)
             {
                 Response.StatusCode = 404;
-                return;
             }
-            _userEventRepository.DeleteAllUserEvents();
-            Response.StatusCode = 200;
+            
         }
     }
 }

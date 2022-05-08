@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Server.Exceptions;
 using Server.Model;
 using System.Collections.Generic;
 using System.IO;
@@ -16,28 +17,78 @@ namespace Server.Repositories
         {
             _storageFileName = configuration.GetSection("Files").Get<FileConfiguration>().FileOfEvents;
         }
+
         public void AddUserEvent(UserEvent userEvent)
         {
+            if (UserEvents is null)
+            {
+                throw new NotFoundException();
+            }
+            if(UserEvents.Exists(usrEvnt => usrEvnt.Equals(userEvent)))
+            {
+                throw new AlreadyExistException();
+            }
+            userEvent.Id = UserEvents.Count == 0 ? 1 : UserEvents.Max(evnt => evnt.Id) + 1;
             UserEvents.Add(userEvent);
-            userEvent.Id = UserEvents.Max(evnt => evnt.Id) + 1;
         }
 
         public void DeleteUserEvent(int id)
         {
+            if (!IsExist(id))
+            {
+                throw new NotFoundException();
+            }
             UserEvents.Remove(UserEvents.Single(userEvent => userEvent.Id == id));
         }
 
         public void DeleteAllUserEvents()
         {
+            if (UserEvents is null)
+            {
+                throw new NotFoundException();
+            }
             UserEvents.Clear();
         }
+
         public IEnumerable<UserEvent> GetUserEvents()
         {
+            if (UserEvents is null)
+            {
+                throw new NotFoundException();
+            }
             return UserEvents;
         }
+
         public UserEvent GetUserEvent(int id)
         {
-            return UserEvents.Exists(userEvent => userEvent.Id == id) ? UserEvents.Single(userEvent => userEvent.Id == id) : null;
+            if (!IsExist(id))
+            {
+                throw new NotFoundException();
+            }
+            return UserEvents.Single(userEvent => userEvent.Id == id);
+        }
+
+        public void UpdateUserEvent(int id, UserEvent userEvent)
+        {
+            if (!IsExist(id))
+            {
+                throw new NotFoundException();
+            }
+            if (UserEvents.Where(usrEvnt => usrEvnt.Equals(userEvent)).Count() > 1)
+            {
+                throw new AlreadyExistException();
+            }
+            var usrEvntFromRepo = UserEvents.Single(us => us.Id == id);
+            usrEvntFromRepo.EventName = userEvent.EventName;
+            usrEvntFromRepo.User = new User()
+            {
+                Id = userEvent.User.Id,
+                Name = userEvent.User.Name,
+                ChatId = userEvent.User.ChatId,
+                Toggle = userEvent.User.Toggle,
+            };
+            usrEvntFromRepo.DateNTime = userEvent.DateNTime;
+            usrEvntFromRepo.EventFrequency = userEvent.EventFrequency;
 
         }
 
@@ -60,17 +111,13 @@ namespace Server.Repositories
             fileWriter.Write(jsonString);
         }
 
-        public void UpdateUserEvent(int id, UserEvent uEvent)
+        private bool IsExist(int id)
         {
-            if (UserEvents.Exists(uEvnt => uEvent.Id == id))
+            if (!UserEvents.Exists(user => user.Id == id) || UserEvents is null)
             {
-                var userEvent = UserEvents.Single(us => us.Id == id);
-                userEvent.User = uEvent.User;
-                userEvent.EventName = uEvent.EventName;
-                userEvent.DateNTime = uEvent.DateNTime;
-                userEvent.EventFrequency = uEvent.EventFrequency;
-                SaveData();
+                return false;
             }
+            return true;
         }
     }
 }

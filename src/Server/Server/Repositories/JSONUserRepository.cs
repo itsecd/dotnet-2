@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Server.Exceptions;
 using Server.Model;
 using System.Collections.Generic;
 using System.IO;
@@ -18,26 +19,52 @@ namespace Server.Repositories
         }
         public void AddUser(User user)
         {
-            user.Id = Users.Max(us => us.Id) + 1;
+            if (Users is null)
+            {
+                throw new NotFoundException();
+            }
+            if(Users.Exists(usr => usr.Equals(user)))
+            {
+                throw new AlreadyExistException();
+            }
+            user.Id = Users.Count == 0 ? 1 : Users.Max(evnt => evnt.Id) + 1;
             Users.Add(user);
         }
 
-        public void DeleteUsers(int id)
+        public void DeleteUser(int id)
         {
+            if (!IsExist(id))
+            {
+                throw new NotFoundException();
+            }
             Users.Remove(Users.Single(user => user.Id == id));
         }
 
         public void DeleteAllUsers()
         {
+            if (Users is null)
+            {
+                throw new NotFoundException();
+            }
             Users.Clear();
         }
+
         public IEnumerable<User> GetUsers()
         {
+            if (Users is null)
+            {
+                throw new NotFoundException();
+            }
             return Users;
         }
+
         public User GetUser(int id)
         {
-            return Users.Exists(user => user.Id == id) ? Users.Single(user => user.Id == id) : null;
+            if (!IsExist(id))
+            {
+                throw new NotFoundException();
+            }
+            return Users.Single(user => user.Id == id);
         }
 
         public void LoadData()
@@ -61,13 +88,27 @@ namespace Server.Repositories
 
         public void UpdateUser(int id, User user)
         {
-            if (Users.Exists(user => user.Id == id))
+            if (!IsExist(id))
             {
-                var userFromRepo = Users.Single(us => us.Id == id);
-                userFromRepo.Name = user.Name;
-                userFromRepo.ChatId = user.ChatId;
-                userFromRepo.Toggle = user.Toggle;
+                throw new NotFoundException();
             }
+            if (Users.Where(usr => usr.Equals(user)).Count() > 1)
+            {
+                throw new AlreadyExistException();
+            }
+            var userFromRepo = Users.Single(us => us.Id == id);
+            userFromRepo.Name = user.Name;
+            userFromRepo.ChatId = user.ChatId;
+            userFromRepo.Toggle = user.Toggle;
+        }
+
+        private bool IsExist(int id)
+        {
+            if (!Users.Exists(user => user.Id == id) || Users is null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

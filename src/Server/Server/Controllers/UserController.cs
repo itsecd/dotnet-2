@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Server.Exceptions;
 using Server.Model;
 using Server.Repositories;
 using System.Collections.Generic;
@@ -23,14 +24,17 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(List<User>), 404)]
         public IEnumerable<User> Get()
         {
-            var users = (List<User>)_userRepositiry.GetUsers();
-            if(users == null)
+            try
             {
-                Response.StatusCode = 404;
+                var users = _userRepositiry.GetUsers();
+                Response.StatusCode = 200;
+                return users;
+            }
+            catch (NotFoundException)
+            {
+                Response.StatusCode = 200;
                 return null;
             }
-            Response.StatusCode=200;
-            return users;
         }
 
         /// <summary>
@@ -45,13 +49,18 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(User), 404)]
         public User Get(int id)
         {
-            var user = _userRepositiry.GetUser(id);
-            if(user == null)
+            try
+            {
+                User user = _userRepositiry.GetUser(id);
+                Response.StatusCode = 200;
+                return user;
+            }
+            catch (NotFoundException)
             {
                 Response.StatusCode = 404;
+                return null;
             }
-            Response.StatusCode = 200;
-            return user;
+
         }
 
         /// <summary>
@@ -66,14 +75,19 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(User), 409)]
         public void Post([FromBody] User user)
         {
-            var users = (List<User>)_userRepositiry.GetUsers();
-            if(users.Exists(us => us.Name == user.Name))
+            try
+            {
+                _userRepositiry.AddUser(user);
+                Response.StatusCode = 200;
+            }
+            catch(NotFoundException)
+            {
+                Response.StatusCode = 404;
+            }
+            catch (AlreadyExistException)
             {
                 Response.StatusCode = 409;
-                return;
             }
-            _userRepositiry.AddUser(user);
-            Response.StatusCode = 200;
         }
 
         /// <summary>
@@ -89,19 +103,19 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(User), 409)]
         public void Put(int id, [FromBody] User user)
         {
-            if (_userRepositiry.GetUser(id) == null)
+            try
+            {
+                _userRepositiry.UpdateUser(id, user);
+                Response.StatusCode = 200;
+            }
+            catch (NotFoundException)
             {
                 Response.StatusCode = 404;
-                return;
             }
-            List<User> users = (List<User>)_userRepositiry.GetUsers();
-            if(users.Exists(u => u.Name == user.Name && u.Id != id))
+            catch (AlreadyExistException)
             {
                 Response.StatusCode = 409;
-                return;
             }
-            _userRepositiry.UpdateUser(id, user);
-            Response.StatusCode = 200;
         }
 
         /// <summary>
@@ -115,13 +129,15 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(User), 404)]
         public void Delete(int id)
         {
-            if(_userRepositiry.GetUser(id) == null)
+            try
+            {
+                _userRepositiry.DeleteUser(id);
+                Response.StatusCode = 200;
+            }
+            catch (NotFoundException)
             {
                 Response.StatusCode = 404;
-                return;
             }
-            _userRepositiry.DeleteUsers(id);
-            Response.StatusCode = 200;
         }
 
         /// <summary>
@@ -134,8 +150,15 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(List<User>), 200)]
         public void Delete()
         {
-            _userRepositiry.DeleteAllUsers();
-            Response.StatusCode = 200;
+            try
+            {
+                _userRepositiry.DeleteAllUsers();
+                Response.StatusCode = 200;
+            }
+            catch (NotFoundException)
+            {
+                Response.StatusCode = 404;
+            }
         }
     }
 }
