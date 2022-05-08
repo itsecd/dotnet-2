@@ -11,7 +11,7 @@
         {
             if (obj is User user)
             {
-                return user.Name == Name;
+                return user.Name == Name || user.ChatId == ChatId;
             }
             return false;
         }
