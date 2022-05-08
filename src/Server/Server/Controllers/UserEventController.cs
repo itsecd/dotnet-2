@@ -12,9 +12,9 @@ namespace Server.Controllers
     [ApiController]
     public class UserEventController : ControllerBase
     {
-        private readonly IJSONRepository<UserEvent> _userEventRepository;
+        private readonly IJSONUserEventRepository _userEventRepository;
 
-        public UserEventController(IJSONRepository<UserEvent> userEventRepository) => _userEventRepository = userEventRepository;
+        public UserEventController(IJSONUserEventRepository userEventRepository) => _userEventRepository = userEventRepository;
 
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(List<UserEvent>), 404)]
         public IEnumerable<UserEvent> Get()
         {
-            List<UserEvent> userEvents = (List<UserEvent>)_userEventRepository.Get();
+            List<UserEvent> userEvents = (List<UserEvent>)_userEventRepository.GetUserEvents();
             if (userEvents == null)
             {
                 Response.StatusCode = 404;
@@ -50,7 +50,7 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(UserEvent), 404)]
         public UserEvent Get(int id)
         {
-            UserEvent userEvent = _userEventRepository.Get(id);
+            UserEvent userEvent = _userEventRepository.GetUserEvent(id);
             if (userEvent == null)
             {
                 Response.StatusCode = 404;
@@ -70,13 +70,13 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(UserEvent), 409)]
         public void Post([FromBody] UserEvent userEvent)
         {
-            List<UserEvent> userEvents = (List<UserEvent>)_userEventRepository.Get();
+            List<UserEvent> userEvents = (List<UserEvent>)_userEventRepository.GetUserEvents();
             if (userEvents.Contains(userEvent))
             {
                 Response.StatusCode = 409;
                 return;
             }
-            _userEventRepository.Add(userEvent);
+            _userEventRepository.AddUserEvent(userEvent);
             Response.StatusCode = 200;
         }
 
@@ -92,20 +92,20 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(UserEvent), 409)]
         public void Put(int id, [FromBody] UserEvent userEvent)
         {
-            _userEventRepository.Update(id, userEvent);
-            UserEvent uEvent = _userEventRepository.Get(id);
+            _userEventRepository.UpdateUserEvent(id, userEvent);
+            UserEvent uEvent = _userEventRepository.GetUserEvent(id);
             if (uEvent == null)
             {
                 Response.StatusCode = 404;
                 return;
             }
-            List<UserEvent> userEvents = (List<UserEvent>)_userEventRepository.Get();
+            List<UserEvent> userEvents = (List<UserEvent>)_userEventRepository.GetUserEvents();
             if (userEvents.Where(uEvnt => uEvnt.Equals(userEvent)).Count() > 1)
             {
                 Response.StatusCode = 409;
                 return;
             }
-            _userEventRepository.Update(id, userEvent);
+            _userEventRepository.UpdateUserEvent(id, userEvent);
             Response.StatusCode = 200;
         }
 
@@ -121,12 +121,12 @@ namespace Server.Controllers
         public void Delete(int id)
         {
            
-            if (_userEventRepository.Get(id) == null)
+            if (_userEventRepository.GetUserEvent(id) == null)
             {
                 Response.StatusCode = 404;
                 return;
             }
-            _userEventRepository.Delete(id);
+            _userEventRepository.DeleteUserEvent(id);
             Response.StatusCode = 200;
         }
 
@@ -141,12 +141,12 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(List<UserEvent>), 404)]
         public void Delete()
         {
-            if (_userEventRepository.Get() == null)
+            if (_userEventRepository.GetUserEvents() == null)
             {
                 Response.StatusCode = 404;
                 return;
             }
-            _userEventRepository.DeleteAll();
+            _userEventRepository.DeleteAllUserEvents();
             Response.StatusCode = 200;
         }
     }

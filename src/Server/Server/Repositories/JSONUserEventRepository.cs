@@ -7,100 +7,68 @@ using System.Text.Json;
 
 namespace Server.Repositories
 {
-    public class JSONUserEventRepository : IJSONRepository<UserEvent>
+    public class JSONUserEventRepository : IJSONUserEventRepository
     {
         public List<UserEvent> entyties { get; set; } = new();
-        private string _storageFileName;
-        private object _locker = new();
-        
+        private readonly string _storageFileName;
+
         public JSONUserEventRepository(IConfiguration configuration)
         {
             _storageFileName = configuration.GetSection("Files").Get<FileConfiguration>().FileOfEvents;
         }
-        public void Add(UserEvent uEvent)
+        public void AddUserEvent(UserEvent uEvent)
         {
-            lock (_locker)
-            {
-                Load();
-                entyties.Add(uEvent);
-                uEvent.Id = entyties.Max(evnt => evnt.Id) + 1;
-                Save();
-            }
+            entyties.Add(uEvent);
+            uEvent.Id = entyties.Max(evnt => evnt.Id) + 1;
         }
 
-        public void Delete(int id)
+        public void DeleteUserEvent(int id)
         {
-            lock (_locker)
-            {
-                Load();
-                entyties.Remove(entyties.Single(uEvent => uEvent.Id == id));
-                Save();
-            }
+            entyties.Remove(entyties.Single(uEvent => uEvent.Id == id));
         }
 
-        public void DeleteAll()
+        public void DeleteAllUserEvents()
         {
-            lock (_locker)
-            {
-                Load();
-                entyties.Clear();
-                Save();
-            }
+            entyties.Clear();
         }
-        public IEnumerable<UserEvent> Get()
+        public IEnumerable<UserEvent> GetUserEvents()
         {
-            lock (_locker)
-            {
-                Load();
-                return entyties;
-            }
+            return entyties;
         }
-        public UserEvent Get(int id)
+        public UserEvent GetUserEvent(int id)
         {
-            lock (_locker)
-            {
-                Load();
-                return entyties.Exists(userEvent => userEvent.Id == id) ? entyties.Single(userEvent => userEvent.Id == id) : null;
-            }
+            return entyties.Exists(userEvent => userEvent.Id == id) ? entyties.Single(userEvent => userEvent.Id == id) : null;
         }
 
-        public void Load()
+        public void LoadData()
         {
             if (!File.Exists(_storageFileName) || new FileInfo(_storageFileName).Length == 0)
             {
                 entyties = new List<UserEvent>();
                 return;
             }
-            using (var fileReader = new StreamReader(_storageFileName))
-            {
-                string jsonString = fileReader.ReadToEnd();
-                entyties = JsonSerializer.Deserialize<List<UserEvent>>(jsonString);
-            }
+            using var fileReader = new StreamReader(_storageFileName);
+            string jsonString = fileReader.ReadToEnd();
+            entyties = JsonSerializer.Deserialize<List<UserEvent>>(jsonString);
         }
 
-        public void Save()
+        public void SaveData()
         {
             string jsonString = JsonSerializer.Serialize(entyties);
-            using (var fileWriter = new StreamWriter(_storageFileName))
-            {
-                fileWriter.Write(jsonString);
-            }
+            using var fileWriter = new StreamWriter(_storageFileName);
+            fileWriter.Write(jsonString);
         }
 
-        public void Update(int id, UserEvent uEvent)
+        public void UpdateUserEvent(int id, UserEvent uEvent)
         {
-            lock (_locker)
+            if (entyties.Exists(uEvnt => uEvent.Id == id))
             {
-                Load();
-                if (entyties.Exists(uEvnt => uEvent.Id == id))
-                {
-                    UserEvent userEvent = entyties.Single(us => us.Id == id);
-                    userEvent.User = uEvent.User;
-                    userEvent.EventName = uEvent.EventName;
-                    userEvent.DateNTime = uEvent.DateNTime;
-                    userEvent.EventFrequency = uEvent.EventFrequency;
-                    Save();
-                }
+                UserEvent userEvent = entyties.Single(us => us.Id == id);
+                userEvent.User = uEvent.User;
+                userEvent.EventName = uEvent.EventName;
+                userEvent.DateNTime = uEvent.DateNTime;
+                userEvent.EventFrequency = uEvent.EventFrequency;
+                SaveData();
             }
         }
     }

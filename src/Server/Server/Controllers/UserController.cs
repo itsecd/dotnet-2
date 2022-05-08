@@ -14,9 +14,9 @@ namespace Server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IJSONRepository<User> _userRepositiry;
+        private readonly IJSONUserRepository _userRepositiry;
         //private readonly List<Task> tasks;
-        public UserController(IJSONRepository<User> userRepository) => _userRepositiry = userRepository;
+        public UserController(IJSONUserRepository userRepository) => _userRepositiry = userRepository;
 
         /// <summary>
         /// Getting all users
@@ -29,7 +29,7 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(List<User>), 404)]
         public IEnumerable<User> Get()
         {
-            List<User> users = (List<User>)_userRepositiry.Get();
+            List<User> users = (List<User>)_userRepositiry.GetUsers();
             if(users == null)
             {
                 Response.StatusCode = 404;
@@ -51,7 +51,7 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(User), 404)]
         public User Get(int id)
         {
-            User user = _userRepositiry.Get(id);
+            User user = _userRepositiry.GetUser(id);
             if(user == null)
             {
                 Response.StatusCode = 404;
@@ -71,13 +71,13 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(User), 409)]
         public void Post([FromBody] User user)
         {
-            List<User> users = (List<User>)_userRepositiry.Get();
+            List<User> users = (List<User>)_userRepositiry.GetUsers();
             if(users.Exists(us => us.Name == user.Name))
             {
                 Response.StatusCode = 409;
                 return;
             }
-            _userRepositiry.Add(user);
+            _userRepositiry.AddUser(user);
             Response.StatusCode = 200;
         }
 
@@ -93,19 +93,19 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(User), 409)]
         public void Put(int id, [FromBody] User user)
         {
-            User us = _userRepositiry.Get(id);
+            User us = _userRepositiry.GetUser(id);
             if (us == null)
             {
                 Response.StatusCode = 404;
                 return;
             }
-            List<User> users = (List<User>)_userRepositiry.Get();
+            List<User> users = (List<User>)_userRepositiry.GetUsers();
             if(users.Exists(u => u.Name == user.Name && u.Id != id))
             {
                 Response.StatusCode = 409;
                 return;
             }
-            _userRepositiry.Update(id, user);
+            _userRepositiry.UpdateUser(id, user);
             Response.StatusCode = 200;
         }
 
@@ -120,12 +120,12 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(User), 404)]
         public void Delete(int id)
         {
-            if(_userRepositiry.Get(id) == null)
+            if(_userRepositiry.GetUser(id) == null)
             {
                 Response.StatusCode = 404;
                 return;
             }
-            _userRepositiry.Delete(id);
+            _userRepositiry.DeleteUsers(id);
             Response.StatusCode = 200;
         }
 
@@ -140,12 +140,12 @@ namespace Server.Controllers
         [ProducesResponseType(typeof(List<User>), 404)]
         public void Delete()
         {
-            if(_userRepositiry.Get() == null)
+            if(_userRepositiry.GetUsers() == null)
             {
                 Response.StatusCode = 404;
                 return;
             }
-            _userRepositiry.DeleteAll();
+            _userRepositiry.DeleteAllUsers();
             Response.StatusCode = 200;
         }
     }

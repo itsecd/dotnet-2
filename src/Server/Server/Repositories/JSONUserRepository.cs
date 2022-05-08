@@ -7,99 +7,67 @@ using System.Text.Json;
 
 namespace Server.Repositories
 {
-    public class JSONUserRepository : IJSONRepository<User>
+    public class JSONUserRepository : IJSONUserRepository
     {
         public List<User> entyties { get; set; } = new();
-        private string _storageFileName;
-        private object _locker = new();
+        private readonly string _storageFileName;
 
         public JSONUserRepository(IConfiguration configuration)
         {
             _storageFileName = configuration.GetSection("Files").Get<FileConfiguration>().FileOfUsers;
         }
-        public void Add(User user)
+        public void AddUser(User user)
         {
-            lock (_locker)
-            {
-                Load();
-                entyties.Add(user);
-                user.Id = entyties.Max(us => us.Id) + 1;
-                Save();
-            }
+            user.Id = entyties.Max(us => us.Id) + 1;
+            entyties.Add(user);
         }
 
-        public void Delete(int id)
+        public void DeleteUsers(int id)
         {
-            lock (_locker)
-            {
-                Load();
-                entyties.Remove(entyties.Single(user => user.Id == id));
-                Save();
-            }
+            entyties.Remove(entyties.Single(user => user.Id == id));
         }
 
-        public void DeleteAll()
+        public void DeleteAllUsers()
         {
-            lock (_locker)
-            {
-                Load();
-                entyties.Clear();
-                Save();
-            }
+            entyties.Clear();
         }
-        public IEnumerable<User> Get()
+        public IEnumerable<User> GetUsers()
         {
-            lock (_locker)
-            {
-                Load();
-                return entyties;
-            }
+            return entyties;
         }
-        public User Get(int id)
+        public User GetUser(int id)
         {
-            lock (_locker)
-            {
-                Load();
-                return entyties.Exists(user => user.Id == id) ? entyties.Single(user => user.Id == id) : null;
-            }
+            return entyties.Exists(user => user.Id == id) ? entyties.Single(user => user.Id == id) : null;
         }
 
-        public void Load()
+        public void LoadData()
         {
             if (!File.Exists(_storageFileName) || new FileInfo(_storageFileName).Length == 0)
             {
                 entyties = new List<User>();
                 return;
             }
-            using (var reader = new StreamReader(_storageFileName))
-            {
-                string jsonString = reader.ReadToEnd();
-                entyties = JsonSerializer.Deserialize<List<User>>(jsonString);
-            }
+            using var reader = new StreamReader(_storageFileName);
+            string jsonString = reader.ReadToEnd();
+            entyties = JsonSerializer.Deserialize<List<User>>(jsonString);
         }
 
-        public void Save()
+        public void SaveData()
         {
             string jsonString = JsonSerializer.Serialize(entyties);
-            using (var writer = new StreamWriter(_storageFileName))
-            {
-                writer.Write(jsonString);
-            }
+            using var writer = new StreamWriter(_storageFileName);
+            writer.Write(jsonString);
         }
 
-        public void Update(int id, User user)
+        public void UpdateUser(int id, User user)
         {
-            lock (_locker)
+            if (entyties.Exists(user => user.Id == id))
             {
-                Load();
-                if (entyties.Exists(user => user.Id == id))
-                {
-                    User us = entyties.Single(us => us.Id == id);
-                    us.Name = user.Name;
-                    us.ChatId = user.ChatId;
-                    us.Toggle = user.Toggle;
-                    Save();
-                }
+                User us = entyties.Single(us => us.Id == id);
+                us.Name = user.Name;
+                us.ChatId = user.ChatId;
+                us.Toggle = user.Toggle;
+                SaveData();
             }
         }
     }

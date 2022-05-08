@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Server.Model;
 using Server.Repositories;
+using Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +32,10 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IJSONRepository<User>, JSONUserRepository>();
-            services.AddSingleton<IJSONRepository<UserEvent>, JSONUserEventRepository>();
+            services.AddSingleton<IJSONUserRepository, JSONUserRepository>();
+            services.AddSingleton<IJSONUserEventRepository, JSONUserEventRepository>();
+            services.AddHostedService<ReposHostedService>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
