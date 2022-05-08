@@ -24,7 +24,7 @@ namespace TelegramBotServer.Repository
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
 
-            dbContext.Add(newSub);
+            dbContext.Subscribers.Add(newSub);
             dbContext.SaveChanges();
 
             _logger.LogInformation($"Add Subscriber with id {newSub.Id}");
