@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TelegramBotServer.DatabaseContext;
 using TelegramBotServer.Model;
+using TelegramBotServer.Validators;
 
 namespace TelegramBotServer.Repository
 {
@@ -25,6 +26,10 @@ namespace TelegramBotServer.Repository
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
 
+            var validator = new EventValidator(dbContext.Events);
+            if (!validator.Validate(newEvent))
+                throw new ArgumentException("Invalid event");
+
             dbContext.Events.Add(newEvent);
             dbContext.SaveChanges();
 
@@ -37,6 +42,10 @@ namespace TelegramBotServer.Repository
         {
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
+
+            var validator = new EventValidator(dbContext.Events);
+            if (!validator.Validate(newEvent))
+                throw new ArgumentException("Invalid event");
 
             var chEvent = dbContext.Events.FirstOrDefault(e => e.Id == id);
 

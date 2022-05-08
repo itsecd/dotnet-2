@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TelegramBotServer.DatabaseContext;
 using TelegramBotServer.Model;
+using TelegramBotServer.Validators;
 
 namespace TelegramBotServer.Repository
 {
@@ -24,6 +25,10 @@ namespace TelegramBotServer.Repository
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
 
+            var validator = new SubscriberValidator(dbContext.Events);
+            if (!validator.Validate(newSub))
+                throw new ArgumentException("Invalid subscriber");
+
             dbContext.Subscribers.Add(newSub);
             dbContext.SaveChanges();
 
@@ -36,6 +41,10 @@ namespace TelegramBotServer.Repository
         {
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
+
+            var validator = new SubscriberValidator(dbContext.Events);
+            if (!validator.Validate(newSub))
+                throw new ArgumentException("Invalid subscriber");
 
             var chSub = dbContext.Subscribers.FirstOrDefault(s => s.Id == id);
             if (chSub is null)
