@@ -1,85 +1,101 @@
 ﻿using GeoApp.Model;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Xml.Serialization;
 
 namespace GeoApp.Repository
 {
     public class ATMRepository : IATMRepository
     {
-        private const string StorageFileName = "ATMs.xml";
+        private const string XmlStorageFileName = "ATMs.xml";
+        private const string JsonStorageFileName = "atm.geojson";
 
-        private List<ATM> _ATMs;
+        private List<XmlATM> _XmlATMs;
+        private List<JsonATM> _JsonATMs;
 
-        public ATM InsertATM(ATM atmToInsert)
+        //public XmlATM InsertATM(XmlATM atmToInsert)
+        //{
+        //    ReadFromFile();
+        //    var atm = _XmlATMs.Find(atm => atm.Id == atmToInsert.Id);
+        //    if (atm != null)
+        //        return null;
+        //    _XmlATMs.Add(atmToInsert);
+        //    WriteToFile();
+        //    return atmToInsert;
+        //}
+
+        public JsonATM GetATMById(string id)
         {
             ReadFromFile();
-            var atm = _ATMs.Find(atm => atm.Id == atmToInsert.Id);
-            if (atm != null)
-                return null;
-            _ATMs.Add(atmToInsert);
-            WriteToFile();
-            return atmToInsert;
-        }
-
-        public ATM GetATMById(string id)
-        {
-            ReadFromFile();
-            var atm = _ATMs.Find(atm => atm.Id == id);
+            var atm = _JsonATMs.Find(atm => atm.Properties.Id == id);
             if (atm != null)
                 return atm;
             return null;
         }
 
-        public ATM DeleteATMById(string id)
-        {
-            ReadFromFile();
-            var deletedATM = _ATMs.Find(atm => atm.Id == id);
-            _ATMs.RemoveAll(atm => atm.Id == id);
-            WriteToFile();
-            return deletedATM;
-        }
+        //public XmlATM DeleteATMById(string id)
+        //{
+        //    ReadFromFile();
+        //    var deletedATM = _XmlATMs.Find(atm => atm.Id == id);
+        //    _XmlATMs.RemoveAll(atm => atm.Id == id);
+        //    WriteToFile();
+        //    return deletedATM;
+        //}
 
-        public ATM ChangeBalanceById(string id, int balance)
+        public JsonATM ChangeBalanceById(string id, int balance)
         {
             ReadFromFile();
             var atm = GetATMById(id);
             if (atm != null)
             {
-                atm.Balance = balance;
+                atm.Properties.Balance = balance;
+                _XmlATMs.Find(xmlATM => xmlATM.Id == atm.Properties.Id).Balance = balance;
                 WriteToFile();
                 return atm;
             }
             return null;            
         }
 
-        public List<ATM> GetAllATMs()
+        public List<JsonATM> GetAllATMs()
         {
             ReadFromFile();
-            return _ATMs;
+            return _JsonATMs;
         }
 
         private void ReadFromFile()
         {
-            if (_ATMs != null)
+            if (_JsonATMs != null)
                 return;
 
-            if (!File.Exists(StorageFileName))
+            if (!File.Exists(XmlStorageFileName))
+                _XmlATMs = new List<XmlATM>();
+            else
             {
-                _ATMs = new List<ATM>();
+                var xmlSerializer = new XmlSerializer(typeof(List<XmlATM>));
+                using var fileStream = new FileStream(XmlStorageFileName, FileMode.Open);
+                _XmlATMs = (List<XmlATM>)xmlSerializer.Deserialize(fileStream);
+            }
+
+            var stringJsonATMs = File.ReadAllText(JsonStorageFileName);
+            _JsonATMs = JsonSerializer.Deserialize<JsonATMList>(stringJsonATMs).ATMs;
+
+            if (_XmlATMs.Count == 0)
+            {
+                foreach (JsonATM jsonATM in _JsonATMs)
+                    _XmlATMs.Add(new XmlATM { Id = jsonATM.Properties.Id, Balance = jsonATM.Properties.Balance });
                 return;
             }
 
-            var xmlSerializer = new XmlSerializer(typeof(List<ATM>));
-            using var fileStream = new FileStream(StorageFileName, FileMode.Open);
-            _ATMs = (List<ATM>)xmlSerializer.Deserialize(fileStream);
+            foreach (XmlATM xmlATM in _XmlATMs)
+                _JsonATMs.Find(jsonATM => jsonATM.Properties.Id == xmlATM.Id).Properties.Balance = xmlATM.Balance;
         }
 
         private void WriteToFile()
         {
-            var xmlSerializer = new XmlSerializer(typeof(List<ATM>));
-            using var fileStream = new FileStream(StorageFileName, FileMode.Create);
-            xmlSerializer.Serialize(fileStream, _ATMs);
+            var xmlSerializer = new XmlSerializer(typeof(List<XmlATM>));
+            using var fileStream = new FileStream(XmlStorageFileName, FileMode.Create);
+            xmlSerializer.Serialize(fileStream, _XmlATMs);
         }
     }
 }

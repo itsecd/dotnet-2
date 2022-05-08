@@ -6,13 +6,13 @@ namespace GeoApp.Repository
 {
     public interface IATMRepository
     {
-        ATM InsertATM(ATM ATM);
-        ATM GetATMById(string id);
+        // XmlATM InsertATM(XmlATM ATM);
+        JsonATM GetATMById(string id);
 
-        ATM ChangeBalanceById(string id, int balance);
+        JsonATM ChangeBalanceById(string id, int balance);
 
-        ATM DeleteATMById(string id);
+        // XmlATM DeleteATMById(string id);
 
-        List<ATM> GetAllATMs();
+        List<JsonATM> GetAllATMs();
     }
 }

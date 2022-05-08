@@ -12,104 +12,86 @@ namespace GeoApp.Tests
     public class ATMRepositoryTests
     {
         [Fact]
-        public void InsertATM()
-        {
-            var atm = new ATM
-            {
-                Id = "testATM",
-                BankName = "VTB",
-                Balance = 5000,
-                Coords = new Coords { X = 15.025, Y = 9.023 }
-            };
-            ATMRepository repository = new();
-            Assert.Equal(atm, repository.InsertATM(atm));
-            Assert.Null(repository.InsertATM(atm));
-            repository.DeleteATMById("testATM");
-        }
-
-        [Fact]
         public void GetATMById()
         {
-            var atm = new ATM
+            var atm = new JsonATM
             {
-                Id = "testATM",
-                BankName = "VTB",
-                Balance = 5000,
-                Coords = new Coords { X = 15.025, Y = 9.023 }
+                Geometry = new Geometry()
+                {
+                    Coordinates = new List<double> { 50.1214707, 53.1862179 }
+                },
+                Properties = new Properties()
+                {
+                    Id = "646586471",
+                    Operator = "Сбербанк",
+                    Balance = 0
+                }
             };
             ATMRepository repository = new();
-            repository.InsertATM(atm);
-            Assert.Equal(atm, repository.GetATMById("testATM"));
-            repository.DeleteATMById("testATM");
-            Assert.Null(repository.GetATMById("testATM"));
-        }
-
-        [Fact]
-        public void DeleteATMById()
-        {
-            var atm = new ATM
-            {
-                Id = "testATM",
-                BankName = "VTB",
-                Balance = 5000,
-                Coords = new Coords { X = 15.025, Y = 9.023 }
-            };
-            ATMRepository repository = new();
-            repository.InsertATM(atm);
-            Assert.Equal(atm, repository.DeleteATMById("testATM"));
-            Assert.Null(repository.DeleteATMById("testATM"));
+            var returnedATM = repository.GetATMById("646586471");
+            Assert.True(returnedATM.Equals(atm));
+            Assert.Null(repository.GetATMById("randomId"));
         }
 
         [Fact]
         public void ChangeBalanceById()
         {
-            var atm = new ATM
+            var atm = new JsonATM
             {
-                Id = "testATM",
-                BankName = "VTB",
-                Balance = 5000,
-                Coords = new Coords { X = 15.025, Y = 9.023 }
+                Geometry = new Geometry()
+                {
+                    Coordinates = new List<double> { 50.1214707, 53.1862179 }
+                },
+                Properties = new Properties()
+                {
+                    Id = "646586471",
+                    Operator = "Сбербанк",
+                    Balance = 3000,
+                }
             };
             ATMRepository repository = new();
-            repository.InsertATM(atm);
-            atm.Balance = 3000;
-            Assert.Equal(atm, repository.ChangeBalanceById("testATM", 3000));
-            repository.DeleteATMById("testATM");
-            Assert.Null(repository.ChangeBalanceById("testATM", 999));
+            var returnedATM = repository.ChangeBalanceById("646586471", 3000);
+            Assert.True(returnedATM.Equals(atm));
+            Assert.Null(repository.ChangeBalanceById("randomId", 0));
+
+            repository.ChangeBalanceById("646586471", 0);
         }
 
         [Fact]
         public void GetAllATMs()
         {
-            var atm1 = new ATM
+            var atm1 = new JsonATM
             {
-                Id = "testATM1",
-                BankName = "VTB",
-                Balance = 5000,
-                Coords = new Coords { X = 15.025, Y = 9.023 }
+                Geometry = new Geometry()
+                {
+                    Coordinates = new List<double> { 50.1214707, 53.1862179 }
+                },
+                Properties = new Properties()
+                {
+                    Id = "646586471",
+                    Operator = "Сбербанк",
+                    Balance = 0,
+                }
             };
-            var atm2 = new ATM
+            var atm2 = new JsonATM
             {
-                Id = "testATM2",
-                BankName = "VTB",
-                Balance = 5000,
-                Coords = new Coords { X = 15.025, Y = 9.023 }
+                Geometry = new Geometry()
+                {
+                    Coordinates = new List<double> { 50.1178883, 53.1874092 }
+                },
+                Properties = new Properties()
+                {
+                    Id = "904585000",
+                    Operator = "ТрансКредитБанк",
+                    Balance = 0,
+                }
             };
-            var expectedList = new List<ATM>();
             ATMRepository repository = new();
 
-            repository.InsertATM(atm1);
-            expectedList.Add(atm1);
+            Assert.True(repository.GetAllATMs()[1].Equals(atm1));
+            Assert.True(repository.GetAllATMs()[4].Equals(atm2));
 
-            repository.InsertATM(atm2);
-            expectedList.Add(atm2);
-
-            Assert.Equal(expectedList, repository.GetAllATMs());
-            repository.DeleteATMById("testATM1");
-            repository.DeleteATMById("testATM2");
-
-            expectedList.Clear();
-            Assert.Equal(expectedList, repository.GetAllATMs());
+            Assert.Equal(91, repository.GetAllATMs().Count);
         }
     }
 }

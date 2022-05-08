@@ -3,6 +3,8 @@ using GeoApp.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace GeoApp.Controllers
 {
@@ -20,14 +22,14 @@ namespace GeoApp.Controllers
 
         // GET: api/<ATMController>
         [HttpGet]
-        public IEnumerable<ATM> Get()
+        public List<JsonATM> Get()
         {
             return _atmRepository.GetAllATMs();
         }
 
         // GET api/<ATMController>/5
         [HttpGet("{id}")]
-        public ActionResult<ATM> Get(string id)
+        public ActionResult<JsonATM> Get(string id)
         {
             var tmp = _atmRepository.GetATMById(id);
             if (tmp != null)
@@ -38,17 +40,17 @@ namespace GeoApp.Controllers
         }
 
         // POST api/<ATMController>
-        [HttpPost]
-        public ActionResult<ATM> Post([FromBody] ATM ATM)
-        {
-            if (_atmRepository.InsertATM(ATM) != null)
-                return ATM;
-            return Conflict();
-        }
+        //[HttpPost]
+        //public ActionResult<XmlATM> Post([FromBody] XmlATM ATM)
+        //{
+        //    if (_atmRepository.InsertATM(ATM) != null)
+        //        return ATM;
+        //    return Conflict();
+        //}
 
         // PUT api/<ATMController>/5
         [HttpPut("{id}")]
-        public ActionResult<ATM> Put(string id, [FromBody] int balance)
+        public ActionResult<JsonATM> Put(string id, [FromBody] int balance)
         {
             var tmp = _atmRepository.ChangeBalanceById(id, balance);
             if (tmp != null)
@@ -57,13 +59,13 @@ namespace GeoApp.Controllers
         }
 
         //// DELETE api/<ATMController>/5
-        [HttpDelete("{id}")]
-        public ActionResult<ATM> Delete(string id)
-        {
-            var tmp = _atmRepository.DeleteATMById(id);
-            if (tmp != null)
-                return tmp;
-            return NotFound();
-        }
+        //[HttpDelete("{id}")]
+        //public ActionResult<XmlATM> Delete(string id)
+        //{
+        //    var tmp = _atmRepository.DeleteATMById(id);
+        //    if (tmp != null)
+        //        return tmp;
+        //    return NotFound();
+        //}
     }
 }
