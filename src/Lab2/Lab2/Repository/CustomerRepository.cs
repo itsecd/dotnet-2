@@ -51,7 +51,7 @@ namespace Lab2.Repository
             }
             _customers.Add(customer);           
         }
-        public int ReplaceCustomer(int id, Customer customer)
+        public int ReplaceCustomer(int id, Customer newCustomer)
         {
             if (id < 0)
             {
@@ -60,9 +60,9 @@ namespace Lab2.Repository
             var customerIndex = _customers.FindIndex(customer => customer.Id == id);
             if (customerIndex > 0)
             {
-                Customer newCustomer = _customers[customerIndex];
-                newCustomer.FullName = customer.FullName;
-                newCustomer.PhoneNumber = customer.PhoneNumber;
+                Customer customer = _customers[customerIndex];
+                customer.FullName = newCustomer.FullName;
+                customer.PhoneNumber = newCustomer.PhoneNumber;
             }
             else
             {

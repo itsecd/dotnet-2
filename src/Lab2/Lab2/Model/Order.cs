@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lab2.Model
 {
@@ -23,7 +24,7 @@ namespace Lab2.Model
         /// <summary>
         /// Data order
         /// </summary>
-        public DateTime dt { get; set; }
+        public DateTime Dt { get; set; }
         /// <summary>
         /// Amount order
         /// </summary>
@@ -33,5 +34,6 @@ namespace Lab2.Model
         /// </summary>
         public string Status { get; set; }
         
+
     }
 }

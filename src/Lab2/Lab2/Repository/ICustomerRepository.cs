@@ -10,7 +10,7 @@ namespace Lab2.Repository
         Customer GetCustomer(int id);
         void DeleteAllCustomers();
         int DeleteCustomer(int id);
-        int ReplaceCustomer(int id, Customer customer);
+        int ReplaceCustomer(int id, Customer newCustomer);
         void ReadFromFileCustomers();
         void WriteToFileCustomers();
     }

@@ -11,7 +11,7 @@ namespace Lab2.Model
         /// </summary>
         public string NameProduct {get; set; }
         /// <summary>
-        /// Count of product
+        /// Cost of product
         /// </summary>
         public float CostProduct { get; set; }
 

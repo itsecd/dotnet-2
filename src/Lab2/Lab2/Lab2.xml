@@ -4,6 +4,147 @@
         <name>Lab2</name>
     </assembly>
     <members>
+        <member name="T:Lab2.Controllers.CustomerController">
+            <summary>
+            Сlass responsible for processing incoming requests and performing operations on customers
+            </summary>
+        </member>
+        <member name="M:Lab2.Controllers.CustomerController.GetAll">
+            <summary>
+            Getting all customers
+            </summary>
+            <returns>All customers</returns>
+        </member>
+        <member name="M:Lab2.Controllers.CustomerController.Get(System.Int32)">
+            <summary>
+            Getting customer by ID
+            </summary>
+            <param name="id">Customer ID</param>
+            <returns>Customer</returns>
+        </member>
+        <member name="M:Lab2.Controllers.CustomerController.Post(Lab2.Model.Customer)">
+            <summary>
+            Adding customer
+            </summary>
+            <param name="customer">Added customer</param>
+        </member>
+        <member name="M:Lab2.Controllers.CustomerController.Put(System.Int32,Lab2.Model.Customer)">
+            <summary>
+            Changing the customer by ID
+            </summary>
+            <param name="id">Customer ID</param>
+            <param name="customer">Changeable customer</param>
+            <returns>Customer ID</returns>
+        </member>
+        <member name="M:Lab2.Controllers.CustomerController.Delete(System.Int32)">
+            <summary>
+            Deleting customer by ID
+            </summary>
+            <param name="id">ID of the customer being deleted</param>
+            <returns>Customer ID</returns>
+        </member>
+        <member name="M:Lab2.Controllers.CustomerController.DeleteAll">
+            <summary>
+            Deleting all customers
+            </summary>
+        </member>
+        <member name="T:Lab2.Controllers.OrderController">
+            <summary>
+            Сlass responsible for processing incoming requests and performing operations on orders
+            </summary>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.GetAll">
+            <summary>
+            Getting all orders
+            </summary>
+            <returns>All orders</returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.Get(System.Int32)">
+            <summary>
+            Getting order by ID
+            </summary>
+            <param name="id">Order ID</param>
+            <returns>Order</returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.Post(Lab2.Model.Order)">
+            <summary>
+            Adding order
+            </summary>
+            <param name="order">Added order</param>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.Put(System.Int32,Lab2.Model.Order)">
+            <summary>
+            Changing the order by ID
+            </summary>
+            <param name="id">Order ID</param>
+            <param name="order">Changeable order</param>
+            <returns>Order ID</returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.Delete(System.Int32)">
+            <summary>
+            Deleting order by ID
+            </summary>
+            <param name="id">ID of the order being deleted</param>
+            <returns>Order ID</returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.DeleteAll">
+            <summary>
+            Deleting all orders
+            </summary>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.GetProducts(System.Int32)">
+            <summary>
+            Getting all products of the order by Order ID
+            </summary>
+            <param name="id">Order ID</param>
+            <returns>All products of the order</returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.PostProduct(System.Int32,Lab2.Model.Product)">
+            <summary>
+            Adding product to an order by Order ID
+            </summary>
+            <param name="id">Order ID</param>
+            <param name="product">Added product</param>
+            <returns>Order ID</returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.GetProduct(System.Int32,System.Int32)">
+            <summary>
+            Getting an order product by its number in the list
+            </summary>
+            <param name="id">Order ID</param>
+            <param name="num">Number of the product</param>
+            <returns>Product</returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.DeleteProduct(System.Int32,System.Int32)">
+            <summary>
+            Deleting an order product by its number in the list
+            </summary>
+            <param name="id">Order ID</param>
+            <param name="num">Number of the product in list</param>
+            <returns>Order ID </returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.PutProduct(System.Int32,System.Int32,Lab2.Model.Product)">
+            <summary>
+            Changing the order product
+            </summary>
+            <param name="id">Order ID</param>
+            <param name="num">Number of the product</param>
+            <param name="product">New product</param>
+            <returns>Order ID</returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.DeleteAllProducts(System.Int32)">
+            <summary>
+            Deleting all products from the order
+            </summary>
+            <param name="id">Order ID</param>
+            <returns>Order ID</returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.GetProductMonth">
+            <summary>
+            Getting the name and amount of products per month
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Lab2.Model.Customer">
             <summary>
             Customer
@@ -44,7 +185,7 @@
             Customer ID
             </summary>
         </member>
-        <member name="P:Lab2.Model.Order.dt">
+        <member name="P:Lab2.Model.Order.Dt">
             <summary>
             Data order
             </summary>
@@ -71,7 +212,7 @@
         </member>
         <member name="P:Lab2.Model.Product.CostProduct">
             <summary>
-            Count of product
+            Cost of product
             </summary>
         </member>
     </members>
