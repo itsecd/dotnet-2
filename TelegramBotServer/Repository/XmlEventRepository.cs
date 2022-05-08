@@ -45,11 +45,15 @@ namespace TelegramBotServer.Repository
             return _events;
         }
 
-        public void RemoveEvent(Event someEvent)
+        public bool RemoveEvent(int id)
         {
             ReadFile();
-            _events.Remove(someEvent);
+            var delEvent = _events.Find(e => e.Id == id);
+            if (delEvent is null) 
+                return false;
+            _events.Remove(delEvent);
             WriteFile();
+            return true;
         }
 
         private void ReadFile()

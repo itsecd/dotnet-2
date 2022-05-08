@@ -16,7 +16,7 @@ namespace TelegramBotServer.Repository
             _filePath = config["XmlSubscriberDatabaseFile"];
         }
 
-        public long AddSubscriber(Subscriber newSub)
+        public int AddSubscriber(Subscriber newSub)
         {
             ReadFile();
             _subs.Add(newSub);
@@ -24,15 +24,16 @@ namespace TelegramBotServer.Repository
             return newSub.Id;
         }
 
-        public void ChangeSubscriber(long id, Subscriber newSub)
+        public bool ChangeSubscriber(int id, Subscriber newSub)
         {
             ReadFile();
-            var index = _subs.IndexOf(_subs.Where(s => s.Id == id).FirstOrDefault());
+            var index = _subs.IndexOf(_subs.FirstOrDefault(s => s.Id == id));
             _subs[index] = newSub;
             WriteFile();
+            return true;
         }
 
-        public Subscriber GetSubscriber(long id)
+        public Subscriber GetSubscriber(int id)
         {
             ReadFile();
             return _subs.Where(s => s.Id == id).FirstOrDefault();
@@ -44,11 +45,15 @@ namespace TelegramBotServer.Repository
             return _subs;
         }
 
-        public void RemoveSubscriber(Subscriber sub)
+        public bool RemoveSubscriber(int id)
         {
             ReadFile();
-            _subs.Remove(sub);
+            var delSub = _subs.FirstOrDefault(s => s.Id == id);
+            if (delSub is null)
+                return false;
+            _subs.Remove(delSub);
             WriteFile();
+            return true;
         }
 
         private void ReadFile()

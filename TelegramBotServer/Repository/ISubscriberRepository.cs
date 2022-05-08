@@ -5,10 +5,10 @@ namespace TelegramBotServer.Repository
 {
     public interface ISubscriberRepository
     {
-        public long AddSubscriber(Subscriber newSub);
-        public void RemoveSubscriber(Subscriber sub);
-        public void ChangeSubscriber(long id, Subscriber newSub);
-        public Subscriber GetSubscriber(long id);
+        public int AddSubscriber(Subscriber newSub);
+        public bool RemoveSubscriber(int id);
+        public bool ChangeSubscriber(int id, Subscriber newSub);
+        public Subscriber GetSubscriber(int id);
         IEnumerable<Subscriber> GetSubscribers();
     }
 }
