@@ -1,5 +1,6 @@
 ﻿using Lab2.Models;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -77,6 +78,17 @@ namespace Lab2.Repositories
                 {
                     tag.TagId = _tags.Max(t => t.TagId) + 1;
                     _tags.Add(tag);
+                }
+            }
+            else
+            {
+                if (_tags.FindIndex(t => t.TagId == tag.TagId) == -1)
+                {
+                    _tags.Add(tag);
+                }
+                else
+                {
+                    throw new Exception("This ID already exists");
                 }
             }
             return tag.TagId;

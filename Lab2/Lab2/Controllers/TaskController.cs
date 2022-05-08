@@ -56,7 +56,6 @@ namespace Lab2.Controllers
             {
                 return Problem();
             }
-
         }
 
 

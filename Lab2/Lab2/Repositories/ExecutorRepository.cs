@@ -1,5 +1,6 @@
 ﻿using Lab2.Models;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,6 @@ namespace Lab2.Repositories
         /// Список исполнителей
         /// </summary>
         private readonly List<Executor> _executors;
-
 
         /// <summary>
         /// Файл хранения
@@ -61,7 +61,6 @@ namespace Lab2.Repositories
             xmlSerializer.Serialize(fileWriter, _executors);
         }
 
-
         /// <summary>
         /// Мeтод добавления исполнителя 
         /// </summary>
@@ -80,6 +79,17 @@ namespace Lab2.Repositories
                 {
                     executor.ExecutorId = _executors.Max(ex => ex.ExecutorId) + 1;
                     _executors.Add(executor);
+                }
+            }
+            else
+            {
+                if (_executors.FindIndex(ex => ex.ExecutorId == executor.ExecutorId) == -1)
+                {
+                    _executors.Add(executor);
+                }
+                else
+                {
+                    throw new Exception("This ID already exists");
                 }
             }
             return executor.ExecutorId;

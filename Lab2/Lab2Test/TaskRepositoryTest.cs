@@ -1,6 +1,5 @@
 ﻿using Lab2.Models;
 using Lab2.Repositories;
-using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -55,41 +54,35 @@ namespace Lab2Test
         public void AddTaskWithoutIdTest()
         {
             TaskRepository taskRepository = new();
-            if (taskRepository.GetTasks().Count == 0)
-            {
-                TaskCreate().TaskId = 1;
-                Assert.Equal(1, taskRepository.AddTask(TaskCreate()));
-                taskRepository.RemoveTask(1);
-            }
-            else
-            {
-                int count = taskRepository.GetTasks().Count;
-                Assert.Equal(count + 1, taskRepository.AddTask(TaskCreate()));
-                taskRepository.RemoveTask(count + 1);
-            }
+            taskRepository.RemoveAllTasks();
+            var taskId = taskRepository.AddTask(TaskCreate());
+            Assert.Equal(1, taskId);
+            taskRepository.RemoveTask(taskId);
         }
 
         [Fact]
         public void AddTaskTest()
         {
             TaskRepository taskRepository = new();
-            if (taskRepository.GetTasks().FindIndex(t => t.TaskId == 17) == -1)
-            {
-                Assert.Equal(17, taskRepository.AddTask(TaskCreate(17)));
-                taskRepository.RemoveTask(17);
-            }
-            else
-            {
-                throw new Exception("This ID already exists");
-            }
+            Assert.Equal(18, taskRepository.AddTask(TaskCreate(18)));
+            taskRepository.RemoveTask(18);
         }
 
         [Fact]
         public void RemoveTaskTest()
         {
             TaskRepository repository = new();
-            repository.AddTask(TaskCreate(5));
-            Assert.Equal(5, repository.RemoveTask(5));
+            repository.AddTask(TaskCreate(15));
+            Assert.Equal(15, repository.RemoveTask(15));
+        }
+
+        [Fact]
+        public void UpdateTaskTest()
+        {
+            TaskRepository repository = new();
+            repository.AddTask(TaskCreate(300));
+            Assert.Equal(300, repository.UpdateTask(300, TaskCreate(1)));
+            repository.RemoveTask(300);
         }
     }
 }

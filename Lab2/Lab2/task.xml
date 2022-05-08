@@ -2,7 +2,17 @@
 <ArrayOfTask xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Task>
     <TaskId>1</TaskId>
-    <Name>k</Name>
+    <Name>string</Name>
+    <Description>string</Description>
+    <TaskState>false</TaskState>
+    <ExecutorId>0</ExecutorId>
+    <TagsId>
+      <int>0</int>
+    </TagsId>
+  </Task>
+  <Task>
+    <TaskId>2</TaskId>
+    <Name>string</Name>
     <Description>string</Description>
     <TaskState>false</TaskState>
     <ExecutorId>0</ExecutorId>

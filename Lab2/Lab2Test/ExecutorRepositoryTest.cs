@@ -1,7 +1,6 @@
 
 using Lab2.Models;
 using Lab2.Repositories;
-using System;
 using Xunit;
 
 
@@ -18,18 +17,10 @@ namespace Lab2Test
                 Name = "Pavel",
                 Surname = "Pavlov"
             };
-            if (executorRepository.GetExecutors().Count == 0)
-            {
-                executor.ExecutorId = 1;
-                Assert.Equal(1, executorRepository.AddExecutor(executor));
-                executorRepository.RemoveExecutor(1);
-            }
-            else
-            {
-                int count = executorRepository.GetExecutors().Count;
-                Assert.Equal(count + 1, executorRepository.AddExecutor(executor));
-                executorRepository.RemoveExecutor(count + 1);
-            }
+            executorRepository.RemoveAllExecutors();
+            var executorId = executorRepository.AddExecutor(executor);
+            Assert.Equal(1, executorId);
+            executorRepository.RemoveExecutor(executorId);
         }
 
         [Fact]
@@ -37,20 +28,13 @@ namespace Lab2Test
         {
             var executor = new Executor
             {
-                ExecutorId = 99,
+                ExecutorId = 111,
                 Name = "Pavel",
                 Surname = "Pavlov"
             };
             ExecutorRepository executorRepository = new();
-            if (executorRepository.GetExecutors().FindIndex(t => t.ExecutorId == 99) == -1)
-            {
-                Assert.Equal(99, executorRepository.AddExecutor(executor));
-                executorRepository.RemoveExecutor(99);
-            }
-            else
-            {
-                throw new Exception("This ID already exists");
-            }
+            Assert.Equal(111, executorRepository.AddExecutor(executor));
+            executorRepository.RemoveExecutor(111);
         }
 
         [Fact]
@@ -58,13 +42,29 @@ namespace Lab2Test
         {
             var executor = new Executor
             {
-                ExecutorId = 3,
+                ExecutorId = 17,
                 Name = "Pavel",
                 Surname = "Pavlov"
             };
             ExecutorRepository repository = new();
             repository.AddExecutor(executor);
-            Assert.Equal(3, repository.RemoveExecutor(3));
+            Assert.Equal(17, repository.RemoveExecutor(17));
+        }
+
+        [Fact]
+        public void UpdateExecutorTest()
+        {
+            var executor = new Executor
+            {
+                ExecutorId = 88,
+                Name = "Sergey",
+                Surname = "Sergeev"
+            };
+
+            ExecutorRepository repository = new();
+            repository.AddExecutor(executor);
+            Assert.Equal(88, repository.UpdateExecutor(88, executor));
+            repository.RemoveExecutor(88);
         }
     }
 }
