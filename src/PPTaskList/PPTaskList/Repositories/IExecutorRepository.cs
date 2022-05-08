@@ -1,6 +1,5 @@
 ﻿using PPTask.Controllers.Model;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace PPTask.Repositories
 {
@@ -32,7 +31,7 @@ namespace PPTask.Repositories
         /// <summary>
         /// Метод записи данных в файл 
         /// </summary>
-        System.Threading.Tasks.Task WriteToFileAsync()
+        System.Threading.Tasks.Task WriteToFileAsync();
 
     }
 }

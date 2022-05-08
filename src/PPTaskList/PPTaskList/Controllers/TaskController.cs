@@ -73,7 +73,9 @@ namespace PPTask.Controllers
         {
             try
             {
-                _taskRepository.AddTask(new Task {HeaderText = value.HeaderText,TextDescription =value.TextDescription,
+                _taskRepository.AddTask(new Task {
+                    HeaderText = value.HeaderText,
+                    TextDescription = value.TextDescription,
                     ExecutorId = value.ExecutorId, TagsId = value.TagsId });
                 return Ok();
             }
@@ -96,8 +98,10 @@ namespace PPTask.Controllers
                 var taskIndex = _taskRepository.GetTasks().FindIndex(task => task.TaskId == id);
                 if(taskIndex < -1 || id < -1 ) return NotFound();
 
-                _taskRepository.GetTasks()[taskIndex] = new Task {HeaderText = value.HeaderText,TextDescription =value.TextDescription,
-                    ExecutorId = value.ExecutorId, TagsId = value.TagId };
+                _taskRepository.GetTasks()[taskIndex] = new Task {
+                    HeaderText = value.HeaderText,
+                    TextDescription = value.TextDescription,
+                    ExecutorId = value.ExecutorId, TagsId = value.TagsId };
                 return Ok();
 
             }

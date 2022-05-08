@@ -30,7 +30,7 @@ namespace PPTask.Controllers
         public ExecutorController(IExecutorRepository executorRepository, ITaskRepository taskRepository)
         {
             _executorRepository = executorRepository;
-            _taskRepository = taskRepositoryж
+            _taskRepository = taskRepository;
         }
 
         /// <summary>

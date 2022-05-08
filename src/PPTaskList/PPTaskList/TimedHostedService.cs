@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using PPTask.Repositories;
 
 namespace PPTask
 {
@@ -10,9 +10,9 @@ namespace PPTask
     {
         private Timer _timer = null!;
 
-        private IExecutorRepository = _executorRepository;
-        private ITagRepository = _tagRepository;
-        private ITaskRepository = _taskRepository;
+        private IExecutorRepository _executorRepository;
+        private ITagRepository _tagRepository;
+        private ITaskRepository _taskRepository;
 
         public TimedHostedService(IExecutorRepository executorRepository,
             ITagRepository tagRepository,

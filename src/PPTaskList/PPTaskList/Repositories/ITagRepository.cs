@@ -31,6 +31,6 @@ namespace PPTask.Repositories
         /// <summary>
         /// Метод записи данных в файл 
         /// </summary>
-        System.Threading.Tasks.Task WriteToFileAsync()
+        System.Threading.Tasks.Task WriteToFileAsync();
     }
 }
