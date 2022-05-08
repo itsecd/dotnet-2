@@ -49,7 +49,7 @@ namespace TelegramBotServer.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _repository.RemoveSubscriber(_repository.GetSubscriber(id));
+            _repository.RemoveSubscriber(id);
         }
     }
 }
