@@ -4,8 +4,10 @@ namespace TelegramBotServer.Model
 {
     public class Subscriber
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
+
+        public long UserId { get; set; }
         public long ChatId { get; set; }
-        public List<int> EventsId { get; set; }
+        public List<int>? EventsId { get; set; }
     }
 }
