@@ -12,7 +12,6 @@ namespace PPTask.Repositories
         /// Метод добавления тега 
         /// </summary>
         /// <param name="tag">Тег</param>
-        /// <returns> Task </returns>
         void AddTag(Tag tag);
 
         /// <summary>
@@ -25,7 +24,6 @@ namespace PPTask.Repositories
         /// Метод удаления тега  
         /// </summary>
         /// <param name="id">Идентификатор тега</param>
-        ///  <returns> Task </returns>
         void RemoveTag(int id);
 
         /// <summary>

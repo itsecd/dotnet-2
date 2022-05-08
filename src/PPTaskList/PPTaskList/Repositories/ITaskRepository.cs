@@ -12,7 +12,6 @@ namespace PPTask.Repositories
         /// Метод добавления задачи
         /// </summary>
         /// <param name="task">Задача</param>
-        /// <returns> Task </returns>
         void AddTask(Task task);
 
         /// <summary>
@@ -25,7 +24,6 @@ namespace PPTask.Repositories
         /// Метод удаления задачи  
         /// </summary>
         /// <param name="id">Идентификатор задачи</param>
-        ///  <returns> Task </returns>
         void RemoveTask(int id);
 
         /// <summary>

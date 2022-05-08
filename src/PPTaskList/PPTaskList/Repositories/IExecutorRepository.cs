@@ -18,15 +18,18 @@ namespace PPTask.Repositories
         /// Метод добавления исполнителя 
         /// </summary>
         /// <param name="executor">Исполнитель</param>
-        /// <returns> Task </returns>
         void AddExecutor(Executor executor);
 
         /// <summary>
         /// Метод удаления исполнителя  
         /// </summary>
         /// <param name="id">Идентификатор исполнителя</param>
-        ///  <returns> Task </returns>
         void RemoveExecutor(int id);
+
+        /// <summary>
+        /// Метод удаления исполнителя  
+        /// </summary>
+        void RemoveAllExecutors();
 
         /// <summary>
         /// Метод записи данных в файл 

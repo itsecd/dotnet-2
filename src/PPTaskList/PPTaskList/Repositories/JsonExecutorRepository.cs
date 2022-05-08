@@ -25,9 +25,12 @@ namespace PPTask.Repositories
         /// <summary>
         /// Получение файла хранения
         /// </summary>
-        public JsonExecutorRepository(IConfiguration configuration)
+        public JsonExecutorRepository(IConfiguration configuration = null)
         {
-            _storageFileName = configuration.GetValue<string>("ExecutorsFile");
+            if (configuration != null)
+            {
+                _storageFileName = configuration.GetValue<string>("ExecutorsFile");
+            }
 
             if (!File.Exists(_storageFileName))
             {
@@ -55,8 +58,15 @@ namespace PPTask.Repositories
         /// <param name="executor">Исполнитель</param>
         public void AddExecutor(Executor executor)
         {
-            var maxId = _executors.Max(ex => ex.ExecutorId);
-            executor.ExecutorId = maxId + 1;
+            if (_executors.Count == 0)
+            {
+                executor.ExecutorId = 1;
+            }
+            else
+            {
+                var maxId = _executors.Max(ex => ex.ExecutorId);
+                executor.ExecutorId = maxId + 1;
+            }
             _executors.Add(executor);
         }
 
@@ -69,6 +79,17 @@ namespace PPTask.Repositories
             if (_executors != null)
             {
                 _executors.RemoveAll(executor => executor.ExecutorId == id);
+            }
+        }
+
+        /// <summary>
+        /// Мeтод удаления исполнителя  
+        /// </summary>
+        public void RemoveAllExecutors()
+        {
+            if (_executors != null)
+            {
+                _executors.RemoveRange(0, _executors.Count());
             }
         }
 
