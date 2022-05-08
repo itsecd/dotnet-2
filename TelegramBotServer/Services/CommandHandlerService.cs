@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBotServer.Repository;
 
 namespace TelegramBotServer.Services
@@ -14,13 +16,19 @@ namespace TelegramBotServer.Services
     {
         private readonly ITelegramBotClient _bot;
         private readonly ISubscriberRepository _subscriberRepository;
+        private IEventRepository _eventRepository;
         private readonly ILogger<CommandHandlerService> _logger;
 
-        public CommandHandlerService(ITelegramBotClient bot, ILogger<CommandHandlerService> logger, ISubscriberRepository subscriberRepository)
+        public CommandHandlerService(ITelegramBotClient bot,
+            ILogger<CommandHandlerService> logger,
+            ISubscriberRepository subscriberRepository,
+            IEventRepository eventRepository
+            )
         {
             _bot = bot;
             _logger = logger;
             _subscriberRepository = subscriberRepository;
+            _eventRepository = eventRepository;
         }
 
         public async Task ProcessUpdate(Update update)
@@ -28,6 +36,7 @@ namespace TelegramBotServer.Services
             var handler = update.Type switch
             {
                 UpdateType.Message => ProcessCommand(update.Message!),
+                UpdateType.CallbackQuery => BotOnCallbackQueryReceived(update.CallbackQuery!),
                 _ => UnknownUpdateHandlerAsync(update)
             };
 
@@ -67,6 +76,10 @@ namespace TelegramBotServer.Services
 
             static async Task<Message> Subscribe(ITelegramBotClient bot, Message message, ISubscriberRepository repository)
             {
+                var sub = repository.GetSubscribers().FirstOrDefault(s => s.UserId == message.From.Id);
+                if (sub is not null)
+                    return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
+                                                      text: "You are already subscribed to notifications!");
                 repository.AddSubscriber(new Model.Subscriber
                 {
                     UserId = message.From.Id,
@@ -86,6 +99,28 @@ namespace TelegramBotServer.Services
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                       text: "You successfully unsubscribed on notifications");
             }
+
+        }
+
+        private async Task BotOnCallbackQueryReceived(CallbackQuery callbackQuery)
+        {
+            var callbackData = JsonSerializer.Deserialize<TelegramNotificationSenderService.CallbackData>(callbackQuery.Data);
+
+            if (callbackData.newReminder == 0)
+            {
+                _eventRepository.RemoveEvent(callbackData.eventId);
+                await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was taken");
+            }
+            else
+            {
+                var chEvent = _eventRepository.GetEvent(callbackData.eventId);
+                chEvent.Reminder = callbackData.newReminder;
+                chEvent.Notified = false;
+                _eventRepository.ChangeEvent(callbackData.eventId, chEvent);
+                await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was postponed");
+            }
+
+            await _bot.DeleteMessageAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId);
         }
 
         private Task UnknownUpdateHandlerAsync(Update update)
