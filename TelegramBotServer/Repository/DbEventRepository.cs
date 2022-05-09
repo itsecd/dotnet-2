@@ -42,7 +42,7 @@ namespace TelegramBotServer.Repository
             }
         }
 
-        public void ChangeEvent(int id, Event newEvent)
+        public bool ChangeEvent(int id, Event newEvent)
         {
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
@@ -57,10 +57,11 @@ namespace TelegramBotServer.Repository
                 var chEvent = dbContext.Events.FirstOrDefault(e => e.Id == id);
 
                 if (chEvent is null)
-                    return;
+                    return false;
 
                 dbContext.Update(chEvent).CurrentValues.SetValues(newEvent);
                 dbContext.SaveChanges();
+                return true;
             }
         }
 

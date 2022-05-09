@@ -25,18 +25,19 @@ namespace TelegramBotServer.Repository
             return newEvent.Id;
         }
 
-        public void ChangeEvent(int id, Event newEvent)
+        public bool ChangeEvent(int id, Event newEvent)
         {
             ReadFile();
             if (_events is null)
-                return;
+                return false;
             else {
                 var someEvent = _events.FirstOrDefault(e => e.Id == id);
                 if (someEvent is null)
-                    return;
+                    return false;
                 int index = _events.IndexOf(someEvent);
                 _events[index] = newEvent;
                 WriteFile();
+                return true; 
             }
         }
 

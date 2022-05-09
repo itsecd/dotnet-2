@@ -41,7 +41,7 @@ namespace TelegramBotServer.Controllers
         {
             var someEvent = _repository.GetEvent(id);
             if (someEvent is null)
-                return NotFound();
+                return NotFound($"Event with id {id} not found");
             else
                 return someEvent;
         }
@@ -75,11 +75,12 @@ namespace TelegramBotServer.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Event newEvemt)
         {
-            
             try
             {
-                _repository.ChangeEvent(id, newEvemt);
-                return Ok();
+                if (_repository.ChangeEvent(id, newEvemt))
+                    return Ok();
+                else
+                    return NotFound($"Event with id {id} not found");
             }
             catch (Exception exc)
             {
@@ -97,8 +98,10 @@ namespace TelegramBotServer.Controllers
         {
             try
             {
-                _repository.RemoveEvent(id);
-                return Ok();
+                if (_repository.RemoveEvent(id))
+                    return Ok();
+                else
+                    return NotFound($"Event with id {id} not found");
             }
             catch (Exception exc)
             {

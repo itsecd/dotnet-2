@@ -7,7 +7,7 @@ namespace TelegramBotServer.Repository
     {
         public int AddEvent(Event newEvent);
         public bool RemoveEvent(int id);
-        public void ChangeEvent(int id, Event newEvent);
+        public bool ChangeEvent(int id, Event newEvent);
         public Event? GetEvent(int id);
         IEnumerable<Event>? GetEvents();
     }
