@@ -1,7 +1,6 @@
 ﻿using PPTask.Controllers.Model;
 using PPTask.Repositories;
 using Xunit;
-using System;
 
 namespace ServerTest
 {
@@ -10,7 +9,11 @@ namespace ServerTest
         [Fact]
         public void AddTagTest()
         {
-            var tag1 = new Tag{TagStatus = "Done", TagColour = "Green"};
+            var tag1 = new Tag
+            {
+                TagStatus = "Done", 
+                TagColour = "Green"
+            };
             var repository = new JsonTagRepository();
 
             repository.RemoveAllTags();
@@ -40,7 +43,7 @@ namespace ServerTest
         }
 
         [Fact]
-        public void RemoveExecutorTest()
+        public void RemoveTagTest()
         {
             var tag1 = new Tag(1, "Done", "Green");
             var repository = new JsonTagRepository();
@@ -52,7 +55,7 @@ namespace ServerTest
         }
 
         [Fact]
-        public void RemoveAllExecutorsTest()
+        public void RemoveAllTagsTest()
         {
             var tag1 = new Tag(1, "Done", "Green");
             var tag2 = new Tag(2, "Red", "Immediately");

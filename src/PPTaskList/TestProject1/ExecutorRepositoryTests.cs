@@ -9,7 +9,10 @@ namespace ServerTest
         [Fact]
         public void AddExecutorTest()
         {
-            var executor1 = new Executor { Name = "test1" };
+            var executor1 = new Executor 
+            {
+                Name = "test1" 
+            };
             var repository = new JsonExecutorRepository();
 
             repository.RemoveAllExecutors();

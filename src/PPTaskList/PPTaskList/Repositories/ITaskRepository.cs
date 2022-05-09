@@ -27,6 +27,11 @@ namespace PPTask.Repositories
         void RemoveTask(int id);
 
         /// <summary>
+        /// Метод удаления всех задач  
+        /// </summary>
+        void RemoveAllTasks();
+
+        /// <summary>
         /// Метод записи данных в файл 
         /// </summary>
         System.Threading.Tasks.Task WriteToFileAsync();

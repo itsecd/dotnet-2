@@ -44,8 +44,9 @@ namespace PPTask.Controllers.Model
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
-        public Task(string header, string text, int executorId, List<int> tagsId)
+        public Task(int taskId, string header, string text, int executorId, List<int> tagsId)
         {
+            TaskId = TaskId;
             HeaderText = header;
             TextDescription = text;
             ExecutorId = executorId;

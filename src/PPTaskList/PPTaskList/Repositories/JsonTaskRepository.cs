@@ -25,9 +25,12 @@ namespace PPTask.Repositories
         /// <summary>
         /// Получение файла хранения
         /// </summary>
-        public JsonTaskRepository(IConfiguration configuration)
+        public JsonTaskRepository(IConfiguration configuration = null)
         {
-            _storageFileName = configuration.GetValue<string>("TasksFile");
+            if (configuration != null)
+            {
+                _storageFileName = configuration.GetValue<string>("TasksFile");
+            }
 
             if (!File.Exists(_storageFileName))
             {
@@ -55,8 +58,15 @@ namespace PPTask.Repositories
         /// <param name="task">Задача</param>
         public void AddTask(Task task)
         {
-            var maxId = _tasks.Max(t => t.TaskId);
-            task.TaskId = maxId + 1;
+            if (_tasks.Count == 0)
+            {
+                task.TaskId = 1;
+            }
+            else
+            {
+                var maxId = _tasks.Max(t => t.TaskId);
+                task.TaskId = maxId + 1;
+            }
             _tasks.Add(task);
         }
 
@@ -69,6 +79,17 @@ namespace PPTask.Repositories
             if (_tasks != null)
             {
                 _tasks.RemoveAll(task => task.TaskId == id);
+            }
+        }
+
+        /// <summary>
+        /// Метод удаления всех задач  
+        /// </summary>
+        public void RemoveAllTasks()
+        {
+            if (_tasks != null)
+            {
+                _tasks.RemoveRange(0, _tasks.Count());
             }
         }
 
