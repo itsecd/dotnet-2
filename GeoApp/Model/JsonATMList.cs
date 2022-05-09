@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace GeoApp.Model
@@ -20,14 +21,35 @@ namespace GeoApp.Model
         [JsonPropertyName("properties")]
         public Properties Properties { get; set; }
 
+        /// <summary>
+        /// Сравнение двух банкоматов
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         public override bool Equals(object o)
         {
-            return o is JsonATM aTM &&
-                aTM.Geometry.Coordinates[0] == Geometry.Coordinates[0] &&
-                aTM.Geometry.Coordinates[1] == Geometry.Coordinates[1] &&
-                aTM.Properties.Id == Properties.Id &&
-                aTM.Properties.Operator == Properties.Operator &&
-                aTM.Properties.Balance == Properties.Balance;
+            return o is JsonATM atm &&
+                atm.Geometry.Coordinates[0] == Geometry.Coordinates[0] &&
+                atm.Geometry.Coordinates[1] == Geometry.Coordinates[1] &&
+                atm.Properties.Id == Properties.Id &&
+                atm.Properties.Operator == Properties.Operator &&
+                atm.Properties.Balance == Properties.Balance;
+        }
+
+        /// <summary>
+        /// Хеш-код банкомата по его идентификатору
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            try
+            {
+                return Int32.Parse(Properties.Id);
+            }
+            catch
+            {
+                return 0;
+            }
         }
     }
 

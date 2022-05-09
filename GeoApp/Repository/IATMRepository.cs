@@ -1,6 +1,5 @@
 ﻿using GeoApp.Model;
 using System.Collections.Generic;
-
 namespace GeoApp.Repository
 
 {

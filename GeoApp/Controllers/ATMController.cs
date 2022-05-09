@@ -13,9 +13,9 @@ namespace GeoApp.Controllers
     {
         private readonly IATMRepository _atmRepository;
 
-        public ATMController(IATMRepository ATMrepository)
+        public ATMController(IATMRepository atmRepository)
         {
-            _atmRepository = ATMrepository;
+            _atmRepository = atmRepository;
         }
 
         /// <summary>
