@@ -83,7 +83,7 @@ namespace PPTask.Repositories
         }
 
         /// <summary>
-        /// Мeтод удаления исполнителя  
+        /// Мeтод удаления всех исполнителей  
         /// </summary>
         public void RemoveAllExecutors()
         {

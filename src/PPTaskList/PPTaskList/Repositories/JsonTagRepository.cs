@@ -25,9 +25,12 @@ namespace PPTask.Repositories
         /// <summary>
         /// Получение файла хранения
         /// </summary>
-        public JsonTagRepository(IConfiguration configuration)
+        public JsonTagRepository(IConfiguration configuration = null)
         {
-            _storageFileName = configuration.GetValue<string>("TagsFile");
+            if (configuration != null)
+            {
+                _storageFileName = configuration.GetValue<string>("TagsFile");
+            }
 
             if (!File.Exists(_storageFileName))
             {
@@ -55,8 +58,15 @@ namespace PPTask.Repositories
         /// <param name="tag">Тег</param>
         public void AddTag(Tag tag)
         {
-            var maxId = _tags.Max(t => t.TagId);
-            tag.TagId = maxId + 1;
+            if (_tags.Count == 0)
+            {
+                tag.TagId = 1;
+            }
+            else
+            {
+                var maxId = _tags.Max(t => t.TagId);
+                tag.TagId = maxId + 1;
+            }
             _tags.Add(tag);
         }
 
@@ -69,6 +79,17 @@ namespace PPTask.Repositories
             if (_tags != null)
             {
                 _tags.RemoveAll(tag => tag.TagId == id);
+            }
+        }
+
+        /// <summary>
+        /// Метод удаления всех тегов  
+        /// </summary>
+        public void RemoveAllTags()
+        {
+            if (_tags != null)
+            {
+                _tags.RemoveRange(0, _tags.Count());
             }
         }
 

@@ -27,7 +27,7 @@ namespace PPTask.Repositories
         void RemoveExecutor(int id);
 
         /// <summary>
-        /// Метод удаления исполнителя  
+        /// Метод удаления всех исполнителей  
         /// </summary>
         void RemoveAllExecutors();
 

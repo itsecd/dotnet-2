@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServerTest
 {
-    internal class TaskRepositoryTests
+    public class TaskRepositoryTests
     {
     }
 }

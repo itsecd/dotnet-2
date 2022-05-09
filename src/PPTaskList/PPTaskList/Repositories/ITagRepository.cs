@@ -27,6 +27,11 @@ namespace PPTask.Repositories
         void RemoveTag(int id);
 
         /// <summary>
+        /// Метод удаления всех тегов  
+        /// </summary>
+        void RemoveAllTags();
+
+        /// <summary>
         /// Метод записи данных в файл 
         /// </summary>
         System.Threading.Tasks.Task WriteToFileAsync();
