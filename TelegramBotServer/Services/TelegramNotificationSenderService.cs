@@ -31,7 +31,7 @@ namespace TelegramBotServer.Services
         public Task NotifyAsync(Event someEvent)
         {
             var subs = _subscriberRepository.GetSubscribers();
-            var sub = subs.FirstOrDefault(s => s.EventsId.Any(eId => eId == someEvent.Id));
+            var sub = subs?.FirstOrDefault(s => s.EventsId is not null && s.EventsId.Any(eId => eId == someEvent.Id));
             if (sub is not null)
             {
                 string message;
