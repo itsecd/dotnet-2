@@ -1,4 +1,3 @@
-
 using Telegram.Bot;
 using TgBot.Services;
 
@@ -34,7 +33,7 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
-
+        app.UseStaticFiles();
         app.UseRouting();
         app.UseCors();
 
@@ -42,7 +41,7 @@ public class Startup
         {
             var token = BotConfig.BotToken;
             endpoints.MapControllerRoute(name: "tgwebhook",
-                                         pattern: $"bot/{token}",
+                                         pattern: $"{token}",
                                          new { controller = "Chat", action = "Post" });
             endpoints.MapControllers();
         });

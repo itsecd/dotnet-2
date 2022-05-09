@@ -5,6 +5,7 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using Newtonsoft.Json;
 using Telegram.Bot;
+using System.Net;
 
 namespace TgBot.Services;
 
@@ -38,17 +39,6 @@ public class HandleUpdateService
         }
     }
 
-    private static int UserNameToInt(string name)
-    {
-        string alph = "abcdefghijklmnopqrstuvwxyz";
-        StringBuilder intString = new();
-        for (int i = 0; i < name.Length; i++)
-        {
-            intString.Append(name[i]^alph[i]);
-        }
-        return int.Parse(intString.ToString().Substring(0,5));
-    }
-
     private async Task BotOnMessageReceived(Message message)
     {
         _logger.LogInformation("Receive message type: {messageType}", message.Type);
@@ -70,27 +60,41 @@ public class HandleUpdateService
         {
 
             await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-            int code = UserNameToInt(message.Chat.Username!);
-            string str = $"Your confirmation code: {code}";
+            Server.Model.User user = new();
+            user.Name = message.Chat.Username;
+            user.ChatId = message.Chat.Id;
+            user.Toggle = false;
+            var client = new HttpClient();
+            var response = await client.PostAsync($"https://localhost:44349/api/User", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == HttpStatusCode.Conflict)
+                {
+                    return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
+                                                      text: "Error\nYou are already registered");
+                }
+            }
             return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                  text: str);
+                                                      text: "Success");
+
         }
 
         async Task<Message> TestRequest(ITelegramBotClient bot, Message message)
         {
             await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-            Server.Model.UserEvent userEvent = new Server.Model.UserEvent();
-            userEvent.Id = 1;
-            userEvent.User = new Server.Model.User();
+            var userEvent = new Server.Model.UserEvent
+            {
+                Id = 1,
+                User = new Server.Model.User()
+            };
             userEvent.User.Id = 1;
             userEvent.User.ChatId = message.Chat.Id;
             userEvent.User.Name = message.Chat.Username;
             userEvent.User.Toggle = true;
-            userEvent.EventName = "VAM PIZDA";
+            userEvent.EventName = "VAM POSILKA";
             userEvent.DateNTime = DateTime.Now;
-            userEvent.EventFrequency = Server.Model.UserEvent.Frequency.everyDay;
-            HttpClient client = new HttpClient();
-            var response = await client.PostAsync($"https://e20e-82-179-50-182.eu.ngrok.io/bot/", new StringContent(JsonConvert.SerializeObject(userEvent), Encoding.UTF8, "application/json"));
+            var client = new HttpClient();
+            var response = await client.PostAsync($"https://localhost:443/send/1", new StringContent(JsonConvert.SerializeObject(userEvent), Encoding.UTF8, "application/json"));
             return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                       text: "a");
         }

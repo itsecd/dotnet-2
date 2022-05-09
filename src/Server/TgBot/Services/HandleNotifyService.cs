@@ -16,6 +16,7 @@ namespace TgBot.Services
         public async Task<Message> EchoAsync(Server.Model.UserEvent userEvent)
         {
             var chat = await _botClient.GetChatAsync(userEvent.User.ChatId);
+            _logger.LogInformation("EVENT OCCURED");
             string content = "ALERT\n" +
                 $"I remind you about the event {userEvent.EventName}\n" +
                 $"Time - {userEvent.DateNTime.Hour}:{userEvent.DateNTime.Minute}";
