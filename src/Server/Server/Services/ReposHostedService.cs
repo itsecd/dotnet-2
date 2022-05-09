@@ -12,7 +12,8 @@ namespace Server.Services
         private readonly ILogger<ReposHostedService> _logger;
         private readonly IJSONUserRepository _userRepository;
         private readonly IJSONUserEventRepository _userEventRepository;
-        private Timer _timer = null!;
+        private Timer _timer = null;
+
         public ReposHostedService(ILogger<ReposHostedService> logger,
                                     IJSONUserRepository userRepository,
                                     IJSONUserEventRepository userEventRepository)
@@ -27,16 +28,18 @@ namespace Server.Services
             _logger.LogInformation("Repos Hosted Service running.");
             _userEventRepository.LoadData();
             _userRepository.LoadData();
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+            _timer = new Timer(SaveRepositories, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
 
             return Task.CompletedTask;
         }
-        private void DoWork(object state)
+        
+        private void SaveRepositories(object state)
         {
             _userEventRepository.SaveData();
             _userRepository.SaveData();
             _logger.LogInformation("Repos Hosted Service is working.");
         }
+        
         public Task StopAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Repos Hosted Service is stopping.");
@@ -45,6 +48,7 @@ namespace Server.Services
             _userRepository.SaveData();
             return Task.CompletedTask;
         }
+        
         public void Dispose() => _timer?.Dispose();
     }
 }

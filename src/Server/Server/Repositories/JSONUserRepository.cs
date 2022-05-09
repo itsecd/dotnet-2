@@ -10,13 +10,16 @@ namespace Server.Repositories
 {
     public class JSONUserRepository : IJSONUserRepository
     {
-        public List<User> Users { get; set; } = new();
+        private List<User> Users = new();
         private readonly string _storageFileName;
+
+        public JSONUserRepository() { }
 
         public JSONUserRepository(IConfiguration configuration)
         {
             _storageFileName = configuration.GetSection("Files").Get<FileConfiguration>().FileOfUsers;
         }
+
         public void AddUser(User user)
         {
             if (Users is null)

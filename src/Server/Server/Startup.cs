@@ -11,15 +11,15 @@ namespace Server
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public FileConfiguration FileConfig { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             FileConfig = Configuration.GetSection("Files").Get<FileConfiguration>();
         }
-
-        public IConfiguration Configuration { get; }
-
-        public FileConfiguration FileConfig { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {

@@ -21,6 +21,7 @@ namespace Server.Model
             }
             return false;
         }
+
         public override int GetHashCode()
         {
             return Id ^ User.GetHashCode() ^ EventName.GetHashCode() ^ EventFrequency.GetHashCode();

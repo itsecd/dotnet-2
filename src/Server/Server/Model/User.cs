@@ -15,6 +15,7 @@
             }
             return false;
         }
+
         public override int GetHashCode()
         {
             int nameHashCode = Name.GetHashCode();

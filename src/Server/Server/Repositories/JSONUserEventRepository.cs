@@ -10,8 +10,10 @@ namespace Server.Repositories
 {
     public class JSONUserEventRepository : IJSONUserEventRepository
     {
-        public List<UserEvent> UserEvents { get; set; } = new();
+        private List<UserEvent> UserEvents = new();
         private readonly string _storageFileName;
+
+        public JSONUserEventRepository() { }
 
         public JSONUserEventRepository(IConfiguration configuration)
         {
@@ -95,8 +97,7 @@ namespace Server.Repositories
         public void LoadData()
         {
             if (!File.Exists(_storageFileName) || new FileInfo(_storageFileName).Length == 0)
-            {
-                UserEvents = new List<UserEvent>();
+            { 
                 return;
             }
             using var fileReader = new StreamReader(_storageFileName);

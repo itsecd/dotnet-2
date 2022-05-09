@@ -9,6 +9,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Services
 {
@@ -16,7 +17,8 @@ namespace Server.Services
     {
         private readonly ILogger<EventNotifyHostedService> _logger;
         private readonly IJSONUserEventRepository _userEventRepository;
-        private Timer _timer = null!;
+        private Timer _timer = null;
+
         public EventNotifyHostedService(ILogger<EventNotifyHostedService> logger,
                                     IJSONUserEventRepository userEventRepository)
         {
@@ -31,25 +33,28 @@ namespace Server.Services
             _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(30));
             return Task.CompletedTask;
         }
+        
         private void DoWork(object state)
         {
             CheckTheOccurrenceOfEvent();
         }
+        
         public Task StopAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Event notify hosted service is stopping.");
             _timer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
         }
+        
         public void Dispose() => _timer?.Dispose();
 
         private void CheckTheOccurrenceOfEvent()
         {
-            List<UserEvent> userEvents = _userEventRepository.UserEvents;
+            List<UserEvent> userEvents = (List<UserEvent>)_userEventRepository.GetUserEvents();
             DateTime date = DateTime.Now.Date;
             TimeSpan time = DateTime.Now.TimeOfDay;
             bool isOccured = false;
-            foreach (var userEvent in userEvents)
+            /*foreach (var userEvent in userEvents)
             {
                 var userEventDateTime = userEvent.DateNTime;
                 if (userEventDateTime.TimeOfDay.Hours == time.Hours && userEventDateTime.TimeOfDay.Minutes == time.Minutes)
@@ -66,6 +71,17 @@ namespace Server.Services
                             _logger.LogInformation("The event occurred, but it was not possible to notify the user");
                         }
                     }
+                }
+            }*/
+            var responses = (from userEvent in userEvents
+                       where ((userEvent.DateNTime.Date - date).Days % userEvent.EventFrequency) == 0
+                       select NotifyAboutEvent(userEvent).Result);
+            foreach(var response in responses)
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation($"The user is notified of the occurrence of the event");
+                    isOccured = true;
                 }
             }
             if (!isOccured)
