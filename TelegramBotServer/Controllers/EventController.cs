@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using TelegramBotServer.Model;
 using TelegramBotServer.Repository;
@@ -16,39 +17,93 @@ namespace TelegramBotServer.Controllers
             _repository = repository;
         }
 
-        // GET: api/<EventController>
+        /// <summary>
+        /// Get all events
+        /// </summary>
+        /// <returns>List of all events</returns>
         [HttpGet]
-        public IEnumerable<Event> Get()
+        public ActionResult<IEnumerable<Event>> Get()
         {
-            return _repository.GetEvents();
+            var events = _repository.GetEvents();
+            if (events is not null)
+                return new ActionResult<IEnumerable<Event>>(events);
+            else
+                return Problem("Events from repository is null!");
         }
 
-        // GET api/<EventController>/5
+        /// <summary>
+        /// Get event with specific id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Event or 404 code if not found</returns>
         [HttpGet("{id}")]
-        public Event Get(int id)
+        public ActionResult<Event> Get(int id)
         {
-            return _repository.GetEvent(id);
+            var someEvent = _repository.GetEvent(id);
+            if (someEvent is null)
+                return NotFound();
+            else
+                return someEvent;
         }
 
-        // POST api/<EventController>
+        /// <summary>
+        /// Add new event
+        /// </summary>
+        /// <param name="someEvent"></param>
+        /// <returns>Id inserted event</returns>
         [HttpPost]
-        public void Post([FromBody] Event someEvent)
+        public ActionResult<int> Post([FromBody] Event someEvent)
         {
-            _repository.AddEvent(someEvent);
+            try
+            {
+                return _repository.AddEvent(someEvent);
+                
+            }
+            catch (Exception exc)
+            {
+                return Problem($"Problem detected: {exc.Message}");
+            }
+            
         }
 
-        // PUT api/<EventController>/5
+        /// <summary>
+        /// Replace event with specific id by new event
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newEvemt"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Event someEvent)
+        public ActionResult Put(int id, [FromBody] Event newEvemt)
         {
-            _repository.ChangeEvent(id, someEvent);
+            
+            try
+            {
+                _repository.ChangeEvent(id, newEvemt);
+                return Ok();
+            }
+            catch (Exception exc)
+            {
+                return Problem($"Problem detected: {exc.Message}");
+            }
         }
 
-        // DELETE api/<EventController>/5
+        /// <summary>
+        /// Delete event by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _repository.RemoveEvent(id);
+            try
+            {
+                _repository.RemoveEvent(id);
+                return Ok();
+            }
+            catch (Exception exc)
+            {
+                return Problem($"Problem detected: {exc.Message}");
+            }            
         }
     }
 }

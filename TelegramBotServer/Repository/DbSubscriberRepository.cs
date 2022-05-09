@@ -24,70 +24,83 @@ namespace TelegramBotServer.Repository
         {
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
+            if (dbContext is null || dbContext.Events is null)
+                throw new Exception("Database context is null!");
+            else
+            {
 
-            var validator = new SubscriberValidator(dbContext.Events);
-            if (!validator.Validate(newSub))
-                throw new ArgumentException("Invalid subscriber");
+                var validator = new SubscriberValidator(dbContext.Events);
+                if (!validator.Validate(newSub))
+                    throw new ArgumentException("Invalid subscriber");
 
-            dbContext.Subscribers.Add(newSub);
-            dbContext.SaveChanges();
+                dbContext.Subscribers?.Add(newSub);
+                dbContext.SaveChanges();
 
-            _logger.LogInformation($"Add Subscriber with id {newSub.Id}");
+                _logger.LogInformation($"Add Subscriber with id {newSub.Id}");
 
-            return newSub.Id;
+                return newSub.Id;
+            }
         }
 
         public bool ChangeSubscriber(int id, Subscriber newSub)
         {
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
+            if (dbContext is null || dbContext.Events is null)
+                throw new Exception("Database context is null!");
+            else
+            {
+                var validator = new SubscriberValidator(dbContext.Events);
+                if (!validator.Validate(newSub))
+                    throw new ArgumentException("Invalid subscriber");
 
-            var validator = new SubscriberValidator(dbContext.Events);
-            if (!validator.Validate(newSub))
-                throw new ArgumentException("Invalid subscriber");
+                var chSub = dbContext.Subscribers?.FirstOrDefault(s => s.Id == id);
+                if (chSub is null)
+                    return false;
 
-            var chSub = dbContext.Subscribers.FirstOrDefault(s => s.Id == id);
-            if (chSub is null)
-                return false;
+                dbContext.Entry(chSub).CurrentValues.SetValues(newSub);
+                dbContext.SaveChanges();
 
-            dbContext.Entry(chSub).CurrentValues.SetValues(newSub);
-            dbContext.SaveChanges();
+                _logger.LogInformation($"Subscriber with id {id} was changed");
 
-            _logger.LogInformation($"Subscriber with id {id} was changed");
-
-            return true;
+                return true;
+            }
         }
 
-        public Subscriber GetSubscriber(int id)
+        public Subscriber? GetSubscriber(int id)
         {
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
 
-            return dbContext.Subscribers.Find(id);
+            return dbContext?.Subscribers?.Find(id);
         }
 
-        public IEnumerable<Subscriber> GetSubscribers()
+        public IEnumerable<Subscriber>? GetSubscribers()
         {
             var dbContext = _scopeFactory.CreateScope()
                .ServiceProvider.GetRequiredService<UsersContext>();
 
-            return dbContext.Subscribers;
+            return dbContext?.Subscribers;
         }
 
         public bool RemoveSubscriber(int id)
         {
             var dbContext = _scopeFactory.CreateScope()
                .ServiceProvider.GetRequiredService<UsersContext>();
+            if (dbContext is null || dbContext.Events is null)
+                throw new Exception("Database context is null!");
+            else
+            {
+                var delSub = dbContext.Subscribers?.Find(id);
+                if (delSub is null)
+                    return false;
 
-            var delSub = dbContext.Subscribers.Find(id);
-            if (delSub is null)
-                return false;
+                dbContext.Subscribers?.Remove(delSub);
+                dbContext.SaveChanges();
 
-            dbContext.Subscribers.Remove(delSub);
-            dbContext.SaveChanges();
-
-            _logger.LogInformation($"Subscriber with id {id} was changed");
-            return true;
+                _logger.LogInformation($"Subscriber with id {id} was changed");
+                return true;
+            }
         }
     }
 }

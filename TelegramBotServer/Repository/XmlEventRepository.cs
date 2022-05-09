@@ -10,7 +10,7 @@ namespace TelegramBotServer.Repository
     public class XmlEventRepository : IEventRepository
     {
         private readonly string _filePath;
-        private List<Event> _events;
+        private List<Event>? _events;
 
         public XmlEventRepository(IConfiguration config)
         {
@@ -20,7 +20,7 @@ namespace TelegramBotServer.Repository
         public int AddEvent(Event newEvent)
         {
             ReadFile();
-            _events.Add(newEvent);
+            _events?.Add(newEvent);
             WriteFile();
             return newEvent.Id;
         }
@@ -28,18 +28,25 @@ namespace TelegramBotServer.Repository
         public void ChangeEvent(int id, Event newEvent)
         {
             ReadFile();
-            var index = _events.IndexOf(_events.Where(e => e.Id == id).FirstOrDefault());
-            _events[index] = newEvent;
-            WriteFile();
+            if (_events is null)
+                return;
+            else {
+                var someEvent = _events.FirstOrDefault(e => e.Id == id);
+                if (someEvent is null)
+                    return;
+                int index = _events.IndexOf(someEvent);
+                _events[index] = newEvent;
+                WriteFile();
+            }
         }
 
-        public Event GetEvent(int id)
+        public Event? GetEvent(int id)
         {
             ReadFile();
-            return _events.Where(e => e.Id == id).FirstOrDefault();
+            return _events?.FirstOrDefault(e => e.Id == id);
         }
 
-        public IEnumerable<Event> GetEvents()
+        public IEnumerable<Event>? GetEvents()
         {
             ReadFile();
             return _events;
@@ -48,10 +55,10 @@ namespace TelegramBotServer.Repository
         public bool RemoveEvent(int id)
         {
             ReadFile();
-            var delEvent = _events.Find(e => e.Id == id);
+            var delEvent = _events?.Find(e => e.Id == id);
             if (delEvent is null) 
                 return false;
-            _events.Remove(delEvent);
+            _events?.Remove(delEvent);
             WriteFile();
             return true;
         }
@@ -69,7 +76,7 @@ namespace TelegramBotServer.Repository
 
             var xmlSerializer = new XmlSerializer(typeof(List<Event>));
             using var fileStream = new FileStream(_filePath, FileMode.Open);
-            _events = (List<Event>)xmlSerializer.Deserialize(fileStream);
+            _events = (List<Event>?)xmlSerializer.Deserialize(fileStream);
         }
 
         private void WriteFile()

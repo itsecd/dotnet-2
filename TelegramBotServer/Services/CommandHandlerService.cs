@@ -76,13 +76,13 @@ namespace TelegramBotServer.Services
 
             static async Task<Message> Subscribe(ITelegramBotClient bot, Message message, ISubscriberRepository repository)
             {
-                var sub = repository.GetSubscribers().FirstOrDefault(s => s.UserId == message.From.Id);
+                var sub = repository.GetSubscribers()?.FirstOrDefault(s => s.UserId == message.From?.Id);
                 if (sub is not null)
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                       text: "You are already subscribed to notifications!");
                 repository.AddSubscriber(new Model.Subscriber
                 {
-                    UserId = message.From.Id,
+                    UserId = message.From is null ? message.Chat.Id : message.From.Id,
                     ChatId = message.Chat.Id,
                 });
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
@@ -91,7 +91,8 @@ namespace TelegramBotServer.Services
 
             static async Task<Message> Unsubscribe(ITelegramBotClient bot, Message message, ISubscriberRepository repository)
             {
-                var sub = repository.GetSubscribers().FirstOrDefault(s => s.UserId == message.From.Id);
+                var senderId = message.From is null ? message.Chat.Id : message.From.Id;
+                var sub = repository.GetSubscribers()?.FirstOrDefault(s => s.UserId == senderId);
                 if (sub is null)
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                       text: "You have not been subscribed to notifications");
@@ -104,23 +105,33 @@ namespace TelegramBotServer.Services
 
         private async Task BotOnCallbackQueryReceived(CallbackQuery callbackQuery)
         {
-            var callbackData = JsonSerializer.Deserialize<TelegramNotificationSenderService.CallbackData>(callbackQuery.Data);
-
-            if (callbackData.newReminder == 0)
+            if (callbackQuery.Data is not null)
             {
-                _eventRepository.RemoveEvent(callbackData.eventId);
-                await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was taken");
-            }
-            else
-            {
-                var chEvent = _eventRepository.GetEvent(callbackData.eventId);
-                chEvent.Reminder = callbackData.newReminder;
-                chEvent.Notified = false;
-                _eventRepository.ChangeEvent(callbackData.eventId, chEvent);
-                await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was postponed");
-            }
+                var callbackData = JsonSerializer.Deserialize<TelegramNotificationSenderService.CallbackData>(callbackQuery.Data);
 
-            await _bot.DeleteMessageAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId);
+                if (callbackData is not null)
+                {
+
+                    if (callbackData.newReminder == 0)
+                    {
+                        _eventRepository.RemoveEvent(callbackData.eventId);
+                        await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was taken");
+                    }
+                    else
+                    {
+                        var chEvent = _eventRepository.GetEvent(callbackData.eventId);
+                        if (chEvent is not null)
+                        {
+                            chEvent.Reminder = callbackData.newReminder;
+                            chEvent.Notified = false;
+                            _eventRepository.ChangeEvent(callbackData.eventId, chEvent);
+                            await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was postponed");
+                        }
+                    }
+                }
+            }
+            if (callbackQuery.Message is not null)
+                await _bot.DeleteMessageAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId);
         }
 
         private Task UnknownUpdateHandlerAsync(Update update)

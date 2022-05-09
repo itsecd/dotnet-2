@@ -10,7 +10,7 @@ namespace TelegramBotServer.Repository
     public class XmlSubscriberRepository : ISubscriberRepository
     {
         private readonly string _filePath;
-        private List<Subscriber> _subs;
+        private List<Subscriber>? _subs;
         public XmlSubscriberRepository(IConfiguration config)
         {
             _filePath = config["XmlSubscriberDatabaseFile"];
@@ -19,7 +19,7 @@ namespace TelegramBotServer.Repository
         public int AddSubscriber(Subscriber newSub)
         {
             ReadFile();
-            _subs.Add(newSub);
+            _subs?.Add(newSub);
             WriteFile();
             return newSub.Id;
         }
@@ -27,31 +27,42 @@ namespace TelegramBotServer.Repository
         public bool ChangeSubscriber(int id, Subscriber newSub)
         {
             ReadFile();
-            var index = _subs.IndexOf(_subs.FirstOrDefault(s => s.Id == id));
-            _subs[index] = newSub;
+            if (_subs is null)
+                return false;
+            else
+            {
+                var sub = _subs.FirstOrDefault(s => s.Id == id);
+                if (sub is null)
+                    return false;
+                int index =_subs.IndexOf(sub);
+                _subs[(int)index] = newSub;
+            }
             WriteFile();
             return true;
         }
 
-        public Subscriber GetSubscriber(int id)
+        public Subscriber? GetSubscriber(int id)
         {
             ReadFile();
-            return _subs.Where(s => s.Id == id).FirstOrDefault();
+            return _subs?.Where(s => s.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<Subscriber> GetSubscribers()
         {
             ReadFile();
-            return _subs;
+            if (_subs is not null)
+                return _subs;
+            else
+                return new List<Subscriber>();
         }
 
         public bool RemoveSubscriber(int id)
         {
             ReadFile();
-            var delSub = _subs.FirstOrDefault(s => s.Id == id);
+            var delSub = _subs?.FirstOrDefault(s => s.Id == id);
             if (delSub is null)
                 return false;
-            _subs.Remove(delSub);
+            _subs?.Remove(delSub);
             WriteFile();
             return true;
         }
@@ -69,7 +80,7 @@ namespace TelegramBotServer.Repository
 
             var xmlSerializer = new XmlSerializer(typeof(List<Subscriber>));
             using var fileStream = new FileStream(_filePath, FileMode.Open);
-            _subs = (List<Subscriber>)xmlSerializer.Deserialize(fileStream);
+            _subs = (List<Subscriber>?)xmlSerializer.Deserialize(fileStream);
         }
 
         private void WriteFile()

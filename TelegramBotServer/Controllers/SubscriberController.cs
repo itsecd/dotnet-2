@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using TelegramBotServer.Model;
 using TelegramBotServer.Repository;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TelegramBotServer.Controllers
 {
@@ -17,39 +17,90 @@ namespace TelegramBotServer.Controllers
             _repository = repository;
         }
 
-        // GET: api/<SubscriberController>
+        /// <summary>
+        /// Get all subscribers
+        /// </summary>
+        /// <returns>List of all subscribers</returns>
         [HttpGet]
-        public IEnumerable<Subscriber> Get()
+        public ActionResult<IEnumerable<Subscriber>> Get()
         {
-            return _repository.GetSubscribers();
+            var subs = _repository.GetSubscribers();
+            if (subs is not null)
+                return new ActionResult<IEnumerable<Subscriber>>(subs);
+            else
+                return Problem("Subscribers from repository is null!");
         }
 
-        // GET api/<SubscriberController>/5
+        /// <summary>
+        /// Get subscriber with specific id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Subscriber or 404 code if not found</returns>
         [HttpGet("{id}")]
-        public Subscriber Get(int id)
+        public ActionResult<Subscriber> Get(int id)
         {
-            return _repository.GetSubscriber(id);
+            var subscriber = _repository.GetSubscriber(id);
+            if (subscriber is null)
+                return NotFound();
+            else
+                return subscriber;
         }
 
-        // POST api/<SubscriberController>
+        /// <summary>
+        /// Add new subscriber
+        /// </summary>
+        /// <param name="newSub"></param>
+        /// <returns>Id inserted subscriber</returns>
         [HttpPost]
-        public void Post([FromBody] Subscriber newSub)
+        public ActionResult<int> Post([FromBody] Subscriber newSub)
         {
-            _repository.AddSubscriber(newSub);
+            try
+            {
+                return _repository.AddSubscriber(newSub);
+            }
+            catch (Exception exc)
+            {
+                return Problem($"Problem detected: {exc.Message}");
+            }            
         }
 
-        // PUT api/<SubscriberController>/5
+        /// <summary>
+        /// Replace sub with specific id by new event
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newSub"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Subscriber newSub)
+        public ActionResult Put(int id, [FromBody] Subscriber newSub)
         {
-            _repository.ChangeSubscriber(id, newSub);
+            try
+            {
+                _repository.ChangeSubscriber(id, newSub);
+                return Ok();
+            }
+            catch (Exception exc)
+            {
+                return Problem($"Problem detected: {exc.Message}");
+            }
         }
 
-        // DELETE api/<SubscriberController>/5
+        /// <summary>
+        /// Delete event by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _repository.RemoveSubscriber(id);
+            try
+            {
+                _repository.RemoveSubscriber(id);
+                return Ok();
+            }
+            catch (Exception exc)
+            {
+                return Problem($"Problem detected: {exc.Message}");
+            }
         }
     }
 }

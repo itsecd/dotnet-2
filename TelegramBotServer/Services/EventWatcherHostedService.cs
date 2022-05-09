@@ -14,7 +14,7 @@ namespace TelegramBotServer.Services
         public ITelegramBotClient _bot { get; private set; }
         public IEventRepository _eventRepository { get; private set; }
         public INotificationSenderService _notificationSender { get; private set; }
-        public Timer _timer { get; set; }
+        public Timer? _timer { get; set; }
 
         public EventWatcherHostedService(ILogger<EventWatcherHostedService> logger, ITelegramBotClient bot,
             IEventRepository eventRepository, INotificationSenderService notificationSender)
@@ -27,8 +27,7 @@ namespace TelegramBotServer.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(CheckEvents, null, TimeSpan.Zero,
-            TimeSpan.FromSeconds(60));
+            _timer = new Timer(CheckEvents, null, TimeSpan.Zero, TimeSpan.FromSeconds(60));
             return Task.CompletedTask;
         }
 
@@ -44,6 +43,8 @@ namespace TelegramBotServer.Services
         private void CheckEvents(object? state)
         {
             var events = _eventRepository.GetEvents();
+            if (events is null)
+                return;
             foreach (var someEvent in events)
             {
                 var rest = someEvent.Deadline.Subtract(DateTime.Now);

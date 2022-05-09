@@ -8,7 +8,7 @@ namespace TelegramBotServer.Repository
         public int AddSubscriber(Subscriber newSub);
         public bool RemoveSubscriber(int id);
         public bool ChangeSubscriber(int id, Subscriber newSub);
-        public Subscriber GetSubscriber(int id);
-        IEnumerable<Subscriber> GetSubscribers();
+        public Subscriber? GetSubscriber(int id);
+        IEnumerable<Subscriber>? GetSubscribers();
     }
 }
