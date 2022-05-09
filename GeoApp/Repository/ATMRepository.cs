@@ -14,17 +14,6 @@ namespace GeoApp.Repository
         private List<XmlATM> _XmlATMs;
         private List<JsonATM> _JsonATMs;
 
-        //public XmlATM InsertATM(XmlATM atmToInsert)
-        //{
-        //    ReadFromFile();
-        //    var atm = _XmlATMs.Find(atm => atm.Id == atmToInsert.Id);
-        //    if (atm != null)
-        //        return null;
-        //    _XmlATMs.Add(atmToInsert);
-        //    WriteToFile();
-        //    return atmToInsert;
-        //}
-
         public JsonATM GetATMById(string id)
         {
             ReadFromFile();
@@ -34,27 +23,22 @@ namespace GeoApp.Repository
             return null;
         }
 
-        //public XmlATM DeleteATMById(string id)
-        //{
-        //    ReadFromFile();
-        //    var deletedATM = _XmlATMs.Find(atm => atm.Id == id);
-        //    _XmlATMs.RemoveAll(atm => atm.Id == id);
-        //    WriteToFile();
-        //    return deletedATM;
-        //}
-
         public JsonATM ChangeBalanceById(string id, int balance)
         {
-            ReadFromFile();
-            var atm = GetATMById(id);
-            if (atm != null)
+            object locker = new();
+            lock (locker)
             {
-                atm.Properties.Balance = balance;
-                _XmlATMs.Find(xmlATM => xmlATM.Id == atm.Properties.Id).Balance = balance;
-                WriteToFile();
-                return atm;
-            }
-            return null;            
+                ReadFromFile();
+                var atm = GetATMById(id);
+                if (atm != null)
+                {
+                    atm.Properties.Balance = balance;
+                    _XmlATMs.Find(xmlATM => xmlATM.Id == atm.Properties.Id).Balance = balance;
+                    WriteToFile();
+                    return atm;
+                }
+                return null;
+            }       
         }
 
         public List<JsonATM> GetAllATMs()

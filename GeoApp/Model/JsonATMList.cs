@@ -1,14 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace GeoApp.Model
 {
+    /// <summary>
+    /// Полная информация о банкомате
+    /// </summary>
     public class JsonATM
     {
+        /// <summary>
+        /// Координаты
+        /// </summary>
         [JsonPropertyName("geometry")]
         public Geometry Geometry { get; set; }
 
+        /// <summary>
+        /// Идентификатор, оператор, баланс
+        /// </summary>
         [JsonPropertyName("properties")]
         public Properties Properties { get; set; }
 
@@ -23,12 +31,18 @@ namespace GeoApp.Model
         }
     }
 
+    /// <summary>
+    /// Класс для хранения координат
+    /// </summary>
     public class Geometry
     {
         [JsonPropertyName("coordinates")]
         public List<double> Coordinates { get; set; }
     }
 
+    /// <summary>
+    /// Класс для хранения идентификатора, оператора, баланса
+    /// </summary>
     public class Properties
     {
         [JsonPropertyName("id")]
@@ -41,6 +55,9 @@ namespace GeoApp.Model
         public int Balance { get; set; }
     }
 
+    /// <summary>
+    /// Тип данных для чтения банкоматов из geojson
+    /// </summary>
     public class JsonATMList
     {
         [JsonPropertyName("features")]

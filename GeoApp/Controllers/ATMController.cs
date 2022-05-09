@@ -3,8 +3,6 @@ using GeoApp.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 
 namespace GeoApp.Controllers
 {
@@ -20,6 +18,10 @@ namespace GeoApp.Controllers
             _atmRepository = ATMrepository;
         }
 
+        /// <summary>
+        /// Получение всех банкоматов
+        /// </summary>
+        /// <returns></returns>
         // GET: api/<ATMController>
         [HttpGet]
         public List<JsonATM> Get()
@@ -27,6 +29,11 @@ namespace GeoApp.Controllers
             return _atmRepository.GetAllATMs();
         }
 
+        /// <summary>
+        /// Получение банкомата по идентификатору
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET api/<ATMController>/5
         [HttpGet("{id}")]
         public ActionResult<JsonATM> Get(string id)
@@ -39,15 +46,12 @@ namespace GeoApp.Controllers
             return NotFound();
         }
 
-        // POST api/<ATMController>
-        //[HttpPost]
-        //public ActionResult<XmlATM> Post([FromBody] XmlATM ATM)
-        //{
-        //    if (_atmRepository.InsertATM(ATM) != null)
-        //        return ATM;
-        //    return Conflict();
-        //}
-
+        /// <summary>
+        /// Изменение баланса банкомата по идентификатору
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="balance"></param>
+        /// <returns></returns>
         // PUT api/<ATMController>/5
         [HttpPut("{id}")]
         public ActionResult<JsonATM> Put(string id, [FromBody] int balance)
@@ -57,15 +61,5 @@ namespace GeoApp.Controllers
                 return tmp;
             return NotFound();
         }
-
-        //// DELETE api/<ATMController>/5
-        //[HttpDelete("{id}")]
-        //public ActionResult<XmlATM> Delete(string id)
-        //{
-        //    var tmp = _atmRepository.DeleteATMById(id);
-        //    if (tmp != null)
-        //        return tmp;
-        //    return NotFound();
-        //}
     }
 }
