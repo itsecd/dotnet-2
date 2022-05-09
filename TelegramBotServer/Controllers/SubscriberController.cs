@@ -41,7 +41,7 @@ namespace TelegramBotServer.Controllers
         {
             var subscriber = _repository.GetSubscriber(id);
             if (subscriber is null)
-                return NotFound();
+                return NotFound($"Subscriber with id {id} not found");
             else
                 return subscriber;
         }
@@ -75,8 +75,10 @@ namespace TelegramBotServer.Controllers
         {
             try
             {
-                _repository.ChangeSubscriber(id, newSub);
-                return Ok();
+                if (_repository.ChangeSubscriber(id, newSub))
+                    return Ok();
+                else
+                    return NotFound($"Subscriber with id {id} not found");
             }
             catch (Exception exc)
             {
