@@ -27,6 +27,7 @@
             Adding customer
             </summary>
             <param name="customer">Added customer</param>
+            <returns>Customer ID</returns>
         </member>
         <member name="M:Lab2.Controllers.CustomerController.Put(System.Int32,Lab2.Model.Customer)">
             <summary>
@@ -71,6 +72,7 @@
             Adding order
             </summary>
             <param name="order">Added order</param>
+            <returns>Order ID</returns>
         </member>
         <member name="M:Lab2.Controllers.OrderController.Put(System.Int32,Lab2.Model.Order)">
             <summary>
@@ -143,7 +145,13 @@
             <summary>
             Getting the name and amount of products per month
             </summary>
-            <returns></returns>
+            <returns>Pair: name and amount of products ordered</returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.GetTotalCostMonth">
+            <summary>
+            Getting the total cost of orders for the month
+            </summary>
+            <returns>Total cost</returns>
         </member>
         <member name="T:Lab2.Model.Customer">
             <summary>

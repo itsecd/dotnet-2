@@ -11,12 +11,16 @@ namespace Lab2.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
+        private List<Customer> _customers { get; set; }
         private readonly string _storageFileName;
+        public CustomerRepository()
+        {
+            _customers = new();
+        }
         public CustomerRepository(IConfiguration configuration)
         {
             _storageFileName = configuration.GetValue<string>("CustomersFile");
         }
-        private List<Customer> _customers { get; set; }
         public void ReadFromFileCustomers()
         {
             if (!File.Exists(_storageFileName))
@@ -39,8 +43,9 @@ namespace Lab2.Repository
                 fileWriter.Write(jsonString);
             }
         }
-        public void AddCustomer(Customer customer)
+        public int AddCustomer(Customer customer)
         {
+
             if (_customers.Count == 0)
             {
                 customer.Id = 1;
@@ -49,7 +54,12 @@ namespace Lab2.Repository
             {
                 customer.Id = _customers.Max(custom => custom.Id) + 1;
             }
-            _customers.Add(customer);           
+            if (_customers.Where(cstmr => cstmr.FullName == customer.FullName && cstmr.PhoneNumber == customer.PhoneNumber).Any())
+            {
+                throw new ArgumentException();
+            }
+            _customers.Add(customer);
+            return customer.Id;
         }
         public int ReplaceCustomer(int id, Customer newCustomer)
         {
@@ -58,16 +68,14 @@ namespace Lab2.Repository
                 throw new ArgumentOutOfRangeException();
             }
             var customerIndex = _customers.FindIndex(customer => customer.Id == id);
-            if (customerIndex > 0)
-            {
-                Customer customer = _customers[customerIndex];
-                customer.FullName = newCustomer.FullName;
-                customer.PhoneNumber = newCustomer.PhoneNumber;
-            }
-            else
+            
+            if (customerIndex == -1)
             {
                 throw new NotFoundException();
             }
+            Customer customer = _customers[customerIndex];
+            customer.FullName = newCustomer.FullName;
+            customer.PhoneNumber = newCustomer.PhoneNumber;
             return id;
         }
         public List<Customer> GetAllCustomers()

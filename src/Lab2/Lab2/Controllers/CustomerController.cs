@@ -54,14 +54,22 @@ namespace Lab2.Controllers
             }
            
         }
-        /// <summary>
-        /// Adding customer
-        /// </summary>
-        /// <param name="customer">Added customer</param>
+       /// <summary>
+       /// Adding customer
+       /// </summary>
+       /// <param name="customer">Added customer</param>
+       /// <returns>Customer ID</returns>
         [HttpPost]
-        public void Post([FromBody] Customer customer) 
+        public ActionResult<int> Post([FromBody] Customer customer)
         {
-             _repository.AddCustomer(customer);
+            try
+            {
+                return _repository.AddCustomer(customer);
+            }
+            catch(ArgumentException)
+            {
+                return BadRequest();
+            }
         }
         /// <summary>
         /// Changing the customer by ID

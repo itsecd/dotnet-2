@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Lab2.Model;
 
 namespace Lab2.Repository
@@ -8,7 +7,7 @@ namespace Lab2.Repository
     {
         List<Order> GetAllOrders();
         int ReplaceOrder(int id, Order newOrder);
-        void AddOrder(Order order);
+        int AddOrder(Order order);
         Order GetOrder(int id);
         int DeleteOrder(int id);
         void DeleteAllOrders();

@@ -6,7 +6,7 @@ namespace Lab2.Repository
     public interface ICustomerRepository
     {
         List<Customer> GetAllCustomers();
-        void AddCustomer(Customer customer);
+        int AddCustomer(Customer customer);
         Customer GetCustomer(int id);
         void DeleteAllCustomers();
         int DeleteCustomer(int id);

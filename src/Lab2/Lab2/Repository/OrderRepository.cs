@@ -12,11 +12,15 @@ namespace Lab2.Repository
     public class OrderRepository: IOrderRepository
     {
         private readonly string _storageFileName;
+        private List<Order> _orders { get; set; }
+        public OrderRepository()
+        {
+            _orders = new();
+        }
         public OrderRepository(IConfiguration configuration)
         {
             _storageFileName = configuration.GetValue<string>("OrdersFile");
         }
-        private List<Order> _orders { get; set; }
         public void ReadFromFileOrders()
         {
             
@@ -39,7 +43,7 @@ namespace Lab2.Repository
                 fileWriter.Write(jsonString);
             }
         }
-        public void AddOrder(Order order)
+        public int AddOrder(Order order)
         {
             if (_orders.Count == 0)
             {
@@ -49,8 +53,13 @@ namespace Lab2.Repository
             {
                 order.OrderId = _orders.Max(od => od.OrderId) + 1;
             }
+            if (order.CustomerId == 0)
+            {
+                throw new ArgumentException();
+            }
             _orders.Add(order);
             order.AmountOrder = GetAllCostOrder(order);
+            return order.OrderId;
         }
         public int ReplaceOrder(int id, Order newOrder)
         {
@@ -59,19 +68,17 @@ namespace Lab2.Repository
                 throw new ArgumentOutOfRangeException();
             }
             var orderIndex = _orders.FindIndex(order => order.OrderId == id);
-            if (orderIndex > 0)
-            {
-                Order order = _orders[orderIndex];
-                order.Products = newOrder.Products;
-                order.CustomerId = newOrder.CustomerId;
-                order.Dt = newOrder.Dt;
-                order.AmountOrder = GetAllCostOrder(newOrder);
-                order.Status = newOrder.Status;
-            }
-            else
+            if (orderIndex == -1)
             {
                 throw new NotFoundException();
             }
+            Order order = _orders[orderIndex];
+            order.Products = newOrder.Products;
+            order.Dt = newOrder.Dt;
+            order.AmountOrder = GetAllCostOrder(newOrder);
+            order.Status = newOrder.Status;
+            order.CustomerId = newOrder.CustomerId;
+            
             return id;
         }
         public List<Order> GetAllOrders()

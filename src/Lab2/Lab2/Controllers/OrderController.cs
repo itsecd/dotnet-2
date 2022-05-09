@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Lab2.Exeptions;
 using Lab2.Model;
 using Lab2.Repository;
@@ -59,10 +58,19 @@ namespace Lab2.Controllers
         /// Adding order
         /// </summary>
         /// <param name="order">Added order</param>
+        /// <returns>Order ID</returns>
         [HttpPost]
-        public void Post([FromBody] Order order)
+        public ActionResult<int> Post([FromBody] Order order)
         {
-            _repository.AddOrder(order);
+            try
+            {
+                return _repository.AddOrder(order);
+            }
+            catch(ArgumentException)
+            {
+                return BadRequest();
+            }
+            
         }
         /// <summary>
         /// Changing the order by ID
