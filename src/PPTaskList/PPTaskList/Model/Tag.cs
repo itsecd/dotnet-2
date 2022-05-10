@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace PPTask.Controllers.Model
+namespace PPTask.Model
 {
     /// <summary>
     /// Теги
@@ -13,9 +14,19 @@ namespace PPTask.Controllers.Model
         private string _tagStatus;
 
         /// <summary>
-        /// Цвет тега (привfтное поле)
+        /// Цвет тега (приватное поле)
         /// </summary>
         private string _tagColour;
+
+        /// <summary>
+        /// Возможные статусы (приватное поле)
+        /// </summary>
+        private readonly List<string> _statuses = new List<string> { "Immediately", "Remake", "Finalize", "Done", "Not ready yet" };
+
+        /// <summary>
+        /// Возможные цвета (приватное поле)
+        /// </summary>
+        private readonly List<string> _colours = new List<string> { "Green", "Red", "Yellow" };
 
         /// <summary>
         /// Идентификатор тегов
@@ -27,17 +38,12 @@ namespace PPTask.Controllers.Model
         /// </summary>
         public string TagStatus 
         {
-            get { return _tagStatus; }
+            get =>_tagStatus; 
             set
             {
-                var statuses = new List<string> { "Immediately", "Remake", "Finalize", "Done", "Not ready yet" };
-                foreach (var stat in statuses)
-                {
-                    if (value == stat)
-                    {
-                        _tagStatus = value;
-                    }
-                }
+                if (!_statuses.Contains(value))
+                    throw new ArgumentException("Tag status is not supported");
+                _tagStatus = value;
             } 
         }
 
@@ -46,17 +52,12 @@ namespace PPTask.Controllers.Model
         /// </summary>
         public string TagColour 
         {
-            get { return _tagColour; }
+            get => _tagColour;
             set
             {
-                var colour = new List<string> { "Green", "Red", "Yellow" };
-                foreach (var c in colour)
-                {
-                    if (value == c)
-                    {
-                        _tagColour = value;
-                    }
-                }
+                if (!_colours.Contains(value))
+                    throw new ArgumentException("Tag colour is not supported");
+                _tagColour = value;
             }
         }
 

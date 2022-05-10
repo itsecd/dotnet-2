@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using PPTask.Controllers.Model;
+using PPTask.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -89,7 +89,7 @@ namespace PPTask.Repositories
         {
             if (_tags != null)
             {
-                _tags.RemoveRange(0, _tags.Count());
+                _tags.RemoveRange(0, _tags.Count);
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using PPTask.Controllers.Model;
+﻿using PPTask.Model;
 using System.Collections.Generic;
 
 namespace PPTask.Repositories

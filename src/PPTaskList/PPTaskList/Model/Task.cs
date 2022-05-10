@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PPTask.Controllers.Model
+namespace PPTask.Model
 {
     /// <summary>
     /// Задачи 
@@ -33,7 +33,7 @@ namespace PPTask.Controllers.Model
         public List<int> TagsId { get; set; }
 
         /// <summary>
-        /// Конструкор по умолчанию
+        /// Конструктор по умолчанию
         /// </summary>
         public Task()
         {
@@ -46,7 +46,7 @@ namespace PPTask.Controllers.Model
         /// </summary>
         public Task(int taskId, string header, string text, int executorId, List<int> tagsId)
         {
-            TaskId = TaskId;
+            TaskId = taskId;
             HeaderText = header;
             TextDescription = text;
             ExecutorId = executorId;

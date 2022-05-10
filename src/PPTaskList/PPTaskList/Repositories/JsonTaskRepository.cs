@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using PPTask.Controllers.Model;
+using PPTask.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -89,7 +89,7 @@ namespace PPTask.Repositories
         {
             if (_tasks != null)
             {
-                _tasks.RemoveRange(0, _tasks.Count());
+                _tasks.RemoveRange(0, _tasks.Count);
             }
         }
 

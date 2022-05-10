@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace PPTask.Dto
@@ -16,23 +17,29 @@ namespace PPTask.Dto
         /// Цвет тега (привfтное поле)
         /// </summary>
         private string _tagColour;
-        
+
+        /// <summary>
+        /// Возможные статусы (приватное поле)
+        /// </summary>
+        private readonly List<string> _statuses = new List<string> { "Immediately", "Remake", "Finalize", "Done", "Not ready yet" };
+
+        /// <summary>
+        /// Возможные цвета (приватное поле)
+        /// </summary>
+        private readonly List<string> _colours = new List<string> { "Green", "Red", "Yellow" };
+
+
         /// <summary>
         /// Название тега
         /// </summary>
         public string TagStatus 
         {
-            get { return _tagStatus; }
+            get => _tagStatus; 
             set
             {
-                var statuses = new List<string> { "Immediately", "Remake", "Finalize", "Done", "Not ready yet" };
-                foreach (var stat in statuses)
-                {
-                    if (value == stat)
-                    {
-                        _tagStatus = value;
-                    }
-                }
+                 if (!_statuses.Contains(value))
+                     throw new ArgumentException("Tag status is not supported");
+                 _tagStatus = value;
             } 
         }
 
@@ -41,17 +48,12 @@ namespace PPTask.Dto
         /// </summary>
         public string TagColour 
         {
-            get { return _tagColour; }
+            get => _tagColour; 
             set
             {
-                var colour = new List<string> { "Green", "Red", "Yellow" };
-                foreach (var c in colour)
-                {
-                    if (value == c)
-                    {
-                        _tagColour = value;
-                    }
-                }
+                if (!_colours.Contains(value))
+                    throw new ArgumentException("Tag colour is not supported");
+                _tagColour = value;
             }
         }
     }

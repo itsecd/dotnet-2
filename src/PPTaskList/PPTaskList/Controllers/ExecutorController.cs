@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PPTask.Controllers.Model;
+using PPTask.Model;
 using PPTask.Repositories;
 using System.Collections.Generic;
 using System.Linq;

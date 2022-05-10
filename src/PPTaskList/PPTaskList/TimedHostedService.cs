@@ -8,11 +8,11 @@ namespace PPTask
 {
     public class TimedHostedService: IHostedService, IDisposable
     {
-        private Timer _timer = null!;
+        private Timer _timer;
 
-        private IExecutorRepository _executorRepository;
-        private ITagRepository _tagRepository;
-        private ITaskRepository _taskRepository;
+        private readonly IExecutorRepository _executorRepository;
+        private readonly ITagRepository _tagRepository;
+        private readonly ITaskRepository _taskRepository;
 
         public TimedHostedService(IExecutorRepository executorRepository,
             ITagRepository tagRepository,
@@ -31,7 +31,7 @@ namespace PPTask
             return Task.CompletedTask;
         }
 
-        private async void DoWork(object? state)
+        private async void DoWork(object state)
         {
             await _executorRepository.WriteToFileAsync();
             await _tagRepository.WriteToFileAsync();

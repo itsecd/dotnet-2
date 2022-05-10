@@ -1,4 +1,4 @@
-﻿namespace PPTask.Controllers.Model
+﻿namespace PPTask.Model
 {
     /// <summary>
     /// Исполнитель задачи

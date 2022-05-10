@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using PPTask.Controllers.Model;
+using PPTask.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace PPTask.Repositories
         /// </summary>
         public JsonExecutorRepository(IConfiguration configuration = null)
         {
-            if (configuration != null)
+            if (configuration != null )
             {
                 _storageFileName = configuration.GetValue<string>("ExecutorsFile");
             }
@@ -53,7 +53,7 @@ namespace PPTask.Repositories
         }
 
         /// <summary>
-        /// Мeтод добавления исполнителя 
+        /// Метод добавления исполнителя 
         /// </summary>
         /// <param name="executor">Исполнитель</param>
         public void AddExecutor(Executor executor)
@@ -71,7 +71,7 @@ namespace PPTask.Repositories
         }
 
         /// <summary>
-        /// Мeтод удаления исполнителя  
+        /// Метод удаления исполнителя  
         /// </summary>
         /// <param name="id">Идентификатор исполнителя</param>
         public void RemoveExecutor(int id)
@@ -83,18 +83,18 @@ namespace PPTask.Repositories
         }
 
         /// <summary>
-        /// Мeтод удаления всех исполнителей  
+        /// Метод удаления всех исполнителей  
         /// </summary>
         public void RemoveAllExecutors()
         {
             if (_executors != null)
             {
-                _executors.RemoveRange(0, _executors.Count());
+                _executors.RemoveRange(0, _executors.Count);
             }
         }
 
         /// <summary>
-        /// Мeтод получения всех исполнителей 
+        /// Метод получения всех исполнителей 
         /// </summary>
         /// <returns>Список исполнителей</returns>
         public List<Executor> GetExecutors()
