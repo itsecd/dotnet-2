@@ -81,7 +81,6 @@ public class HandleUpdateService
         }
         return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                   text: "Success");
-
     }
     
     private static string GetCode(string userName)
@@ -137,7 +136,6 @@ public class HandleUpdateService
             return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                   text: $"Error {response.StatusCode}");
         }
-
     }
 
     private static async Task<Message> SetDisableMode(ITelegramBotClient bot, Message message)
@@ -175,7 +173,6 @@ public class HandleUpdateService
             return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                   text: $"Error {response.StatusCode}");
         }
-
     }
 
     private static async Task<Message> DeleteUser(ITelegramBotClient bot, Message message)
