@@ -6,7 +6,7 @@ namespace ServerTests
 {
     public class CustomerRepositoryTests
     {
-        private Customer CreateCustomer(string phone)
+        private static Customer CreateCustomer(string phone)
         {
             var customer = new Customer
             {

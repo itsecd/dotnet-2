@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Lab2.Exeptions;
+using Lab2.Exсeptions;
 using Lab2.Model;
 using Microsoft.Extensions.Configuration;
 

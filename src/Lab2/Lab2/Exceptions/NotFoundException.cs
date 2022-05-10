@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lab2.Exeptions
+namespace Lab2.Exсeptions
 {
     public class NotFoundException : Exception
     {

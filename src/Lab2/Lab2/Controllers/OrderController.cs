@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lab2.Exeptions;
+using Lab2.Exсeptions;
 using Lab2.Model;
 using Lab2.Repository;
 using Microsoft.AspNetCore.Mvc;
