@@ -47,7 +47,8 @@ public class HandleUpdateService
 
         var action = message.Text!.Split(' ')[0] switch
         {
-            "/signIn"   => AddUser(_botClient, message),
+            "/signUp"   => AddUser(_botClient, message),
+            "/getCode"  => SendConfirmationCode(_botClient, message),
             "/enable"   => SetEnableMode(_botClient, message),
             "/disable"  => SetDisableMode(_botClient, message),
             "/signOut"  => DeleteUser(_botClient, message),
@@ -80,6 +81,24 @@ public class HandleUpdateService
                                                   text: "Success");
 
     }
+    
+    private static string GetCode(string userName)
+    {
+        var key = "12341234123412341234123412341234".ToCharArray();
+        var strUserName = userName.ToCharArray();
+        string code = "";
+        for(int i = 0; i < strUserName.Length; i++)
+        {
+            code += strUserName[i] ^ key[i];
+        }
+        return code;
+    }
+
+    static async Task<Message> SendConfirmationCode(ITelegramBotClient bot, Message message)
+    {
+        return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
+                                                          text: GetCode(message.Chat.Username));
+    }
 
     static async Task<Message> TestRequest(ITelegramBotClient bot, Message message)
     {
@@ -88,13 +107,15 @@ public class HandleUpdateService
         {
             Id = 1,
             User = new Server.Model.User()
+            {
+                Id = 1,
+                ChatId = message.Chat.Id,
+                Name = message.Chat.Username,
+                Toggle = true
+            },
+            EventName = "VAM POSILKA",
+            DateNTime = DateTime.Now
         };
-        userEvent.User.Id = 1;
-        userEvent.User.ChatId = message.Chat.Id;
-        userEvent.User.Name = message.Chat.Username;
-        userEvent.User.Toggle = true;
-        userEvent.EventName = "VAM POSILKA";
-        userEvent.DateNTime = DateTime.Now;
         var client = new HttpClient();
         var response = await client.PostAsync($"https://localhost:443/send", new StringContent(JsonConvert.SerializeObject(userEvent), Encoding.UTF8, "application/json"));
         return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
@@ -231,7 +252,8 @@ public class HandleUpdateService
     static async Task<Message> Usage(ITelegramBotClient bot, Message message)
     {
         const string usage = "Usage:\n" +
-                             "/signIn    -  get a confirmation code to log in\n" +
+                             "/signUp    -  sign up\n" +
+                             "/getCode   -  get a confirmation code to log in to the app\n" +
                              "/enable    -  enable alerts\n" +
                              "/disable   -  disable alerts\n" +
                              "/signOut   -  delete user";
