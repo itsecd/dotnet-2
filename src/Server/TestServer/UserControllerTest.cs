@@ -13,10 +13,11 @@ namespace TestServer
 {
     public class UserControllerTest
     {
-        private static User CreateUser(string name, long chatId)
+        private static User CreateUser(int id, string name, long chatId)
         {
             return new User()
             {
+                Id = id,
                 Name = name,
                 ChatId = chatId,
                 Toggle = true
@@ -30,8 +31,7 @@ namespace TestServer
             HttpClient httpClient = webHost.CreateClient();
             await httpClient.DeleteAsync("api/User");
 
-            var user = CreateUser("testUser", 11111111);
-            user.Id = 1;
+            var user = CreateUser(1, "testUser", 11111111);
             var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/User", content);
 
@@ -50,8 +50,7 @@ namespace TestServer
             HttpClient httpClient = webHost.CreateClient();
             await httpClient.DeleteAsync("api/User");
 
-            var user = CreateUser("testUser", 11111111);
-            user.Id = 1;
+            var user = CreateUser(1, "testUser", 11111111);
             var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/User", content);
 
@@ -72,10 +71,8 @@ namespace TestServer
             HttpClient httpClient = webHost.CreateClient();
             await httpClient.DeleteAsync("api/User");
 
-            var user1 = CreateUser("testUser1", 11111111);
-            user1.Id = 1;
-            var user2 = CreateUser("testUser2", 22222222);
-            user2.Id = 2;
+            var user1 = CreateUser(1, "testUser1", 11111111);
+            var user2 = CreateUser(2, "testUser2", 22222222);
             var users = new List<User>{ user1, user2 };
 
             var content = new StringContent(JsonConvert.SerializeObject(user1), Encoding.UTF8, "application/json");
@@ -102,8 +99,7 @@ namespace TestServer
             HttpClient httpClient = webHost.CreateClient();
             await httpClient.DeleteAsync("api/User");
 
-            var user = CreateUser("testUser", 11111111);
-            user.Id = 1;
+            var user = CreateUser(1, "testUser", 11111111);
             var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/User", content);
 
@@ -125,8 +121,7 @@ namespace TestServer
             HttpClient httpClient = webHost.CreateClient();
             await httpClient.DeleteAsync("api/User");
 
-            var user = CreateUser("testUser", 11111111);
-            user.Id = 1;
+            var user = CreateUser(1, "testUser", 11111111);
             var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/User", content);
 
@@ -147,10 +142,8 @@ namespace TestServer
             HttpClient httpClient = webHost.CreateClient();
             await httpClient.DeleteAsync("api/User");
 
-            var user1 = CreateUser("testUser1", 11111111);
-            user1.Id = 1;
-            var user2 = CreateUser("testUser2", 22222222);
-            user2.Id = 2;
+            var user1 = CreateUser(1, "testUser1", 11111111);
+            var user2 = CreateUser(1, "testUser2", 22222222);
             var users = new List<User>() { user1, user2};
             var content = new StringContent(JsonConvert.SerializeObject(user1), Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/User", content);

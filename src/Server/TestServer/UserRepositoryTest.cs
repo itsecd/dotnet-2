@@ -7,10 +7,11 @@ namespace TestServer
 {
     public class UserRepositoryTest
     {
-        private static User CreateUser(string name, long chatId)
+        private static User CreateUser(int id, string name, long chatId)
         {
             return new User()
             {
+                Id = id,
                 Name = name,
                 ChatId = chatId,
                 Toggle = true
@@ -21,8 +22,7 @@ namespace TestServer
         public void GetUserTest()
         {
             var userRepository = new JSONUserRepository();
-            var user = CreateUser("puti_love", 12312451);
-            user.Id = 1;
+            var user = CreateUser(1, "puti_love", 12312451);
             userRepository.AddUser(user);
             var returnedUser = userRepository.GetUser(1);
             Assert.Equal(user, returnedUser);
@@ -33,8 +33,8 @@ namespace TestServer
         public void GetUsersTest()
         {
             var userRepository = new JSONUserRepository();
-            var user1 = CreateUser("puti_love", 12312451);
-            var user2 = CreateUser("puti_love2", 12315125);
+            var user1 = CreateUser(1, "puti_love", 12312451);
+            var user2 = CreateUser(2, "puti_love2", 12315125);
             var users = new List<User>{ user1, user2 };
             userRepository.AddUser(user1);
             userRepository.AddUser(user2);
@@ -46,7 +46,7 @@ namespace TestServer
         public void AddUserTest()
         {
             var userRepository = new JSONUserRepository();
-            var user = CreateUser("puti_love", 12312451);
+            var user = CreateUser(1, "puti_love", 12312451);
             userRepository.AddUser(user);
             Assert.Equal(user, userRepository.GetUser(1));
             userRepository.DeleteUser(1);
@@ -56,10 +56,10 @@ namespace TestServer
         public void UpdateUserTest()
         {
             var userRepository = new JSONUserRepository();
-            var user = CreateUser("puti_love", 12312451);
+            var user = CreateUser(1, "puti_love", 12312451);
             userRepository.AddUser(user);
             Assert.Equal(user, userRepository.GetUser(1));
-            var user1 = CreateUser("puti_love1", 1111111);
+            var user1 = CreateUser(2, "puti_love1", 1111111);
             userRepository.UpdateUser(1, user1);
             Assert.Equal(user1, userRepository.GetUser(1));
             userRepository.DeleteUser(1);
@@ -69,8 +69,7 @@ namespace TestServer
         public void DeleteUserTest()
         {
             var userRepository = new JSONUserRepository();
-            var user = CreateUser("puti_love", 12312451);
-            user.Id = 1;
+            var user = CreateUser(1, "puti_love", 12312451);
             userRepository.AddUser(user);
             Assert.Equal(user, userRepository.GetUser(1));
             var users = (List<User>)userRepository.GetUsers();
@@ -82,8 +81,8 @@ namespace TestServer
         public void DeleteUsersTest()
         {
             var userRepository = new JSONUserRepository();
-            var user1 = CreateUser("puti_love", 12312451);
-            var user2 = CreateUser("puti_love2", 12315125);
+            var user1 = CreateUser(1, "puti_love", 12312451);
+            var user2 = CreateUser(2, "puti_love2", 12315125);
             userRepository.AddUser(user1);
             userRepository.AddUser(user2);
             userRepository.DeleteAllUsers();

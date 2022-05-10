@@ -14,7 +14,7 @@ namespace TestServer
 {
     public class UserEventControllerTest
     {
-        private static UserEvent CreateUserEvent(string eventName, DateTime dateTime, int eventFrequency)
+        private static UserEvent CreateUserEvent(int id, string eventName, DateTime dateTime, int eventFrequency)
         {
             var user = new User()
             {
@@ -25,6 +25,7 @@ namespace TestServer
             };
             return new UserEvent()
             {
+                Id = id,
                 User = user,
                 EventName = eventName,
                 DateNTime = dateTime,
@@ -40,8 +41,7 @@ namespace TestServer
             await httpClient.DeleteAsync("api/UserEvent");
 
             var date = DateTime.Now;
-            var userEvent = CreateUserEvent("testEvent", date, 1);
-            userEvent.Id = 1;
+            var userEvent = CreateUserEvent(1, "testEvent", date, 1);
             var content = new StringContent(JsonConvert.SerializeObject(userEvent), Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/UserEvent", content);
 
@@ -61,8 +61,7 @@ namespace TestServer
             await httpClient.DeleteAsync("api/UserEvent");
 
             var date = DateTime.Now;
-            var userEvent = CreateUserEvent("testEvent", date, 1);
-            userEvent.Id = 1;
+            var userEvent = CreateUserEvent(1, "testEvent", date, 1);
             var content = new StringContent(JsonConvert.SerializeObject(userEvent), Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/UserEvent", content);
 
@@ -85,10 +84,8 @@ namespace TestServer
 
             var date1 = DateTime.Now;
             var date2 = date1.AddDays(1);
-            var userEvent1 = CreateUserEvent("testEvent1", date1, 1);
-            userEvent1.Id = 1;
-            var userEvent2 = CreateUserEvent("testEvent2", date2, 1);
-            userEvent2.Id = 2;
+            var userEvent1 = CreateUserEvent(1, "testEvent1", date1, 1);
+            var userEvent2 = CreateUserEvent(2, "testEvent2", date2, 1);
             var userEvents = new List<UserEvent>() { userEvent1, userEvent2 };
 
             var content = new StringContent(JsonConvert.SerializeObject(userEvent1), Encoding.UTF8, "application/json");
@@ -116,8 +113,7 @@ namespace TestServer
             await httpClient.DeleteAsync("api/UserEvent");
 
             var date = DateTime.Now;
-            var userEvent = CreateUserEvent("testEvent", date, 1);
-            userEvent.Id = 1;
+            var userEvent = CreateUserEvent(1, "testEvent", date, 1);
             var content = new StringContent(JsonConvert.SerializeObject(userEvent), Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/UserEvent", content);
 
@@ -140,8 +136,7 @@ namespace TestServer
             await httpClient.DeleteAsync("api/UserEvent");
 
             var date = DateTime.Now;
-            var userEvent = CreateUserEvent("testEvent", date, 1);
-            userEvent.Id = 1;
+            var userEvent = CreateUserEvent(1, "testEvent", date, 1);
             var content = new StringContent(JsonConvert.SerializeObject(userEvent), Encoding.UTF8, "application/json");
             await httpClient.PostAsync("api/UserEvent", content);
 
@@ -164,10 +159,8 @@ namespace TestServer
 
             var date1 = DateTime.Now;
             var date2 = date1.AddDays(1);
-            var userEvent1 = CreateUserEvent("testEvent1", date1, 1);
-            userEvent1.Id = 1;
-            var userEvent2 = CreateUserEvent("testEvent2", date2, 1);
-            userEvent2.Id = 2;
+            var userEvent1 = CreateUserEvent(1, "testEvent1", date1, 1);
+            var userEvent2 = CreateUserEvent(2, "testEvent2", date2, 1);
             var userEvents = new List<UserEvent>() { userEvent1, userEvent2 };
 
             var content = new StringContent(JsonConvert.SerializeObject(userEvent1), Encoding.UTF8, "application/json");
