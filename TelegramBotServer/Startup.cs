@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 using Telegram.Bot;
 using TelegramBotServer.DatabaseContext;
 using TelegramBotServer.Repository;
@@ -41,6 +44,8 @@ namespace TelegramBotServer
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TelegramBotServer", Version = "v1" });
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
             services.AddControllers().AddNewtonsoftJson();
         }
