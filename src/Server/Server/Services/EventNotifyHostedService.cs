@@ -17,7 +17,7 @@ namespace Server.Services
     {
         private readonly ILogger<EventNotifyHostedService> _logger;
         private readonly IJSONUserEventRepository _userEventRepository;
-        private Timer _timer = null;
+        private Timer _timer;
 
         public EventNotifyHostedService(ILogger<EventNotifyHostedService> logger,
                                     IJSONUserEventRepository userEventRepository)
@@ -30,7 +30,7 @@ namespace Server.Services
         {
             _logger.LogInformation("Event notify hosted service running.");
             _userEventRepository.LoadData();
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(30));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(31));
             return Task.CompletedTask;
         }
         
@@ -54,25 +54,6 @@ namespace Server.Services
             DateTime date = DateTime.Now.Date;
             TimeSpan time = DateTime.Now.TimeOfDay;
             bool isOccured = false;
-            /*foreach (var userEvent in userEvents)
-            {
-                var userEventDateTime = userEvent.DateNTime;
-                if (userEventDateTime.TimeOfDay.Hours == time.Hours && userEventDateTime.TimeOfDay.Minutes == time.Minutes)
-                {
-                    if (((userEventDateTime.Date - date).Days % userEvent.EventFrequency) == 0)
-                    {
-                        if (NotifyAboutEvent(userEvent).Result.IsSuccessStatusCode)
-                        {
-                            _logger.LogInformation($"The user is notified of the occurrence of the event {userEvent.EventName}");
-                            isOccured = true;
-                        }
-                        else
-                        {
-                            _logger.LogInformation("The event occurred, but it was not possible to notify the user");
-                        }
-                    }
-                }
-            }*/
             var responses = (from userEvent in userEvents
                        where ((userEvent.DateNTime.Date - date).Days % userEvent.EventFrequency) == 0
                        select NotifyAboutEvent(userEvent).Result);
@@ -93,11 +74,17 @@ namespace Server.Services
         private static async Task<HttpResponseMessage> NotifyAboutEvent(UserEvent userEvent)
         {
             var client = new HttpClient();
-            var response = await client.PostAsync($"https://localhost:443/send/1",
-                                                new StringContent(JsonConvert.SerializeObject(userEvent),
-                                                Encoding.UTF8,
-                                                "application/json"));
-            return response;
+            var getResponse = await client.GetAsync($"api/User/{userEvent.User.Id}");
+            var user = JsonConvert.DeserializeObject<User>(await getResponse.Content.ReadAsStringAsync());
+            if (user.Toggle)
+            {
+                var response = await client.PostAsync($"https://localhost:443/send",
+                                                    new StringContent(JsonConvert.SerializeObject(userEvent),
+                                                    Encoding.UTF8,
+                                                    "application/json"));
+                return response;
+            }
+            else return null;
         }
     }
 }

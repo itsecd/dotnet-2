@@ -10,23 +10,21 @@ namespace Server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IJSONUserRepository _userRepositiry;
-        public UserController(IJSONUserRepository userRepository) => _userRepositiry = userRepository;
+        private readonly IJSONUserRepository _userRepository;
+        public UserController(IJSONUserRepository userRepository) => _userRepository = userRepository;
 
         /// <summary>
         /// Getting all users
         /// </summary>
-        /// <returns>Users</returns>
+        /// <returns>List of users</returns>
         /// <response code="200">Success</response>
-        /// <response code="404">Users not found</response>
         [HttpGet]
         [ProducesResponseType(typeof(List<User>), 200)]
-        [ProducesResponseType(typeof(List<User>), 404)]
         public IEnumerable<User> Get()
         {
             try
             {
-                var users = _userRepositiry.GetUsers();
+                var users = _userRepository.GetUsers();
                 Response.StatusCode = 200;
                 return users;
             }
@@ -40,7 +38,7 @@ namespace Server.Controllers
         /// <summary>
         /// Getting a user by unique id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">User ID</param>
         /// <returns>User</returns>
         /// <response code="200">Success</response>
         /// <response code="404">A user event with this ID was not found</response>
@@ -51,7 +49,7 @@ namespace Server.Controllers
         {
             try
             {
-                User user = _userRepositiry.GetUser(id);
+                User user = _userRepository.GetUser(id);
                 Response.StatusCode = 200;
                 return user;
             }
@@ -66,18 +64,17 @@ namespace Server.Controllers
         /// <summary>
         /// Create a user
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user">User</param>
         /// <response code="200">Success</response>
-        /// <response code="409">A user with this name already exists</response>
+        /// <response code="409">This user already exists</response>
         [HttpPost]
         [ProducesResponseType(typeof(User), 200)]
-        [ProducesResponseType(typeof(User), 404)]
         [ProducesResponseType(typeof(User), 409)]
         public void Post([FromBody] User user)
         {
             try
             {
-                _userRepositiry.AddUser(user);
+                _userRepository.AddUser(user);
                 Response.StatusCode = 200;
             }
             catch(NotFoundException)
@@ -93,10 +90,11 @@ namespace Server.Controllers
         /// <summary>
         /// Update a user by unique id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">User ID</param>
+        /// <param name="user">User</param>
         /// <response code="200">Success</response>
         /// <response code="404">A user with this ID was not found</response>
-        /// <response code="409">A user with this new name already exist</response>
+        /// <response code="409">This user already exist</response>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(User), 200)]
         [ProducesResponseType(typeof(User), 404)]
@@ -105,7 +103,7 @@ namespace Server.Controllers
         {
             try
             {
-                _userRepositiry.UpdateUser(id, user);
+                _userRepository.UpdateUser(id, user);
                 Response.StatusCode = 200;
             }
             catch (NotFoundException)
@@ -121,7 +119,7 @@ namespace Server.Controllers
         /// <summary>
         /// Deleting a user by unique id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">User ID</param>
         /// <response code="200">Success</response>
         /// <response code="404">A user with this ID was not found</response>
         [HttpDelete("{id}")]
@@ -131,7 +129,7 @@ namespace Server.Controllers
         {
             try
             {
-                _userRepositiry.DeleteUser(id);
+                _userRepository.DeleteUser(id);
                 Response.StatusCode = 200;
             }
             catch (NotFoundException)
@@ -143,7 +141,6 @@ namespace Server.Controllers
         /// <summary>
         /// Deleting all users
         /// </summary>
-        /// <returns>Users</returns>
         /// <response code="200">Success</response>
         /// <response code="404">Users not found</response>
         [HttpDelete]
@@ -152,7 +149,7 @@ namespace Server.Controllers
         {
             try
             {
-                _userRepositiry.DeleteAllUsers();
+                _userRepository.DeleteAllUsers();
                 Response.StatusCode = 200;
             }
             catch (NotFoundException)

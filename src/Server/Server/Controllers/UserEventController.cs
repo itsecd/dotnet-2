@@ -21,10 +21,8 @@ namespace Server.Controllers
         /// </summary>
         /// <returns>User events</returns>
         /// <response code="200">Success</response>
-        /// <response code="404">User events not found</response>
         [HttpGet]
         [ProducesResponseType(typeof(List<UserEvent>), 200)]
-        [ProducesResponseType(typeof(List<UserEvent>), 404)]
         public IEnumerable<UserEvent> Get()
         {
             try
@@ -43,7 +41,7 @@ namespace Server.Controllers
         /// <summary>
         /// Getting a user event by unique id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">User event ID</param>
         /// <returns>User event</returns>
         /// <response code="200">Success</response>
         /// <response code="404">A user event with this ID was not found</response>
@@ -68,13 +66,11 @@ namespace Server.Controllers
         /// <summary>
         /// Create a user event
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="userEvent">User event</param>
         /// <response code="200">Success</response>
-        /// <responce code="404">User events not found</responce>
         /// <response code="409">This event already exists</response>
         [HttpPost]
         [ProducesResponseType(typeof(UserEvent), 200)]
-        [ProducesResponseType(typeof(UserEvent), 404)]
         [ProducesResponseType(typeof(UserEvent), 409)]
         public void Post([FromBody] UserEvent userEvent)
         {
@@ -97,9 +93,11 @@ namespace Server.Controllers
         /// <summary>
         /// Update a user event by unique id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">User event ID</param>
+        /// <param name="userEvent">User event</param>
         /// <response code="200">Success</response>
         /// <response code="404">A user event with this ID was not found</response>
+        /// <response code="409">This event already exist</response>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(UserEvent), 200)]
         [ProducesResponseType(typeof(UserEvent), 404)]
@@ -147,12 +145,9 @@ namespace Server.Controllers
         /// <summary>
         /// Deleting all user events
         /// </summary>
-        /// <returns>Users</returns>
         /// <response code="200">Success</response>
-        /// <response code="404">User events not found</response>
         [HttpDelete]
         [ProducesResponseType(typeof(List<UserEvent>), 200)]
-        [ProducesResponseType(typeof(List<UserEvent>), 404)]
         public void Delete()
         {
             try

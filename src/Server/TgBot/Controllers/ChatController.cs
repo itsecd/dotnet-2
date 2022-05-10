@@ -7,7 +7,7 @@ namespace TgBot.Controllers;
 
 public class ChatController : ControllerBase
 {
-    [HttpPost("bot/{any}")]
+    [HttpPost("bot/{token?}")]
     public async Task<IActionResult> Post([FromServices] HandleUpdateService handleUpdateService,
                                           [FromBody] Update update)
     {
@@ -15,13 +15,11 @@ public class ChatController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("send/{any}")]
+    [HttpPost("send")]
     public async Task<IActionResult> PostEvent([FromServices] HandleNotifyService handleNotifyService,
                                                [FromBody] UserEvent userEvent)
     {
         await handleNotifyService.EchoAsync(userEvent);
         return Ok();
     }
-
-
 }

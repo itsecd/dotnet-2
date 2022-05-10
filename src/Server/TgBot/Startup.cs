@@ -5,14 +5,14 @@ namespace TgBot;
 
 public class Startup
 {
+    public IConfiguration Configuration { get; }
+    private BotConfiguration BotConfig { get; }
+
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
         BotConfig = Configuration.GetSection("BotConfiguration").Get<BotConfiguration>();
     }
-
-    public IConfiguration Configuration { get; }
-    private BotConfiguration BotConfig { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
@@ -39,10 +39,6 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            var token = BotConfig.BotToken;
-            endpoints.MapControllerRoute(name: "tgwebhook",
-                                         pattern: $"{token}",
-                                         new { controller = "Chat", action = "Post" });
             endpoints.MapControllers();
         });
     }

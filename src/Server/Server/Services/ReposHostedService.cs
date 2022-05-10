@@ -12,7 +12,7 @@ namespace Server.Services
         private readonly ILogger<ReposHostedService> _logger;
         private readonly IJSONUserRepository _userRepository;
         private readonly IJSONUserEventRepository _userEventRepository;
-        private Timer _timer = null;
+        private Timer _timer;
 
         public ReposHostedService(ILogger<ReposHostedService> logger,
                                     IJSONUserRepository userRepository,

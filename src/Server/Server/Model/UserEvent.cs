@@ -2,12 +2,30 @@
 
 namespace Server.Model
 {
+    /// <summary>
+    /// User event
+    /// </summary>
     public class UserEvent
     {
+        /// <summary>
+        /// UserEventID
+        /// </summary>
         public int Id { get; set; }
+        /// <summary>
+        /// User
+        /// </summary>
         public User User { get; set; }
+        /// <summary>
+        /// User event name
+        /// </summary>
         public string EventName { get; set; }
+        /// <summary>
+        /// Date and time at which the event will occur
+        /// </summary>
         public DateTime DateNTime { get; set; }
+        /// <summary>
+        /// The frequency with which the event occurs
+        /// </summary>
         public int EventFrequency { get; set; }
 
         public override bool Equals(object obj)
@@ -24,7 +42,7 @@ namespace Server.Model
 
         public override int GetHashCode()
         {
-            return Id ^ User.GetHashCode() ^ EventName.GetHashCode() ^ EventFrequency.GetHashCode();
+            return 819357107 ^ Id;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Server.Repositories
 {
     public class JSONUserEventRepository : IJSONUserEventRepository
     {
-        private List<UserEvent> UserEvents = new();
+        private List<UserEvent> _userEvents = new();
         private readonly string _storageFileName;
 
         public JSONUserEventRepository() { }
@@ -22,16 +22,19 @@ namespace Server.Repositories
 
         public void AddUserEvent(UserEvent userEvent)
         {
-            if (UserEvents is null)
-            {
-                throw new NotFoundException();
-            }
-            if(UserEvents.Exists(usrEvnt => usrEvnt.Equals(userEvent)))
+            if(_userEvents.Exists(usrEvnt => usrEvnt.Equals(userEvent)))
             {
                 throw new AlreadyExistException();
             }
-            userEvent.Id = UserEvents.Count == 0 ? 1 : UserEvents.Max(evnt => evnt.Id) + 1;
-            UserEvents.Add(userEvent);
+            var newUserEvent = new UserEvent()
+            {
+                Id = _userEvents.Count == 0 ? 1 : _userEvents.Max(evnt => evnt.Id) + 1,
+                User = userEvent.User,
+                EventName = userEvent.EventName,
+                DateNTime = userEvent.DateNTime,
+                EventFrequency = userEvent.EventFrequency,
+            };
+            _userEvents.Add(newUserEvent);
         }
 
         public void DeleteUserEvent(int id)
@@ -40,25 +43,17 @@ namespace Server.Repositories
             {
                 throw new NotFoundException();
             }
-            UserEvents.Remove(UserEvents.Single(userEvent => userEvent.Id == id));
+            _userEvents.Remove(_userEvents.Single(userEvent => userEvent.Id == id));
         }
 
         public void DeleteAllUserEvents()
         {
-            if (UserEvents is null)
-            {
-                throw new NotFoundException();
-            }
-            UserEvents.Clear();
+            _userEvents.Clear();
         }
 
         public IEnumerable<UserEvent> GetUserEvents()
         {
-            if (UserEvents is null)
-            {
-                throw new NotFoundException();
-            }
-            return UserEvents;
+            return _userEvents;
         }
 
         public UserEvent GetUserEvent(int id)
@@ -67,7 +62,7 @@ namespace Server.Repositories
             {
                 throw new NotFoundException();
             }
-            return UserEvents.Single(userEvent => userEvent.Id == id);
+            return _userEvents.Single(userEvent => userEvent.Id == id);
         }
 
         public void UpdateUserEvent(int id, UserEvent userEvent)
@@ -76,11 +71,11 @@ namespace Server.Repositories
             {
                 throw new NotFoundException();
             }
-            if (UserEvents.Where(usrEvnt => usrEvnt.Equals(userEvent)).Count() > 1)
+            if (_userEvents.Count(usrEvnt => usrEvnt.Equals(userEvent)) > 1)
             {
                 throw new AlreadyExistException();
             }
-            var usrEvntFromRepo = UserEvents.Single(us => us.Id == id);
+            var usrEvntFromRepo = _userEvents.Single(us => us.Id == id);
             usrEvntFromRepo.EventName = userEvent.EventName;
             usrEvntFromRepo.User = new User()
             {
@@ -102,23 +97,19 @@ namespace Server.Repositories
             }
             using var fileReader = new StreamReader(_storageFileName);
             var jsonString = fileReader.ReadToEnd();
-            UserEvents = JsonConvert.DeserializeObject<List<UserEvent>>(jsonString);
+            _userEvents = JsonConvert.DeserializeObject<List<UserEvent>>(jsonString);
         }
 
         public void SaveData()
         {
-            var jsonString = JsonConvert.SerializeObject(UserEvents);
+            var jsonString = JsonConvert.SerializeObject(_userEvents);
             using var fileWriter = new StreamWriter(_storageFileName);
             fileWriter.Write(jsonString);
         }
 
         private bool IsExist(int id)
         {
-            if (!UserEvents.Exists(user => user.Id == id) || UserEvents is null)
-            {
-                return false;
-            }
-            return true;
+            return _userEvents.Exists(user => user.Id == id);
         }
     }
 }

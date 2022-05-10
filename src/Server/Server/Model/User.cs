@@ -1,10 +1,25 @@
 ﻿namespace Server.Model
 {
+    /// <summary>
+    /// User
+    /// </summary>
     public class User
     {
-        public int Id { get; set; }
+        /// <summary>
+        /// UserId
+        /// </summary>
+        public int Id { get; init; }
+        /// <summary>
+        /// User name
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Chat id in telegram
+        /// </summary>
         public long ChatId { get; set; }
+        /// <summary>
+        /// Shows whether the user has alerts enabled
+        /// </summary>
         public bool Toggle { get; set; }
 
         public override bool Equals(object obj)
@@ -18,8 +33,7 @@
 
         public override int GetHashCode()
         {
-            int nameHashCode = Name.GetHashCode();
-            return nameHashCode ^ Id ^ Toggle.GetHashCode();
+            return 1274718499 ^ Id;
         }
     }
 }
