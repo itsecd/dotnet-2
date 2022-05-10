@@ -61,7 +61,7 @@ namespace TelegramBotServer.Controllers
             catch (Exception exc)
             {
                 return Problem($"Problem detected: {exc.Message}");
-            }            
+            }
         }
 
         /// <summary>

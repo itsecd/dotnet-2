@@ -1,11 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using System.Threading.Tasks;
 using TelegramBotServer.DatabaseContext;
 using TelegramBotServer.Model;
 using TelegramBotServer.Validators;
@@ -30,7 +27,7 @@ namespace TelegramBotServer.Repository
                 throw new Exception("Database context is null!");
             else
             {
-                var validator = new EventValidator(dbContext.Events);
+                var validator = new EventValidator();
                 if (!validator.Validate(newEvent))
                     throw new ArgumentException("Invalid event");
 
@@ -50,7 +47,7 @@ namespace TelegramBotServer.Repository
                 throw new Exception("Database context is null!");
             else
             {
-                var validator = new EventValidator(dbContext.Events);
+                var validator = new EventValidator();
                 if (!validator.Validate(newEvent))
                     throw new ArgumentException("Invalid event");
 

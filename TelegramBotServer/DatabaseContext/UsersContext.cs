@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 using TelegramBotServer.Model;
 
 namespace TelegramBotServer.DatabaseContext
@@ -13,10 +8,10 @@ namespace TelegramBotServer.DatabaseContext
         public DbSet<Subscriber>? Subscribers { get; set; }
         public DbSet<Event>? Events { get; set; }
 
-        public UsersContext(DbContextOptions<UsersContext> options): base(options)
+        public UsersContext(DbContextOptions<UsersContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
-        
+
     }
 }

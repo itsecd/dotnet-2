@@ -37,7 +37,7 @@ namespace TelegramBotServer.Services
                 string message;
                 var rest = (int)Math.Round(someEvent.Deadline.Subtract(DateTime.Now).TotalMinutes);
 
-                var inlineKeyboardRows = new List<InlineKeyboardLine> { new InlineKeyboardLine { 
+                var inlineKeyboardRows = new List<InlineKeyboardLine> { new InlineKeyboardLine {
                     InlineKeyboardButton.WithCallbackData("Take",
                     JsonSerializer.Serialize(new CallbackData { eventId = someEvent.Id, newReminder = 0 }))}};
 
@@ -46,15 +46,15 @@ namespace TelegramBotServer.Services
                         InlineKeyboardButton.WithCallbackData("Remind me 5 minutes before the event",
                         JsonSerializer.Serialize(new CallbackData { eventId = someEvent.Id, newReminder = 5 }))});
                 if (rest > 15)
-                    inlineKeyboardRows.Add(new InlineKeyboardLine { 
+                    inlineKeyboardRows.Add(new InlineKeyboardLine {
                         InlineKeyboardButton.WithCallbackData("Remind me 15 minutes before the event",
                         JsonSerializer.Serialize(new CallbackData { eventId = someEvent.Id, newReminder = 15 }))});
                 if (rest > 30)
-                    inlineKeyboardRows.Add(new InlineKeyboardLine { 
+                    inlineKeyboardRows.Add(new InlineKeyboardLine {
                         InlineKeyboardButton.WithCallbackData("Remind me 30 minutes before the event",
                         JsonSerializer.Serialize(new CallbackData { eventId = someEvent.Id, newReminder = 30 }))});
                 if (rest > 60)
-                    inlineKeyboardRows.Add(new InlineKeyboardLine { 
+                    inlineKeyboardRows.Add(new InlineKeyboardLine {
                         InlineKeyboardButton.WithCallbackData("Remind me 60 minutes before the event",
                         JsonSerializer.Serialize(new CallbackData { eventId = someEvent.Id, newReminder = 60 }))});
 

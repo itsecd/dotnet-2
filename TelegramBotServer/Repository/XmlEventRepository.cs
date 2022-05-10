@@ -30,14 +30,15 @@ namespace TelegramBotServer.Repository
             ReadFile();
             if (_events is null)
                 return false;
-            else {
+            else
+            {
                 var someEvent = _events.FirstOrDefault(e => e.Id == id);
                 if (someEvent is null)
                     return false;
                 int index = _events.IndexOf(someEvent);
                 _events[index] = newEvent;
                 WriteFile();
-                return true; 
+                return true;
             }
         }
 
@@ -57,7 +58,7 @@ namespace TelegramBotServer.Repository
         {
             ReadFile();
             var delEvent = _events?.Find(e => e.Id == id);
-            if (delEvent is null) 
+            if (delEvent is null)
                 return false;
             _events?.Remove(delEvent);
             WriteFile();

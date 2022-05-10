@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TelegramBotServer.Model;
 using TelegramBotServer.Validators;
 using Xunit;
@@ -42,7 +39,7 @@ namespace TelegramBotServer.Tests.ValidatorsTests
                 ChatId = chatId,
                 EventsId = eventsId.ToList()
             };
-            var validator = new SubscriberValidator(new List<Event> ());
+            var validator = new SubscriberValidator(new List<Event>());
 
             var result = validator.Validate(validSub);
 
@@ -53,7 +50,7 @@ namespace TelegramBotServer.Tests.ValidatorsTests
         {
             var events = new List<Event>();
 
-            foreach(var eventId in eventsId)
+            foreach (var eventId in eventsId)
             {
                 events.Add(new Event { Id = eventId });
             }

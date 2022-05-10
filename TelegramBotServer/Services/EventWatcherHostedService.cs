@@ -48,7 +48,7 @@ namespace TelegramBotServer.Services
             foreach (var someEvent in events)
             {
                 var rest = someEvent.Deadline.Subtract(DateTime.Now);
-                if (rest <= TimeSpan.FromMinutes(someEvent.Reminder) && ! someEvent.Notified)
+                if (rest <= TimeSpan.FromMinutes(someEvent.Reminder) && !someEvent.Notified)
                 {
                     _notificationSender.NotifyAsync(someEvent);
                     someEvent.Notified = true;

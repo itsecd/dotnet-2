@@ -34,7 +34,7 @@ namespace TelegramBotServer.Repository
                 var sub = _subs.FirstOrDefault(s => s.Id == id);
                 if (sub is null)
                     return false;
-                int index =_subs.IndexOf(sub);
+                int index = _subs.IndexOf(sub);
                 _subs[(int)index] = newSub;
             }
             WriteFile();

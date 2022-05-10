@@ -57,13 +57,13 @@ namespace TelegramBotServer.Controllers
             try
             {
                 return _repository.AddEvent(someEvent);
-                
+
             }
             catch (Exception exc)
             {
                 return Problem($"Problem detected: {exc.Message}");
             }
-            
+
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace TelegramBotServer.Controllers
             catch (Exception exc)
             {
                 return Problem($"Problem detected: {exc.Message}");
-            }            
+            }
         }
     }
 }
