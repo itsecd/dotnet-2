@@ -2,6 +2,7 @@
 {
     public class HostConfiguration
     {
-        public string HostAddress { get; init; }
+        public string? WebHookAddress { get; init; }
+        public string? ServerAddress { get; init; }
     }
 }

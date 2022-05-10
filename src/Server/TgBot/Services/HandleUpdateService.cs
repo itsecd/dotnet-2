@@ -13,11 +13,13 @@ public class HandleUpdateService
 {
     private readonly ITelegramBotClient _botClient;
     private readonly ILogger<HandleUpdateService> _logger;
+    private static string? ServerAddress;
 
-    public HandleUpdateService(ITelegramBotClient botClient, ILogger<HandleUpdateService> logger)
+    public HandleUpdateService(ITelegramBotClient botClient, ILogger<HandleUpdateService> logger, IConfiguration configuration)
     {
         _botClient = botClient;
         _logger = logger;
+        ServerAddress = configuration.GetSection("HostConfiguration").Get<HostConfiguration>().ServerAddress;
     }
 
     public async Task EchoAsync(Update update)
@@ -52,23 +54,24 @@ public class HandleUpdateService
             "/enable"   => SetEnableMode(_botClient, message),
             "/disable"  => SetDisableMode(_botClient, message),
             "/signOut"  => DeleteUser(_botClient, message),
-            "/test"     => TestRequest(_botClient, message),
             _           => Usage(_botClient, message)
         };
         Message sentMessage = await action;
         _logger.LogInformation("The message was sent with id: {sentMessageId}",sentMessage.MessageId);
     }
 
-    static async Task<Message> AddUser(ITelegramBotClient bot, Message message)
+    private static async Task<Message> AddUser(ITelegramBotClient bot, Message message)
     {
 
         await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-        Server.Model.User user = new();
-        user.Name = message.Chat.Username;
-        user.ChatId = message.Chat.Id;
-        user.Toggle = false;
+        var user = new Server.Model.User
+        {
+            Name = message.Chat.Username,
+            ChatId = message.Chat.Id,
+            Toggle = false
+        };
         var client = new HttpClient();
-        var response = await client.PostAsync($"https://localhost:44349/api/User", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
+        var response = await client.PostAsync(ServerAddress, new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
         if (!response.IsSuccessStatusCode)
         {
             if (response.StatusCode == HttpStatusCode.Conflict)
@@ -94,162 +97,125 @@ public class HandleUpdateService
         return code;
     }
 
-    static async Task<Message> SendConfirmationCode(ITelegramBotClient bot, Message message)
+    private static async Task<Message> SendConfirmationCode(ITelegramBotClient bot, Message message)
     {
         return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                          text: GetCode(message.Chat.Username));
+                                                          text: GetCode(message.Chat.Username!));
     }
 
-    static async Task<Message> TestRequest(ITelegramBotClient bot, Message message)
-    {
-        await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-        var userEvent = new Server.Model.UserEvent
-        {
-            Id = 1,
-            User = new Server.Model.User()
-            {
-                Id = 1,
-                ChatId = message.Chat.Id,
-                Name = message.Chat.Username,
-                Toggle = true
-            },
-            EventName = "VAM POSILKA",
-            DateNTime = DateTime.Now
-        };
-        var client = new HttpClient();
-        var response = await client.PostAsync($"https://localhost:443/send", new StringContent(JsonConvert.SerializeObject(userEvent), Encoding.UTF8, "application/json"));
-        return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                  text: "a");
-    }
-
-    static async Task<Message> SetEnableMode(ITelegramBotClient bot, Message message)
+    private static async Task<Message> SetEnableMode(ITelegramBotClient bot, Message message)
     {
         await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
         var client = new HttpClient();
-        var response = await client.GetAsync("https://localhost:44349/api/User");
-        HttpResponseMessage putResponse;
+        var response = await client.GetAsync(ServerAddress);
         if (response.IsSuccessStatusCode)
         {
-            List<Server.Model.User> users = JsonConvert.DeserializeObject<List<Server.Model.User>>(await response.Content.ReadAsStringAsync())!;
+            var users = JsonConvert.DeserializeObject<List<Server.Model.User>>(await response.Content.ReadAsStringAsync())!;
             if (users.Exists(user => user.Name.Equals(message.Chat.Username)))
             {
-                Server.Model.User user = users.Single(user => user.Name == message.Chat.Username);
+                var user = users.Single(user => user.Name == message.Chat.Username);
                 user.Toggle = true;
-                putResponse = await client.PutAsync($"https://localhost:44349/api/User/{user.Id}", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
+                var putResponse = await client.PutAsync(ServerAddress + $"/api/User/{user.Id}", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
                 if (putResponse.IsSuccessStatusCode)
                 {
-                    string str = $"Success";
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                          text: str);
+                                                          text: "Success");
                 }
                 else
                 {
-                    string str = $"Error {putResponse.StatusCode}";
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                          text: str);
+                                                          text: $"Error {putResponse.StatusCode}");
                 }
             }
             else
             {
-                string str = "You are not registered";
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                      text: str);
+                                                      text: "You are not registered");
             }
         }
         else
         {
-            string str = $"Error {response.StatusCode}";
             return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                  text: str);
+                                                  text: $"Error {response.StatusCode}");
         }
 
     }
 
-    static async Task<Message> SetDisableMode(ITelegramBotClient bot, Message message)
+    private static async Task<Message> SetDisableMode(ITelegramBotClient bot, Message message)
     {
         await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
         var client = new HttpClient();
-        var response = await client.GetAsync("https://localhost:44349/api/User");
-        HttpResponseMessage putResponse;
+        var response = await client.GetAsync(ServerAddress + $"/api/User");
         if (response.IsSuccessStatusCode)
         {
-            List<Server.Model.User> users = JsonConvert.DeserializeObject<List<Server.Model.User>>(await response.Content.ReadAsStringAsync())!;
+            var users = JsonConvert.DeserializeObject<List<Server.Model.User>>(await response.Content.ReadAsStringAsync())!;
             if (users.Exists(user => user.Name.Equals(message.Chat.Username)))
             {
-                Server.Model.User user = users.Single(user => user.Name == message.Chat.Username);
+                var user = users.Single(user => user.Name == message.Chat.Username);
                 user.Toggle = false;
-                putResponse = await client.PutAsync($"https://localhost:44349/api/User/{user.Id}", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
+                var putResponse = await client.PutAsync(ServerAddress + $"/api/User/{user.Id}", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
                 if (putResponse.IsSuccessStatusCode)
                 {
-                    string str = $"Success";
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                          text: str);
+                                                          text: "Success");
                 }
                 else
                 {
-                    string str = $"Error {putResponse.StatusCode}";
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                          text: str);
+                                                          text: $"Error {putResponse.StatusCode}");
                 }
             }
             else
             {
-                string str = "You are not registered";
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                      text: str);
+                                                      text: "You are not registered");
             }
         }
         else
         {
-            string str = $"Error {response.StatusCode}";
             return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                  text: str);
+                                                  text: $"Error {response.StatusCode}");
         }
 
     }
 
-    static async Task<Message> DeleteUser(ITelegramBotClient bot, Message message)
+    private static async Task<Message> DeleteUser(ITelegramBotClient bot, Message message)
     {
         await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
         var client = new HttpClient();
-        var response = await client.GetAsync("https://localhost:44349/api/User");
-        HttpResponseMessage deleteResponse;
+        var response = await client.GetAsync(ServerAddress + $"/api/User");
         if (response.IsSuccessStatusCode)
         {
-            List<Server.Model.User> users = JsonConvert.DeserializeObject<List<Server.Model.User>>(await response.Content.ReadAsStringAsync())!;
+            var users = JsonConvert.DeserializeObject<List<Server.Model.User>>(await response.Content.ReadAsStringAsync())!;
             if (users.Exists(user => user.Name.Equals(message.Chat.Username)))
             {
-                Server.Model.User user = users.Single(user => user.Name == message.Chat.Username);
-                deleteResponse = await client.DeleteAsync($"https://localhost:44349/api/User/{user.Id}");
+                var user = users.Single(user => user.Name == message.Chat.Username);
+                var deleteResponse = await client.DeleteAsync(ServerAddress + $"/api/User/{user.Id}");
                 if (deleteResponse.IsSuccessStatusCode)
                 {
-                    string str = $"Success";
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                          text: str);
+                                                          text: "Success");
                 }
                 else
                 {
-                    string str = $"Error {deleteResponse.StatusCode}";
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                          text: str);
+                                                          text: $"Error {deleteResponse.StatusCode}");
                 }
             }
             else
             {
-                string str = "You are not registered";
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                      text: str);
+                                                      text: "You are not registered");
             }
         }
         else
         {
-            string str = $"Error {response.StatusCode}";
             return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                  text: str);
+                                                  text: $"Error {response.StatusCode}");
         }
     }
 
-    static async Task<Message> Usage(ITelegramBotClient bot, Message message)
+    private static async Task<Message> Usage(ITelegramBotClient bot, Message message)
     {
         const string usage = "Usage:\n" +
                              "/signUp    -  sign up\n" +
@@ -268,7 +234,7 @@ public class HandleUpdateService
         return Task.CompletedTask;
     }
 
-    public Task HandleErrorAsync(Exception exception)
+    private Task HandleErrorAsync(Exception exception)
     {
         var errorMessage = exception switch
         {
@@ -276,7 +242,7 @@ public class HandleUpdateService
             _ => exception.ToString()
         };
 
-        _logger.LogInformation($"HandleError: {errorMessage}", errorMessage);
+        _logger.LogInformation($"HandleError: {errorMessage}");
         return Task.CompletedTask;
     }
 }

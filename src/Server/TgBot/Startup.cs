@@ -19,7 +19,7 @@ public class Startup
         services.AddHostedService<ConfigureWebhook>();
         services.AddHttpClient("tgwebhook")
                 .AddTypedClient<ITelegramBotClient>(httpClient
-                    => new TelegramBotClient(BotConfig.BotToken, httpClient));
+                    => new TelegramBotClient(BotConfig.BotToken!, httpClient));
 
         services.AddScoped<HandleUpdateService>();
         services.AddScoped<HandleNotifyService>();
