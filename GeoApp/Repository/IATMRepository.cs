@@ -1,7 +1,7 @@
 ﻿using GeoApp.Model;
 using System.Collections.Generic;
-namespace GeoApp.Repository
 
+namespace GeoApp.Repository
 {
     public interface IATMRepository
     {

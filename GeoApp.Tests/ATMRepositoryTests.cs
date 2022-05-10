@@ -93,5 +93,24 @@ namespace GeoApp.Tests
 
             Assert.Equal(91, repository.GetAllATMs().Count);
         }
+
+        [Fact]
+        public void ChangeBalance()
+        {
+            ATMRepository repository = new();
+            var atms = repository.GetAllATMs();
+
+            var tasks = atms.Select(atm => Task.Run(() =>
+            {
+                repository.ChangeBalanceById(atm.Properties.Id, 100);
+            })).ToArray();
+            Task.WaitAll(tasks);
+
+            tasks = atms.Select(atm => Task.Run(() =>
+            {
+                repository.ChangeBalanceById(atm.Properties.Id, 0);
+            })).ToArray();
+            Task.WaitAll(tasks);
+        }
     }
 }

@@ -11,19 +11,19 @@ namespace GeoApp.Repository
         private const string XmlStorageFileName = "ATMs.xml";
         private const string JsonStorageFileName = "atm.geojson";
 
+        object locker = new();
+
         private List<XmlATM> _xmlATMs;
         private List<JsonATM> _jsonATMs;
 
         public JsonATM GetATMById(string id)
         {
             ReadFromFile();
-            var atm = _jsonATMs.Find(atm => atm.Properties.Id == id);
-            return atm ?? null;
+            return _jsonATMs.Find(atm => atm.Properties.Id == id);
         }
 
         public JsonATM ChangeBalanceById(string id, int balance)
         {
-            object locker = new();
             lock (locker)
             {
                 ReadFromFile();
