@@ -13,13 +13,13 @@ public class HandleUpdateService
 {
     private readonly ITelegramBotClient _botClient;
     private readonly ILogger<HandleUpdateService> _logger;
-    private static string? s_serverAddress;
+    private static string? _serverAddress;
 
     public HandleUpdateService(ITelegramBotClient botClient, ILogger<HandleUpdateService> logger, IConfiguration configuration)
     {
         _botClient = botClient;
         _logger = logger;
-        s_serverAddress = configuration.GetSection("HostConfiguration").Get<HostConfiguration>().ServerAddress;
+        _serverAddress = configuration.GetSection("HostConfiguration").Get<HostConfiguration>().ServerAddress;
     }
 
     public async Task EchoAsync(Update update)
@@ -70,7 +70,7 @@ public class HandleUpdateService
             Toggle = false
         };
         var client = new HttpClient();
-        var response = await client.PostAsync(s_serverAddress, new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
+        var response = await client.PostAsync($"{_serverAddress}/api/User", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
         if (!response.IsSuccessStatusCode)
         {
             if (response.StatusCode == HttpStatusCode.Conflict)
@@ -105,7 +105,7 @@ public class HandleUpdateService
     {
         await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
         var client = new HttpClient();
-        var response = await client.GetAsync(s_serverAddress);
+        var response = await client.GetAsync($"{_serverAddress}/api/User");
         if (response.IsSuccessStatusCode)
         {
             var users = JsonConvert.DeserializeObject<List<Server.Model.User>>(await response.Content.ReadAsStringAsync())!;
@@ -113,7 +113,7 @@ public class HandleUpdateService
             {
                 var user = users.Single(user => user.Name == message.Chat.Username);
                 user.Toggle = true;
-                var putResponse = await client.PutAsync($"{s_serverAddress}/api/User/{user.Id}", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
+                var putResponse = await client.PutAsync($"{_serverAddress}/api/User/{user.Id}", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
                 if (putResponse.IsSuccessStatusCode)
                 {
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
@@ -142,7 +142,7 @@ public class HandleUpdateService
     {
         await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
         var client = new HttpClient();
-        var response = await client.GetAsync($"{s_serverAddress}/api/User");
+        var response = await client.GetAsync($"{_serverAddress}/api/User");
         if (response.IsSuccessStatusCode)
         {
             var users = JsonConvert.DeserializeObject<List<Server.Model.User>>(await response.Content.ReadAsStringAsync())!;
@@ -150,7 +150,7 @@ public class HandleUpdateService
             {
                 var user = users.Single(user => user.Name == message.Chat.Username);
                 user.Toggle = false;
-                var putResponse = await client.PutAsync($"{s_serverAddress}/api/User/{user.Id}", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
+                var putResponse = await client.PutAsync($"{_serverAddress}/api/User/{user.Id}", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
                 if (putResponse.IsSuccessStatusCode)
                 {
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
@@ -179,14 +179,14 @@ public class HandleUpdateService
     {
         await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
         var client = new HttpClient();
-        var response = await client.GetAsync($"s_serverAddress/api/User");
+        var response = await client.GetAsync($"{_serverAddress}/api/User");
         if (response.IsSuccessStatusCode)
         {
             var users = JsonConvert.DeserializeObject<List<Server.Model.User>>(await response.Content.ReadAsStringAsync())!;
             if (users.Exists(user => user.Name.Equals(message.Chat.Username)))
             {
                 var user = users.Single(user => user.Name == message.Chat.Username);
-                var deleteResponse = await client.DeleteAsync($"{s_serverAddress}/api/User/{user.Id}");
+                var deleteResponse = await client.DeleteAsync($"{_serverAddress}/api/User/{user.Id}");
                 if (deleteResponse.IsSuccessStatusCode)
                 {
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
