@@ -19,7 +19,6 @@ namespace Lab2.Repository
         int RemoveProduct(int id, int num);
         int ReplaceProduct(int id, int num, Product newProduct);
         int RemoveAllProducts(int id);
-        float GetAllCostOrder(Order order);
         float GetAmountMonth();
         public Dictionary<string, int> GetProductsMonth();
     }

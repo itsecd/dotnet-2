@@ -9,11 +9,10 @@ namespace Lab2.Services
 {
     public class TimedHostedService : IHostedService, IDisposable
     {
-        private int executionCount = 0;
         private readonly ILogger<TimedHostedService> _logger;
         private readonly ICustomerRepository _customerRepository;
         private readonly IOrderRepository _orderRepository;
-        private Timer _timer = null!;
+        private Timer _timer = null;
         public TimedHostedService(ILogger<TimedHostedService> logger, ICustomerRepository customerRepository, IOrderRepository orderRepository)
         {
             _logger = logger;
@@ -28,16 +27,13 @@ namespace Lab2.Services
             _orderRepository.ReadFromFileOrders();
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
                 TimeSpan.FromSeconds(5));
-
             return Task.CompletedTask;
         }
-        private void DoWork(object? state)
+        private void DoWork(object state)
         {
-            var count = Interlocked.Increment(ref executionCount);
             _customerRepository.WriteToFileCustomers();
             _orderRepository.WriteToFileOrders();
-            _logger.LogInformation(
-                "Timed Hosted Service is working. Count: {Count}", count);
+            _logger.LogInformation("Service is working");
         }
         public Task StopAsync(CancellationToken stoppingToken)
         {

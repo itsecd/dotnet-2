@@ -11,7 +11,7 @@ namespace Lab2.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private List<Customer> _customers { get; set; }
+        private List<Customer> _customers;
         private readonly string _storageFileName;
         public CustomerRepository()
         {
@@ -54,7 +54,7 @@ namespace Lab2.Repository
             {
                 customer.Id = _customers.Max(custom => custom.Id) + 1;
             }
-            if (_customers.Where(cstmr => cstmr.FullName == customer.FullName && cstmr.PhoneNumber == customer.PhoneNumber).Any())
+            if (_customers.Any(cstmr => cstmr.FullName == customer.FullName && cstmr.PhoneNumber == customer.PhoneNumber))
             {
                 throw new ArgumentException();
             }
@@ -88,12 +88,12 @@ namespace Lab2.Repository
             {
                 throw new ArgumentOutOfRangeException();
             }
-            IEnumerable<Customer> customers =  _customers.Where(customer => customer.Id == id);
-            if(!customers.Any())
+            var customer = _customers.FirstOrDefault(cstmr => cstmr.Id == id);
+            if (customer is null)
             {
                 throw new NotFoundException();
             }
-            return customers.Single();
+            return customer;
         }
         public int DeleteCustomer(int id)
         {

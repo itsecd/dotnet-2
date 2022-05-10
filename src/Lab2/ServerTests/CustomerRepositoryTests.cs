@@ -44,9 +44,6 @@ namespace ServerTests
             customerRepository.AddCustomer(customer);
             Assert.Equal(customer.Id, customerRepository.ReplaceCustomer(1, customer));
             customerRepository.DeleteCustomer(customer.Id);
-
         }
-
-        
     }
 }

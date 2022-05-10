@@ -12,7 +12,7 @@ namespace Lab2.Repository
     public class OrderRepository: IOrderRepository
     {
         private readonly string _storageFileName;
-        private List<Order> _orders { get; set; }
+        private List<Order> _orders;
         public OrderRepository()
         {
             _orders = new();
@@ -23,7 +23,6 @@ namespace Lab2.Repository
         }
         public void ReadFromFileOrders()
         {
-            
             if (!File.Exists(_storageFileName))
             {
                 _orders = new List<Order>();
@@ -100,10 +99,6 @@ namespace Lab2.Repository
         }
         public int DeleteOrder(int id)
         {
-            if (id < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
             Order order = GetOrder(id);
             if (order == null)
             {
@@ -119,10 +114,6 @@ namespace Lab2.Repository
         
         public List<Product> GetProducts(int id)
         {
-            if (id < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
             Order order = GetOrder(id);
             if(order == null)
             {
@@ -132,10 +123,6 @@ namespace Lab2.Repository
         }
         public int AddProduct(int id, Product product)
         {
-            if (id < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
             Order order = GetOrder(id);
             if (order == null)
             {
@@ -148,25 +135,11 @@ namespace Lab2.Repository
         public Product GetProduct(int id, int num)
         {
             Order order = GetOrder(id);
-            if (num < 0 || num > order.Products.Count)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-            num--;
-            if (order.Products.Count >= num)
-            {
-                return order.Products[num];
-
-            }
-            return null;
+            return order.Products[num - 1];
         }
         public int ReplaceProduct(int id, int num, Product newProduct)
         {
             Order order = GetOrder(id);
-            if (num < 0 || num > order.Products.Count)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
             Product product = GetProduct(id, num);
             product.NameProduct = newProduct.NameProduct;
             product.CostProduct = newProduct.CostProduct;
@@ -176,10 +149,6 @@ namespace Lab2.Repository
         public int RemoveProduct(int id, int num)
         {
             Order order = GetOrder(id);
-            if (num < 0 || num > order.Products.Count)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
             order.Products.Remove(GetProduct(id, num));
             order.AmountOrder = GetAllCostOrder(order);
             return id;
@@ -193,27 +162,14 @@ namespace Lab2.Repository
         }
         public Dictionary<string,int> GetProductsMonth()
         {
-            var dict = new Dictionary<string, int>();
-            int count = 1;
-            foreach(Order order in _orders)
-            {
-                if(DateTime.Today < order.Dt.AddDays(30))
-                {
-                    foreach (Product product in order.Products)
-                    {
-                        if (!dict.ContainsKey(product.NameProduct))
-                        {
-                            dict.Add(product.NameProduct, count);
-                        }
-                        else
-                        {
-                            dict[product.NameProduct]++;
-                        }
-                    }
-                }
-            }
-            return dict.OrderByDescending(a => a.Value).
-                        ToDictionary<KeyValuePair<string, int>, string, int>(pair => pair.Key, pair => pair.Value);
+            return (from order in _orders
+                         from product in order.Products
+                         where (DateTime.Now - order.Dt).Days < 30
+                         group product by product.NameProduct
+                         into productGroup
+                         orderby productGroup.Count() descending
+                         select new KeyValuePair<string, int>(productGroup.Key, productGroup.Count()))
+                         .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
         public float GetAllCostOrder(Order order)
         {

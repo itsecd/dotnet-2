@@ -8,7 +8,7 @@ namespace ServerTests
 {
     public class OrderRepositoryTests
     {
-        private Order CreateOrder(DateTime Data)
+        private static Order CreateOrder(DateTime data)
         {
             var customer = new Customer
             {
@@ -28,34 +28,32 @@ namespace ServerTests
                     NameProduct = "mango",
                     CostProduct = 70
                 }
-
             };
             var order = new Order
             {
                 Products = products,
                 CustomerId = customer.Id,
                 AmountOrder = 130,
-                Dt = Data,
+                Dt = data,
                 Status = "done"
             };
-            
             return order;
         }
         [Fact]
         public void AddOrderTest()
         {
-            DateTime Data = DateTime.Now;
-            var order = CreateOrder(Data);
+            DateTime data = DateTime.Now;
+            var order = CreateOrder(data);
             OrderRepository orderRepository = new();
             orderRepository.AddOrder(order);
-            Assert.Equal(Data, orderRepository.GetOrder(1).Dt);
+            Assert.Equal(data, orderRepository.GetOrder(1).Dt);
             orderRepository.DeleteOrder(order.OrderId);
         }
         [Fact]
         public void DeleteOrderTest()
         {
-            DateTime Data = DateTime.Now;
-            var order = CreateOrder(Data);
+            DateTime data = DateTime.Now;
+            var order = CreateOrder(data);
             OrderRepository orderRepository = new();
             orderRepository.AddOrder(order);
             Assert.Equal(order.OrderId, orderRepository.DeleteOrder(1));
@@ -64,8 +62,8 @@ namespace ServerTests
         [Fact]
         public void ReplaceOrderTest()
         {
-            DateTime Data = DateTime.Now;
-            var order = CreateOrder(Data);
+            DateTime data = DateTime.Now;
+            var order = CreateOrder(data);
             OrderRepository orderRepository = new();
             orderRepository.AddOrder(order);
             Assert.Equal(order.OrderId, orderRepository.ReplaceOrder(1,order));
@@ -80,8 +78,8 @@ namespace ServerTests
                 CostProduct = 40
             };
             OrderRepository orderRepository = new();
-            DateTime Data = DateTime.Now;
-            var order = CreateOrder(Data);
+            DateTime data = DateTime.Now;
+            var order = CreateOrder(data);
             orderRepository.AddOrder(order);
             Assert.Equal(1, orderRepository.AddProduct(order.OrderId, product));
             orderRepository.DeleteOrder(order.OrderId);
@@ -95,8 +93,8 @@ namespace ServerTests
                 CostProduct = 60
             };
             OrderRepository orderRepository = new();
-            DateTime Data = DateTime.Now;
-            var order = CreateOrder(Data);
+            DateTime data = DateTime.Now;
+            var order = CreateOrder(data);
             orderRepository.AddOrder(order);
             orderRepository.AddProduct(order.OrderId, product);
             Assert.Equal(1, orderRepository.RemoveProduct(order.OrderId,1));
@@ -111,12 +109,31 @@ namespace ServerTests
                 CostProduct = 110
             };
             OrderRepository orderRepository = new();
-            DateTime Data = DateTime.Now;
-            var order = CreateOrder(Data);
+            DateTime data = DateTime.Now;
+            var order = CreateOrder(data);
             orderRepository.AddOrder(order);
             orderRepository.AddProduct(order.OrderId, product);
             Assert.Equal(1, orderRepository.ReplaceProduct(order.OrderId, 1, product));
             orderRepository.DeleteOrder(order.OrderId);
+        }
+        [Fact]
+        public void GetProductsMonthTest()
+        {
+            var product = new Product
+            {
+                NameProduct = "mango",
+                CostProduct = 110
+            };
+            OrderRepository orderRepository = new();
+            DateTime data = DateTime.Now;
+            var order1 = CreateOrder(data);
+            orderRepository.AddOrder(order1);
+            orderRepository.AddProduct(order1.OrderId, product);
+            DateTime data3 = DateTime.Now.AddDays(-40);
+            var order2 = CreateOrder(data3);
+            orderRepository.AddOrder(order2);
+            var dict = orderRepository.GetProductsMonth();
+            Assert.Equal(2, dict["mango"]);
         }
     }
 }

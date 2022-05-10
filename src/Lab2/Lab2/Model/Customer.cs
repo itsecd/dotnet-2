@@ -18,8 +18,5 @@ namespace Lab2.Model
         /// Customer's phone number
         /// </summary>
         public string PhoneNumber { get; set; }
-        
-
-
     }
 }
