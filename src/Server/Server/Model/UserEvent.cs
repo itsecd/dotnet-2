@@ -10,7 +10,7 @@ namespace Server.Model
         /// <summary>
         /// UserEventID
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; init; }
         /// <summary>
         /// User
         /// </summary>
