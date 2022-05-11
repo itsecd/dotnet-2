@@ -24,4 +24,10 @@
     <ProjectReference Include="..\GeoApp\GeoApp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="atm.geojson">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
