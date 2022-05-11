@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace GeoApp.Model
@@ -44,7 +43,7 @@ namespace GeoApp.Model
         {
             try
             {
-                return Int32.Parse(Properties.Id);
+                return int.Parse(Properties.Id);
             }
             catch
             {

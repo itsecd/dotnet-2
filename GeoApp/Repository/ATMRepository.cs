@@ -11,7 +11,7 @@ namespace GeoApp.Repository
         private const string XmlStorageFileName = "ATMs.xml";
         private const string JsonStorageFileName = "atm.geojson";
 
-        object locker = new();
+        private object _locker = new();
 
         private List<XmlATM> _xmlATMs;
         private List<JsonATM> _jsonATMs;
@@ -24,7 +24,7 @@ namespace GeoApp.Repository
 
         public JsonATM ChangeBalanceById(string id, int balance)
         {
-            lock (locker)
+            lock (_locker)
             {
                 ReadFromFile();
                 var atm = GetATMById(id);
