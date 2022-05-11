@@ -28,19 +28,15 @@ namespace Lab2.Repository
                 _orders = new List<Order>();
                 return;
             }
-            using (var fileReader = new StreamReader(_storageFileName))
-            {
-                string jsonString = fileReader.ReadToEnd();
-                _orders = JsonSerializer.Deserialize<List<Order>>(jsonString);
-            }
+            using var fileReader = new StreamReader(_storageFileName);
+            string jsonString = fileReader.ReadToEnd();
+            _orders = JsonSerializer.Deserialize<List<Order>>(jsonString);
         }
         public void WriteToFileOrders()
         {
             string jsonString = JsonSerializer.Serialize(_orders);
-            using (var fileWriter = new StreamWriter(_storageFileName))
-            {
-                fileWriter.Write(jsonString);
-            }
+            using var fileWriter = new StreamWriter(_storageFileName);
+            fileWriter.Write(jsonString);
         }
         public int AddOrder(Order order)
         {

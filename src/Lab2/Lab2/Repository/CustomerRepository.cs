@@ -28,20 +28,16 @@ namespace Lab2.Repository
                 _customers = new List<Customer>();
                 return;
             }
-            using (var fileReader = new StreamReader(_storageFileName))
-            {
-                string jsonString = fileReader.ReadToEnd();
-                _customers = JsonSerializer.Deserialize<List<Customer>>(jsonString);
-            }
-            
+            using var fileReader = new StreamReader(_storageFileName);
+            string jsonString = fileReader.ReadToEnd();
+            _customers = JsonSerializer.Deserialize<List<Customer>>(jsonString);
+
         }
         public void WriteToFileCustomers()
         {
             string jsonString = JsonSerializer.Serialize(_customers);
-            using (var fileWriter = new StreamWriter(_storageFileName))
-            {
-                fileWriter.Write(jsonString);
-            }
+            using var fileWriter = new StreamWriter(_storageFileName);
+            fileWriter.Write(jsonString);
         }
         public int AddCustomer(Customer customer)
         {

@@ -297,7 +297,7 @@ namespace Lab2.Controllers
         /// Getting the name and amount of products per month
         /// </summary>
         /// <returns>Pair: name and amount of products ordered</returns>
-        [HttpGet("products per month")]
+        [HttpGet("Products/Monthly-report")]
         public ActionResult<Dictionary<string, int>> GetProductMonth()
         {
             try
@@ -313,7 +313,7 @@ namespace Lab2.Controllers
         /// Getting the total cost of orders for the month
         /// </summary>
         /// <returns>Total cost</returns>
-        [HttpGet("total cost")]
+        [HttpGet("Products/Monthly-total-cost")]
         public ActionResult<float> GetTotalCostMonth()
         {
             try
