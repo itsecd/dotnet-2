@@ -11,7 +11,7 @@ namespace GeoApp.Repository
         private const string XmlStorageFileName = "ATMs.xml";
         private const string JsonStorageFileName = "atm.geojson";
 
-        private object _locker = new();
+        private readonly object _locker = new();
 
         private List<XmlATM> _xmlATMs;
         private List<JsonATM> _jsonATMs;
