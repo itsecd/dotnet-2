@@ -11,6 +11,6 @@ namespace ChatServer.Repositories
         void RemoveRoom(string nameRoom);
         Task WriteAsyncToFile();
 
-        public bool IsRoomExists(string nameRoom);
+        bool IsRoomExists(string nameRoom);
     }
 }

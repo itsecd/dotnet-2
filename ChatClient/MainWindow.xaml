@@ -1,0 +1,28 @@
+﻿<Window x:Class="ChatClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatClient"
+        mc:Ignorable="d"
+        Title="Chat" Height="720" Width="1280" ResizeMode="NoResize" Background="#e6e6ff">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Height="30" Background="#cfcfe6">
+            <MenuItem Header="Create"/>
+            <MenuItem Header="Join"/>
+            <MenuItem Header="Disconnect"/>
+        </Menu>
+        <DockPanel>
+            <ItemsControl DockPanel.Dock="Left" Width="300"/>
+            <DockPanel Width="980">
+
+                <DockPanel Background="#c5cee8" DockPanel.Dock="Bottom" Height="80">
+                    <Button DockPanel.Dock="Right" Content="Send" HorizontalAlignment="Right" Margin="5" Width="120" Background="#9f9fc6" Foreground="White" FontSize="20"/>
+                    <TextBox  Margin="5" Background="White" />
+                </DockPanel>
+                <ItemsControl Height="300"/>
+            </DockPanel>
+
+        </DockPanel>
+    </DockPanel>
+</Window>
