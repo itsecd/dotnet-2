@@ -6,7 +6,7 @@ namespace TelegramBotServer.Validators
 {
     public class SubscriberValidator
     {
-        private IEnumerable<Event> _events;
+        private readonly IEnumerable<Event> _events;
 
         public SubscriberValidator(IEnumerable<Event> events)
         {
@@ -17,11 +17,7 @@ namespace TelegramBotServer.Validators
         {
             if (subscriber.EventsId is not null)
             {
-                foreach (var eventId in subscriber.EventsId)
-                {
-                    if (!_events.Any(e => e.Id == eventId))
-                        return false;
-                }
+                return subscriber.EventsId.All(eventId => _events.Any(e => e.Id == eventId));
             }
             return true;
         }

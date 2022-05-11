@@ -59,7 +59,7 @@ namespace TelegramBotServer.Services
                         JsonSerializer.Serialize(new CallbackData { eventId = someEvent.Id, newReminder = 60 }))});
 
                 if (rest < 0)
-                    message = $"Your event {someEvent.Id} overdui is {Math.Abs(rest)} minutes";
+                    message = $"Your event {someEvent.Id} overdue is {Math.Abs(rest)} minutes";
                 else
                     message = $"Your event {someEvent.Id} will happen in {rest} minutes";
 

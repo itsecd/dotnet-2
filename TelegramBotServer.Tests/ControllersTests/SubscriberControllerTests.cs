@@ -10,42 +10,42 @@ namespace TelegramBotServer.Tests.ControllersTests
 {
     public class SubscriberControllerTests
     {
-        const int subId = 5;
-        const int chatId = 9;
-        readonly int[] eventsId = { 1, 2, 3 };
-        const int unreachableReturnStatus = 404;
-        const int reachableReturnStatus = 200;
+        private const int SubId = 5;
+        private const int ChatId = 9;
+        private readonly int[] eventsId = { 1, 2, 3 };
+        private const int UnreachableReturnStatus = 404;
+        private const int ReachableReturnStatus = 200;
 
         [Fact]
-        public void GetReachiableSub()
+        public void GetReachableSub()
         {
             var mockRepo = new Mock<ISubscriberRepository>();
             var subscriber = new Subscriber
             {
-                Id = subId,
-                UserId = chatId,
-                ChatId = chatId,
+                Id = SubId,
+                UserId = ChatId,
+                ChatId = ChatId,
                 EventsId = eventsId.ToList()
             };
-            mockRepo.Setup(r => r.GetSubscriber(subId)).Returns(subscriber);
+            mockRepo.Setup(r => r.GetSubscriber(SubId)).Returns(subscriber);
             var controller = new SubscriberController(mockRepo.Object);
 
-            var result = controller.Get(subId).Value;
+            var result = controller.Get(SubId).Value;
 
             Assert.Equal(result, subscriber);
         }
 
         [Fact]
-        public void GetUnreachiableSub()
+        public void GetUnreachableSub()
         {
             var mockRepo = new Mock<ISubscriberRepository>();
-            mockRepo.Setup(r => r.GetSubscriber(subId)).Returns((Subscriber)null);
+            mockRepo.Setup(r => r.GetSubscriber(SubId)).Returns((Subscriber)null);
             var controller = new SubscriberController(mockRepo.Object);
 
-            var result = controller.Get(subId).Result as ObjectResult;
+            var result = controller.Get(SubId).Result as ObjectResult;
 
             Assert.NotNull(result);
-            Assert.Equal(unreachableReturnStatus, result.StatusCode);
+            Assert.Equal(UnreachableReturnStatus, result.StatusCode);
         }
 
         [Fact]
@@ -54,18 +54,18 @@ namespace TelegramBotServer.Tests.ControllersTests
             var mockRepo = new Mock<ISubscriberRepository>();
             var subscriber = new Subscriber
             {
-                Id = subId,
-                UserId = chatId,
-                ChatId = chatId,
+                Id = SubId,
+                UserId = ChatId,
+                ChatId = ChatId,
                 EventsId = eventsId.ToList()
             };
-            mockRepo.Setup(r => r.ChangeSubscriber(subId, subscriber)).Returns(true);
+            mockRepo.Setup(r => r.ChangeSubscriber(SubId, subscriber)).Returns(true);
             var controller = new SubscriberController(mockRepo.Object);
 
-            var result = controller.Put(subId, subscriber) as OkResult;
+            var result = controller.Put(SubId, subscriber) as OkResult;
 
             Assert.NotNull(result);
-            Assert.Equal(reachableReturnStatus, result.StatusCode);
+            Assert.Equal(ReachableReturnStatus, result.StatusCode);
         }
 
         [Fact]
@@ -74,44 +74,44 @@ namespace TelegramBotServer.Tests.ControllersTests
             var mockRepo = new Mock<ISubscriberRepository>();
             var subscriber = new Subscriber
             {
-                Id = subId,
-                UserId = chatId,
-                ChatId = chatId,
+                Id = SubId,
+                UserId = ChatId,
+                ChatId = ChatId,
                 EventsId = eventsId.ToList()
             };
-            mockRepo.Setup(r => r.ChangeSubscriber(subId, subscriber)).Returns(false);
+            mockRepo.Setup(r => r.ChangeSubscriber(SubId, subscriber)).Returns(false);
             var controller = new SubscriberController(mockRepo.Object);
 
-            var result = controller.Put(subId, subscriber) as ObjectResult;
+            var result = controller.Put(SubId, subscriber) as ObjectResult;
 
             Assert.NotNull(result);
-            Assert.Equal(unreachableReturnStatus, result.StatusCode);
+            Assert.Equal(UnreachableReturnStatus, result.StatusCode);
         }
 
         [Fact]
         public void DeleteUnreachableEvent()
         {
             var mockRepo = new Mock<IEventRepository>();
-            mockRepo.Setup(r => r.RemoveEvent(subId)).Returns(false);
+            mockRepo.Setup(r => r.RemoveEvent(SubId)).Returns(false);
             var controller = new EventController(mockRepo.Object);
 
-            var result = controller.Delete(subId) as ObjectResult;
+            var result = controller.Delete(SubId) as ObjectResult;
 
             Assert.NotNull(result);
-            Assert.Equal(unreachableReturnStatus, result.StatusCode);
+            Assert.Equal(UnreachableReturnStatus, result.StatusCode);
         }
 
         [Fact]
         public void DeleteReachableEvent()
         {
             var mockRepo = new Mock<IEventRepository>();
-            mockRepo.Setup(r => r.RemoveEvent(subId)).Returns(true);
+            mockRepo.Setup(r => r.RemoveEvent(SubId)).Returns(true);
             var controller = new EventController(mockRepo.Object);
 
-            var result = controller.Delete(subId) as OkResult;
+            var result = controller.Delete(SubId) as OkResult;
 
             Assert.NotNull(result);
-            Assert.Equal(reachableReturnStatus, result.StatusCode);
+            Assert.Equal(ReachableReturnStatus, result.StatusCode);
         }
     }
 }

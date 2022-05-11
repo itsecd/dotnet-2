@@ -3,7 +3,7 @@ using TelegramBotServer.Model;
 
 namespace TelegramBotServer.DatabaseContext
 {
-    public class UsersContext : DbContext
+    public sealed class UsersContext : DbContext
     {
         public DbSet<Subscriber>? Subscribers { get; set; }
         public DbSet<Event>? Events { get; set; }
@@ -12,6 +12,5 @@ namespace TelegramBotServer.DatabaseContext
         {
             Database.EnsureCreated();
         }
-
     }
 }

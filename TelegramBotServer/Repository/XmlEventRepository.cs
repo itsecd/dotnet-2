@@ -20,6 +20,7 @@ namespace TelegramBotServer.Repository
         public int AddEvent(Event newEvent)
         {
             ReadFile();
+            newEvent.Id = FindLastID() + 1;
             _events?.Add(newEvent);
             WriteFile();
             return newEvent.Id;
@@ -88,5 +89,12 @@ namespace TelegramBotServer.Repository
             xmlSerializer.Serialize(fileStream, _events);
         }
 
+        private int FindLastID()
+        {
+            if (_events is null)
+                return 0;
+            return (from e in _events
+                     select e.Id).Max();
+        }
     }
 }

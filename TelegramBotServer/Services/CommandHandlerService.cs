@@ -139,7 +139,7 @@ namespace TelegramBotServer.Services
             return Task.CompletedTask;
         }
 
-        public Task HandleErrorAsync(Exception exception)
+        private Task HandleErrorAsync(Exception exception)
         {
             var ErrorMessage = exception switch
             {

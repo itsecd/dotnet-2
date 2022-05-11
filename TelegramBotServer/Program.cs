@@ -11,12 +11,6 @@ namespace TelegramBotServer
         {
             var host = CreateHostBuilder(args).Build();
 
-            var startupTasks = host.Services.GetServices<IStartupTask>();
-
-            foreach (var startupTask in startupTasks)
-            {
-                await startupTask.Execute();
-            }
             await host.RunAsync();
         }
 

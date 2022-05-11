@@ -7,11 +7,11 @@ namespace TelegramBotServer.Tests.ValidatorsTests
 {
     public class EventValidatorTests
     {
-        const int eventId = 5;
-        const int subId = 9;
-        const bool notified = false;
-        readonly DateTime validDeadline;
-        readonly DateTime invalidDeadline;
+        private const int EventId = 5;
+        private const int SubId = 9;
+        private const bool Notified = false;
+        private readonly DateTime validDeadline;
+        private readonly DateTime invalidDeadline;
 
         public EventValidatorTests()
         {
@@ -20,13 +20,13 @@ namespace TelegramBotServer.Tests.ValidatorsTests
         }
 
         [Fact]
-        public void ValideValidEvent()
+        public void ValidateValidEvent()
         {
             var validEvent = new Event
             {
-                Id = eventId,
-                SubscriberId = subId,
-                Notified = notified,
+                Id = EventId,
+                SubscriberId = SubId,
+                Notified = Notified,
                 Deadline = validDeadline
             };
             var validator = new EventValidator();
@@ -37,13 +37,13 @@ namespace TelegramBotServer.Tests.ValidatorsTests
         }
 
         [Fact]
-        public void ValideInvalidEvent()
+        public void ValidateInvalidEvent()
         {
             var invalidEvent = new Event
             {
-                Id = eventId,
-                SubscriberId = subId,
-                Notified = notified,
+                Id = EventId,
+                SubscriberId = SubId,
+                Notified = Notified,
                 Deadline = invalidDeadline
             };
             var validator = new EventValidator();

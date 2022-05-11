@@ -10,12 +10,12 @@ namespace TelegramBotServer.Tests.ControllersTests
 {
     public class EventControllerTests
     {
-        const int eventId = 5;
-        const int subId = 9;
-        const bool notified = false;
-        const int unreachableReturnStatus = 404;
-        const int reachableReturnStatus = 200;
-        readonly DateTime validDeadline;
+        private const int EventId = 5;
+        private const int SubId = 9;
+        private const bool Notified = false;
+        private const int UnreachableReturnStatus = 404;
+        private const int ReachableReturnStatus = 200;
+        private readonly DateTime validDeadline;
 
         public EventControllerTests()
         {
@@ -23,35 +23,35 @@ namespace TelegramBotServer.Tests.ControllersTests
         }
 
         [Fact]
-        public void GetReachiableEvent()
+        public void GetReachableEvent()
         {
             var mockRepo = new Mock<IEventRepository>();
             var someEvent = new Event
             {
-                Id = eventId,
-                SubscriberId = subId,
-                Notified = notified,
+                Id = EventId,
+                SubscriberId = SubId,
+                Notified = Notified,
                 Deadline = validDeadline
             };
-            mockRepo.Setup(r => r.GetEvent(eventId)).Returns(someEvent);
+            mockRepo.Setup(r => r.GetEvent(EventId)).Returns(someEvent);
             var controller = new EventController(mockRepo.Object);
 
-            var result = controller.Get(eventId).Value;
+            var result = controller.Get(EventId).Value;
 
             Assert.Equal(result, someEvent);
         }
 
         [Fact]
-        public void GetUnreachiableEvent()
+        public void GetUnreachableEvent()
         {
             var mockRepo = new Mock<IEventRepository>();
-            mockRepo.Setup(r => r.GetEvent(eventId)).Returns((Event)null);
+            mockRepo.Setup(r => r.GetEvent(EventId)).Returns((Event)null);
             var controller = new EventController(mockRepo.Object);
 
-            var result = controller.Get(eventId).Result as ObjectResult;
+            var result = controller.Get(EventId).Result as ObjectResult;
 
             Assert.NotNull(result);
-            Assert.Equal(unreachableReturnStatus, result.StatusCode);
+            Assert.Equal(UnreachableReturnStatus, result.StatusCode);
         }
 
         [Fact]
@@ -60,18 +60,18 @@ namespace TelegramBotServer.Tests.ControllersTests
             var mockRepo = new Mock<IEventRepository>();
             var someEvent = new Event
             {
-                Id = eventId,
-                SubscriberId = subId,
-                Notified = notified,
+                Id = EventId,
+                SubscriberId = SubId,
+                Notified = Notified,
                 Deadline = validDeadline
             };
-            mockRepo.Setup(r => r.ChangeEvent(eventId, someEvent)).Returns(true);
+            mockRepo.Setup(r => r.ChangeEvent(EventId, someEvent)).Returns(true);
             var controller = new EventController(mockRepo.Object);
 
-            var result = controller.Put(eventId, someEvent) as OkResult;
+            var result = controller.Put(EventId, someEvent) as OkResult;
 
             Assert.NotNull(result);
-            Assert.Equal(reachableReturnStatus, result.StatusCode);
+            Assert.Equal(ReachableReturnStatus, result.StatusCode);
         }
 
         [Fact]
@@ -80,44 +80,44 @@ namespace TelegramBotServer.Tests.ControllersTests
             var mockRepo = new Mock<IEventRepository>();
             var someEvent = new Event
             {
-                Id = eventId,
-                SubscriberId = subId,
-                Notified = notified,
+                Id = EventId,
+                SubscriberId = SubId,
+                Notified = Notified,
                 Deadline = validDeadline
             };
-            mockRepo.Setup(r => r.ChangeEvent(eventId, someEvent)).Returns(false);
+            mockRepo.Setup(r => r.ChangeEvent(EventId, someEvent)).Returns(false);
             var controller = new EventController(mockRepo.Object);
 
-            var result = controller.Put(eventId, someEvent) as ObjectResult;
+            var result = controller.Put(EventId, someEvent) as ObjectResult;
 
             Assert.NotNull(result);
-            Assert.Equal(unreachableReturnStatus, result.StatusCode);
+            Assert.Equal(UnreachableReturnStatus, result.StatusCode);
         }
 
         [Fact]
         public void DeleteUnreachableEvent()
         {
             var mockRepo = new Mock<IEventRepository>();
-            mockRepo.Setup(r => r.RemoveEvent(eventId)).Returns(false);
+            mockRepo.Setup(r => r.RemoveEvent(EventId)).Returns(false);
             var controller = new EventController(mockRepo.Object);
 
-            var result = controller.Delete(eventId) as ObjectResult;
+            var result = controller.Delete(EventId) as ObjectResult;
 
             Assert.NotNull(result);
-            Assert.Equal(unreachableReturnStatus, result.StatusCode);
+            Assert.Equal(UnreachableReturnStatus, result.StatusCode);
         }
 
         [Fact]
         public void DeleteReachableEvent()
         {
             var mockRepo = new Mock<IEventRepository>();
-            mockRepo.Setup(r => r.RemoveEvent(eventId)).Returns(true);
+            mockRepo.Setup(r => r.RemoveEvent(EventId)).Returns(true);
             var controller = new EventController(mockRepo.Object);
 
-            var result = controller.Delete(eventId) as OkResult;
+            var result = controller.Delete(EventId) as OkResult;
 
             Assert.NotNull(result);
-            Assert.Equal(reachableReturnStatus, result.StatusCode);
+            Assert.Equal(ReachableReturnStatus, result.StatusCode);
         }
     }
 }

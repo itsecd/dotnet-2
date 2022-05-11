@@ -28,6 +28,7 @@ namespace TelegramBotServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHostedService<EventWatcherHostedService>();
+            services.AddHostedService<SetWebHookService>();
 
             services.AddHttpClient("telegram")
                .AddTypedClient<ITelegramBotClient>(httpClient
@@ -36,7 +37,6 @@ namespace TelegramBotServer
             services.AddDbContext<UsersContext>(options =>
                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<IStartupTask, SetWebHookTask>();
             services.AddTransient<CommandHandlerService>();
             services.AddSingleton<IEventRepository, DbEventRepository>();
             services.AddSingleton<ISubscriberRepository, DbSubscriberRepository>();

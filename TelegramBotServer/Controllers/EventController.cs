@@ -70,14 +70,14 @@ namespace TelegramBotServer.Controllers
         /// Replace event with specific id by new event
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="newEvemt"></param>
+        /// <param name="newEvent"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Event newEvemt)
+        public ActionResult Put(int id, [FromBody] Event newEvent)
         {
             try
             {
-                if (_repository.ChangeEvent(id, newEvemt))
+                if (_repository.ChangeEvent(id, newEvent))
                     return Ok();
                 else
                     return NotFound($"Event with id {id} not found");

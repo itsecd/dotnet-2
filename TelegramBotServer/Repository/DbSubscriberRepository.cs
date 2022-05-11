@@ -11,9 +11,8 @@ namespace TelegramBotServer.Repository
 {
     public class DbSubscriberRepository : ISubscriberRepository
     {
-
-        private IServiceProvider _scopeFactory;
-        private ILogger<DbSubscriberRepository> _logger;
+        readonly private IServiceProvider _scopeFactory;
+        readonly private ILogger<DbSubscriberRepository> _logger;
         public DbSubscriberRepository(IServiceProvider scopeFactory, ILogger<DbSubscriberRepository> logger)
         {
             _scopeFactory = scopeFactory;
@@ -23,7 +22,7 @@ namespace TelegramBotServer.Repository
         {
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
-            if (dbContext is null || dbContext.Events is null)
+            if (dbContext.Events is null)
                 throw new Exception("Database context is null!");
             else
             {
@@ -45,7 +44,7 @@ namespace TelegramBotServer.Repository
         {
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
-            if (dbContext is null || dbContext.Events is null)
+            if (dbContext.Events is null)
                 throw new Exception("Database context is null!");
             else
             {
@@ -86,7 +85,7 @@ namespace TelegramBotServer.Repository
         {
             var dbContext = _scopeFactory.CreateScope()
                .ServiceProvider.GetRequiredService<UsersContext>();
-            if (dbContext is null || dbContext.Events is null)
+            if (dbContext.Events is null)
                 throw new Exception("Database context is null!");
             else
             {

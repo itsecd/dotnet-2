@@ -5,12 +5,6 @@ namespace TelegramBotServer.Validators
 {
     public class EventValidator
     {
-        public bool Validate(Event someEvent)
-        {
-            if (someEvent.Deadline < DateTime.Now)
-                return false;
-
-            return true;
-        }
+        public bool Validate(Event someEvent) => someEvent.Deadline >= DateTime.Now;
     }
 }
