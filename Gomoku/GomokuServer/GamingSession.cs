@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -13,15 +14,6 @@ namespace GomokuServer
         public Player FirstPlayer { get; }
 
         public Player SecondPlayer { get; }
-
-        private enum Cell
-        {
-            Empty = 0,
-            FirstPlayer,
-            SecondPlayer
-        }
-
-        private readonly Cell[,] _field = new Cell[15, 15];
 
         private readonly Timer _timer = new(_timeout.TotalMilliseconds) { AutoReset = false };
 
@@ -65,28 +57,52 @@ namespace GomokuServer
         {
             lock (_timer)
             {
+                var gameplay = new Gameplay();
 
-                var activePlayer = _isFirstTurn ? FirstPlayer : SecondPlayer;
+                var activePlayer = FirstPlayer;
+                var notActivePlayer = SecondPlayer;
+
+                if (!_isFirstTurn)
+                {
+                    activePlayer =  SecondPlayer;
+                    notActivePlayer =  FirstPlayer;
+                }
 
                 if (player != activePlayer)
                     throw new ApplicationException("Not your turn");
 
                 var point = makeTurnRequest.Point;
 
-                if (_field[point.X, point.Y] != Cell.Empty)
-                    throw new ApplicationException("Cell is busy");
+                gameplay.CellIsBusy(point);
 
                 _timer.Stop();
                 _isTimerActive = false;
 
+                gameplay.EnterIntoTheCell(point, _isFirstTurn);
 
-                _field[point.X, point.Y] = _isFirstTurn ? Cell.FirstPlayer : Cell.SecondPlayer;
+                SendMakeTurnReply(notActivePlayer, point, _isFirstTurn);
 
-                SendMakeTurnReply(FirstPlayer, point, _isFirstTurn);
+                SendMakeTurnReply(activePlayer, point, !_isFirstTurn);
 
-                SendMakeTurnReply(SecondPlayer, point, !_isFirstTurn);
+                var gameOver = gameplay.GameCheck();
 
-                //game over 
+                if (gameOver)
+                {
+
+                    List<Point> WinPoints = gameplay._winPoints;
+
+                    if (gameplay._winner == Gameplay.Cell.Empty)
+                    {
+                        var status = OutcomeStatus.Defeat;
+                        SendEndGameReply(FirstPlayer, status, WinPoints);
+                        SendEndGameReply(SecondPlayer, status, WinPoints);
+                    }
+                    else
+                    {
+                        SendEndGameReply(activePlayer, OutcomeStatus.Victory, WinPoints);
+                        SendEndGameReply(notActivePlayer, OutcomeStatus.Draw, WinPoints);
+                    }
+                }
 
                 ChangeActivePlayer();
 
@@ -134,6 +150,14 @@ namespace GomokuServer
         {
             var makeTurnReply = new MakeTurnReply { Point = point, YourTurn = yourTurn };
             var reply = new Reply { MakeTurnReply = makeTurnReply };
+            player.WriteAsync(reply);
+        }
+
+        private static void SendEndGameReply(Player player, OutcomeStatus status, List<Point> WinPoints)
+        {
+            var endGameReply = new EndGameReply { Status = status };
+            endGameReply.Points.Add(WinPoints.ToArray());
+            var reply = new Reply { EndGameReply = endGameReply };
             player.WriteAsync(reply);
         }
     }
