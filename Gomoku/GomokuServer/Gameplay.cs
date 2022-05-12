@@ -48,10 +48,19 @@ namespace GomokuServer
             }
         }
 
+        private int ChangeCoef(int coef)
+        {
+            if (coef == 1)
+                return -1;
+            else
+                if (coef == -1)
+                    return 1;
+            return 0;
+        }
+
         public List<Point> CheckField(Cell player, int kx, int ky)
         {
             List<Point> Win = new List<Point>();
-            Win.Add(new Point() { X = _point.X, Y = _point.Y });
 
             for (var i = 0; i < 5; ++i)
             {
@@ -61,16 +70,10 @@ namespace GomokuServer
                     Win.Add(new Point() { X = _point.X + i * kx, Y = _point.Y + i * ky });
             }
 
-            if (kx == 1)
-                kx = -1;
-            if (kx == -1)
-                kx = 1;
-            if (ky == 1)
-                ky = -1;
-            if (ky == -1)
-                ky = 1;
+            kx = ChangeCoef(kx);
+            ky = ChangeCoef(ky);
 
-            for (var i = 0; i < 5; ++i)
+            for (var i = 1; i < 5; ++i)
             {
                 if (_field[_point.X + i * kx, _point.Y + i * ky] != player)
                     break;
@@ -86,13 +89,14 @@ namespace GomokuServer
 
         public void CheckDefeat()
         {
-            for (var i = 0; i < _field.Length; ++i)
-                if (_field[_point.X + i, _point.Y + i] == Cell.Empty)
-                    return;
+            for (var i = 0; i < 15; ++i)
+                for (var j = 0; j < 15; ++j)
+                    if (_field[_point.X + i, _point.Y + j] == Cell.Empty)
+                        return;
             _winner = Cell.Empty;
         }
 
-        public bool GameCheck()
+        public bool CheckGame()
         {
             var player = _field[_point.X, _point.Y];
 

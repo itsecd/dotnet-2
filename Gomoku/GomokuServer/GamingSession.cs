@@ -32,7 +32,6 @@ namespace GomokuServer
             _timer.Elapsed += OnTimeout;
         }
 
-
         public void Start()
         {
             _isFirstTurn = true;
@@ -84,7 +83,7 @@ namespace GomokuServer
 
                 SendMakeTurnReply(activePlayer, point, !_isFirstTurn);
 
-                var gameOver = gameplay.GameCheck();
+                var gameOver = gameplay.CheckGame();
 
                 if (gameOver)
                 {
