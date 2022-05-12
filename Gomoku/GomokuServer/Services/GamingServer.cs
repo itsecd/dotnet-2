@@ -23,7 +23,7 @@ namespace GomokuServer.Services
                 return;
 
             var player = Login(requestStream.Current.LoginRequest, responseStream);
-            
+
             try
             {
                 var loginReply = new LoginReply { Success = player is not null };

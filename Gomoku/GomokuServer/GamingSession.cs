@@ -64,8 +64,8 @@ namespace GomokuServer
 
                 if (!_isFirstTurn)
                 {
-                    activePlayer =  SecondPlayer;
-                    notActivePlayer =  FirstPlayer;
+                    activePlayer = SecondPlayer;
+                    notActivePlayer = FirstPlayer;
                 }
 
                 if (player != activePlayer)

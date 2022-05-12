@@ -20,7 +20,7 @@ namespace GomokuServer
 
         public List<Point> _winPoints = new List<Point>();
 
-        public Point _point = new Point{ X = 0, Y = 0 };
+        public Point _point = new Point { X = 0, Y = 0 };
 
         public void EnterIntoTheCell(Point point, bool _isFirstTurn)
         {
