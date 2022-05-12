@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 using Gomoku;
@@ -16,7 +15,7 @@ namespace GomokuServer.Tests
             Point point = new Point { X = 1, Y = 5 };
             gameplay.EnterIntoTheCell(point, true);
             Gameplay.Cell expectedCell = Gameplay.Cell.FirstPlayer;
-            var expectedPoint = new Point{ X = 1, Y = 5 };
+            var expectedPoint = new Point { X = 1, Y = 5 };
 
             var actualCell = gameplay[1, 5];
             var actualPoint = point;
@@ -30,13 +29,9 @@ namespace GomokuServer.Tests
         {
             var gameplay = new Gameplay();
             var expected = new List<Point>();
-            expected.Add(new Point { X = 1, Y = 2 });
-            expected.Add(new Point { X = 1, Y = 3 });
-            expected.Add(new Point { X = 1, Y = 4 });
-            expected.Add(new Point { X = 1, Y = 5 });
-            expected.Add(new Point { X = 1, Y = 6 });
-            for (var i =0; i < 5; ++i)
+            for (var i = 0; i < 5;++i)
             {
+                expected.Add(new Point { X = 1, Y = i+1 });
                 gameplay.EnterIntoTheCell(expected[i], true);
             }
             gameplay._point = expected[0];
