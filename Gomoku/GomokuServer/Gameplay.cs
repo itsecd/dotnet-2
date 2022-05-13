@@ -32,17 +32,16 @@ namespace GomokuServer
             _point = point;
         }
 
-        public void CellIsBusy(Point point)
+        public bool CellIsBusy(Point point)
         {
-            if (_field[point.X, point.Y] != Cell.Empty)
-                throw new ApplicationException("Cell is busy");
+            return (_field[point.X, point.Y] != Cell.Empty);
         }
 
         public Cell this[int x, int y]
         {
             get
             {
-                if (x < 0 || x > 15 || y < 0 || y > 15)
+                if (x < 0 || x >= 15 || y < 0 || y >= 15)
                     return Cell.Empty;
                 return _field[x, y];
             }
@@ -91,7 +90,7 @@ namespace GomokuServer
         {
             for (var i = 0; i < 15; ++i)
                 for (var j = 0; j < 15; ++j)
-                    if (_field[_point.X + i, _point.Y + j] == Cell.Empty)
+                    if (_field[i,j] == Cell.Empty)
                         return;
             _winner = Cell.Empty;
         }

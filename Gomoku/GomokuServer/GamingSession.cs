@@ -9,7 +9,7 @@ namespace GomokuServer
 {
     public sealed class GamingSession
     {
-        private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(10);
+        private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(1000);
 
         public Player FirstPlayer { get; }
 
