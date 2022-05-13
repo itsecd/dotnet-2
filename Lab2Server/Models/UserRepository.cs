@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.IO;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Configuration;
@@ -65,6 +64,11 @@ namespace Lab2Server.Models
             User user = _users.Find(x => x.UserId == id);
             return user;
         }
+        public List<User> GetUsers()
+        {
+            ReadFromFile();
+            return _users;
+        }
         public void RemoveUser(int userId)
         {
             ReadFromFile();
@@ -86,7 +90,14 @@ namespace Lab2Server.Models
             User user = _users.Find(x => x.UserId == userId);
             if (user == null)
                 throw new UserRepositoryException();
-            reminder.Id = user.ReminderList.Max(x => x.Id) + 1;
+            if (user.ReminderList.Count == 0)
+            {
+                reminder.Id = 0;
+            }
+            else
+            {
+                reminder.Id = user.ReminderList.Max(x => x.Id) + 1;
+            }
             user.ReminderList.Add(reminder);
             WriteToFile();
         }
