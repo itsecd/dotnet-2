@@ -81,7 +81,7 @@ namespace TelegramBotServer.Services
                                                       text: "You are already subscribed to notifications!");
                 repository.AddSubscriber(new Model.Subscriber
                 {
-                    UserId = message.From is null ? message.Chat.Id : message.From.Id,
+                    UserId = message.From?.Id ?? message.Chat.Id,
                     ChatId = message.Chat.Id,
                 });
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
@@ -90,7 +90,7 @@ namespace TelegramBotServer.Services
 
             static async Task<Message> Unsubscribe(ITelegramBotClient bot, Message message, ISubscriberRepository repository)
             {
-                var senderId = message.From is null ? message.Chat.Id : message.From.Id;
+                var senderId = message.From?.Id ?? message.Chat.Id;
                 var sub = repository.GetSubscribers()?.FirstOrDefault(s => s.UserId == senderId);
                 if (sub is null)
                     return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
