@@ -70,7 +70,7 @@ namespace TelegramBotServer.Repository
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
 
-            return dbContext?.Subscribers?.Find(id);
+            return dbContext.Subscribers?.Find(id);
         }
 
         public IEnumerable<Subscriber>? GetSubscribers()
@@ -78,7 +78,7 @@ namespace TelegramBotServer.Repository
             var dbContext = _scopeFactory.CreateScope()
                .ServiceProvider.GetRequiredService<UsersContext>();
 
-            return dbContext?.Subscribers;
+            return dbContext.Subscribers;
         }
 
         public bool RemoveSubscriber(int id)

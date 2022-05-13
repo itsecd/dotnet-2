@@ -35,7 +35,7 @@ namespace TelegramBotServer.Repository
                 if (sub is null)
                     return false;
                 int index = _subs.IndexOf(sub);
-                _subs[(int)index] = newSub;
+                _subs[index] = newSub;
             }
             WriteFile();
             return true;
@@ -50,10 +50,7 @@ namespace TelegramBotServer.Repository
         public IEnumerable<Subscriber> GetSubscribers()
         {
             ReadFile();
-            if (_subs is not null)
-                return _subs;
-            else
-                return new List<Subscriber>();
+            return _subs ?? new List<Subscriber>();
         }
 
         public bool RemoveSubscriber(int id)

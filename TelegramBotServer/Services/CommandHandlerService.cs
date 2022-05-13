@@ -15,7 +15,7 @@ namespace TelegramBotServer.Services
     {
         private readonly ITelegramBotClient _bot;
         private readonly ISubscriberRepository _subscriberRepository;
-        private IEventRepository _eventRepository;
+        private readonly IEventRepository _eventRepository;
         private readonly ILogger<CommandHandlerService> _logger;
 
         public CommandHandlerService(ITelegramBotClient bot,
@@ -111,19 +111,19 @@ namespace TelegramBotServer.Services
                 if (callbackData is not null)
                 {
 
-                    if (callbackData.newReminder == 0)
+                    if (callbackData.NewReminder == 0)
                     {
-                        _eventRepository.RemoveEvent(callbackData.eventId);
+                        _eventRepository.RemoveEvent(callbackData.EventId);
                         await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was taken");
                     }
                     else
                     {
-                        var chEvent = _eventRepository.GetEvent(callbackData.eventId);
+                        var chEvent = _eventRepository.GetEvent(callbackData.EventId);
                         if (chEvent is not null)
                         {
-                            chEvent.Reminder = callbackData.newReminder;
+                            chEvent.Reminder = callbackData.NewReminder;
                             chEvent.Notified = false;
-                            _eventRepository.ChangeEvent(callbackData.eventId, chEvent);
+                            _eventRepository.ChangeEvent(callbackData.EventId, chEvent);
                             await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was postponed");
                         }
                     }
@@ -141,13 +141,13 @@ namespace TelegramBotServer.Services
 
         private Task HandleErrorAsync(Exception exception)
         {
-            var ErrorMessage = exception switch
+            var errorMessage = exception switch
             {
                 ApiRequestException apiRequestException => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
                 _ => exception.ToString()
             };
 
-            _logger.LogInformation("HandleError: {ErrorMessage}", ErrorMessage);
+            _logger.LogInformation("HandleError: {errorMessage}", errorMessage);
             return Task.CompletedTask;
         }
 

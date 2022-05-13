@@ -10,11 +10,11 @@ namespace TelegramBotServer.Services
 {
     public class EventWatcherHostedService : IHostedService
     {
-        public ILogger<EventWatcherHostedService> _logger { get; set; }
-        public ITelegramBotClient _bot { get; private set; }
-        public IEventRepository _eventRepository { get; private set; }
-        public INotificationSenderService _notificationSender { get; private set; }
-        public Timer? _timer { get; set; }
+        private ILogger<EventWatcherHostedService> _logger { get; set; }
+        private ITelegramBotClient _bot { get; set; }
+        private IEventRepository _eventRepository { get; set; }
+        private INotificationSenderService _notificationSender { get; set; }
+        private Timer? _timer { get; set; }
 
         public EventWatcherHostedService(ILogger<EventWatcherHostedService> logger, ITelegramBotClient bot,
             IEventRepository eventRepository, INotificationSenderService notificationSender)

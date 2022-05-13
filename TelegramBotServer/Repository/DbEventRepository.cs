@@ -67,7 +67,7 @@ namespace TelegramBotServer.Repository
             var dbContext = _scopeFactory.CreateScope()
                 .ServiceProvider.GetRequiredService<UsersContext>();
 
-            return dbContext?.Events?.Find(id);
+            return dbContext.Events?.Find(id);
         }
 
         public IEnumerable<Event>? GetEvents()

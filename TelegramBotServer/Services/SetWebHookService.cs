@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 
-namespace TelegramBotServer
+namespace TelegramBotServer.Services
 {
     public class SetWebHookService : IHostedService
     {
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
         private readonly ILogger<SetWebHookService> _logger;
 
         public SetWebHookService(IConfiguration config, ILogger<SetWebHookService> logger)
