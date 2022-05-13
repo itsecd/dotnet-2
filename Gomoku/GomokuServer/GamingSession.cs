@@ -92,14 +92,14 @@ namespace GomokuServer
 
                     if (gameplay._winner == Gameplay.Cell.Empty)
                     {
-                        var status = OutcomeStatus.Defeat;
+                        var status = OutcomeStatus.Draw;
                         SendEndGameReply(FirstPlayer, status, WinPoints);
                         SendEndGameReply(SecondPlayer, status, WinPoints);
                     }
                     else
                     {
                         SendEndGameReply(activePlayer, OutcomeStatus.Victory, WinPoints);
-                        SendEndGameReply(notActivePlayer, OutcomeStatus.Draw, WinPoints);
+                        SendEndGameReply(notActivePlayer, OutcomeStatus.Defeat, WinPoints);
                     }
                 }
 

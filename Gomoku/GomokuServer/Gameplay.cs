@@ -86,7 +86,7 @@ namespace GomokuServer
             return Win;
         }
 
-        public void CheckDefeat()
+        public void CheckDraw()
         {
             for (var i = 0; i < 15; ++i)
                 for (var j = 0; j < 15; ++j)
@@ -99,7 +99,7 @@ namespace GomokuServer
         {
             var player = _field[_point.X, _point.Y];
 
-            CheckDefeat();
+            CheckDraw();
             if (_winner == Cell.Empty)
                 return true;
 

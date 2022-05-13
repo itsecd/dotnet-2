@@ -45,7 +45,7 @@ namespace GomokuServer.Tests
         public void CheckDefeatTest()
         {
             var gameplay = new Gameplay();
-            gameplay.CheckDefeat();
+            gameplay.CheckDraw();
             Gameplay.Cell? expected = null;
 
             var actual = gameplay._winner;
