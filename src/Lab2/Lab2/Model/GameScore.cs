@@ -7,7 +7,7 @@ namespace Lab2.Model
 {
     public class GameScore
     {
-        public int TopScore { get; set; }
-        public int BottomScore { get; set; }
+        public int LeftScore { get; set; }
+        public int RightScore { get; set; }
     }
 }
