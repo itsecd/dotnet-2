@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using PPTask.Model;
 
 namespace PPTask.Dto
 {
@@ -17,10 +18,15 @@ namespace PPTask.Dto
         /// </summary>
         public string TextDescription { get; set; }
 
+        ///// <summary>
+        ///// Идентификатор исполнителя
+        ///// </summary>
+        //public int ExecutorId { get; set; }
+
         /// <summary>
-        /// Идентификатор исполнителя
+        /// Исполнитель назначенный на задачу
         /// </summary>
-        public int ExecutorId { get; set; }
+        public Executor Executor { get; set; }
 
         /// <summary>
         /// Список идентификаторов тегов

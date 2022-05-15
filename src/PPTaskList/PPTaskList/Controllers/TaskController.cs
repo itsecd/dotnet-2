@@ -21,11 +21,17 @@ namespace PPTask.Controllers
         private readonly ITaskRepository _taskRepository;
 
         /// <summary>
+        /// Репозиторий исполнителей
+        /// </summary>
+        private readonly IExecutorRepository _executorRepository;
+
+        /// <summary>
         /// Конструктор с параметрами. В качестве параметра принимает репозиторий.
         /// </summary>
-        public TaskController(ITaskRepository taskRepository)
+        public TaskController(ITaskRepository taskRepository, IExecutorRepository executorRepository)
         {
             _taskRepository = taskRepository;
+            _executorRepository = executorRepository;
         }
 
         /// <summary>
@@ -33,11 +39,23 @@ namespace PPTask.Controllers
         /// </summary>
         /// <returns>Теги</returns>
         [HttpGet]
-        public ActionResult<List<Task>> Get()
+        public ActionResult<List<TaskDto>> Get()
         {
             try
             {
-                return _taskRepository.GetTasks();
+                var tasks = new List <TaskDto>();
+                foreach(Task task in _taskRepository.GetTasks())
+                {
+                    tasks.Add(new TaskDto
+                    {
+                        HeaderText = task.HeaderText,
+                        TextDescription = task.TextDescription,
+                        TagsId = task.TagsId,
+                        Executor = _executorRepository.GetExecutors().Single(
+                            executor => executor.ExecutorId == task.ExecutorId)
+                    });
+                }
+                return tasks;
             }
             catch
             {
@@ -51,12 +69,20 @@ namespace PPTask.Controllers
         /// <param name="id">Идентификатор задачи</param>
         /// <returns>Задача</returns>
         [HttpGet("{id:int}")]
-        public ActionResult <Task> Get(int id)
+        public ActionResult <TaskDto> Get(int id)
         {
             try
             {
                 if(id < -1) return NotFound();
-                return _taskRepository.GetTasks().Single(task => task.TaskId == id);
+                var task = _taskRepository.GetTasks().Single(task => task.TaskId == id);
+                var taskDto = new TaskDto { 
+                    HeaderText = task.HeaderText,
+                    TextDescription = task.TextDescription,
+                    TagsId = task.TagsId,
+                    Executor = _executorRepository.GetExecutors().Single(
+                        executor => executor.ExecutorId == task.ExecutorId)
+                };
+                return taskDto;
             }
             catch
             {
@@ -76,7 +102,9 @@ namespace PPTask.Controllers
                 _taskRepository.AddTask(new Task {
                     HeaderText = value.HeaderText,
                     TextDescription = value.TextDescription,
-                    ExecutorId = value.ExecutorId, TagsId = value.TagsId });
+                    ExecutorId = value.Executor.ExecutorId,
+                    TagsId = value.TagsId 
+                });
                 return Ok();
             }
             catch
@@ -101,9 +129,9 @@ namespace PPTask.Controllers
                 _taskRepository.GetTasks()[taskIndex] = new Task {
                     HeaderText = value.HeaderText,
                     TextDescription = value.TextDescription,
-                    ExecutorId = value.ExecutorId, TagsId = value.TagsId };
+                    ExecutorId = value.Executor.ExecutorId,
+                    TagsId = value.TagsId };
                 return Ok();
-
             }
             catch
             {

@@ -72,14 +72,29 @@ namespace PPTask.Controllers
         /// <summary>
         /// Метод получения всех задач для конкретного исполнителя 
         /// </summary>
+        /// <param name="id">Идентификатор исполнителя</param>
         /// <returns>Задачи</returns>
-        [HttpGet("{id:int}/executor")]
-        public ActionResult<List<Task>> GetTasks(int id)
+        [HttpGet("{id:int}/tasks")]
+        public ActionResult<List<TaskDto>> GetTasks(int id)
         {
             try
             {
                 if(id < -1) return NotFound();
-                return _taskRepository.GetTasks().FindAll(task => task.ExecutorId == id);
+
+                var tasks = new List<TaskDto>();
+                foreach (Task task in _taskRepository.GetTasks().
+                    FindAll(task => task.ExecutorId == id))
+                {
+                    tasks.Add(new TaskDto
+                    {
+                        HeaderText = task.HeaderText,
+                        TextDescription = task.TextDescription,
+                        TagsId = task.TagsId,
+                        Executor = _executorRepository.GetExecutors().Single(
+                            executor => executor.ExecutorId == task.ExecutorId)
+                    });
+                }
+                return tasks;
             }
             catch
             {
