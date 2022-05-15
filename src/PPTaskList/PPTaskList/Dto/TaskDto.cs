@@ -18,11 +18,6 @@ namespace PPTask.Dto
         /// </summary>
         public string TextDescription { get; set; }
 
-        ///// <summary>
-        ///// Идентификатор исполнителя
-        ///// </summary>
-        //public int ExecutorId { get; set; }
-
         /// <summary>
         /// Исполнитель назначенный на задачу
         /// </summary>
