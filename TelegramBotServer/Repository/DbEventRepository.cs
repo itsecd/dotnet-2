@@ -11,8 +11,8 @@ namespace TelegramBotServer.Repository
 {
     public class DbEventRepository : IEventRepository
     {
-        readonly private IServiceProvider _scopeFactory;
-        readonly private ILogger<DbEventRepository> _logger;
+        private readonly IServiceProvider _scopeFactory;
+        private readonly ILogger<DbEventRepository> _logger;
         public DbEventRepository(IServiceProvider scopeFactory, ILogger<DbEventRepository> logger)
         {
             _scopeFactory = scopeFactory;

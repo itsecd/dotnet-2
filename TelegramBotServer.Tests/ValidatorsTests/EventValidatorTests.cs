@@ -10,13 +10,13 @@ namespace TelegramBotServer.Tests.ValidatorsTests
         private const int EventId = 5;
         private const int SubId = 9;
         private const bool Notified = false;
-        private readonly DateTime validDeadline;
-        private readonly DateTime invalidDeadline;
+        private readonly DateTime _validDeadline;
+        private readonly DateTime _invalidDeadline;
 
         public EventValidatorTests()
         {
-            validDeadline = DateTime.Now + TimeSpan.FromMinutes(30);
-            invalidDeadline = DateTime.Now - TimeSpan.FromMinutes(30);
+            _validDeadline = DateTime.Now + TimeSpan.FromMinutes(30);
+            _invalidDeadline = DateTime.Now - TimeSpan.FromMinutes(30);
         }
 
         [Fact]
@@ -27,7 +27,7 @@ namespace TelegramBotServer.Tests.ValidatorsTests
                 Id = EventId,
                 SubscriberId = SubId,
                 Notified = Notified,
-                Deadline = validDeadline
+                Deadline = _validDeadline
             };
             var validator = new EventValidator();
 
@@ -44,7 +44,7 @@ namespace TelegramBotServer.Tests.ValidatorsTests
                 Id = EventId,
                 SubscriberId = SubId,
                 Notified = Notified,
-                Deadline = invalidDeadline
+                Deadline = _invalidDeadline
             };
             var validator = new EventValidator();
 

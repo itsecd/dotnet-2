@@ -15,11 +15,11 @@ namespace TelegramBotServer.Tests.ControllersTests
         private const bool Notified = false;
         private const int UnreachableReturnStatus = 404;
         private const int ReachableReturnStatus = 200;
-        private readonly DateTime validDeadline;
+        private readonly DateTime _validDeadline;
 
         public EventControllerTests()
         {
-            validDeadline = DateTime.Now + TimeSpan.FromMinutes(30);
+            _validDeadline = DateTime.Now + TimeSpan.FromMinutes(30);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace TelegramBotServer.Tests.ControllersTests
                 Id = EventId,
                 SubscriberId = SubId,
                 Notified = Notified,
-                Deadline = validDeadline
+                Deadline = _validDeadline
             };
             mockRepo.Setup(r => r.GetEvent(EventId)).Returns(someEvent);
             var controller = new EventController(mockRepo.Object);
@@ -63,7 +63,7 @@ namespace TelegramBotServer.Tests.ControllersTests
                 Id = EventId,
                 SubscriberId = SubId,
                 Notified = Notified,
-                Deadline = validDeadline
+                Deadline = _validDeadline
             };
             mockRepo.Setup(r => r.ChangeEvent(EventId, someEvent)).Returns(true);
             var controller = new EventController(mockRepo.Object);
@@ -83,7 +83,7 @@ namespace TelegramBotServer.Tests.ControllersTests
                 Id = EventId,
                 SubscriberId = SubId,
                 Notified = Notified,
-                Deadline = validDeadline
+                Deadline = _validDeadline
             };
             mockRepo.Setup(r => r.ChangeEvent(EventId, someEvent)).Returns(false);
             var controller = new EventController(mockRepo.Object);

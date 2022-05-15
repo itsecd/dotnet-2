@@ -10,7 +10,7 @@ namespace TelegramBotServer.Tests.ValidatorsTests
     {
         private const int SubId = 5;
         private const int ChatId = 9;
-        private readonly int[] eventsId = { 1, 2, 3 };
+        private readonly int[] _eventsId = { 1, 2, 3 };
 
         [Fact]
         public void ValidateValidSub()
@@ -20,7 +20,7 @@ namespace TelegramBotServer.Tests.ValidatorsTests
                 Id = SubId,
                 UserId = ChatId,
                 ChatId = ChatId,
-                EventsId = eventsId.ToList()
+                EventsId = _eventsId.ToList()
             };
             var validator = new SubscriberValidator(GetEvents());
 
@@ -37,7 +37,7 @@ namespace TelegramBotServer.Tests.ValidatorsTests
                 Id = SubId,
                 UserId = ChatId,
                 ChatId = ChatId,
-                EventsId = eventsId.ToList()
+                EventsId = _eventsId.ToList()
             };
             var validator = new SubscriberValidator(new List<Event>());
 
@@ -46,7 +46,7 @@ namespace TelegramBotServer.Tests.ValidatorsTests
             Assert.False(result);
         }
 
-        IEnumerable<Event> GetEvents() => from eventId in eventsId
+        IEnumerable<Event> GetEvents() => from eventId in _eventsId
                                           select (new Event { Id = eventId });
     }
 }

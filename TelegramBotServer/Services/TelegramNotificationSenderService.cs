@@ -19,8 +19,8 @@ namespace TelegramBotServer.Services
             public int NewReminder { get; set; }
         }
 
-        private  ITelegramBotClient Bot { get; set; }
-        private  ISubscriberRepository SubscriberRepository { get; set; }
+        private ITelegramBotClient Bot { get; set; }
+        private ISubscriberRepository SubscriberRepository { get; set; }
 
         public TelegramNotificationSenderService(ITelegramBotClient bot, ISubscriberRepository subscriberRepository)
         {

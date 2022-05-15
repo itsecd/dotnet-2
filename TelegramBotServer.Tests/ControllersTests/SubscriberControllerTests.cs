@@ -12,9 +12,9 @@ namespace TelegramBotServer.Tests.ControllersTests
     {
         private const int SubId = 5;
         private const int ChatId = 9;
-        private readonly int[] eventsId = { 1, 2, 3 };
         private const int UnreachableReturnStatus = 404;
         private const int ReachableReturnStatus = 200;
+        private readonly int[] _eventsId = { 1, 2, 3 };
 
         [Fact]
         public void GetReachableSub()
@@ -25,7 +25,7 @@ namespace TelegramBotServer.Tests.ControllersTests
                 Id = SubId,
                 UserId = ChatId,
                 ChatId = ChatId,
-                EventsId = eventsId.ToList()
+                EventsId = _eventsId.ToList()
             };
             mockRepo.Setup(r => r.GetSubscriber(SubId)).Returns(subscriber);
             var controller = new SubscriberController(mockRepo.Object);
@@ -57,7 +57,7 @@ namespace TelegramBotServer.Tests.ControllersTests
                 Id = SubId,
                 UserId = ChatId,
                 ChatId = ChatId,
-                EventsId = eventsId.ToList()
+                EventsId = _eventsId.ToList()
             };
             mockRepo.Setup(r => r.ChangeSubscriber(SubId, subscriber)).Returns(true);
             var controller = new SubscriberController(mockRepo.Object);
@@ -77,7 +77,7 @@ namespace TelegramBotServer.Tests.ControllersTests
                 Id = SubId,
                 UserId = ChatId,
                 ChatId = ChatId,
-                EventsId = eventsId.ToList()
+                EventsId = _eventsId.ToList()
             };
             mockRepo.Setup(r => r.ChangeSubscriber(SubId, subscriber)).Returns(false);
             var controller = new SubscriberController(mockRepo.Object);

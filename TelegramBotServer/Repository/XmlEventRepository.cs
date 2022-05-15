@@ -94,7 +94,7 @@ namespace TelegramBotServer.Repository
             if (_events is null)
                 return 0;
             return (from e in _events
-                     select e.Id).Max();
+                    select e.Id).Max();
         }
     }
 }
