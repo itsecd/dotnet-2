@@ -4,6 +4,7 @@ using TelegramBot.Proto;
 using TelegramBot.Model;
 using System.Collections.Generic;
 using Google.Protobuf.WellKnownTypes;
+using TelegramBot.Repository;
 
 namespace TelegramBot.Services
 {
@@ -62,8 +63,6 @@ namespace TelegramBot.Services
                     UserId = request.UserId
                 });
             }
-
-
             var response = new UserResponse();
             response.Reminders.AddRange(reminders);
             return Task.FromResult(response);

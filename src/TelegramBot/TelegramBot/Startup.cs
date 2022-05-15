@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
+using TelegramBot.Services;
+using TelegramBot.Repository;
 
 namespace TelegramBot
 {
@@ -17,6 +19,7 @@ namespace TelegramBot
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IUsersRepository, UsersRepository>();
+            services.AddHostedService<TimedHostedService>();
             services.AddGrpc();
         }
 
@@ -31,8 +34,7 @@ namespace TelegramBot
 
             app.UseEndpoints(endpoints =>
             {
-               // endpoints.MapGrpcService<GreeterService>();
-
+                endpoints.MapGrpcService<TelegramEventService>();
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");

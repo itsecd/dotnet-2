@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using TelegramBot.Model;
 
-namespace TelegramBot.Model
+namespace TelegramBot.Repository
 {
     public class UsersRepository : IUsersRepository
     {
         private List<User> _users;
-
         private readonly string _storageFileName;
 
         public UsersRepository(IConfiguration configuration)
@@ -33,6 +33,12 @@ namespace TelegramBot.Model
         {
             var jsonString = JsonSerializer.Serialize<List<User>>(_users);
             File.WriteAllText(_storageFileName, jsonString);
+        }
+
+        public List<User> GetUsers()
+        {
+            ReadFromFile();
+            return _users;
         }
 
         public bool IsUserExist(User user)
