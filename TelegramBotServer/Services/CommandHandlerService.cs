@@ -7,6 +7,8 @@ using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.InlineQueryResults;
+using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBotServer.Repository;
 
 namespace TelegramBotServer.Services
@@ -16,18 +18,21 @@ namespace TelegramBotServer.Services
         private readonly ITelegramBotClient _bot;
         private readonly ISubscriberRepository _subscriberRepository;
         private readonly IEventRepository _eventRepository;
+        private readonly PlanSessions _sessions;
         private readonly ILogger<CommandHandlerService> _logger;
 
         public CommandHandlerService(ITelegramBotClient bot,
             ILogger<CommandHandlerService> logger,
             ISubscriberRepository subscriberRepository,
-            IEventRepository eventRepository
+            IEventRepository eventRepository,
+            PlanSessions sessions
             )
         {
             _bot = bot;
             _logger = logger;
             _subscriberRepository = subscriberRepository;
             _eventRepository = eventRepository;
+            _sessions = sessions;
         }
 
         public async Task ProcessUpdate(Update update)
@@ -35,7 +40,7 @@ namespace TelegramBotServer.Services
             var handler = update.Type switch
             {
                 UpdateType.Message => ProcessCommand(update.Message!),
-                UpdateType.CallbackQuery => BotOnCallbackQueryReceived(update.CallbackQuery!),
+                UpdateType.CallbackQuery => TestCallbackQueryReceived(update.CallbackQuery!, _sessions),
                 _ => UnknownUpdateHandlerAsync(update)
             };
 
@@ -60,6 +65,8 @@ namespace TelegramBotServer.Services
                 "/help" => SendHelpInformation(_bot, message),
                 "/subscribe" => Subscribe(_bot, message, _subscriberRepository),
                 "/unsubscribe" => Unsubscribe(_bot, message, _subscriberRepository),
+                "/test" => SendInlineKeyboard(_bot, message, _sessions),
+
                 _ => SendHelpInformation(_bot, message)
             };
 
@@ -100,6 +107,74 @@ namespace TelegramBotServer.Services
                                                       text: "You successfully unsubscribed on notifications");
             }
 
+            static async Task<Message> SendInlineKeyboard(ITelegramBotClient bot, Message message, PlanSessions sessions)
+            {
+                InlineKeyboardMarkup inlineKeyboard = new(
+                new[]
+                {
+                    // first row
+                    new []
+                    {
+                        InlineKeyboardButton.WithCallbackData("<<", "<<"),
+                        InlineKeyboardButton.WithCallbackData("1.1", "11"),
+                        InlineKeyboardButton.WithCallbackData("1.2", "12"),
+                        InlineKeyboardButton.WithCallbackData(">>", ">>"),
+                    }
+                });
+
+                sessions.sessions.Add(message.From.Id, new PlanSession { PageNum = 1 });
+
+                return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
+                                                      text: "Choose",
+                                                      replyMarkup: inlineKeyboard);
+            }
+
+        }
+
+
+        private async Task TestCallbackQueryReceived(CallbackQuery callbackQuery, PlanSessions sessions)
+        {
+            if (callbackQuery.Data == ">>" )
+            {
+                if (sessions.sessions[callbackQuery.From.Id].PageNum == 1)
+                {
+                    sessions.sessions[callbackQuery.From.Id].PageNum = 2;
+                    InlineKeyboardMarkup inlineKeyboardNew = new(
+                        new[]
+                        {
+                            // first row
+                            new []
+                            {
+                                InlineKeyboardButton.WithCallbackData("<<", "<<"),
+                                InlineKeyboardButton.WithCallbackData("2.1", "21"),
+                                InlineKeyboardButton.WithCallbackData("2.2", "22"),
+                                InlineKeyboardButton.WithCallbackData(">>", ">>"),
+                            }
+                        });
+                    _bot.EditMessageReplyMarkupAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId, inlineKeyboardNew);
+                }
+            }
+            else if (callbackQuery.Data == "<<")
+            {
+                if (sessions.sessions[callbackQuery.From.Id].PageNum == 2)
+                {
+                    sessions.sessions[callbackQuery.From.Id].PageNum = 1;
+                    InlineKeyboardMarkup inlineKeyboardNew = new(
+                        new[]
+                        {
+                            // first row
+                            new []
+                            {
+                                InlineKeyboardButton.WithCallbackData("<<", "<<"),
+                                InlineKeyboardButton.WithCallbackData("1.1", "11"),
+                                InlineKeyboardButton.WithCallbackData("1.2", "12"),
+                                InlineKeyboardButton.WithCallbackData(">>", ">>"),
+                            }
+                        });
+                    _bot.EditMessageReplyMarkupAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId, inlineKeyboardNew);
+                }
+            }
+            
         }
 
         private async Task BotOnCallbackQueryReceived(CallbackQuery callbackQuery)
@@ -149,6 +224,27 @@ namespace TelegramBotServer.Services
 
             _logger.LogInformation("HandleError: {errorMessage}", errorMessage);
             return Task.CompletedTask;
+        }
+
+        private async Task BotOnInlineQueryReceived(InlineQuery inlineQuery)
+        {
+            _logger.LogInformation("Received inline query from: {inlineQueryFromId}", inlineQuery.From.Id);
+
+            InlineQueryResult[] results = {
+            // displayed result
+            new InlineQueryResultArticle(
+                id: "3",
+                title: "TgBots",
+                inputMessageContent: new InputTextMessageContent(
+                    "hello"
+                )
+            )
+        };
+
+            await _bot.AnswerInlineQueryAsync(inlineQueryId: inlineQuery.Id,
+                                                    results: results,
+                                                    isPersonal: true,
+                                                    cacheTime: 0);
         }
 
     }
