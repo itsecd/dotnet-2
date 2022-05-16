@@ -40,7 +40,7 @@ namespace TelegramBotServer
             services.AddTransient<CommandHandlerService>();
             services.AddSingleton<IEventRepository, DbEventRepository>();
             services.AddSingleton<ISubscriberRepository, DbSubscriberRepository>();
-            services.AddSingleton<PlanSessions>(); // если пользователь не контактирует с ботом >20 минут - подчищать сессию (будет бегать сервис по крону) 
+            services.AddSingleton<PlanSessions>(); // РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РєРѕРЅС‚Р°РєС‚РёСЂСѓРµС‚ СЃ Р±РѕС‚РѕРј >20 РјРёРЅСѓС‚ - РїРѕРґС‡РёС‰Р°С‚СЊ СЃРµСЃСЃРёСЋ (Р±СѓРґРµС‚ Р±РµРіР°С‚СЊ СЃРµСЂРІРёСЃ РїРѕ РєСЂРѕРЅСѓ) 
             services.AddTransient<INotificationSenderService, TelegramNotificationSenderService>();
             services.AddSwaggerGen(c =>
             {
