@@ -20,7 +20,7 @@ namespace PPTask.Repositories
         /// <summary>
         /// Список задач
         /// </summary>
-        private List<Task> _tasks;
+        private readonly List<Task> _tasks;
 
         /// <summary>
         /// Получение файла хранения

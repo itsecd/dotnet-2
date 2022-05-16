@@ -20,7 +20,7 @@ namespace PPTask.Repositories
         /// <summary>
         /// Список тегов
         /// </summary>
-        private List<Tag> _tags;
+        private readonly List<Tag> _tags;
 
         /// <summary>
         /// Получение файла хранения

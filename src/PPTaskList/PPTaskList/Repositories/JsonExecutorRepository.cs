@@ -20,7 +20,7 @@ namespace PPTask.Repositories
         /// <summary>
         /// Список исполнителей
         /// </summary>
-        private List<Executor> _executors;
+        private readonly List<Executor> _executors;
 
         /// <summary>
         /// Получение файла хранения
