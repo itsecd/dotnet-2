@@ -6,6 +6,6 @@ namespace MinesweeperClient.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public string FlagsLeft => "Flags left: 99";
+        public string Greeting => "Welcome to Avalonia!";
     }
 }

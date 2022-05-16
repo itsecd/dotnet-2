@@ -5,10 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MinesweeperClient.Views.MainWindow"
-        Width="1300" Height="700"
-        CanResize="False"
-        WindowStartupLocation="CenterScreen"
-        Background="#696969"
         Icon="/Assets/avalonia-logo.ico"
         Title="MinesweeperClient">
 
@@ -16,19 +12,6 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <DockPanel>
-        <Menu DockPanel.Dock="Top" Height="30" Background="White">
-            <MenuItem Header="Join"/>
-            <MenuItem Header="Leave"/>
-            <MenuItem Header="Reset"/>
-        </Menu>
-        <Grid RowDefinitions="30, *, 40" ColumnDefinitions="200, *">
-            <Label   Grid.Row="0" Grid.Column="0" Content="PLAYERS"             Background="White" FontSize="20" Margin="5" Height="30" Width="200" HorizontalContentAlignment="Center" />
-            <Label   Grid.Row="0" Grid.Column="1" Content="{Binding FlagsLeft}" Background="White" FontSize="20" Margin="5" Height="30" />
-            <ListBox Grid.Row="1" Grid.Column="0" Background="White" SelectionMode="Single" Margin="5" />
-            <Grid    Grid.Row="1" Grid.Column="1" Background="#808080" Margin="5" RowSpan="2" />
-            <Button  Grid.Row="2" Grid.Column="0" Content="READY" Background="White" Margin="5" Width="200" HorizontalContentAlignment="Center" />
-        </Grid>
-    </DockPanel>
+    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
 </Window>
