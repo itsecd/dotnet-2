@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lab2</name>
+    </assembly>
+    <members>
+        <member name="M:Lab2.Controllers.CustomerController.GetListCustomer">
+            <summary>
+             Получение списка покупателей
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.CustomerController.Get(System.Int32)">
+            <summary>
+            Метод получения клиента
+            </summary>
+            <param name="id">Идентификатор</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.CustomerController.Post(Lab2.Model.Customer)">
+            <summary>
+            Добавление покупатели
+            </summary>
+            <param name="customer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.CustomerController.Put(System.Int32,Lab2.Model.Customer)">
+            <summary>
+            редактирование покупатель по идентификатору
+            </summary>
+            <param name="id"></param>
+            <param name="newCustomer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.CustomerController.Delete(System.Int32)">
+            <summary>
+            Удаление покупатели по идентификатору
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.GetListOrders">
+            <summary>
+            Получение списки заказов
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.Get(System.Int32)">
+            <summary>
+            Получение заказа по идентификатору заказа
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.Post(Lab2.Model.Order)">
+            <summary>
+            Добавление заказа
+            </summary>
+            <param name="order"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.Put(System.Int32,Lab2.Model.Order)">
+            <summary>
+            Редактирование заказ по идентификатору заказа
+            </summary>
+            <param name="id"></param>
+            <param name="newOrder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.Delete(System.Int32)">
+            <summary>
+            Удаление заказа
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.GetListProducts(System.Int32)">
+            <summary>
+            Получение списки продуктов в заказе
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.PostProduct(System.Int32,Lab2.Model.Product)">
+            <summary>
+            Добавление продукта в заказ
+            </summary>
+            <param name="orderId"></param>
+            <param name="newProduct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.GetProduct(System.Int32,System.Int32)">
+            <summary>
+            Получение продукта в заказе по индентификатору
+            </summary>
+            <param name="orderId"></param>
+            <param name="productId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.DeleteProduct(System.Int32,System.Int32)">
+            <summary>
+            Удаление продукта из заказа
+            </summary>
+            <param name="orderId"></param>
+            <param name="productId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.PutProduct(System.Int32,System.Int32,Lab2.Model.Product)">
+            <summary>
+            Редактирование продукта в заказе по идентифиуктор
+            </summary>
+            <param name="orderId"></param>
+            <param name="productId"></param>
+            <param name="newProduct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.GetBestProductOfMonth">
+            <summary>
+            Получение самого продающегося продукта за месяц и его суммарной стоимости
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Lab2.Controllers.OrderController.GetSumMonth">
+            <summary>
+            Получение суммы за месяц
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Lab2.Model.Customer">
+            <summary>
+            Покупатель
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Customer.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Customer.Name">
+            <summary>
+            Имя
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Customer.PhoneNumber">
+            <summary>
+            Номер телефона
+            </summary>
+        </member>
+        <member name="T:Lab2.Model.Order">
+            <summary>
+            класс заказа
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.OrderId">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.Products">
+            <summary>
+            Список продуктов
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.CustomerId">
+            <summary>
+            Идентификатор покупатели
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.Date">
+            <summary>
+            Время заказа
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.Status">
+            <summary>
+            Статус заказа
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Order.SumOrder">
+            <summary>
+            Сумма цены заказа
+            </summary>
+        </member>
+        <member name="T:Lab2.Model.Product">
+            <summary>
+            Класс продукта
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Product.Id">
+            <summary>
+            Иденфикатор продукта
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Product.Name">
+            <summary>
+            Название продукта               
+            </summary>
+        </member>
+        <member name="P:Lab2.Model.Product.Price">
+            <summary>
+            Цена продукта
+            </summary>
+        </member>
+    </members>
+</doc>
