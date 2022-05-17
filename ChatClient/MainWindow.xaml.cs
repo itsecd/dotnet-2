@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ChatClient.ViewModel;
+using Grpc.Net.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,10 +25,15 @@ namespace ChatClient
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
 
         private void userName_TextChanged(object sender, TextChangedEventArgs e)
         {
+            //(DataContext as MainViewModel).Rooms
+
+            var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            ChatServer.ChatRoom.ChatRoomClient cl = new ChatServer.ChatRoom.ChatRoomClient(channel);
 
         }
     }

@@ -3,17 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChatClient"
+        xmlns:local="clr-namespace:ChatClient" xmlns:viewmodel="clr-namespace:ChatClient.ViewModel"
         mc:Ignorable="d"
         Title="Chat" Height="720" Width="1280" ResizeMode="NoResize" Background="#e6e6ff">
+    <Window.DataContext>
+        <viewmodel:MainViewModel/>
+    </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="30" Background="#cfcfe6">
-            <MenuItem Header="Create"/>
+            <MenuItem Header="Create" Command="{Binding CreateCommand}"/>
             <MenuItem Header="Join"/>
             <MenuItem Header="Disconnect"/>
         </Menu>
         <DockPanel>
-            <ItemsControl DockPanel.Dock="Left" Width="300"/>
+            <ItemsControl DockPanel.Dock="Left" Width="300" ItemsSource="{Binding Rooms}"/>
             <DockPanel Width="980">
 
                 <DockPanel Background="#c5cee8" DockPanel.Dock="Bottom" Height="80">
