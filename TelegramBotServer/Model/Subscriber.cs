@@ -12,6 +12,6 @@ namespace TelegramBotServer.Model
         public long UserId { get; set; }
         [Range(1, long.MaxValue, ErrorMessage = "ChatId should be greater than or equal to 1")]
         public long ChatId { get; set; }
-        public List<int>? EventsId { get; set; }
+        public List<int>? EventsId { get; set; } = new List<int>();
     }
 }
