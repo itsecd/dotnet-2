@@ -8,7 +8,8 @@ namespace TelegramBotServer.Model
         public enum ChoiceType
         {
             Day,
-            Hour
+            Hour,
+            Message
         }
         public ChoiceType? CurrentChoice { get; set; }
         public DateTime CreationTime { get; set; }

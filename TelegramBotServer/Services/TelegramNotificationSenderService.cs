@@ -60,9 +60,11 @@ namespace TelegramBotServer.Services
                         JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = $"{60}" }))});
 
                 if (rest < 0)
-                    message = $"Your event {someEvent.Id} overdue is {Math.Abs(rest)} minutes";
+                    message = $"Your event overdue is {Math.Abs(rest)} minutes";
                 else
-                    message = $"Your event {someEvent.Id} will happen in {rest} minutes";
+                    message = $"Your event will happen in {rest} minutes";
+
+                message += "\n" + $"Event message: {someEvent.Message}";
 
                 InlineKeyboardMarkup inlineKeyboard = new(inlineKeyboardRows);
                 var messageId = (await _bot.SendTextMessageAsync(chatId: sub.ChatId,

@@ -43,7 +43,11 @@ namespace TelegramBotServer.Services
         {
             var handler = update.Type switch
             {
-                UpdateType.Message => ProcessCommand(update.Message!),
+                #pragma warning disable CS8602 
+                UpdateType.Message => update.Message.Text is not null && update.Message.Text.StartsWith("/") ?
+                    ProcessCommand(update.Message ): 
+                    ProcessText(update.Message, _sessions),
+                #pragma warning restore CS8602
                 UpdateType.CallbackQuery => BotOnCallbackQueryReceived(update.CallbackQuery!, _sessions),
                 _ => UnknownUpdateHandlerAsync(update)
             };
@@ -144,6 +148,38 @@ namespace TelegramBotServer.Services
             }
         }
 
+        private async Task<Message> ProcessText(Message message, SubscriberSessions sessions)
+        {
+            var session = sessions.Sessions.ContainsKey(message.Chat.Id) ? sessions[message.Chat.Id] : null ;
+            if (session is null || session.ViewedTime is null || session.CurrentChoice != SubscriberSession.ChoiceType.Message )
+                return await _bot.SendTextMessageAsync(message.Chat.Id, "Use command from /help");
+
+            var sub = _subscriberRepository.GetSubscribers()
+                ?.FirstOrDefault(s => s.UserId == message.Chat.Id);
+            if (sub is null)
+                return await _bot.SendTextMessageAsync(message.Chat.Id, "You must be subscribed"); ;
+
+            var eventId = _eventRepository.AddEvent(new Event
+            {
+                Deadline = new DateTime(
+                    session.ViewedTime.Value.Year,
+                    session.ViewedTime.Value.Month,
+                    session.ViewedTime.Value.Day,
+                    session.ViewedTime.Value.Hour,
+                    session.ViewedTime.Value.Minute,
+                    session.ViewedTime.Value.Second
+                ),
+                Notified = false,
+                Reminder = 60,
+                SubscriberId = sub.Id,
+                Message = message.Text
+            });
+            sub.EventsId?.Add(eventId);
+            _subscriberRepository.ChangeSubscriber(sub.Id, sub);
+            session.CurrentChoice = null;
+            return await _bot.SendTextMessageAsync(message.Chat.Id, $"You have successfully scheduled a new event.\n" +
+                $"The reminder will come in {60} minutes");
+        }
 
         private async Task BotOnCallbackQueryReceived(CallbackQuery callbackQuery, SubscriberSessions sessions)
         {
@@ -200,29 +236,10 @@ namespace TelegramBotServer.Services
                             else
                             {
                                 session.ViewedTime = DateTime.Parse(callbackData.Data);
-                                var sub = _subscriberRepository.GetSubscribers()
-                                    ?.FirstOrDefault(s => s.UserId == callbackQuery.From.Id);
-                                if (sub is null)
-                                    return;
-
-                                var eventId = _eventRepository.AddEvent(new Event
-                                {
-                                    Deadline = new DateTime(
-                                        session.ViewedTime.Value.Year,
-                                        session.ViewedTime.Value.Month,
-                                        session.ViewedTime.Value.Day,
-                                        session.ViewedTime.Value.Hour,
-                                        session.ViewedTime.Value.Minute,
-                                        session.ViewedTime.Value.Second
-                                    ),
-                                    Notified = false,
-                                    Reminder = 60,
-                                    SubscriberId = sub.Id
-                                });
-                                sub.EventsId?.Add(eventId);
-                                _subscriberRepository.ChangeSubscriber(sub.Id, sub);
+                                session.CurrentChoice = SubscriberSession.ChoiceType.Message;
                                 if (callbackQuery.Message is not null)
                                     await _bot.DeleteMessageAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId);
+                                await _bot.SendTextMessageAsync(callbackQuery.From.Id, "Please enter event message");
                             }
                             break;
                     }

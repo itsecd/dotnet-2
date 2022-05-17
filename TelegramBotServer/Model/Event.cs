@@ -12,6 +12,8 @@ namespace TelegramBotServer.Model
         public DateTime Deadline { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "Reminder should be positive number")]
         public int Reminder { get; set; }
+        [StringLength(256)]
+        public string? Message { get; set; }
         public bool Notified { get; set; }
     }
 }
