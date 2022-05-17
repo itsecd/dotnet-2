@@ -10,7 +10,7 @@ namespace Lab2.Repositories
     public class PlayerRepository: IPlayerRepository
     {
         private const string FileName = "Player.xml";
-        private List<Player> _players;
+        private List<Player>? _players;
 
         public void ReadFileXml()
         {
@@ -22,7 +22,7 @@ namespace Lab2.Repositories
             }
             var xmlSerializer = new XmlSerializer(typeof(List<Player>));
             using var fileStream = new FileStream(FileName, FileMode.Open);
-            _players = (List<Player>)(xmlSerializer.Deserialize(fileStream));
+            _players = (List<Player>)(xmlSerializer.Deserialize(fileStream) ?? throw new InvalidOperationException());
         }
 
         public void WriteFileXml()
@@ -39,7 +39,7 @@ namespace Lab2.Repositories
                 throw new ArgumentNullException(nameof(player));
             }
             ReadFileXml();
-            _players.Add(player);
+            _players!.Add(player);
             WriteFileXml();
             return player.UserName;
         }
@@ -47,23 +47,23 @@ namespace Lab2.Repositories
         public void Clear()
         {
             ReadFileXml();
-            _players.Clear();
+            _players!.Clear();
             WriteFileXml();
         }
 
         public List<Player> ListPlayers()
         {
             ReadFileXml();
-            return _players;
+            return _players!;
         }
-       
+
         public string Remove(string name)
         {
             ReadFileXml();
-            if (name == "") throw new Exception(); 
+            if (name == "") throw new Exception();
             var player = GetPlayer(name);
             if (player == null) throw new Exception();
-            _players.Remove(player);
+            _players!.Remove(player);
             WriteFileXml();
             return player.UserName;
         }
@@ -71,7 +71,7 @@ namespace Lab2.Repositories
         public Player GetPlayer(string name)
         {
             ReadFileXml();
-            var player = _players.FirstOrDefault(player => player.UserName == name);
+            var player = _players!.FirstOrDefault(player => player.UserName == name);
             if (player is null) throw new DirectoryNotFoundException();
             return player; 
         }

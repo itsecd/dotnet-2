@@ -47,7 +47,7 @@ namespace Lab2.Controllers
             }
         }
 
-        [HttpDelete("{name:string}")]
+        [HttpDelete("{name:alpha}")]
         public IActionResult Delete(string name)
         {
             try

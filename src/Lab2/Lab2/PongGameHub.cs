@@ -88,7 +88,7 @@ namespace Lab2
             await Clients.Others.SendAsync("UpdatePlayerPosition", playerPosition);
         }
 
-        public override Task OnDisconnectedAsync(Exception exception)
+        public override Task OnDisconnectedAsync(Exception? exception)
         {
             UsersInLobby.Remove(Context.ConnectionId, out _);
             Clients.All.SendAsync("GetConnectedUsers", UsersInLobby.Select(x =>
