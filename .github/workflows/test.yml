@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -19,7 +19,9 @@ jobs:
         dotnet-version: 5.0.x
     - name: Install dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build 
+    - name: Build Server
+      run: dotnet build ChatServer
+    - name: Build Test
+      run: dotnet build ChatServerTests
     - name: Test with the dotnet CLI
       run: dotnet test 
