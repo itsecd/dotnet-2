@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Lab2.Repositories
@@ -31,7 +32,7 @@ namespace Lab2.Repositories
             xmlSerializer.Serialize(fileStream, _players);
         }
 
-        public void Add(Player player)
+        public string Add(Player player)
         {
             if (player == null)
             {
@@ -40,6 +41,7 @@ namespace Lab2.Repositories
             ReadFileXml();
             _players.Add(player);
             WriteFileXml();
+            return player.UserName;
         }
 
         public void Clear()
@@ -49,17 +51,29 @@ namespace Lab2.Repositories
             WriteFileXml();
         }
 
-        public List<Player> GetPlayers()
+        public List<Player> ListPlayers()
         {
             ReadFileXml();
             return _players;
         }
        
-        public void RemoveAt(int index)
+        public string Remove(string name)
         {
             ReadFileXml();
-            _players.RemoveAt(index);
+            if (name == "") throw new Exception(); 
+            var player = GetPlayer(name);
+            if (player == null) throw new Exception();
+            _players.Remove(player);
             WriteFileXml();
+            return player.UserName;
+        }
+
+        public Player GetPlayer(string name)
+        {
+            ReadFileXml();
+            var player = _players.FirstOrDefault(player => player.UserName == name);
+            if (player is null) throw new DirectoryNotFoundException();
+            return player; 
         }
     }
 }

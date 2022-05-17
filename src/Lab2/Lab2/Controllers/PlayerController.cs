@@ -1,7 +1,6 @@
 ﻿using Lab2.Model;
 using Lab2.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 
 namespace Lab2.Controllers
@@ -18,7 +17,7 @@ namespace Lab2.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Player>> Get() => _playerRepository.GetPlayers();
+        public ActionResult<List<Player>> Get() => _playerRepository.ListPlayers();
 
         [HttpPost]
         public IActionResult Post(Player player)
@@ -48,12 +47,12 @@ namespace Lab2.Controllers
             }
         }
 
-        [HttpDelete("{id:int}")]
-        public IActionResult Delete(int index)
+        [HttpDelete("{name:string}")]
+        public IActionResult Delete(string name)
         {
             try
             {
-                _playerRepository.RemoveAt(index);
+                _playerRepository.Remove(name);
                 return Ok();
             }
             catch

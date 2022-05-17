@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Lab2.Model
+﻿namespace Lab2.Model
 {
     public class Player
     {
         public string ConnectionId { get; set; }
         public string UserName { get; set; }
         public string PlayerPosition { get; set; }
+
+        public Player()
+        {
+        }
 
         public Player(string connectionId, string userName, string possition)
         {
