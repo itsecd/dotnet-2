@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Telegram.Bot;
 using TelegramBotServer.Repository;
 
 namespace TelegramBotServer.Services
@@ -11,16 +10,14 @@ namespace TelegramBotServer.Services
     public class EventWatcherHostedService : IHostedService
     {
         private ILogger<EventWatcherHostedService> _logger { get; set; }
-        private ITelegramBotClient _bot { get; set; }
         private IEventRepository _eventRepository { get; set; }
         private INotificationSenderService _notificationSender { get; set; }
-        private Timer? _timer { get; set; }
+        private Timer? _timer;
 
-        public EventWatcherHostedService(ILogger<EventWatcherHostedService> logger, ITelegramBotClient bot,
-            IEventRepository eventRepository, INotificationSenderService notificationSender)
+        public EventWatcherHostedService(ILogger<EventWatcherHostedService> logger, IEventRepository eventRepository,
+            INotificationSenderService notificationSender)
         {
             _logger = logger;
-            _bot = bot;
             _eventRepository = eventRepository;
             _notificationSender = notificationSender;
         }
