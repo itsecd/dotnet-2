@@ -13,7 +13,6 @@ using TelegramBotServer.Model;
 using TelegramBotServer.Repository;
 using InlineKeyboardLine = System.Collections.Generic.List<Telegram.Bot.Types.ReplyMarkups.InlineKeyboardButton>;
 
-
 namespace TelegramBotServer.Services
 {
     public class CommandHandlerService
@@ -43,11 +42,11 @@ namespace TelegramBotServer.Services
         {
             var handler = update.Type switch
             {
-#pragma warning disable CS8602
+                #pragma warning disable CS8602
                 UpdateType.Message => update.Message.Text is not null && update.Message.Text.StartsWith("/") ?
                     ProcessCommand(update.Message) :
                     ProcessText(update.Message, _sessions),
-#pragma warning restore CS8602
+                #pragma warning restore CS8602
                 UpdateType.CallbackQuery => BotOnCallbackQueryReceived(update.CallbackQuery!, _sessions),
                 _ => UnknownUpdateHandlerAsync(update)
             };
@@ -127,14 +126,14 @@ namespace TelegramBotServer.Services
                     return await bot.SendTextMessageAsync(message.Chat.Id, "Before plan any event you must be subscribed!");
                 }
 
-                var sendKeyboard = SendDayInlineKeyboard(bot, message, DateTime.Now);
+                var sendKeyboard = SendMonthInlineKeyboard(bot, message, DateTime.Now);
 
                 if (!sessions.Sessions.ContainsKey(message.Chat.Id))
                 {
                     sessions[message.Chat.Id] = new SubscriberSession
                     {
                         CreationTime = DateTime.Now,
-                        CurrentChoice = SubscriberSession.ChoiceType.Day,
+                        CurrentChoice = SubscriberSession.ChoiceType.Month,
                         ViewedTime = DateTime.Now
                     };
                 }
@@ -142,7 +141,7 @@ namespace TelegramBotServer.Services
                 {
                     sessions[message.Chat.Id].CreationTime = DateTime.Now;
                     sessions[message.Chat.Id].ViewedTime = DateTime.Now;
-                    sessions[message.Chat.Id].CurrentChoice = SubscriberSession.ChoiceType.Day;
+                    sessions[message.Chat.Id].CurrentChoice = SubscriberSession.ChoiceType.Month;
                 }
                 return await sendKeyboard;
             }
@@ -178,7 +177,7 @@ namespace TelegramBotServer.Services
             _subscriberRepository.ChangeSubscriber(sub.Id, sub);
             session.CurrentChoice = null;
             return await _bot.SendTextMessageAsync(message.Chat.Id, $"You have successfully scheduled a new event.\n" +
-                $"The reminder will come in {60} minutes");
+                "The reminder will come at least 60 minutes before the event");
         }
 
         private async Task BotOnCallbackQueryReceived(CallbackQuery callbackQuery, SubscriberSessions sessions)
@@ -187,100 +186,166 @@ namespace TelegramBotServer.Services
             {
                 var callbackData = JsonSerializer.Deserialize<CallbackData>(callbackQuery.Data);
                 var session = sessions.Sessions.ContainsKey(callbackQuery.From.Id) ? sessions[callbackQuery.From.Id] : null;
-                if (session is null || callbackQuery.Message is null || callbackData?.Data is null)
+                if (session is null || callbackData is null)
                     return;
-                if (callbackData?.Type == CallbackDataType.Plan)
+                switch (callbackData.Type)
                 {
-                    if (session.ViewedTime is null)
-                        session.ViewedTime = DateTime.Now;
-                    switch (session.CurrentChoice)
-                    {
-                        case SubscriberSession.ChoiceType.Day:
-                            if (callbackData.Data == ">>")
-                            {
-                                await SendDayInlineKeyboard(_bot, callbackQuery.Message,
-                                    session.ViewedTime.Value.AddDays(CountVisibleButtons), true);
-                                session.ViewedTime = session.ViewedTime.Value.AddDays(CountVisibleButtons);
-                            }
-                            else if (callbackData.Data == "<<")
-                            {
-                                await SendDayInlineKeyboard(_bot, callbackQuery.Message,
-                                    session.ViewedTime.Value.Subtract(TimeSpan.FromDays(CountVisibleButtons)), true);
-                                session.ViewedTime = session.ViewedTime.Value.Subtract(TimeSpan.FromDays(CountVisibleButtons));
-                            }
-                            else
-                            {
-                                session.CurrentChoice = SubscriberSession.ChoiceType.Hour;
-                                session.ViewedTime = DateTime.Parse(callbackData.Data);
-                                var unRoundedTime = session.ViewedTime.Value;
-                                var roundedTime = unRoundedTime.AddMinutes(unRoundedTime.Minute > 30 ?
-                                    -(unRoundedTime.Minute - 30) : -unRoundedTime.Minute);
-                                session.ViewedTime = roundedTime;
-                                await SendHourInlineKeyboard(_bot, callbackQuery.Message, roundedTime, true);
-                            }
-
-                            break;
-                        case SubscriberSession.ChoiceType.Hour:
-                            if (callbackData.Data == ">>")
-                            {
-                                await SendHourInlineKeyboard(_bot, callbackQuery.Message,
-                                    session.ViewedTime.Value.AddMinutes(30 * CountVisibleButtons), true);
-                                session.ViewedTime = session.ViewedTime.Value.AddMinutes(30 * CountVisibleButtons);
-                            }
-                            else if (callbackData.Data == "<<")
-                            {
-                                await SendHourInlineKeyboard(_bot, callbackQuery.Message,
-                                    session.ViewedTime.Value.Subtract(TimeSpan.FromMinutes(30 * CountVisibleButtons)), true);
-                                session.ViewedTime = session.ViewedTime.Value.Subtract(TimeSpan.FromMinutes(30 * CountVisibleButtons));
-                            }
-                            else
-                            {
-                                session.ViewedTime = DateTime.Parse(callbackData.Data);
-                                session.CurrentChoice = SubscriberSession.ChoiceType.Message;
-                                if (callbackQuery.Message is not null)
-                                    await _bot.DeleteMessageAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId);
-                                await _bot.SendTextMessageAsync(callbackQuery.From.Id, "Please enter event message");
-                            }
-                            break;
-                    }
-                }
-                else if (callbackData?.Type == CallbackDataType.Notification)
-                {
-                    var eventId = sessions[callbackQuery.From.Id].NotificatedEventId[callbackQuery.Message.MessageId];
-                    if (int.Parse(callbackData.Data) == 0)
-                    {
-                        _eventRepository.RemoveEvent(eventId);
-                        var sub = _subscriberRepository.GetSubscribers()?.FirstOrDefault(s => s.UserId == callbackQuery.From.Id);
-                        if (sub is not null)
-                        {
-                            sub.EventsId?.Remove(eventId);
-                            _subscriberRepository.ChangeSubscriber(sub.Id, sub);
-                        }
-                        await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was taken");
-                    }
-                    else
-                    {
-                        var chEvent = _eventRepository.GetEvent(eventId);
-                        if (chEvent is not null)
-                        {
-                            chEvent.Reminder = int.Parse(callbackData.Data);
-                            chEvent.Notified = false;
-                            _eventRepository.ChangeEvent(eventId, chEvent);
-                            await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was postponed");
-                        }
-                    }
-                    sessions[callbackQuery.From.Id].NotificatedEventId.Remove(callbackQuery.Message.MessageId);
-                    if (callbackQuery.Message is not null)
-                        await _bot.DeleteMessageAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId);
+                    case CallbackDataType.Plan:
+                        await ProcessPostCallbackQuery(callbackQuery, session);
+                        break;
+                    case CallbackDataType.Notification:
+                        await ProcessNotificationCallbackQuery(callbackQuery, session);
+                        break;
                 }
             }
 
+        }
+
+        private async Task ProcessPostCallbackQuery(CallbackQuery callbackQuery, SubscriberSession session)
+        {
+            if (callbackQuery.Data is null)
+                return;
+            var callbackData = JsonSerializer.Deserialize<CallbackData>(callbackQuery.Data);
+            if (session is null || callbackQuery.Message is null || callbackData?.Data is null)
+                return;
+            if (session.ViewedTime is null)
+                session.ViewedTime = DateTime.Now;
+            switch (session.CurrentChoice)
+            {
+                case SubscriberSession.ChoiceType.Month:
+                    switch (callbackData.Data)
+                    {
+                        case ">>":
+                            session.ViewedTime = session.ViewedTime.Value.AddMonths(CountVisibleButtons);
+                            await SendMonthInlineKeyboard(_bot, callbackQuery.Message,
+                                session.ViewedTime.Value, true);
+                            break;
+                        case "<<":
+                            session.ViewedTime = session.ViewedTime.Value.AddMonths(-CountVisibleButtons);
+                            await SendMonthInlineKeyboard(_bot, callbackQuery.Message,
+                                session.ViewedTime.Value, true);
+                            break;
+                        default:
+                            session.CurrentChoice = SubscriberSession.ChoiceType.Day;
+                            session.ViewedTime = DateTime.Parse(callbackData.Data);
+                            await SendDayInlineKeyboard(_bot, callbackQuery.Message, session.ViewedTime.Value, true);
+                            break;
+                    }
+                    break;
+                case SubscriberSession.ChoiceType.Day:
+                    switch (callbackData.Data)
+                    {
+                        case ">>":
+                            session.ViewedTime = session.ViewedTime.Value.AddDays(CountVisibleButtons);
+                            await SendDayInlineKeyboard(_bot, callbackQuery.Message,
+                                session.ViewedTime.Value, true);
+                            break;
+                        case "<<":
+                            session.ViewedTime = session.ViewedTime.Value.Subtract(TimeSpan.FromDays(CountVisibleButtons));
+                            await SendDayInlineKeyboard(_bot, callbackQuery.Message,
+                                session.ViewedTime.Value, true);
+                            break;
+                        default:
+                            session.CurrentChoice = SubscriberSession.ChoiceType.Hour;
+                            session.ViewedTime = DateTime.Parse(callbackData.Data);
+                            var unRoundedTime = session.ViewedTime.Value;
+                            var roundedTime = unRoundedTime.AddMinutes(unRoundedTime.Minute > 30 ?
+                                -(unRoundedTime.Minute - 30) : -unRoundedTime.Minute);
+                            session.ViewedTime = roundedTime;
+                            await SendHourInlineKeyboard(_bot, callbackQuery.Message, roundedTime, true);
+                            break;
+                    }
+                    break;
+                case SubscriberSession.ChoiceType.Hour:
+                    switch (callbackData.Data)
+                    {
+                        case ">>":
+                            session.ViewedTime = session.ViewedTime.Value.AddMinutes(30 * CountVisibleButtons);
+                            await SendHourInlineKeyboard(_bot, callbackQuery.Message,
+                                session.ViewedTime.Value, true);
+                            break;
+                        case "<<":
+                            session.ViewedTime = session.ViewedTime.Value.Subtract(TimeSpan.FromMinutes(30 * CountVisibleButtons));
+                            await SendHourInlineKeyboard(_bot, callbackQuery.Message,
+                                session.ViewedTime.Value, true);
+                            break;
+                        default:
+                            session.ViewedTime = DateTime.Parse(callbackData.Data);
+                            session.CurrentChoice = SubscriberSession.ChoiceType.Message;
+                            if (callbackQuery.Message is not null)
+                                await _bot.DeleteMessageAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId);
+                            await _bot.SendTextMessageAsync(callbackQuery.From.Id, "Please enter event message");
+                            break;
+                    }
+                    break;
+            }
+        }
+
+        private async Task ProcessNotificationCallbackQuery(CallbackQuery callbackQuery, SubscriberSession session)
+        {
+            if (callbackQuery.Data is null || callbackQuery.Message is null)
+                return;
+            var callbackData = JsonSerializer.Deserialize<CallbackData>(callbackQuery.Data);
+            var eventId = session.NotificatedEventId[callbackQuery.Message.MessageId];
+            if (callbackData?.Data is null)
+                return;
+
+            if (int.Parse(callbackData.Data) == 0)
+            {
+                _eventRepository.RemoveEvent(eventId);
+                var sub = _subscriberRepository.GetSubscribers()?.FirstOrDefault(s => s.UserId == callbackQuery.From.Id);
+                if (sub is not null)
+                {
+                    sub.EventsId?.Remove(eventId);
+                    _subscriberRepository.ChangeSubscriber(sub.Id, sub);
+                }
+                await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was taken");
+            }
+            else
+            {
+                var chEvent = _eventRepository.GetEvent(eventId);
+                if (chEvent is not null)
+                {
+                    chEvent.Reminder = int.Parse(callbackData.Data);
+                    chEvent.Notified = false;
+                    _eventRepository.ChangeEvent(eventId, chEvent);
+                    await _bot.AnswerCallbackQueryAsync(callbackQueryId: callbackQuery.Id, text: "Event was postponed");
+                }
+            }
+            session.NotificatedEventId.Remove(callbackQuery.Message.MessageId);
+            if (callbackQuery.Message is not null)
+                await _bot.DeleteMessageAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId);
+        }
+
+        static private async Task<Message> SendMonthInlineKeyboard(ITelegramBotClient bot,
+        Message message, DateTime currentMonth, bool update = false)
+        {
+            var inlineKeyboardLine = new InlineKeyboardLine();
+            var informationMessage = "Choose month of event\n" + $"Current year: {currentMonth.ToString("yyy")}";
+
+            inlineKeyboardLine.Add(InlineKeyboardButton.WithCallbackData("<<",
+                JsonSerializer.Serialize(new CallbackData { Type = CallbackDataType.Plan, Data = "<<" })));
+            for (var i = currentMonth; i < currentMonth.AddMonths(CountVisibleButtons); i = i.AddMonths(1))
+            {
+                inlineKeyboardLine.Add(InlineKeyboardButton.WithCallbackData(i.ToString("MMM"),
+                    JsonSerializer.Serialize(new CallbackData { Type = CallbackDataType.Plan, Data = $"{i}" })));
+            }
+            inlineKeyboardLine.Add(InlineKeyboardButton.WithCallbackData(">>",
+                JsonSerializer.Serialize(new CallbackData { Type = CallbackDataType.Plan, Data = ">>" })));
+            InlineKeyboardMarkup inlineKeyboard = new(new[] { inlineKeyboardLine });
+
+            if (update)
+                return await bot.EditMessageTextAsync(message.Chat.Id,
+                    message.MessageId, informationMessage, replyMarkup: inlineKeyboard);
+            else
+                return await bot.SendTextMessageAsync(message.Chat.Id, informationMessage, replyMarkup: inlineKeyboard);
         }
 
         static private async Task<Message> SendDayInlineKeyboard(ITelegramBotClient bot,
             Message message, DateTime currentDay, bool update = false)
         {
             var inlineKeyboardLine = new InlineKeyboardLine();
+            var informationMessage = "Choose day of event\n" + $"Current month: {currentDay.ToString("Y")}";
 
             inlineKeyboardLine.Add(InlineKeyboardButton.WithCallbackData("<<",
                 JsonSerializer.Serialize(new CallbackData { Type = CallbackDataType.Plan, Data = "<<" })));
@@ -294,21 +359,23 @@ namespace TelegramBotServer.Services
             InlineKeyboardMarkup inlineKeyboard = new(new[] { inlineKeyboardLine });
 
             if (update)
-                return await bot.EditMessageReplyMarkupAsync(message.Chat.Id, message.MessageId, inlineKeyboard);
+                return await bot.EditMessageTextAsync(message.Chat.Id,
+                    message.MessageId, informationMessage, replyMarkup: inlineKeyboard);
             else
-                return await bot.SendTextMessageAsync(message.Chat.Id, "Choose day of event", replyMarkup: inlineKeyboard);
+                return await bot.SendTextMessageAsync(message.Chat.Id, informationMessage, replyMarkup: inlineKeyboard);
         }
 
         static private async Task<Message> SendHourInlineKeyboard(ITelegramBotClient bot,
-            Message message, DateTime currentMinutes, bool update = false)
+            Message message, DateTime currentTime, bool update = false)
         {
             var inlineKeyboardLine = new InlineKeyboardLine();
+            var informationMessage = "Choose time of event\n" + $"Current day: {currentTime.ToString("D")}";
 
             inlineKeyboardLine.Add(InlineKeyboardButton.WithCallbackData("<<",
                 JsonSerializer.Serialize(new CallbackData { Type = CallbackDataType.Plan, Data = "<<" })));
-            for (var i = currentMinutes; i < currentMinutes.AddMinutes(30 * CountVisibleButtons); i = i.AddMinutes(30))
+            for (var i = currentTime; i < currentTime.AddMinutes(30 * CountVisibleButtons); i = i.AddMinutes(30))
             {
-                inlineKeyboardLine.Add(InlineKeyboardButton.WithCallbackData(i.ToString("HH:mm").ToString(),
+                inlineKeyboardLine.Add(InlineKeyboardButton.WithCallbackData(i.ToString("HH:mm"),
                     JsonSerializer.Serialize(new CallbackData { Type = CallbackDataType.Plan, Data = $"{i}" })));
             }
             inlineKeyboardLine.Add(InlineKeyboardButton.WithCallbackData(">>",
@@ -316,9 +383,10 @@ namespace TelegramBotServer.Services
             InlineKeyboardMarkup inlineKeyboard = new(new[] { inlineKeyboardLine });
 
             if (update)
-                return await bot.EditMessageReplyMarkupAsync(message.Chat.Id, message.MessageId, inlineKeyboard);
+                return await bot.EditMessageTextAsync(message.Chat.Id,
+                    message.MessageId, informationMessage, replyMarkup: inlineKeyboard);
             else
-                return await bot.SendTextMessageAsync(message.Chat.Id, "Choose time of event", replyMarkup: inlineKeyboard);
+                return await bot.SendTextMessageAsync(message.Chat.Id, informationMessage, replyMarkup: inlineKeyboard);
         }
 
         private Task UnknownUpdateHandlerAsync(Update update)

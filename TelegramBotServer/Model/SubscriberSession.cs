@@ -7,6 +7,7 @@ namespace TelegramBotServer.Model
     {
         public enum ChoiceType
         {
+            Month,
             Day,
             Hour,
             Message
