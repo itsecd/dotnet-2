@@ -14,10 +14,9 @@ namespace TelegramBotServer.Services
 {
     public class TelegramNotificationSenderService : INotificationSenderService
     {
-
-        private ITelegramBotClient _bot;
-        private ISubscriberRepository _subscriberRepository;
-        private SubscriberSessions _sessions;
+        private readonly ITelegramBotClient _bot;
+        private readonly ISubscriberRepository _subscriberRepository;
+        private readonly SubscriberSessions _sessions;
 
         public TelegramNotificationSenderService(
             ITelegramBotClient bot,
@@ -40,24 +39,24 @@ namespace TelegramBotServer.Services
 
                 var inlineKeyboardRows = new List<InlineKeyboardLine> { new InlineKeyboardLine {
                     InlineKeyboardButton.WithCallbackData("Take",
-                    JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = $"{0}" }))}};
+                    JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = "0" }))}};
 
                 if (rest > 5)
                     inlineKeyboardRows.Add(new InlineKeyboardLine {
                         InlineKeyboardButton.WithCallbackData("Remind me 5 minutes before the event",
-                        JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = $"{5}" }))});
+                        JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = "5" }))});
                 if (rest > 15)
                     inlineKeyboardRows.Add(new InlineKeyboardLine {
                         InlineKeyboardButton.WithCallbackData("Remind me 15 minutes before the event",
-                        JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = $"{15}" }))});
+                        JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = "15" }))});
                 if (rest > 30)
                     inlineKeyboardRows.Add(new InlineKeyboardLine {
                         InlineKeyboardButton.WithCallbackData("Remind me 30 minutes before the event",
-                        JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = $"{30}" }))});
+                        JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = "30" }))});
                 if (rest > 60)
                     inlineKeyboardRows.Add(new InlineKeyboardLine {
                         InlineKeyboardButton.WithCallbackData("Remind me 60 minutes before the event",
-                        JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = $"{60}" }))});
+                        JsonSerializer.Serialize(new CallbackData { Type= CallbackDataType.Notification, Data = "60" }))});
 
                 if (rest < 0)
                     message = $"Your event overdue is {Math.Abs(rest)} minutes";
@@ -83,11 +82,7 @@ namespace TelegramBotServer.Services
                         NotificatedEventId = new Dictionary<int, int> { { messageId, someEvent.Id } }
                     };
                 }
-
-                return;
             }
-            else
-                return;
         }
     }
 }

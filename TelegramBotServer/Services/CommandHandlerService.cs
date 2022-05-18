@@ -208,8 +208,7 @@ namespace TelegramBotServer.Services
             var callbackData = JsonSerializer.Deserialize<CallbackData>(callbackQuery.Data);
             if (session is null || callbackQuery.Message is null || callbackData?.Data is null)
                 return;
-            if (session.ViewedTime is null)
-                session.ViewedTime = DateTime.Now;
+            session.ViewedTime ??= DateTime.Now;
             switch (session.CurrentChoice)
             {
                 case SubscriberSession.ChoiceType.Month:
@@ -317,7 +316,7 @@ namespace TelegramBotServer.Services
                 await _bot.DeleteMessageAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId);
         }
 
-        static private async Task<Message> SendMonthInlineKeyboard(ITelegramBotClient bot,
+        private static async Task<Message> SendMonthInlineKeyboard(ITelegramBotClient bot,
         Message message, DateTime currentMonth, bool update = false)
         {
             var inlineKeyboardLine = new InlineKeyboardLine();
@@ -341,7 +340,7 @@ namespace TelegramBotServer.Services
                 return await bot.SendTextMessageAsync(message.Chat.Id, informationMessage, replyMarkup: inlineKeyboard);
         }
 
-        static private async Task<Message> SendDayInlineKeyboard(ITelegramBotClient bot,
+        private static async Task<Message> SendDayInlineKeyboard(ITelegramBotClient bot,
             Message message, DateTime currentDay, bool update = false)
         {
             var inlineKeyboardLine = new InlineKeyboardLine();
@@ -365,7 +364,7 @@ namespace TelegramBotServer.Services
                 return await bot.SendTextMessageAsync(message.Chat.Id, informationMessage, replyMarkup: inlineKeyboard);
         }
 
-        static private async Task<Message> SendHourInlineKeyboard(ITelegramBotClient bot,
+        private static async Task<Message> SendHourInlineKeyboard(ITelegramBotClient bot,
             Message message, DateTime currentTime, bool update = false)
         {
             var inlineKeyboardLine = new InlineKeyboardLine();

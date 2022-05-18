@@ -7,8 +7,8 @@ namespace TelegramBotServer.Services
 {
     public class SessionsCleanerHostedService : IHostedService
     {
-        private Timer? _timer;
-        private SubscriberSessions _sessions;
+        private readonly Timer? _timer;
+        private readonly SubscriberSessions _sessions;
         private readonly TimeSpan _sessionLifetime = TimeSpan.FromMinutes(30);
         private readonly TimeSpan _checkDelay = TimeSpan.FromMinutes(30);
 
