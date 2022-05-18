@@ -4,6 +4,8 @@ namespace Lab2Server.Models
 {
     public interface IUserRepository
     {
+        void ReadFromFile();
+        void WriteToFile();
         void AddNewUser(User newUser);
         void AddReminder(int userId, Reminder reminder);
         void ChangeName(int userId, string newName);

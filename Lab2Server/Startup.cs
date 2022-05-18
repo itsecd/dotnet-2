@@ -51,7 +51,9 @@ namespace Lab2Server
             {
                 endpoints.MapControllers();
             });
-            var botClient = new TelegramBotClient("5258202735:AAFKlKSQ9G8xCh68C_dGHqyM92mrSfQknKo");
+            string Key = "123";
+            string Bot = Configuration.GetValue(Key, "");            
+            var botClient = new TelegramBotClient(Bot);
             botClient.StartReceiving(new TelegramUpdateHandler(userRepository));
         }
     }

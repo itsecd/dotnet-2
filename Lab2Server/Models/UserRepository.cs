@@ -4,6 +4,8 @@ using System.Linq;
 using System.IO;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Configuration;
+using System.Threading;
+using System.Collections.Concurrent;
 
 namespace Lab2Server.Models
 {
@@ -13,11 +15,11 @@ namespace Lab2Server.Models
         {
             _storageFileName = configuration.GetValue<string>("RepositoryFilePath");
         }
-        
+
         private readonly string _storageFileName = "users.xml";
 
         private List<User> _users;
-        private void ReadFromFile()
+        public void ReadFromFile()
         {
             if (_users != null) return;
 
@@ -31,7 +33,7 @@ namespace Lab2Server.Models
             _users = (List<User>)xmlSerializer.Deserialize(fileStream);
         }
 
-        private void WriteToFile()
+        public void WriteToFile()
         {
             var xmlSerializer = new XmlSerializer(typeof(List<User>));
             using var fileStream = new FileStream(_storageFileName, FileMode.Create);
@@ -45,13 +47,10 @@ namespace Lab2Server.Models
             {
                 return;
             }
-            ReadFromFile();
             _users.Add(newUser);
-            WriteToFile();
         }
         public bool ExistUser(User user)
         {
-            ReadFromFile();
             if (_users.Exists(x => x.UserId == user.UserId))
             {
                 return true;
@@ -60,33 +59,26 @@ namespace Lab2Server.Models
         }
         public User FindUser(int id)
         {
-            ReadFromFile();
             User user = _users.Find(x => x.UserId == id);
             return user;
         }
         public List<User> GetUsers()
         {
-            ReadFromFile();
             return _users;
         }
         public void RemoveUser(int userId)
         {
-            ReadFromFile();
             _users.RemoveAll(x => x.UserId == userId);
-            WriteToFile();
         }
         public void ChangeName(int userId, string newName)
         {
-            ReadFromFile();
             User user = _users.Find(x => x.UserId == userId);
             if (user == null)
                 throw new UserRepositoryException();
             user.UserName = newName;
-            WriteToFile();
         }
         public void AddReminder(int userId, Reminder reminder)
         {
-            ReadFromFile();
             User user = _users.Find(x => x.UserId == userId);
             if (user == null)
                 throw new UserRepositoryException();
@@ -99,11 +91,9 @@ namespace Lab2Server.Models
                 reminder.Id = user.ReminderList.Max(x => x.Id) + 1;
             }
             user.ReminderList.Add(reminder);
-            WriteToFile();
         }
         public void ChangeReminder(int userId, int id, Reminder reminder)
         {
-            ReadFromFile();
             User user = _users.Find(x => x.UserId == userId);
             if (user == null)
                 throw new UserRepositoryException();
@@ -111,16 +101,13 @@ namespace Lab2Server.Models
             if (index < 0)
                 throw new UserRepositoryException();
             user.ReminderList[index] = reminder;
-            WriteToFile();
         }
         public void RemoveReminder(int userId, int id)
         {
-            ReadFromFile();
             User user = _users.Find(x => x.UserId == userId);
             if (user == null)
                 throw new UserRepositoryException();
             user.ReminderList.RemoveAll(x => x.Id == id);
-            WriteToFile();
         }
     }
 }
