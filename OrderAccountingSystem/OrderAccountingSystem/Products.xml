@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ArrayOfProduct xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Product>
+    <ProductId>295d78cf-5b9d-4613-ba87-c7a6ca3b87a9</ProductId>
+    <Name>elit aliquip fugiat ipsum</Name>
+    <Price>-INF</Price>
+  </Product>
+  <Product>
+    <ProductId>9a4a72cf-6e03-40cf-b653-028d59c7990c</ProductId>
+    <Name>dolore deserunt</Name>
+    <Price>74816929.66734722</Price>
+  </Product>
+</ArrayOfProduct>
