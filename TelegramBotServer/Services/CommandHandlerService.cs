@@ -43,11 +43,11 @@ namespace TelegramBotServer.Services
         {
             var handler = update.Type switch
             {
-                #pragma warning disable CS8602 
+#pragma warning disable CS8602
                 UpdateType.Message => update.Message.Text is not null && update.Message.Text.StartsWith("/") ?
-                    ProcessCommand(update.Message ): 
+                    ProcessCommand(update.Message) :
                     ProcessText(update.Message, _sessions),
-                #pragma warning restore CS8602
+#pragma warning restore CS8602
                 UpdateType.CallbackQuery => BotOnCallbackQueryReceived(update.CallbackQuery!, _sessions),
                 _ => UnknownUpdateHandlerAsync(update)
             };
@@ -150,8 +150,8 @@ namespace TelegramBotServer.Services
 
         private async Task<Message> ProcessText(Message message, SubscriberSessions sessions)
         {
-            var session = sessions.Sessions.ContainsKey(message.Chat.Id) ? sessions[message.Chat.Id] : null ;
-            if (session is null || session.ViewedTime is null || session.CurrentChoice != SubscriberSession.ChoiceType.Message )
+            var session = sessions.Sessions.ContainsKey(message.Chat.Id) ? sessions[message.Chat.Id] : null;
+            if (session is null || session.ViewedTime is null || session.CurrentChoice != SubscriberSession.ChoiceType.Message)
                 return await _bot.SendTextMessageAsync(message.Chat.Id, "Use command from /help");
 
             var sub = _subscriberRepository.GetSubscribers()
@@ -186,7 +186,7 @@ namespace TelegramBotServer.Services
             if (callbackQuery.Data is not null)
             {
                 var callbackData = JsonSerializer.Deserialize<CallbackData>(callbackQuery.Data);
-                var session = sessions[callbackQuery.From.Id];
+                var session = sessions.Sessions.ContainsKey(callbackQuery.From.Id) ? sessions[callbackQuery.From.Id] : null;
                 if (session is null || callbackQuery.Message is null || callbackData?.Data is null)
                     return;
                 if (callbackData?.Type == CallbackDataType.Plan)
