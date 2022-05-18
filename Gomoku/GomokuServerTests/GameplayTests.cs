@@ -14,10 +14,10 @@ namespace GomokuServer.Tests
             var gameplay = new Gameplay();
             Point point = new Point { X = 1, Y = 5 };
             gameplay.EnterIntoTheCell(point, true);
-            Gameplay.Cell expectedCell = Gameplay.Cell.FirstPlayer;
+            FieldExtensions.Cell expectedCell = FieldExtensions.Cell.FirstPlayer;
             var expectedPoint = new Point { X = 1, Y = 5 };
 
-            var actualCell = gameplay[1, 5];
+            var actualCell = gameplay._gameField[1, 5];
             var actualPoint = point;
 
             Assert.Equal(expectedCell, actualCell);
@@ -29,14 +29,14 @@ namespace GomokuServer.Tests
         {
             var gameplay = new Gameplay();
             var expected = new List<Point>();
-            for (var i = 0; i < 5;++i)
+            for (var i = 0; i < 5; ++i)
             {
-                expected.Add(new Point { X = 1, Y = i+1 });
+                expected.Add(new Point { X = 1, Y = i + 1 });
                 gameplay.EnterIntoTheCell(expected[i], true);
             }
             gameplay._point = expected[0];
 
-            var actual = gameplay.CheckField(Gameplay.Cell.FirstPlayer, 0, 1);
+            var actual = gameplay.CheckField(FieldExtensions.Cell.FirstPlayer, 0, 1);
 
             Assert.Equal(expected, actual);
         }
@@ -46,7 +46,7 @@ namespace GomokuServer.Tests
         {
             var gameplay = new Gameplay();
             gameplay.CheckDraw();
-            Gameplay.Cell? expected = null;
+            FieldExtensions.Cell? expected = null;
 
             var actual = gameplay._winner;
 

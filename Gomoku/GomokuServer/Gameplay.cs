@@ -3,20 +3,15 @@ using System.Collections.Generic;
 
 using Gomoku;
 
+using static GomokuServer.FieldExtensions;
+
 namespace GomokuServer
 {
     public class Gameplay
     {
-        public enum Cell
-        {
-            Empty = 0,
-            FirstPlayer,
-            SecondPlayer
-        }
-
-        public readonly Cell[,] _field = new Cell[15, 15];
-
         public Cell? _winner = null;
+
+        public FieldExtensions _gameField = new FieldExtensions();
 
         public List<Point> _winPoints = new List<Point>();
 
@@ -24,7 +19,7 @@ namespace GomokuServer
 
         public void EnterIntoTheCell(Point point, bool _isFirstTurn)
         {
-            _field[point.X, point.Y] =
+            _gameField._field[point.X, point.Y] =
                 _isFirstTurn
                 ? Cell.FirstPlayer
                 : Cell.SecondPlayer;
@@ -32,29 +27,10 @@ namespace GomokuServer
             _point = point;
         }
 
-        public bool CellIsBusy(Point point)
+        public void CellIsBusy(Point point)
         {
-            return (_field[point.X, point.Y] != Cell.Empty);
-        }
-
-        public Cell this[int x, int y]
-        {
-            get
-            {
-                if (x < 0 || x >= 15 || y < 0 || y >= 15)
-                    return Cell.Empty;
-                return _field[x, y];
-            }
-        }
-
-        private int ChangeCoef(int coef)
-        {
-            if (coef == 1)
-                return -1;
-            else
-                if (coef == -1)
-                    return 1;
-            return 0;
+            if (_gameField[point.X, point.Y] != Cell.Empty)
+                throw new ApplicationException("Cell is busy");
         }
 
         public List<Point> CheckField(Cell player, int kx, int ky)
@@ -63,18 +39,18 @@ namespace GomokuServer
 
             for (var i = 0; i < 5; ++i)
             {
-                if (_field[_point.X + i * kx, _point.Y + i * ky] != player)
+                if (_gameField[_point.X + i * kx, _point.Y + i * ky] != player)
                     break;
                 else
                     Win.Add(new Point() { X = _point.X + i * kx, Y = _point.Y + i * ky });
             }
 
-            kx = ChangeCoef(kx);
-            ky = ChangeCoef(ky);
+            kx *= -1;
+            ky *= -1;
 
             for (var i = 1; i < 5; ++i)
             {
-                if (_field[_point.X + i * kx, _point.Y + i * ky] != player)
+                if (_gameField[_point.X + i * kx, _point.Y + i * ky] != player)
                     break;
                 else
                     Win.Add(new Point() { X = _point.X + i * kx, Y = _point.Y + i * ky });
@@ -90,14 +66,14 @@ namespace GomokuServer
         {
             for (var i = 0; i < 15; ++i)
                 for (var j = 0; j < 15; ++j)
-                    if (_field[i,j] == Cell.Empty)
+                    if (_gameField[i, j] == Cell.Empty)
                         return;
             _winner = Cell.Empty;
         }
 
         public bool CheckGame()
         {
-            var player = _field[_point.X, _point.Y];
+            var player = _gameField[_point.X, _point.Y];
 
             CheckDraw();
             if (_winner == Cell.Empty)

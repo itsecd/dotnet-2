@@ -90,7 +90,7 @@ namespace GomokuServer
 
                     List<Point> WinPoints = gameplay._winPoints;
 
-                    if (gameplay._winner == Gameplay.Cell.Empty)
+                    if (gameplay._winner == FieldExtensions.Cell.Empty)
                     {
                         var status = OutcomeStatus.Draw;
                         SendEndGameReply(FirstPlayer, status, WinPoints);
