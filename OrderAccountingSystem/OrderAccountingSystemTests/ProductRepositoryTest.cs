@@ -1,6 +1,7 @@
 using OrderAccountingSystem.Model;
 using OrderAccountingSystem.Repositories;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace OrderAccountingSystemTests
@@ -9,24 +10,35 @@ namespace OrderAccountingSystemTests
     {
 
         [Fact]
-        public void AddProductTest()
+        public async Task AddProductTestAsync()
         {
             ProductRepository repository = new ProductRepository();
             Product product = GenerateProduct();
-            Guid productId = repository.AddProduct(product);
-            Assert.True(repository.CheckProduct(productId));
-            repository.DeleteProduct(productId);
+            Guid productId = await repository.AddProductAsync(product);
+            Assert.True(await repository.CheckProductAsync(productId));
+            await repository.DeleteProductAsync(productId);
         }
 
         [Fact]
-        public void DeleteProductTest()
+        public async Task DeleteProductTestAsync()
         {
             ProductRepository repository = new ProductRepository();
             Product product = GenerateProduct();
-            Guid productId = repository.AddProduct(product);
-            Assert.True(repository.CheckProduct(productId));
-            Assert.Equal(repository.DeleteProduct(productId), productId);
-            Assert.False(repository.CheckProduct(productId));
+            Guid productId = await repository.AddProductAsync(product);
+            Assert.True(await repository.CheckProductAsync(productId));
+            Assert.Equal(await repository.DeleteProductAsync(productId), productId);
+            Assert.False(await repository.CheckProductAsync(productId));
+        }
+
+        [Fact]
+        public async Task ChangeProductTestAsync()
+        {
+            ProductRepository repository = new ProductRepository();
+            Product product = GenerateProduct();
+            Guid productId = await repository.AddProductAsync(product);
+            Assert.True(await repository.CheckProductAsync(productId));
+            Assert.Equal(await repository.ChangeProductAsync(productId, GenerateProduct()), productId);
+            await repository.DeleteProductAsync(productId);
         }
 
         private Product GenerateProduct()

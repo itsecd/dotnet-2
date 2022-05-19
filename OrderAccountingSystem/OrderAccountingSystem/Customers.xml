@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Customer>
+    <CustomerId>2bd58ef3-0f3a-49c6-9f96-dffb28b71251</CustomerId>
+    <Name>sed reprehenderit ut</Name>
+    <Phone>esse Excepteur velit</Phone>
+  </Customer>
+  <Customer>
+    <CustomerId>15fe85e6-4738-42c7-a8e5-eaf912900a52</CustomerId>
+    <Name>sed reprehenderit ut</Name>
+    <Phone>esse Excepteur velit</Phone>
+  </Customer>
+</ArrayOfCustomer>

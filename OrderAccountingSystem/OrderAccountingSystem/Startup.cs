@@ -33,7 +33,7 @@ namespace OrderAccountingSystem
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<ProductService>();
+                endpoints.MapGrpcService<AccountingSystemService>();
 
                 endpoints.MapGet("/", async context =>
                 {

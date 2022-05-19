@@ -3,6 +3,8 @@ using OrderAccountingSystem.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace OrderAccountingSystem.Repositories
@@ -10,21 +12,22 @@ namespace OrderAccountingSystem.Repositories
     public class ProductRepository : IProductRepository
     {
         private List<Product> _products;
+        private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly string _fileName = "Products.xml";
 
         public ProductRepository()
         {
             _products = new List<Product>();
         }
-        public List<Product> GetAllProducts()
+        public async Task<List<Product>> GetAllProductsAsync()
         {
-            ReadProductsFile();
+            await ReadProductsFileAsync();
             return _products;
         }
 
-        public Product GetProduct(Guid id)
+        public async Task<Product> GetProductAsync(Guid id)
         {
-            ReadProductsFile();
+            await ReadProductsFileAsync();
             foreach (Product product in _products)
             {
                 if (product.ProductId.Equals(id))
@@ -35,77 +38,95 @@ namespace OrderAccountingSystem.Repositories
             throw new NotFoundException();
         }
 
-        public Guid AddProduct(Product product)
+        public async Task<Guid> AddProductAsync(Product product)
         {
             if (product.Name == "")
             {
                 throw new ArgumentException();
             }
-            ReadProductsFile();
+            await ReadProductsFileAsync();
             _products.Add(product);
-            WriteProductsFile();
+            await WriteProductsFileAsync();
             return product.ProductId;
         }
 
-        public Guid ChangeProduct(Guid id, Product newProduct)
+        public async Task<Guid> ChangeProductAsync(Guid id, Product newProduct)
         {
             if (newProduct.Name == "")
             {
                 throw new ArgumentException();
             }
-            ReadProductsFile();
+            await ReadProductsFileAsync();
             foreach(Product product in _products)
             {
                 if(product.ProductId == id)
                 {
                     product.Price = newProduct.Price;
                     product.Name = newProduct.Name;
-                    WriteProductsFile();
+                    await WriteProductsFileAsync();
                     return id;
                 }
             }
             throw new NotFoundException();
         }
 
-        public bool CheckProduct(Guid id)
+        public async Task<Guid> DeleteProductAsync(Guid id)
         {
-            ReadProductsFile();
-            if(_products.Find(f => f.ProductId.Equals(id)) != null){
-                return true;
-            }
-            return false;
-        }
-
-        public Guid DeleteProduct(Guid id)
-        {
-            ReadProductsFile();
+            await ReadProductsFileAsync();
             if (_products.Remove(_products.Find(f=> f.ProductId == id)))
             {
-                WriteProductsFile();
+                await WriteProductsFileAsync();
                 return id;
             }
             throw new NotFoundException();
         }
 
-        public void ReadProductsFile()
+        public async Task<bool> CheckProductAsync(Guid id)
         {
-            if (!File.Exists(_fileName))
+            await ReadProductsFileAsync();
+            if (_products.Find(f => f.ProductId.Equals(id)) != null)
             {
-                _products = new List<Product>();
-                return;
+                return true;
             }
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
-            FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate);
-            _products = (List<Product>)formatter.Deserialize(fs);
-            fs.Close();
+            return false;
         }
 
-        public void WriteProductsFile()
+        public async Task ReadProductsFileAsync()
         {
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
-            FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate);
-            formatter.Serialize(fs, _products);
-            fs.Close();
+            await SemaphoreSlim.WaitAsync();
+            try
+            {
+                if (!File.Exists(_fileName))
+                {
+                    _products = new List<Product>();
+                    return;
+                }
+                XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
+                FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate);
+                _products = (List<Product>)formatter.Deserialize(fs);
+                fs.Close();
+            }
+            finally
+            {
+                SemaphoreSlim.Release();
+            }
+
+        }
+
+        public async Task WriteProductsFileAsync()
+        {
+            await SemaphoreSlim.WaitAsync();
+            try
+            {
+                XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
+                FileStream fs = new FileStream(_fileName, FileMode.Create);
+                formatter.Serialize(fs, _products);
+                fs.Close();
+            }
+            finally
+            {
+                SemaphoreSlim.Release();
+            }
         }
 
     }

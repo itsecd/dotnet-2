@@ -15,6 +15,10 @@ namespace OrderAccountingSystem.Model
         /// <summary>Customer Phone Number</summary>
         public string Phone { get; set; }
 
+        public Customer()
+        {
+        }
+
         public Customer(string name, string phone)
         {
             CustomerId = Guid.NewGuid();

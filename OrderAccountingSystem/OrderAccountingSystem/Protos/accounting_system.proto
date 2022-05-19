@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+option csharp_namespace = "OrderAccountingSystem";
+
+package accounting_system;
+
+service AccountingSystemGreeter {
+  rpc GetAllProducts (NullRequest) returns (AllProductReply);
+  rpc GetProduct (ProductRequest) returns (ProductReply);
+  rpc AddProduct (ProductRequest) returns (ProductReply);
+  rpc ChangeProduct (ProductRequest) returns (ProductReply);
+  rpc DeleteProduct (ProductRequest) returns (ProductReply);
+
+  rpc GetAllCustomers (NullRequest) returns (AllCustomerReply);
+  rpc GetCustomer (CustomerRequest) returns (CustomerReply);
+  rpc AddCustomer (CustomerRequest) returns (CustomerReply);
+  rpc ChangeCustomer (CustomerRequest) returns (CustomerReply);
+  rpc DeleteCustomer (CustomerRequest) returns (CustomerReply);
+
+  rpc GetAllOrders (NullRequest) returns (AllCustomerReply);
+  rpc GetOrder (NullRequest) returns (OrderReply);
+  rpc GetMonthlySale (OrderRequest) returns (OrderReply);
+  rpc AddOrder (OrderRequest) returns (OrderReply);
+  rpc ChangeOrder (OrderRequest) returns (OrderReply);
+  rpc ChangeOrderStatus (OrderRequest) returns (OrderReply);
+  rpc DeleteOrder (OrderRequest) returns (OrderReply);
+}
+
+message NullRequest {
+}
+
+
+message ProductRequest {
+  string productId = 1;
+  string name = 2;
+  double price = 3;
+}
+
+message AllProductReply {
+  repeated ProductReply products = 1;
+}
+
+message ProductReply {
+  ExaminationReply examination_reply = 1;
+  string productId = 2;
+  string name = 3;
+  double price = 4;
+}
+
+
+message CustomerRequest {
+  string customerId = 1;
+  string name = 2;
+  string phone = 3;
+}
+
+message AllCustomerReply {
+  repeated CustomerReply customers = 1;
+}
+
+message CustomerReply {
+  ExaminationReply examination_reply = 1;
+  string customerId = 2;
+  string name = 3;
+  string phone = 4;
+}
+
+message OrderRequest {
+  string orderId = 1;
+  CustomerRequest customer = 2;
+  repeated ProductRequest products = 3;
+  int status = 4;
+  Timestamp date = 5;
+}
+
+message AllOrderReply {
+  repeated OrderReply orders = 1;
+}
+
+message OrderReply {
+  ExaminationReply examination_reply = 1;
+  string orderId = 2;
+  CustomerRequest customer = 3;
+  repeated ProductRequest products = 4;
+  int status = 5;
+  Timestamp date = 6;
+}
+
+
+message ExaminationReply {
+  bool argument_exception = 1;
+  bool not_found_exception = 2;
+  bool problem = 3;
+}

@@ -1,18 +1,21 @@
 ﻿using OrderAccountingSystem.Model;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OrderAccountingSystem.Repositories
 {
     public interface IOrderRepository
     {
-        List<Product> GetAllProducts();
-        Guid AddProduct(Product product);
-        Product GetProduct(Guid id);
-        Guid DeleteProduct(Guid id);
-        Guid ChangeProduct(Guid id, Product newProduct);
-        bool CheckProduct(Guid id);
-        void ReadProductsFile();
-        void WriteProductsFile();
+        Task<List<Order>> GetAllOrdersAsync();
+        Task<Guid> AddOrderAsync(Order order);
+        Task<Order> GetOrderAsync(Guid id);
+        Task<double> GetMonthlySales();
+        Task<Guid> DeleteOrderAsync(Guid id);
+        Task<Guid> ChangeOrderAsync(Guid id, Order newOrder);
+        Task<Guid> ChangeOrderStatusAsync(Guid id, Order newOrder);
+        Task<bool> CheckOrderAsync(Guid id);
+        Task ReadOrdersFileAsync();
+        Task WriteOrdersFileAsync();
     }
 }

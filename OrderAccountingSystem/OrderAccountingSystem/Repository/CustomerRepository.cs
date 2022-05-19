@@ -3,98 +3,130 @@ using OrderAccountingSystem.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace OrderAccountingSystem.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private List<Product> _products;
-        private readonly string _fileName = "Products.xml";
+        private List<Customer> _customers;
+        private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
+        private readonly string _fileName = "Customers.xml";
 
         public CustomerRepository()
         {
-            _products = new List<Product>();
-        }
-        public List<Product> GetAllProducts()
-        {
-            ReadProductsFile();
-            return _products;
+            _customers = new List<Customer>();
         }
 
-        public Product GetProduct(Guid id)
+        public async Task<List<Customer>> GetAllCustomersAsync()
         {
-            ReadProductsFile();
-            foreach (Product product in _products)
+            await ReadCustomersFileAsync();
+            return _customers;
+        }
+
+        public async Task<Guid> AddCustomerAsync(Customer customer)
+        {
+            if (customer.Name == "" || customer.Phone == "")
             {
-                if (product.ProductId.Equals(id))
+                throw new ArgumentException();
+            }
+            await ReadCustomersFileAsync();
+            _customers.Add(customer);
+            await WriteCustomersFileAsync();
+            return customer.CustomerId;
+        }
+
+        public async Task<Customer> GetCustomerAsync(Guid id)
+        {
+            await ReadCustomersFileAsync();
+            foreach (Customer customer in _customers)
+            {
+                if (customer.CustomerId.Equals(id))
                 {
-                    return product;
+                    return customer;
                 }
             }
             throw new NotFoundException();
         }
 
-        public Guid AddProduct(Product product)
+        public async Task<Guid> DeleteCustomerAsync(Guid id)
         {
-            ReadProductsFile();
-            _products.Add(product);
-            WriteProductsFile();
-            return product.ProductId;
+            await ReadCustomersFileAsync();
+            if (_customers.Remove(_customers.Find(f => f.CustomerId == id)))
+            {
+                await WriteCustomersFileAsync();
+                return id;
+            }
+            throw new NotFoundException();
         }
 
-        public Guid ChangeProduct(Guid id, Product newProduct)
+        public async Task<Guid> ChangeCustomerAsync(Guid id, Customer newCustomer)
         {
-            ReadProductsFile();
-            foreach(Product product in _products)
+            if (newCustomer.Name == "")
             {
-                if(product.ProductId == id)
+                throw new ArgumentException();
+            }
+            await ReadCustomersFileAsync();
+            foreach (Customer customer in _customers)
+            {
+                if (customer.CustomerId == id)
                 {
-                    product.Price = newProduct.Price;
-                    product.Name = newProduct.Name;
+                    customer.Phone = newCustomer.Phone;
+                    customer.Name = newCustomer.Name;
+                    await WriteCustomersFileAsync();
+                    return id;
                 }
             }
-            WriteProductsFile();
-            return id;
+            throw new NotFoundException();
         }
 
-        public bool CheckProduct(Guid id)
+        public async Task<bool> CheckCustomerAsync(Guid id)
         {
-            ReadProductsFile();
-            if(_products.Find(f => f.ProductId.Equals(id)) != null){
+            await ReadCustomersFileAsync();
+            if (_customers.Find(f => f.CustomerId.Equals(id)) != null)
+            {
                 return true;
             }
             return false;
         }
 
-        public Guid DeleteProduct(Guid id)
+        public async Task ReadCustomersFileAsync()
         {
-            ReadProductsFile();
-            _products.Remove(GetProduct(id));
-            WriteProductsFile();
-            return id;
-        }
-
-        public void ReadProductsFile()
-        {
-            if (!File.Exists(_fileName))
+            await SemaphoreSlim.WaitAsync();
+            try
             {
-                _products = new List<Product>();
-                return;
+                if (!File.Exists(_fileName))
+                {
+                    _customers = new List<Customer>();
+                    return;
+                }
+                XmlSerializer formatter = new XmlSerializer(typeof(List<Customer>));
+                FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate);
+                _customers = (List<Customer>)formatter.Deserialize(fs);
+                fs.Close();
             }
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
-            FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate);
-            _products = (List<Product>)formatter.Deserialize(fs);
-            fs.Close();
+            finally
+            {
+                SemaphoreSlim.Release();
+            }
         }
 
-        public void WriteProductsFile()
+        public async Task WriteCustomersFileAsync()
         {
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
-            FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate);
-            formatter.Serialize(fs, _products);
-            fs.Close();
+            await SemaphoreSlim.WaitAsync();
+            try
+            {
+                XmlSerializer formatter = new XmlSerializer(typeof(List<Customer>));
+                FileStream fs = new FileStream(_fileName, FileMode.Create);
+                formatter.Serialize(fs, _customers);
+                fs.Close();
+            }
+            finally
+            {
+                SemaphoreSlim.Release();
+            }
         }
-
     }
 }
