@@ -92,7 +92,7 @@ public class HandleUpdateService
         {
             code += strUserName[i] ^ key[i];
         }
-        return code;
+        return code[..7];
     }
 
     private static async Task<Message> SendConfirmationCode(ITelegramBotClient bot, Message message)
