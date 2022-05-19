@@ -57,7 +57,10 @@ namespace Server.Services
             TimeSpan time = DateTime.Now.TimeOfDay;
             bool isOccured = false;
             var responses = (from userEvent in userEvents
-                             where ((userEvent.DateNTime.Date - date).Days % userEvent.EventFrequency) == 0
+                             where 
+                             (((userEvent.DateNTime.Date - date).Days % userEvent.EventFrequency) == 0) &&
+                             (userEvent.DateNTime.TimeOfDay.Hours == time.Hours) && 
+                             (userEvent.DateNTime.TimeOfDay.Minutes == time.Minutes)
                              select NotifyAboutEvent(userEvent).Result);
             foreach (var response in responses)
             {
