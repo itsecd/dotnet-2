@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Server.Exceptions;
 using Server.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,10 @@ namespace Server.Repositories
             if(_userEvents.Exists(usrEvnt => usrEvnt.Equals(userEvent)))
             {
                 throw new AlreadyExistException();
+            }
+            if(userEvent.EventFrequency < 0 || userEvent.EventFrequency > 7)
+            {
+                throw new InvalidUserEventData();
             }
             var newUserEvent = new UserEvent()
             {
@@ -74,6 +79,10 @@ namespace Server.Repositories
             if (_userEvents.Count(usrEvnt => usrEvnt.Equals(userEvent)) > 1)
             {
                 throw new AlreadyExistException();
+            }
+            if (userEvent.EventFrequency < 0 || userEvent.EventFrequency > 7)
+            {
+                throw new InvalidUserEventData();
             }
             var usrEvntFromRepo = _userEvents.Single(us => us.Id == id);
             usrEvntFromRepo.EventName = userEvent.EventName;

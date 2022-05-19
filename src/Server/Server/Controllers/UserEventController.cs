@@ -68,9 +68,11 @@ namespace Server.Controllers
         /// </summary>
         /// <param name="userEvent">User event</param>
         /// <response code="200">Success</response>
+        /// <response code="400">Invalid event data</response>
         /// <response code="409">This event already exists</response>
         [HttpPost]
         [ProducesResponseType(typeof(UserEvent), 200)]
+        [ProducesResponseType(typeof(UserEvent), 400)]
         [ProducesResponseType(typeof(UserEvent), 409)]
         public void Post([FromBody] UserEvent userEvent)
         {
@@ -87,7 +89,10 @@ namespace Server.Controllers
             {
                 Response.StatusCode = 409;
             }
-            
+            catch (InvalidUserEventData)
+            {
+                Response.StatusCode = 400;
+            }
         }
 
         /// <summary>
@@ -96,10 +101,12 @@ namespace Server.Controllers
         /// <param name="id">User event ID</param>
         /// <param name="userEvent">User event</param>
         /// <response code="200">Success</response>
+        /// <response code="400">Invalid event data</response>
         /// <response code="404">A user event with this ID was not found</response>
         /// <response code="409">This event already exist</response>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(UserEvent), 200)]
+        [ProducesResponseType(typeof(UserEvent), 400)]
         [ProducesResponseType(typeof(UserEvent), 404)]
         [ProducesResponseType(typeof(UserEvent), 409)]
         public void Put(int id, [FromBody] UserEvent userEvent)
@@ -117,7 +124,6 @@ namespace Server.Controllers
             {
                 Response.StatusCode = 409;
             }
-            
         }
 
         /// <summary>
