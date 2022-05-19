@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgBot", "TgBot\TgBot.csproj", "{960768C6-D77D-4194-B60A-EE7FFD2F555B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServer", "TestServer\TestServer.csproj", "{48B44E0C-8BC5-4AF2-9D94-086134540169}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestServer", "TestServer\TestServer.csproj", "{48B44E0C-8BC5-4AF2-9D94-086134540169}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{13DD1A21-6473-4879-AFE5-8DB96DBF9C69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{48B44E0C-8BC5-4AF2-9D94-086134540169}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48B44E0C-8BC5-4AF2-9D94-086134540169}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48B44E0C-8BC5-4AF2-9D94-086134540169}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13DD1A21-6473-4879-AFE5-8DB96DBF9C69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13DD1A21-6473-4879-AFE5-8DB96DBF9C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13DD1A21-6473-4879-AFE5-8DB96DBF9C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13DD1A21-6473-4879-AFE5-8DB96DBF9C69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
