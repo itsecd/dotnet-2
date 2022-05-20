@@ -23,20 +23,20 @@ namespace OrderAccountingSystem.Model
         public double Price { get; set; }
 
         /// <summary>Order Date</summary>
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
 
         public Order()
         {
         }
 
-        public Order(Customer customer, List<Product> products, int status, DateTime date)
+        public Order(Customer customer, List<Product> products, int status, DateTimeOffset date)
         {
             Customer = customer;
             Products = products;
             Status = status;
             Date = date;
         }
-        public Order(Guid orderId, Customer customer, List<Product> products, int status, DateTime date)
+        public Order(Guid orderId, Customer customer, List<Product> products, int status, DateTimeOffset date)
         {
             OrderId = orderId;
             Customer = customer;

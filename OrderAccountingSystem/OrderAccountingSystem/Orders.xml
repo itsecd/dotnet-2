@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<ArrayOfOrder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Order>
+    <OrderId>f432e304-3317-4569-a02e-c75175786518</OrderId>
+    <Customer>
+      <CustomerId>e0aad35a-0970-4dc0-bdd4-54347a033e93</CustomerId>
+      <Name>dolor laboris tempor</Name>
+      <Phone>sit proident</Phone>
+    </Customer>
+    <Products>
+      <Product>
+        <ProductId>09dbd2da-077f-42a8-ad29-83a828f80ccb</ProductId>
+        <Name>nulla</Name>
+        <Price>111</Price>
+      </Product>
+      <Product>
+        <ProductId>3173a958-9a49-4cf1-b2df-8452ea1ce995</ProductId>
+        <Name>eiusmod</Name>
+        <Price>222</Price>
+      </Product>
+    </Products>
+    <Status>1</Status>
+    <Price>333</Price>
+    <Date />
+  </Order>
+</ArrayOfOrder>

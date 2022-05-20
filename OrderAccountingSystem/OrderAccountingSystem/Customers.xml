@@ -1,13 +1,53 @@
 <?xml version="1.0"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <CustomerId>2bd58ef3-0f3a-49c6-9f96-dffb28b71251</CustomerId>
-    <Name>sed reprehenderit ut</Name>
-    <Phone>esse Excepteur velit</Phone>
+    <CustomerId>b2fd6e1e-5d1a-4cf7-aa59-1f084654d79f</CustomerId>
+    <Name>dolor laboris tempor</Name>
+    <Phone>sit proident</Phone>
   </Customer>
   <Customer>
-    <CustomerId>15fe85e6-4738-42c7-a8e5-eaf912900a52</CustomerId>
-    <Name>sed reprehenderit ut</Name>
-    <Phone>esse Excepteur velit</Phone>
+    <CustomerId>b1b36836-5dd8-488d-a33b-0a4806fd2c12</CustomerId>
+    <Name>dolor laboris tempor</Name>
+    <Phone>sit proident</Phone>
+  </Customer>
+  <Customer>
+    <CustomerId>ffd1868b-a02b-4a8e-bf3e-16d6a7e95bed</CustomerId>
+    <Name>dolor laboris tempor</Name>
+    <Phone>sit proident</Phone>
+  </Customer>
+  <Customer>
+    <CustomerId>99b3b8c5-8117-42ad-908e-cd71c082ad87</CustomerId>
+    <Name>dolor laboris tempor</Name>
+    <Phone>sit proident</Phone>
+  </Customer>
+  <Customer>
+    <CustomerId>932411e9-62ad-4081-9808-edd178f735bf</CustomerId>
+    <Name>dolor laboris tempor</Name>
+    <Phone>sit proident</Phone>
+  </Customer>
+  <Customer>
+    <CustomerId>6f6b0171-0688-4d9b-b59e-675ece3b0266</CustomerId>
+    <Name>dolor laboris tempor</Name>
+    <Phone>sit proident</Phone>
+  </Customer>
+  <Customer>
+    <CustomerId>e0aad35a-0970-4dc0-bdd4-54347a033e93</CustomerId>
+    <Name>dolor laboris tempor</Name>
+    <Phone>sit proident</Phone>
+  </Customer>
+  <Customer>
+    <CustomerId>f72f1573-1034-4e91-971e-0f7fbe958b5a</CustomerId>
+    <Name>dolor laboris tempor</Name>
+    <Phone>sit proident</Phone>
+  </Customer>
+  <Customer>
+    <CustomerId>3d1f30f1-4bce-41f9-916a-5719a2e20dcf</CustomerId>
+    <Name>dolor laboris tempor</Name>
+    <Phone>sit proident</Phone>
+  </Customer>
+  <Customer>
+    <CustomerId>5f1e9d4c-35e6-4f54-839d-72cc546e1660</CustomerId>
+    <Name>dolor laboris tempor</Name>
+    <Phone>sit proident</Phone>
   </Customer>
 </ArrayOfCustomer>

@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 option csharp_namespace = "OrderAccountingSystem";
 
 package accounting_system;
@@ -17,9 +19,9 @@ service AccountingSystemGreeter {
   rpc ChangeCustomer (CustomerRequest) returns (CustomerReply);
   rpc DeleteCustomer (CustomerRequest) returns (CustomerReply);
 
-  rpc GetAllOrders (NullRequest) returns (AllCustomerReply);
-  rpc GetOrder (NullRequest) returns (OrderReply);
-  rpc GetMonthlySale (OrderRequest) returns (OrderReply);
+  rpc GetAllOrders (NullRequest) returns (AllOrderReply);
+  rpc GetOrder (OrderRequest) returns (OrderReply);
+  rpc GetMonthlySale (NullRequest) returns (OrderReply);
   rpc AddOrder (OrderRequest) returns (OrderReply);
   rpc ChangeOrder (OrderRequest) returns (OrderReply);
   rpc ChangeOrderStatus (OrderRequest) returns (OrderReply);
@@ -69,8 +71,8 @@ message OrderRequest {
   string orderId = 1;
   CustomerRequest customer = 2;
   repeated ProductRequest products = 3;
-  int status = 4;
-  Timestamp date = 5;
+  int32 status = 4;
+  google.protobuf.Timestamp date = 5;
 }
 
 message AllOrderReply {
@@ -80,10 +82,11 @@ message AllOrderReply {
 message OrderReply {
   ExaminationReply examination_reply = 1;
   string orderId = 2;
-  CustomerRequest customer = 3;
-  repeated ProductRequest products = 4;
-  int status = 5;
-  Timestamp date = 6;
+  CustomerReply customer = 3;
+  repeated ProductReply products = 4;
+  double price = 5;
+  int32 status = 6;
+  google.protobuf.Timestamp date = 7;
 }
 
 
