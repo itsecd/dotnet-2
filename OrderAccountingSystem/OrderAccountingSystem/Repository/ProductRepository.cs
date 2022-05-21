@@ -13,7 +13,7 @@ namespace OrderAccountingSystem.Repository
     public class ProductRepository : IProductRepository
     {
         private List<Product> _products;
-        private readonly static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
+        private static readonly SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly string _fileName;
 
         public ProductRepository()
@@ -109,10 +109,8 @@ namespace OrderAccountingSystem.Repository
                     return;
                 }
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
-                FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
+                using FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
                 _products = (List<Product>)formatter.Deserialize(fileStream);
-                fileStream.Dispose();
-                fileStream.Close();
             }
             finally
             {
@@ -127,10 +125,8 @@ namespace OrderAccountingSystem.Repository
             try
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
-                FileStream fileStream = new FileStream(_fileName, FileMode.Create);
+                using FileStream fileStream = new FileStream(_fileName, FileMode.Create);
                 formatter.Serialize(fileStream, _products);
-                fileStream.Dispose();
-                fileStream.Close();
             }
             finally
             {

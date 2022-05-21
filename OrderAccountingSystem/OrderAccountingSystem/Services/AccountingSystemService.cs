@@ -660,8 +660,7 @@ namespace OrderAccountingSystem
         }
         private bool IsGuid(string value)
         {
-            Guid _x;
-            return Guid.TryParse(value, out _x);
+            return Guid.TryParse(value, out _);
         }
     }
 }

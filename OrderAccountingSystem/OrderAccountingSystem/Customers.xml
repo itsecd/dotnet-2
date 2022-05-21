@@ -50,4 +50,9 @@
     <Name>dolor laboris tempor</Name>
     <Phone>sit proident</Phone>
   </Customer>
+  <Customer>
+    <CustomerId>b5196369-3501-4d9d-ae0c-6f94c588181d</CustomerId>
+    <Name>aute voluptate sed id</Name>
+    <Phone>sint reprehenderit adipisicing officia aliqua</Phone>
+  </Customer>
 </ArrayOfCustomer>

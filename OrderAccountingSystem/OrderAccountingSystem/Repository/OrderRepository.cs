@@ -14,7 +14,7 @@ namespace OrderAccountingSystem.Repository
     public class OrderRepository : IOrderRepository
     {
         private List<Order> _orders;
-        private readonly static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
+        private static readonly SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly string _fileName;
 
         public OrderRepository()
@@ -136,10 +136,8 @@ namespace OrderAccountingSystem.Repository
                     return;
                 }
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Order>));
-                FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
+                using FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
                 _orders = (List<Order>)formatter.Deserialize(fileStream);
-                fileStream.Dispose();
-                fileStream.Close();
             }
             finally
             {
@@ -153,10 +151,8 @@ namespace OrderAccountingSystem.Repository
             try
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Order>));
-                FileStream fileStream = new FileStream(_fileName, FileMode.Create);
+                using FileStream fileStream = new FileStream(_fileName, FileMode.Create);
                 formatter.Serialize(fileStream, _orders);
-                fileStream.Dispose();
-                fileStream.Close();
             }
             finally
             {

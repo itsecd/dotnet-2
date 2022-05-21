@@ -120,4 +120,19 @@
     <Name>eiusmod</Name>
     <Price>222</Price>
   </Product>
+  <Product>
+    <ProductId>b09d609b-a1b0-4498-9243-fb76ef3542b8</ProductId>
+    <Name>in laboris</Name>
+    <Price>INF</Price>
+  </Product>
+  <Product>
+    <ProductId>77e665bb-b7b8-4fa7-be97-4d367b192751</ProductId>
+    <Name>labore sint</Name>
+    <Price>NaN</Price>
+  </Product>
+  <Product>
+    <ProductId>53514440-aa9e-4210-a464-8006a6c1f3f5</ProductId>
+    <Name>sit ad fugiat</Name>
+    <Price>-62406087.236814976</Price>
+  </Product>
 </ArrayOfProduct>
