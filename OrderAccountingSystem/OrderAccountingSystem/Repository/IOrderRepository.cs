@@ -1,9 +1,9 @@
-﻿using OrderAccountingSystem.Model;
+﻿using OrderAccountingSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OrderAccountingSystem.Repositories
+namespace OrderAccountingSystem.Repository
 {
     public interface IOrderRepository
     {
@@ -15,7 +15,5 @@ namespace OrderAccountingSystem.Repositories
         Task<Guid> ChangeOrderAsync(Guid id, Order newOrder);
         Task<Guid> ChangeOrderStatusAsync(Guid id, Order newOrder);
         Task<bool> CheckOrderAsync(Guid id);
-        Task ReadOrdersFileAsync();
-        Task WriteOrdersFileAsync();
     }
 }

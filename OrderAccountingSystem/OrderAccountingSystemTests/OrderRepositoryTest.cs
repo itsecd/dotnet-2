@@ -1,5 +1,5 @@
-using OrderAccountingSystem.Model;
-using OrderAccountingSystem.Repositories;
+using OrderAccountingSystem.Models;
+using OrderAccountingSystem.Repository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -57,7 +57,7 @@ namespace OrderAccountingSystemTests
         {
             Order order = new Order(
                 new Customer("Kris", "88888"),
-                new List<Product>() { new Product("Banana", 100)},
+                new List<Product>() { new Product("Banana", 100) },
                 1,
                 DateTime.Now
                 );

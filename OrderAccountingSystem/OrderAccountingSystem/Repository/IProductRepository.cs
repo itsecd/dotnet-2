@@ -1,9 +1,9 @@
-﻿using OrderAccountingSystem.Model;
+﻿using OrderAccountingSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OrderAccountingSystem.Repositories
+namespace OrderAccountingSystem.Repository
 {
     public interface IProductRepository
     {
@@ -13,7 +13,5 @@ namespace OrderAccountingSystem.Repositories
         Task<Guid> DeleteProductAsync(Guid id);
         Task<Guid> ChangeProductAsync(Guid id, Product newProduct);
         Task<bool> CheckProductAsync(Guid id);
-        Task ReadProductsFileAsync();
-        Task WriteProductsFileAsync();
     }
 }

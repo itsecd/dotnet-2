@@ -1,5 +1,6 @@
-﻿using OrderAccountingSystem.Exceptions;
-using OrderAccountingSystem.Model;
+﻿using Microsoft.Extensions.Configuration;
+using OrderAccountingSystem.Exceptions;
+using OrderAccountingSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,18 +8,24 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace OrderAccountingSystem.Repositories
+namespace OrderAccountingSystem.Repository
 {
     public class ProductRepository : IProductRepository
     {
         private List<Product> _products;
-        private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
-        private readonly string _fileName = "Products.xml";
+        private readonly static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
+        private readonly string _fileName;
 
         public ProductRepository()
         {
             _products = new List<Product>();
         }
+
+        public ProductRepository(IConfiguration configuration)
+        {
+            _fileName = configuration.GetValue<string>("PathProducts");
+        }
+
         public async Task<List<Product>> GetAllProductsAsync()
         {
             await ReadProductsFileAsync();
@@ -42,7 +49,7 @@ namespace OrderAccountingSystem.Repositories
         {
             if (product.Name == "")
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Blank field");
             }
             await ReadProductsFileAsync();
             _products.Add(product);
@@ -54,12 +61,12 @@ namespace OrderAccountingSystem.Repositories
         {
             if (newProduct.Name == "")
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Blank field");
             }
             await ReadProductsFileAsync();
-            foreach(Product product in _products)
+            foreach (Product product in _products)
             {
-                if(product.ProductId == id)
+                if (product.ProductId == id)
                 {
                     product.Price = newProduct.Price;
                     product.Name = newProduct.Name;
@@ -73,7 +80,7 @@ namespace OrderAccountingSystem.Repositories
         public async Task<Guid> DeleteProductAsync(Guid id)
         {
             await ReadProductsFileAsync();
-            if (_products.Remove(_products.Find(f=> f.ProductId == id)))
+            if (_products.Remove(_products.Find(f => f.ProductId == id)))
             {
                 await WriteProductsFileAsync();
                 return id;
@@ -102,9 +109,10 @@ namespace OrderAccountingSystem.Repositories
                     return;
                 }
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
-                FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate);
-                _products = (List<Product>)formatter.Deserialize(fs);
-                fs.Close();
+                FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
+                _products = (List<Product>)formatter.Deserialize(fileStream);
+                fileStream.Dispose();
+                fileStream.Close();
             }
             finally
             {
@@ -119,9 +127,10 @@ namespace OrderAccountingSystem.Repositories
             try
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
-                FileStream fs = new FileStream(_fileName, FileMode.Create);
-                formatter.Serialize(fs, _products);
-                fs.Close();
+                FileStream fileStream = new FileStream(_fileName, FileMode.Create);
+                formatter.Serialize(fileStream, _products);
+                fileStream.Dispose();
+                fileStream.Close();
             }
             finally
             {

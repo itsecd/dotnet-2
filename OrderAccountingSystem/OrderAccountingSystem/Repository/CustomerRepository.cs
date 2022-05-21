@@ -1,5 +1,6 @@
-﻿using OrderAccountingSystem.Exceptions;
-using OrderAccountingSystem.Model;
+﻿using Microsoft.Extensions.Configuration;
+using OrderAccountingSystem.Exceptions;
+using OrderAccountingSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,17 +8,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace OrderAccountingSystem.Repositories
+namespace OrderAccountingSystem.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
         private List<Customer> _customers;
-        private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
-        private readonly string _fileName = "Customers.xml";
+        private readonly static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
+        private readonly string _fileName;
 
         public CustomerRepository()
         {
             _customers = new List<Customer>();
+        }
+
+        public CustomerRepository(IConfiguration configuration)
+        {
+            _fileName = configuration.GetValue<string>("PathCustomers");
         }
 
         public async Task<List<Customer>> GetAllCustomersAsync()
@@ -30,7 +36,7 @@ namespace OrderAccountingSystem.Repositories
         {
             if (customer.Name == "" || customer.Phone == "")
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Blank field");
             }
             await ReadCustomersFileAsync();
             _customers.Add(customer);
@@ -66,7 +72,7 @@ namespace OrderAccountingSystem.Repositories
         {
             if (newCustomer.Name == "")
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Blank field");
             }
             await ReadCustomersFileAsync();
             foreach (Customer customer in _customers)
@@ -103,9 +109,10 @@ namespace OrderAccountingSystem.Repositories
                     return;
                 }
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Customer>));
-                FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate);
-                _customers = (List<Customer>)formatter.Deserialize(fs);
-                fs.Close();
+                FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
+                _customers = (List<Customer>)formatter.Deserialize(fileStream);
+                fileStream.Dispose();
+                fileStream.Close();
             }
             finally
             {
@@ -119,9 +126,10 @@ namespace OrderAccountingSystem.Repositories
             try
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Customer>));
-                FileStream fs = new FileStream(_fileName, FileMode.Create);
-                formatter.Serialize(fs, _customers);
-                fs.Close();
+                FileStream fileStream = new FileStream(_fileName, FileMode.Create);
+                formatter.Serialize(fileStream, _customers);
+                fileStream.Dispose();
+                fileStream.Close();
             }
             finally
             {

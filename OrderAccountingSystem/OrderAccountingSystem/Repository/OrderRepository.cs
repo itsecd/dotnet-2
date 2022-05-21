@@ -1,5 +1,6 @@
-﻿using OrderAccountingSystem.Exceptions;
-using OrderAccountingSystem.Model;
+﻿using Microsoft.Extensions.Configuration;
+using OrderAccountingSystem.Exceptions;
+using OrderAccountingSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,17 +9,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace OrderAccountingSystem.Repositories
+namespace OrderAccountingSystem.Repository
 {
     public class OrderRepository : IOrderRepository
     {
         private List<Order> _orders;
-        private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
-        private readonly string _fileName = "Orders.xml";
+        private readonly static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
+        private readonly string _fileName;
 
         public OrderRepository()
         {
             _orders = new List<Order>();
+        }
+
+        public OrderRepository(IConfiguration configuration)
+        {
+            _fileName = configuration.GetValue<string>("PathOrders");
         }
 
         public async Task<List<Order>> GetAllOrdersAsync()
@@ -31,7 +37,7 @@ namespace OrderAccountingSystem.Repositories
         {
             if (order.Customer == null || order.Products == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Blank field");
             }
             order.Price = order.Products.Sum(f => f.Price);
             await ReadOrdersFileAsync();
@@ -43,7 +49,7 @@ namespace OrderAccountingSystem.Repositories
         public async Task<Order> GetOrderAsync(Guid id)
         {
             await ReadOrdersFileAsync();
-            foreach(Order order in _orders)
+            foreach (Order order in _orders)
             {
                 if (order.OrderId.Equals(id))
                 {
@@ -75,7 +81,7 @@ namespace OrderAccountingSystem.Repositories
         {
             if (newOrder.Customer == null || newOrder.Products == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Blank field");
             }
             await ReadOrdersFileAsync();
             foreach (Order order in _orders)
@@ -130,9 +136,10 @@ namespace OrderAccountingSystem.Repositories
                     return;
                 }
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Order>));
-                FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate);
-                _orders = (List<Order>)formatter.Deserialize(fs);
-                fs.Close();
+                FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
+                _orders = (List<Order>)formatter.Deserialize(fileStream);
+                fileStream.Dispose();
+                fileStream.Close();
             }
             finally
             {
@@ -146,9 +153,10 @@ namespace OrderAccountingSystem.Repositories
             try
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Order>));
-                FileStream fs = new FileStream(_fileName, FileMode.Create);
-                formatter.Serialize(fs, _orders);
-                fs.Close();
+                FileStream fileStream = new FileStream(_fileName, FileMode.Create);
+                formatter.Serialize(fileStream, _orders);
+                fileStream.Dispose();
+                fileStream.Close();
             }
             finally
             {

@@ -1,5 +1,5 @@
-using OrderAccountingSystem.Model;
-using OrderAccountingSystem.Repositories;
+using OrderAccountingSystem.Models;
+using OrderAccountingSystem.Repository;
 using System;
 using System.Threading.Tasks;
 using Xunit;

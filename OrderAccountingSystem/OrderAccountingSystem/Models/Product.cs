@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace OrderAccountingSystem.Model
+namespace OrderAccountingSystem.Models
 {
-    [System.Serializable]
     ///<summary>Info about product</summary>
+    [System.Serializable]
     public class Product
     {
         /// <summary>Product ID</summary>

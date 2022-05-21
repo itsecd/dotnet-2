@@ -1,10 +1,9 @@
-using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using OrderAccountingSystem.Exceptions;
-using OrderAccountingSystem.Model;
-using OrderAccountingSystem.Repositories;
+using OrderAccountingSystem.Models;
+using OrderAccountingSystem.Repository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -53,7 +52,7 @@ namespace OrderAccountingSystem
                     Price = product.Price
                 });
             }
-            catch(NotFoundException)
+            catch (NotFoundException)
             {
                 return Task.FromResult(new ProductReply
                 {
@@ -82,9 +81,9 @@ namespace OrderAccountingSystem
                 return Task.FromResult(new ProductReply
                 {
                     ProductId = _productRepository.AddProductAsync(new Product(request.Name, request.Price)).Result.ToString()
-                }); 
+                });
             }
-            catch(ArgumentException)
+            catch (ArgumentException)
             {
                 return Task.FromResult(new ProductReply
                 {
@@ -335,7 +334,7 @@ namespace OrderAccountingSystem
         public override Task<AllOrderReply> GetAllOrders(NullRequest request, ServerCallContext context)
         {
             AllOrderReply allOrderReply = new AllOrderReply();
-            foreach(Order order in _orderRepository.GetAllOrdersAsync().Result)
+            foreach (Order order in _orderRepository.GetAllOrdersAsync().Result)
             {
                 OrderReply orderReply = new OrderReply();
                 orderReply.OrderId = order.OrderId.ToString();
@@ -458,7 +457,7 @@ namespace OrderAccountingSystem
                 }
 
                 order.Products = new List<Product>();
-                foreach(ProductRequest product in request.Products)
+                foreach (ProductRequest product in request.Products)
                 {
                     if (IsGuid(product.ProductId))
                     {
@@ -561,8 +560,8 @@ namespace OrderAccountingSystem
                 order.Date = request.Date.ToDateTime();
                 return Task.FromResult(new OrderReply
                 {
-                    OrderId = _orderRepository.ChangeOrderAsync(Guid.Parse(request.OrderId),order).Result.ToString()
-                }); ;
+                    OrderId = _orderRepository.ChangeOrderAsync(Guid.Parse(request.OrderId), order).Result.ToString()
+                });
             }
             catch (ArgumentException)
             {
@@ -661,8 +660,8 @@ namespace OrderAccountingSystem
         }
         private bool IsGuid(string value)
         {
-            Guid x;
-            return Guid.TryParse(value, out x);
+            Guid _x;
+            return Guid.TryParse(value, out _x);
         }
     }
 }

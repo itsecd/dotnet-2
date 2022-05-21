@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OrderAccountingSystem.Model
+namespace OrderAccountingSystem.Models
 {
-    [System.Serializable]
     /// <summary>Info about order</summary>
+    [System.Serializable]
     public class Order
     {
         /// <summary>Order ID</summary>
