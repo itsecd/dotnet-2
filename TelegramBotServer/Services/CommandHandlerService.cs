@@ -150,7 +150,7 @@ namespace TelegramBotServer.Services
         private async Task<Message> ProcessText(Message message, SubscriberSessions sessions)
         {
             var session = sessions.Sessions.ContainsKey(message.Chat.Id) ? sessions[message.Chat.Id] : null;
-            if (session is null || session.ViewedTime is null || session.CurrentChoice != SubscriberSession.ChoiceType.Message)
+            if (session?.ViewedTime is null || session.CurrentChoice != SubscriberSession.ChoiceType.Message)
                 return await _bot.SendTextMessageAsync(message.Chat.Id, "Use command from /help");
 
             var sub = _subscriberRepository.GetSubscribers()
@@ -206,7 +206,7 @@ namespace TelegramBotServer.Services
             if (callbackQuery.Data is null)
                 return;
             var callbackData = JsonSerializer.Deserialize<CallbackData>(callbackQuery.Data);
-            if (session is null || callbackQuery.Message is null || callbackData?.Data is null)
+            if (callbackQuery.Message is null || callbackData?.Data is null)
                 return;
             session.ViewedTime ??= DateTime.Now;
             switch (session.CurrentChoice)
