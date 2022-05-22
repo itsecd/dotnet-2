@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
-using TelegramBot;
-using TelegramBot.Model;
 using TelegramBot.Repository;
 
 namespace TelegramBot.Services
@@ -13,14 +12,14 @@ namespace TelegramBot.Services
     public class TimedHostedService : IHostedService, IDisposable
     {
         private int executionCount = 0;
-        private readonly ITelegramBotClient _telegramBotClient;
-        private readonly ILogger<TimedHostedService> _logger;
         private Timer _timer;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<TimedHostedService> _logger;
         private readonly IUsersRepository _usersRepository;
 
-        public TimedHostedService(ILogger<TimedHostedService> logger, ITelegramBotClient telegramBotClient, IUsersRepository usersRepository)
+        public TimedHostedService(ILogger<TimedHostedService> logger, IConfiguration configuration, IUsersRepository usersRepository)
         {
-            _telegramBotClient = telegramBotClient;
+            _configuration = configuration;
             _usersRepository = usersRepository;
             _logger = logger;
         }
@@ -29,7 +28,7 @@ namespace TelegramBot.Services
         {
             _logger.LogInformation("Timed Hosted Service is running.");
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromMinutes(5));
+                TimeSpan.FromMinutes(2));
             return Task.CompletedTask;
         }
 
@@ -37,14 +36,15 @@ namespace TelegramBot.Services
         {
             var count = Interlocked.Increment(ref executionCount);
             var users = _usersRepository.GetUsers();
+            var botClient = new TelegramBotClient(_configuration.GetValue<string>("TelegramBotKey"));
             foreach (var user in users)
             {
                 foreach (var reminder in user.EventReminders)
                 {
-                    if (((reminder.Time - DateTime.Now).TotalMinutes < 10) && ((reminder.Time - DateTime.Now).TotalMinutes >= 0))
+                    if (((reminder.Time - DateTime.Now).TotalMinutes < 5) && ((reminder.Time - DateTime.Now).TotalMinutes >= 0))
                     {
-                        _telegramBotClient.SendTextMessageAsync(chatId: user.ChatId, text: $"{reminder.Name}: {reminder.Description}").Wait();
-                        _logger.LogTrace("Message was sended");
+                        botClient.SendTextMessageAsync(user.ChatId, $"{reminder.Name}: {reminder.Description}").Wait();
+                        _logger.LogInformation($"Message to User {user.UserId} was sended");
                     }
                 }
             }

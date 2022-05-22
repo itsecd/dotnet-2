@@ -14,8 +14,9 @@ namespace TelegramBot.Services
         private readonly IUsersRepository _usersRepository;
         private readonly ILogger<TelegramEventService> _logger;
 
-        public TelegramEventService(IUsersRepository usersRepository)
+        public TelegramEventService(IUsersRepository usersRepository, ILogger<TelegramEventService> logger)
         {
+            _logger = logger;
             _usersRepository = usersRepository;
         }
         public override Task<ReminderOperationResponse> AddReminder(Reminder request, ServerCallContext context)
@@ -26,7 +27,7 @@ namespace TelegramBot.Services
                 request.Description,
                 request.DateTime.ToDateTime(),
                 request.RepeatPeriod);
-            _usersRepository.AddEventReminder(request.UserId, reminder);
+                _usersRepository.AddEventReminder(request.UserId, reminder);
             _logger.LogTrace($"Add new reminder for User {request.UserId}");
             return Task.FromResult(new ReminderOperationResponse { UserId = request.UserId, Result = true });
         }

@@ -28,6 +28,7 @@ namespace TelegramBot
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IUsersRepository, UsersRepository>();
+            services.AddHostedService<RepositoryHostedService>();
             services.AddHostedService<TimedHostedService>();
             services.AddGrpc();
         }

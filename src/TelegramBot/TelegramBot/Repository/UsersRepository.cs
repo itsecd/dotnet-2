@@ -49,9 +49,9 @@ namespace TelegramBot.Repository
             return false;
         }
 
-        public User FindUser(long id)
+        public User FindUser(long userId)
         {
-            return _users.Find(x => x.UserId == id);
+            return _users.Find(x => x.UserId == userId);
         }
 
         public void AddUser(User user)
@@ -61,28 +61,35 @@ namespace TelegramBot.Repository
             _users.Add(user);
         }
 
-        public void RemoveUser(long id)
+        public void RemoveUser(long userId)
         {
-            _users.RemoveAll(x => x.UserId == id);
+            _users.RemoveAll(x => x.UserId == userId);
         }
 
-        public void AddEventReminder(long id, EventReminder reminder)
+        public void AddEventReminder(long userId, EventReminder reminder)
         {
-            var user = FindUser(id);
-            reminder.Id = user.EventReminders.Max(x => x.Id) + 1;
+            var user = FindUser(userId);
+            if (user.EventReminders.Count == 0)
+            {
+                reminder.Id = 0;
+            }
+            else
+            {
+                reminder.Id = user.EventReminders.Max(x => x.Id) + 1;
+            }
             user.EventReminders.Add(reminder);
         }
 
         public void ChangeEventReminder(long userId, long id, EventReminder reminder)
         {
-            var user = FindUser(id);
+            var user = FindUser(userId);
             var reminderId = user.EventReminders.FindIndex(x => x.Id == id);
             user.EventReminders[reminderId] = reminder;
         }
 
         public void RemoveEventReminder(long userId, long id)
         {
-            var user = FindUser(id);
+            var user = FindUser(userId);
             user.EventReminders.RemoveAll(x => x.Id == id);
         }
     }
