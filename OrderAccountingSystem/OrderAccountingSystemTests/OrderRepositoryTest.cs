@@ -11,7 +11,6 @@ namespace OrderAccountingSystemTests
 {
     public class OrderRepositoryTest
     {
-
         private static readonly IConfigurationRoot _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
 
         [Fact]

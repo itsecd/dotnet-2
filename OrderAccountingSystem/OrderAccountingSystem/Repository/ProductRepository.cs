@@ -98,7 +98,7 @@ namespace OrderAccountingSystem.Repository
             return false;
         }
 
-        public async Task ReadProductsFileAsync()
+        private async Task ReadProductsFileAsync()
         {
             await SemaphoreSlim.WaitAsync();
             try
@@ -109,7 +109,7 @@ namespace OrderAccountingSystem.Repository
                     return;
                 }
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
-                using FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
+                await using FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
                 _products = (List<Product>)formatter.Deserialize(fileStream);
             }
             finally
@@ -119,13 +119,13 @@ namespace OrderAccountingSystem.Repository
 
         }
 
-        public async Task WriteProductsFileAsync()
+        private async Task WriteProductsFileAsync()
         {
             await SemaphoreSlim.WaitAsync();
             try
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
-                using FileStream fileStream = new FileStream(_fileName, FileMode.Create);
+                await using FileStream fileStream = new FileStream(_fileName, FileMode.Create);
                 formatter.Serialize(fileStream, _products);
             }
             finally

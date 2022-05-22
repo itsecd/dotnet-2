@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OrderAccountingSystem
+namespace OrderAccountingSystem.Services
 {
     public class AccountingSystemService : AccountingSystemGreeter.AccountingSystemGreeterBase
     {
