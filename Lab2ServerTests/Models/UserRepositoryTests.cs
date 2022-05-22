@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Moq;
 using System.IO;
 
-namespace Lab2Server.Models.Tests
+namespace Lab2ServerTest.Models.Tests
 {
     public class UserRepositoryTests
     {
@@ -22,7 +22,6 @@ namespace Lab2Server.Models.Tests
             usersRepository.AddNewUser(user1);
             usersRepository.AddNewUser(user2);
             return usersRepository;
-
         }
 
         private static User CreateTestUser()
