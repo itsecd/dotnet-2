@@ -8,14 +8,8 @@ namespace ServerTest
 {
     public class OrderTest
     {
-        private static Order CreateOrder(int orderId, int customerId, DateTime date)
-        {
-            var testCustomer = new Customer
-            {
-                Id = customerId,
-                Name = "Doraemon",
-                PhoneNumber = "123456"
-            };
+        private static Order Create(int orderId, int customerId, DateTime date)
+        {           
             var listProducts = new List<Product>()
             {
                 new Product
@@ -43,7 +37,7 @@ namespace ServerTest
                 CustomerId = customerId,
                 Products = listProducts,
                 Date = date,
-                Status = "done"
+                OrderStatus = 0
             };
             return testOrder;
         }
@@ -51,38 +45,45 @@ namespace ServerTest
         [Fact]
         public void AddOrderTest()
         {
-            var testOrder = CreateOrder(12, 22, DateTime.Now);
+            var testOrder = Create(12, 22, DateTime.Now);
             OrderRepository orderRepository = new OrderRepository();
-            orderRepository.Add(testOrder);
-            Assert.Equal(testOrder.OrderId, orderRepository.GetOrder(12).OrderId);
-            Assert.Equal(testOrder.CustomerId, orderRepository.GetOrder(12).CustomerId);
-            orderRepository.Remove(12);
+
+            var IDTest = orderRepository.Add(testOrder);
+
+            Assert.Equal(testOrder.OrderId, IDTest);
+
+            orderRepository.Remove(testOrder.OrderId);
         }
 
         [Fact]
         public void DeleteOrderTest()
         {
-            var testOrder = CreateOrder(12, 22, DateTime.Now);
+            var testOrder = Create(12, 22, DateTime.Now);
             OrderRepository orderRepository = new();
             orderRepository.Add(testOrder);
-            Assert.Equal(testOrder.OrderId, orderRepository.Remove(12));
+
+            var IDTest = orderRepository.Remove(testOrder.OrderId);
+
+            Assert.Equal(testOrder.OrderId, IDTest);
         }
 
         [Fact]
         public void ChangeOrder()
         {
-            var testOrder = CreateOrder(12, 22, DateTime.Now);
+            var testOrder = Create(12, 22, DateTime.Now);
             OrderRepository orderRepository = new();
             orderRepository.Add(testOrder);
-            //var newOrder = CreateOrder(15, 45, DateTime.Now);
-            Assert.Equal(testOrder.OrderId, orderRepository.Change(testOrder.OrderId, testOrder));
+
+            var IDTest = orderRepository.Change(testOrder.OrderId, testOrder);
+
+            Assert.Equal(testOrder.OrderId, IDTest);
             orderRepository.Remove(testOrder.OrderId);
         }
 
         [Fact]
         public void AddProducttest()
         {
-            var testOrder = CreateOrder(12, 22, DateTime.Now);
+            var testOrder = Create(12, 22, DateTime.Now);
             var newProduct = new Product
             {
                 Id = 11,
@@ -90,15 +91,18 @@ namespace ServerTest
                 Price = 14
             };
             OrderRepository orderRepository = new();
-            Assert.Equal(testOrder.OrderId, orderRepository.AddProduct(testOrder.OrderId, newProduct));
-            Assert.Equal(testOrder.SumOrder + newProduct.Price, orderRepository.GetOrder(testOrder.OrderId).SumOrder);
+            orderRepository.Add(testOrder);
+            var IDTest = orderRepository.AddProduct(testOrder.OrderId, newProduct);
+
+            Assert.Equal(testOrder.OrderId, IDTest);
+            
             orderRepository.Remove(testOrder.OrderId);
         }
 
         [Fact]
         public void RemoveProductTest()
         {
-            var testOrder = CreateOrder(12, 22, DateTime.Now);
+            var testOrder = Create(12, 22, DateTime.Now);
             var product = new Product
             {
                 Id = 99,
@@ -107,15 +111,19 @@ namespace ServerTest
             };
             OrderRepository orderRepository = new();
             orderRepository.Add(testOrder);
-            Assert.Equal(product.Id, orderRepository.RemoveProduct(testOrder.OrderId, product.Id));
-            Assert.Equal(testOrder.SumOrder - product.Price, orderRepository.GetOrder(testOrder.OrderId).SumOrder);
+            orderRepository.AddProduct(testOrder.OrderId, product);
+
+            var IDTest = orderRepository.RemoveProduct(testOrder.OrderId, product.Id);
+
+            Assert.Equal(product.Id, IDTest);
+
             orderRepository.Remove(testOrder.OrderId);
         }
 
         [Fact]
         public void ChangeProductTest()
         {
-            var testOrder = CreateOrder(12, 22, DateTime.Now);
+            var testOrder = Create(12, 22, DateTime.Now);
             var newProduct = new Product
             {
                 Id = 26,
@@ -125,14 +133,18 @@ namespace ServerTest
             OrderRepository orderRepository = new();
             orderRepository.Add(testOrder);
             orderRepository.AddProduct(testOrder.OrderId, newProduct);
-            Assert.Equal(newProduct.Id, orderRepository.ChangeProduct(testOrder.OrderId, newProduct.Id, newProduct));
+
+            var IDTest = orderRepository.ChangeProduct(testOrder.OrderId, newProduct.Id, newProduct);
+
+            Assert.Equal(newProduct.Id, IDTest);
+
             orderRepository.Remove(testOrder.OrderId);
         }
 
         [Fact]
         public void BestProductOfMont()
         {
-            var testOrder = CreateOrder(12, 22, DateTime.Now);
+            var testOrder = Create(12, 22, DateTime.Now);
             var product = new Product
             {
                 Id = 111,
@@ -142,7 +154,10 @@ namespace ServerTest
             OrderRepository orderRepository = new();
             orderRepository.Add(testOrder);
             orderRepository.AddProduct(testOrder.OrderId, product);
-            Assert.Equal(product.Price, orderRepository.BestProductOfMonth().Value);
+
+            var BestPrice = orderRepository.BestProductOfMonth().Value;
+
+            Assert.Equal(product.Price, BestPrice);
             orderRepository.Remove(testOrder.OrderId);
         }
     }

@@ -1,7 +1,7 @@
 ﻿using Lab2.Model;
+using Lab2.NotFoundDataException;
 using Lab2.Repository;
 using Microsoft.AspNetCore.Mvc;
-using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 
@@ -37,13 +37,13 @@ namespace Lab2.Controllers
             {
                 return _repository.GetOrder(id);
             }
-            catch (NotFoundException)
-            {
-                return NotFound("ID does not exist!");
-            }
             catch (ArgumentOutOfRangeException)
             {
                 return BadRequest("ID invalid!");
+            }
+            catch (NotFoundException)
+            {
+                return NotFound("ID does not exist!");
             }
             catch
             {

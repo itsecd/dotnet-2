@@ -1,7 +1,7 @@
 ﻿using Lab2.Model;
+using Lab2.NotFoundDataException;
 using Lab2.Repository;
 using Microsoft.AspNetCore.Mvc;
-using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 

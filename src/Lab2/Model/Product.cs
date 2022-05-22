@@ -12,7 +12,7 @@
         /// <summary>
         /// Название продукта               
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
         /// <summary>
         /// Цена продукта
         /// </summary>

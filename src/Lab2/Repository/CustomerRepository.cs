@@ -1,5 +1,5 @@
 ﻿using Lab2.Model;
-using OpenQA.Selenium;
+using Lab2.NotFoundDataException;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,8 +40,8 @@ namespace Lab2.Repository
             ReadFromFile();
             if (customer == null) throw new ArgumentNullException();
             if (customer.Id < 0) throw new ArgumentException("ID invalid!");
-            if (_customers.Any(cus => cus.Id == customer.Id)) throw new ArgumentException("ID exist!");
-            _customers.Add(customer);
+            if (_customers!.Any(cus => cus.Id == customer.Id)) throw new ArgumentException("ID exist!");
+            _customers!.Add(customer);
             WriteToFile();
             return customer.Id;
         }
@@ -51,11 +51,11 @@ namespace Lab2.Repository
             ReadFromFile();
             if (id < 0) throw new ArgumentOutOfRangeException();
             if (newCustomer == null) throw new ArgumentNullException();
-            if (_customers.Any(cus => cus.Id == id) == false) throw new NotFoundException();
-            var customer = _customers.Where(cus => cus.Id == id).Single();
+            if (_customers!.Any(cus => cus.Id == id) == false) throw new NotFoundException();
+            var customer = _customers!.Where(cus => cus.Id == id).Single();
             customer.Id = newCustomer.Id;
             customer.Name = newCustomer.Name;
-            customer.PhoneNumber = newCustomer.PhoneNumber;
+            //customer.Number = newCustomer.Number;
             WriteToFile();
             return newCustomer.Id;
         }
@@ -63,14 +63,14 @@ namespace Lab2.Repository
         public List<Customer> ListCustomers()
         {
             ReadFromFile();
-            return _customers;
+            return _customers!;
         }
 
         public Customer GetCustomer(int id)
         {
             ReadFromFile();
             if (id < 0) throw new ArgumentOutOfRangeException();
-            var customer = _customers.FirstOrDefault(cus => cus.Id == id);
+            var customer = _customers!.FirstOrDefault(cus => cus.Id == id);
             if (customer is null) throw new NotFoundException();
             return customer;
         }
@@ -81,7 +81,7 @@ namespace Lab2.Repository
             if (id < 0) throw new ArgumentOutOfRangeException();
             var customer = GetCustomer(id);
             if (customer is null) throw new NotFoundException();
-            _customers.Remove(customer);
+            _customers!.Remove(customer);
             WriteToFile();
             return id;
         }

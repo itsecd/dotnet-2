@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Lab2.Model.OrderStatus;
+
 namespace Lab2.Model
 {
     /// <summary>
@@ -15,7 +17,7 @@ namespace Lab2.Model
         /// <summary>
         /// Список продуктов
         /// </summary>
-        public List<Product> Products { get; set; }
+        public List<Product>? Products { get; set; }
         /// <summary>
         /// Идентификатор покупатели
         /// </summary>
@@ -27,10 +29,10 @@ namespace Lab2.Model
         /// <summary>
         /// Статус заказа
         /// </summary>
-        public string Status { get; set; }
+        public Status OrderStatus { get; set; }
         /// <summary>
         /// Сумма цены заказа
         /// </summary>
-        public float SumOrder => Products.Sum(product => product.Price);
+        public float SumOrder => Products!.Sum(product => product.Price);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Lab2.Model;
-using OpenQA.Selenium;
+using Lab2.NotFoundDataException;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,8 +40,7 @@ namespace Lab2.Repository
             ReadFromFile();
             if (order == null) throw new ArgumentNullException();
             if (order.OrderId < 0) throw new ArgumentException("ID invalid!");
-            //if (_orders.Any(ord => ord.OrderId == order.OrderId)) throw new ArgumentException("ID exist!");
-            _orders.Add(order);
+            _orders!.Add(order);
             WriteToFile();
             return order.OrderId;
         }
@@ -51,12 +50,12 @@ namespace Lab2.Repository
             ReadFromFile();
             if (id < 0) throw new ArgumentOutOfRangeException();
             if (newOrder == null) throw new ArgumentNullException();
-            var orderIndex = _orders.FindIndex(ord => ord.OrderId == id);
+            var orderIndex = _orders!.FindIndex(ord => ord.OrderId == id);
             if (orderIndex == -1) throw new NotFoundException();
             var order = _orders[orderIndex];
             order.Products = newOrder.Products;
             order.Date = newOrder.Date;
-            order.Status = newOrder.Status;
+            order.OrderStatus = newOrder.OrderStatus;
             order.CustomerId = newOrder.CustomerId;
             WriteToFile();
             return id;
@@ -65,14 +64,14 @@ namespace Lab2.Repository
         public List<Order> ListOrders()
         {
             ReadFromFile();
-            return _orders;
+            return _orders!;
         }
 
         public Order GetOrder(int id)
         {
             ReadFromFile();
             if (id < 0) throw new ArgumentOutOfRangeException();
-            var order = _orders.FirstOrDefault(ord => ord.OrderId == id);
+            var order = _orders!.FirstOrDefault(ord => ord.OrderId == id);
             if (order == null) throw new NotFoundException();
             return order;
         }
@@ -83,7 +82,7 @@ namespace Lab2.Repository
             if (id < 0) throw new ArgumentOutOfRangeException();
             var order = GetOrder(id);
             if (order == null) throw new NotFoundException();
-            _orders.Remove(order);
+            _orders!.Remove(order);
             WriteToFile();
             return id;
         }
@@ -92,9 +91,9 @@ namespace Lab2.Repository
         {
             ReadFromFile();
             if (id < 0) throw new ArgumentOutOfRangeException();
-            var order = _orders.Where(ord => ord.OrderId == id).Single();
+            var order = _orders!.Where(ord => ord.OrderId == id).Single();
             if (order == null) throw new NotFoundException();
-            return order.Products;
+            return order.Products!;
         }
 
         public int AddProduct(int id, Product product)
@@ -102,9 +101,8 @@ namespace Lab2.Repository
             ReadFromFile();
             if (id < 0) throw new ArgumentOutOfRangeException();
             var order = GetOrder(id);
-            if (order == null) throw new NotFoundException();
             if (product == null) throw new ArgumentNullException();
-            order.Products.Add(product);
+            order.Products!.Add(product);
             WriteToFile();
             return id;
         }
@@ -115,7 +113,7 @@ namespace Lab2.Repository
             if (orderId < 0 || productId < 0) throw new ArgumentOutOfRangeException();
             var order = GetOrder(orderId);
             if (order == null) throw new NotFoundException("Order ID does not exist!");
-            var product = order.Products.FirstOrDefault(pro => pro.Id == productId);
+            var product = order.Products!.FirstOrDefault(pro => pro.Id == productId);
             if (product == null) throw new NotFoundException("Product ID does not exist!");
             return product;
         }
@@ -143,7 +141,7 @@ namespace Lab2.Repository
             if (order == null) throw new NotFoundException("Order ID does not exist!");
             var product = GetProduct(orderId, productId);
             if (product == null) throw new NotFoundException("Product ID does not exist!");
-            order.Products.Remove(product);
+            order.Products!.Remove(product);
             WriteToFile();
             return productId;
         }
@@ -152,7 +150,7 @@ namespace Lab2.Repository
         {
             ReadFromFile();
             var ListProduct = (from order in _orders
-                               from product in order.Products
+                               from product in order.Products!
                                where (DateTime.Now - order.Date).Days < 30
                                group product by product
                               into productGroup
@@ -165,8 +163,8 @@ namespace Lab2.Repository
 
         public float GetSumMonth()
         {
-            var orders = _orders.Where(ord => DateTime.Today < ord.Date.AddDays(30)).ToList();
-            return _orders.Sum(ord => ord.SumOrder);
+            var orders = _orders!.Where(ord => DateTime.Today < ord.Date.AddDays(30)).ToList();
+            return _orders!.Sum(ord => ord.SumOrder);
         }
     }
 }

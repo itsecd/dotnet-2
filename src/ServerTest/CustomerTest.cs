@@ -1,18 +1,25 @@
 using Lab2.Model;
 using Lab2.Repository;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace ServerTest
 {
     public class CustomerTest
     {
-        private static Customer CreatCustomer(int id, string name, string phone)
+        private static Customer Creat(int id, string name)
         {
             var customer = new Customer
             {
                 Id = id,
                 Name = name,
-                PhoneNumber = phone
+                Number = new PhoneNumber
+                {
+                    CountryCode = new List<byte> ( 7 ),
+                    LocalCode = new List<byte> { 9,6,7},
+                    LastNumber = new List<byte> { 7,2,4,4,5,0,1}
+                }
             };
             return customer;
         }
@@ -20,31 +27,38 @@ namespace ServerTest
         [Fact]
         public void Add()
         {
-            var testCustomer = CreatCustomer(12, "Doraemon", "123456");
+            var testCustomer = Creat(12, "Doraemon");
             CustomerRepository customerRepository = new();
+
             customerRepository.Add(testCustomer);
-            Assert.Equal(testCustomer.Name, customerRepository.GetCustomer(12).Name);
-            Assert.Equal(testCustomer.PhoneNumber, customerRepository.GetCustomer(12).PhoneNumber);
+
+            Assert.Equal(testCustomer.Id, customerRepository.GetCustomer(12).Id);
             customerRepository.Remove(testCustomer.Id);
         }
 
         [Fact]
         public void Delete()
         {
-            var testCustomer = CreatCustomer(12, "Doraemon", "123456");
+            var testCustomer = Creat(12, "Doraemon");
             CustomerRepository customerRepository = new();
             customerRepository.Add(testCustomer);
-            Assert.Equal(testCustomer.Id, customerRepository.Remove(12));
+
+            var IDRemove = customerRepository.Remove(testCustomer.Id);
+
+            Assert.Equal(testCustomer.Id, IDRemove);
         }
 
         [Fact]
         public void Change()
         {
-            var testCustomer = CreatCustomer(12, "Doraemon", "123456");
+            var testCustomer = Creat(12, "Doraemon");
             CustomerRepository customerRepository = new();
             customerRepository.Add(testCustomer);
-            var newCustomer = CreatCustomer(13, "Nobita", "456789");
-            Assert.Equal(newCustomer.Id, customerRepository.Change(12, newCustomer));
+            var newCustomer = Creat(13, "Nobita");
+
+            var IDTest = customerRepository.Change(12, newCustomer);
+
+            Assert.Equal(newCustomer.Id, IDTest);
             customerRepository.Remove(newCustomer.Id);
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace Lab2.Model
+﻿
+
+namespace Lab2.Model
 {
     /// <summary>
     /// Покупатель
@@ -16,6 +18,6 @@
         /// <summary>
         /// Номер телефона
         /// </summary>
-        public string PhoneNumber { get; set; }
+        public PhoneNumber Number { get; set; }
     }
 }

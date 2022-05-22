@@ -1,8 +1,13 @@
 <?xml version="1.0"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <Id>14</Id>
-    <Name>Customer12</Name>
-    <PhoneNumber>145632</PhoneNumber>
+    <Id>1</Id>
+    <Name>cus</Name>
+    <Number>
+      <CountryCode>8</CountryCode>
+      <FirstThree>967</FirstThree>
+      <SecondThree>724</SecondThree>
+      <LastFour>4501</LastFour>
+    </Number>
   </Customer>
 </ArrayOfCustomer>
