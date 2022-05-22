@@ -4,18 +4,13 @@
     <OrderId>1</OrderId>
     <Products>
       <Product>
-        <Id>1</Id>
+        <Id>11</Id>
         <Name>apple</Name>
         <Price>12</Price>
       </Product>
-      <Product>
-        <Id>2</Id>
-        <Name>banana</Name>
-        <Price>15</Price>
-      </Product>
     </Products>
-    <CustomerId>1</CustomerId>
-    <Date>2022-05-17T18:50:47.004Z</Date>
-    <Status>done</Status>
+    <CustomerId>11</CustomerId>
+    <Date>2022-05-22T18:19:22.828Z</Date>
+    <OrderStatus>Done</OrderStatus>
   </Order>
 </ArrayOfOrder>
