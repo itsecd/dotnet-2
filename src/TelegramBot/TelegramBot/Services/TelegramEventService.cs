@@ -5,12 +5,14 @@ using TelegramBot.Model;
 using System.Collections.Generic;
 using Google.Protobuf.WellKnownTypes;
 using TelegramBot.Repository;
+using Microsoft.Extensions.Logging;
 
 namespace TelegramBot.Services
 {
     public class TelegramEventService: Proto.TelegramEventService.TelegramEventServiceBase
     {
         private readonly IUsersRepository _usersRepository;
+        private readonly ILogger<TelegramEventService> _logger;
 
         public TelegramEventService(IUsersRepository usersRepository)
         {
@@ -25,7 +27,7 @@ namespace TelegramBot.Services
                 request.DateTime.ToDateTime(),
                 request.RepeatPeriod);
             _usersRepository.AddEventReminder(request.UserId, reminder);
-
+            _logger.LogTrace($"Add new reminder for User {request.UserId}");
             return Task.FromResult(new ReminderOperationResponse { UserId = request.UserId, Result = true });
         }
 
@@ -38,12 +40,14 @@ namespace TelegramBot.Services
                 request.DateTime.ToDateTime(),
                 request.RepeatPeriod);
             _usersRepository.ChangeEventReminder(request.UserId, request.Id, reminder);
+            _logger.LogTrace($"Change reminder {request.Id} of User {request.UserId}");
             return Task.FromResult(new ReminderOperationResponse { UserId = request.UserId, Result = true });
         }
 
         public override Task<ReminderOperationResponse> RemoveReminder(Reminder request, ServerCallContext context)
         {
             _usersRepository.RemoveEventReminder(request.UserId, request.Id);
+            _logger.LogTrace($"Remove reminder {request.Id} of User {request.UserId}");
             return Task.FromResult(new ReminderOperationResponse { UserId = request.UserId, Result = true });
         }
 
@@ -65,6 +69,7 @@ namespace TelegramBot.Services
             }
             var response = new UserResponse();
             response.Reminders.AddRange(reminders);
+            _logger.LogTrace($"Send reminders to User {request.UserId}");
             return Task.FromResult(response);
         }
     }
