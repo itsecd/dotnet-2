@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTask", "PPTaskList\PPTask
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerTest", "TaskServerTests\ServerTest.csproj", "{1451B6B2-439C-4C18-9AEC-D64C954251B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskClient", "TaskClient\TaskClient.csproj", "{DAB8441A-5110-40C1-89FC-B80336EBE256}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskClientWPF", "TaskClientWPF\TaskClientWPF.csproj", "{26290115-9EB3-48C9-B0A9-085EE9CAE9FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{1451B6B2-439C-4C18-9AEC-D64C954251B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1451B6B2-439C-4C18-9AEC-D64C954251B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1451B6B2-439C-4C18-9AEC-D64C954251B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DAB8441A-5110-40C1-89FC-B80336EBE256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAB8441A-5110-40C1-89FC-B80336EBE256}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DAB8441A-5110-40C1-89FC-B80336EBE256}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DAB8441A-5110-40C1-89FC-B80336EBE256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26290115-9EB3-48C9-B0A9-085EE9CAE9FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26290115-9EB3-48C9-B0A9-085EE9CAE9FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26290115-9EB3-48C9-B0A9-085EE9CAE9FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26290115-9EB3-48C9-B0A9-085EE9CAE9FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
