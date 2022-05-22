@@ -46,7 +46,7 @@ namespace Lab2Server
             // Echo received message text
             Message message = await botClient.SendTextMessageAsync(
                 chatId: chatId,
-                text: "Hello, World!",
+                text: "You have successfully registered",
                 cancellationToken: cancellationToken);
         }
     }

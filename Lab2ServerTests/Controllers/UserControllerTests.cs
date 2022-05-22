@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using Lab2Server.Controllers;
 using Lab2Server.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Lab2ServerTests.Controllers
 {
