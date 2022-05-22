@@ -11,14 +11,18 @@ namespace Lab2Server.Models
 {
     public class UserRepository : IUserRepository
     {
-        public UserRepository(IConfiguration configuration)
+        public UserRepository(IConfiguration configuration = null)
         {
-            _storageFileName = configuration.GetValue<string>("RepositoryFilePath");
+            if (configuration != null)
+            {
+                _storageFileName = configuration.GetValue<string>("RepositoryFilePath");
+            }
         }
 
         private readonly string _storageFileName = "users.xml";
 
-        private List<User> _users;
+        private List<User> _users = new();
+        
         public void ReadFromFile()
         {
             if (_users != null) return;
@@ -39,6 +43,7 @@ namespace Lab2Server.Models
             using var fileStream = new FileStream(_storageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileStream, _users);
         }
+
         public void AddNewUser(User newUser)
         {
             if (newUser == null)
@@ -52,6 +57,14 @@ namespace Lab2Server.Models
         public bool ExistUser(User user)
         {
             if (_users.Exists(x => x.UserId == user.UserId))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool ExistUser(int id)
+        {
+            if (_users.Exists(x => x.UserId == id))
             {
                 return true;
             }

@@ -12,6 +12,7 @@ namespace Lab2Server.Models
         List<User> GetUsers();
         void ChangeReminder(int userId, int id, Reminder reminder);
         bool ExistUser(User user);
+        bool ExistUser(int id);
         User FindUser(int id);
         void RemoveReminder(int userId, int id);
         void RemoveUser(int userId);

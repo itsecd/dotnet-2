@@ -11,7 +11,6 @@ namespace Lab2Server.Services
 {
     public class ReposHostedService : IHostedService, IDisposable
     {
-        private int executionCount = 0;
         private readonly ILogger<ReposHostedService> _logger;
         private Timer _timer;
 
