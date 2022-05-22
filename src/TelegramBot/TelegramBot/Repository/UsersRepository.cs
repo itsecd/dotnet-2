@@ -16,7 +16,7 @@ namespace TelegramBot.Repository
         {
             _storageFileName = configuration.GetValue<string>("RepositoryFilePath");
         }
-        private void ReadFromFile()
+        public void ReadFromFile()
         {
             if (_users != null) return;
 
@@ -29,7 +29,7 @@ namespace TelegramBot.Repository
             _users = JsonSerializer.Deserialize<List<User>>(jsonString);
         }
 
-        private void WriteToFile()
+        public void WriteToFile()
         {
             var jsonString = JsonSerializer.Serialize<List<User>>(_users);
             File.WriteAllText(_storageFileName, jsonString);
@@ -37,13 +37,11 @@ namespace TelegramBot.Repository
 
         public List<User> GetUsers()
         {
-            ReadFromFile();
             return _users;
         }
 
         public bool IsUserExist(User user)
         {
-            ReadFromFile();
             if (_users.Exists(x => x.UserId == user.UserId))
             {
                 return true;
@@ -53,7 +51,6 @@ namespace TelegramBot.Repository
 
         public User FindUser(long id)
         {
-            ReadFromFile();
             return _users.Find(x => x.UserId == id);
         }
 
@@ -61,16 +58,12 @@ namespace TelegramBot.Repository
         {
             if (IsUserExist(user)) return;
 
-            ReadFromFile();
             _users.Add(user);
-            WriteToFile();
         }
 
         public void RemoveUser(long id)
         {
-            ReadFromFile();
             _users.RemoveAll(x => x.UserId == id);
-            WriteToFile();
         }
 
         public void AddEventReminder(long id, EventReminder reminder)
@@ -78,7 +71,6 @@ namespace TelegramBot.Repository
             var user = FindUser(id);
             reminder.Id = user.EventReminders.Max(x => x.Id) + 1;
             user.EventReminders.Add(reminder);
-            WriteToFile();
         }
 
         public void ChangeEventReminder(long userId, long id, EventReminder reminder)
@@ -86,14 +78,12 @@ namespace TelegramBot.Repository
             var user = FindUser(id);
             var reminderId = user.EventReminders.FindIndex(x => x.Id == id);
             user.EventReminders[reminderId] = reminder;
-            WriteToFile();
         }
 
         public void RemoveEventReminder(long userId, long id)
         {
             var user = FindUser(id);
             user.EventReminders.RemoveAll(x => x.Id == id);
-            WriteToFile();
         }
     }
 }

@@ -5,6 +5,8 @@ namespace TelegramBot.Repository
 {
     public interface IUsersRepository
     {
+        void ReadFromFile();
+        void WriteToFile();
         void AddEventReminder(long id, EventReminder reminder);
         void AddUser(User user);
         List<User> GetUsers();
