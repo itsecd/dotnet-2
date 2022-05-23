@@ -59,8 +59,7 @@ namespace Lab2Server.Services
                     }
                 }
             }
-            _logger.LogInformation(
-                "Timed Hosted Service is working. Count: {Count}", count);
+            _logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

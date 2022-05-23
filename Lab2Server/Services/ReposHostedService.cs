@@ -32,15 +32,13 @@ namespace Lab2Server.Services
         private void DoWork(object state)
         {
             _userRepository.WriteToFile();
-            _logger.LogInformation("Timed Hosted Service is working.");
+            _logger.LogInformation("Repos Hosted Service is working.");
         }
 
         public Task StopAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Timed Hosted Service is stopping.");
-
+            _logger.LogInformation("Repos Hosted Service is stopping.");
             _timer?.Change(Timeout.Infinite, 0);
-
             return Task.CompletedTask;
         }
 

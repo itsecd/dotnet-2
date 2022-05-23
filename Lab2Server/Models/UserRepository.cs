@@ -52,7 +52,7 @@ namespace Lab2Server.Models
             }
             _users.Add(newUser);
         }
-        public bool ExistUser(User user)
+        private bool ExistUser(User user)
         {
             if (_users.Exists(x => x.UserId == user.UserId))
             {
@@ -60,7 +60,7 @@ namespace Lab2Server.Models
             }
             return false;
         }
-        public bool ExistUser(int id)
+        private bool ExistUser(int id)
         {
             if (_users.Exists(x => x.UserId == id))
             {

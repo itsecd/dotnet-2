@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Lab2ServerTest.Models.Tests
+namespace Lab2ServerTest.Models
 {
     public class UserRepositoryTests
     {
@@ -27,7 +27,7 @@ namespace Lab2ServerTest.Models.Tests
             return user1;
         }
 
-        [Fact()]
+        [Fact]
         public void WriteToFileTest()
         {
             var userRepository = CreateTestRepository();
@@ -35,7 +35,7 @@ namespace Lab2ServerTest.Models.Tests
             Assert.True(File.Exists("Users.xml"));
         }
 
-        [Fact()]
+        [Fact]
         public void ReadFromFileTest()
         {
             var userRepository = CreateTestRepository();
@@ -43,31 +43,31 @@ namespace Lab2ServerTest.Models.Tests
             Assert.True(true);
         }
 
-        [Fact()]
+        [Fact]
         public void AddNewUserTest()
         {
             var user = CreateTestUser();
             var userRepository = CreateTestRepository();
             userRepository.AddNewUser(user);
-            Assert.True(userRepository.ExistUser(user));
+            Assert.True(userRepository.FindUser((int)user.UserId).UserId == user.UserId);
         }
 
-        [Fact()]
+        [Fact]
         public void FindUserTest()
         {
             var userRepository = CreateTestRepository();
             Assert.True(userRepository.FindUser(1).UserId == 1);
         }
 
-        [Fact()]
+        [Fact]
         public void RemoveUserTest()
         {
             var userRepository = CreateTestRepository();
             userRepository.RemoveUser(1);
-            Assert.False(userRepository.ExistUser(1));
+            Assert.True(userRepository.FindUser(1) == null);
         }
 
-        [Fact()]
+        [Fact]
         public void ChangeNameTest()
         {
             var userRepository = CreateTestRepository();
@@ -75,7 +75,7 @@ namespace Lab2ServerTest.Models.Tests
             Assert.True(userRepository.FindUser(1).UserName == "NewName");
         }
 
-        [Fact()]
+        [Fact]
         public void AddReminderTest()
         {
             var userRepository = CreateTestRepository();
@@ -83,7 +83,7 @@ namespace Lab2ServerTest.Models.Tests
             Assert.True(userRepository.FindUser(1).ReminderList.Exists(x => x.Id == 2));
         }
 
-        [Fact()]
+        [Fact]
         public void ChangeReminderTest()
         {
             var userRepository = CreateTestRepository();
@@ -91,7 +91,7 @@ namespace Lab2ServerTest.Models.Tests
             Assert.True(userRepository.FindUser(1).ReminderList.Find(x => x.Id == 1).Name == "NewReminder");
         }
 
-        [Fact()]
+        [Fact]
         public void RemoveReminderTest()
         {
             var userRepository = CreateTestRepository();

@@ -19,7 +19,6 @@ namespace Lab2Server
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IUserRepository, UserRepository>();
@@ -29,9 +28,9 @@ namespace Lab2Server
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Lab2Server", Version = "v1" });
             });
             services.AddHostedService<TimedHostedService>();
+            services.AddHostedService<ReposHostedService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IUserRepository userRepository)
         {
             if (env.IsDevelopment())

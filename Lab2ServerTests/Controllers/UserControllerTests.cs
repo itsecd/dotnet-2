@@ -24,10 +24,10 @@ namespace Lab2ServerTests.Controllers
 
         private static UserController CreateTestController()
         {
-            var TestController = new UserController(CreateTestRepository());
-            return TestController;
+            return new UserController(CreateTestRepository());
         }
-        [Fact()]
+
+        [Fact]
         public void GetUserTest()
         {
             var controller = CreateTestController();
@@ -35,7 +35,7 @@ namespace Lab2ServerTests.Controllers
 
         }
 
-        [Fact()]
+        [Fact]
         public void PostReminderTest()
         {
             var controller = CreateTestController();
@@ -43,7 +43,7 @@ namespace Lab2ServerTests.Controllers
             Assert.True(controller.Get(1).Value.ReminderList.Exists(x => x.Id == 2));
         }
 
-        [Fact()]
+        [Fact]
         public void PutUserTest()
         {
             var controller = CreateTestController();
@@ -51,7 +51,7 @@ namespace Lab2ServerTests.Controllers
             Assert.True(controller.Get(1).Value.UserName == "NewName");
         }
 
-        [Fact()]
+        [Fact]
         public void PutReminderTest()
         {
             var controller = CreateTestController();
@@ -59,7 +59,7 @@ namespace Lab2ServerTests.Controllers
             Assert.True(controller.Get(1).Value.ReminderList.Find(x => x.Name == "NewReminder").Id == 1);
         }
 
-        [Fact()]
+        [Fact]
         public void DeleteUserTest()
         {
             var controller = CreateTestController();
@@ -69,7 +69,7 @@ namespace Lab2ServerTests.Controllers
             Assert.Null(result);
         }
 
-        [Fact()]
+        [Fact]
         public void DeleteReminderTest()
         {
             var controller = CreateTestController();
