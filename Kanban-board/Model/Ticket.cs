@@ -18,5 +18,25 @@
         /// Id статуса, по которому можно получить статус задачи
         /// </summary>
         public string StatusId { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Ticket ticket &&
+                ticket.Id == Id &&
+                ticket.Title == Title &&
+                ticket.Description == Description;
+        }
+
+        public override int GetHashCode()
+        {
+            try
+            {
+                return int.Parse(Id);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
     }
 }

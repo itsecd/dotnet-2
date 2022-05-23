@@ -19,5 +19,26 @@
         /// Приоритет статуса (цвет, которым будет подсвечера соответствующая колонка)
         /// </summary>
         public string Priority { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Status status &&
+                status.Id == this.Id &&
+                status.Name == this.Name &&
+                status.Description == this.Description &&
+                status.Priority == this.Priority;
+        }
+
+        public override int GetHashCode()
+        {
+            try
+            {
+                return int.Parse(Id);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
     }
 }
