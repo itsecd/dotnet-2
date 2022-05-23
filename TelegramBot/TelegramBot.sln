@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBot", "TelegramBot\TelegramBot.csproj", "{0E015745-1D4B-41DF-AC90-3967F0FFA0B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramBotServerTests", "TelegramBotServerTests\TelegramBotServerTests.csproj", "{8D37EA25-69CB-4DCD-9B6A-D752AE73B2F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBotServerTests", "TelegramBotServerTests\TelegramBotServerTests.csproj", "{8D37EA25-69CB-4DCD-9B6A-D752AE73B2F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
