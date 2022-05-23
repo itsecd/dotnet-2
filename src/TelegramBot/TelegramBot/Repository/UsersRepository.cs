@@ -12,14 +12,20 @@ namespace TelegramBot.Repository
         private List<User> _users;
         private readonly string _storageFileName;
 
-        public UsersRepository(IConfiguration configuration)
+        public UsersRepository(IConfiguration configuration = null)
         {
-            _storageFileName = configuration.GetValue<string>("RepositoryFilePath");
+            if (configuration != null)
+            {
+                _storageFileName = configuration.GetValue<string>("RepositoryFilePath");
+            }
+            else
+            {
+                _storageFileName = "Users.json";
+            }
+            _users = new List<User>();
         }
         public void ReadFromFile()
         {
-            if (_users != null) return;
-
             if (!File.Exists(_storageFileName))
             {
                 _users = new List<User>();
