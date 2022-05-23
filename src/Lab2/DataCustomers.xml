@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <Id>11</Id>
-    <Name>Andre</Name>
-    <Number>
+    <Id>1</Id>
+    <Name>Cus1</Name>
+    <PhoneNumber>
       <CountryCode>
         <unsignedByte>8</unsignedByte>
       </CountryCode>
@@ -14,13 +14,13 @@
       </LocalCode>
       <LastNumber>
         <unsignedByte>7</unsignedByte>
-        <unsignedByte>4</unsignedByte>
         <unsignedByte>7</unsignedByte>
-        <unsignedByte>4</unsignedByte>
         <unsignedByte>7</unsignedByte>
-        <unsignedByte>4</unsignedByte>
-        <unsignedByte>5</unsignedByte>
+        <unsignedByte>7</unsignedByte>
+        <unsignedByte>7</unsignedByte>
+        <unsignedByte>7</unsignedByte>
+        <unsignedByte>7</unsignedByte>
       </LastNumber>
-    </Number>
+    </PhoneNumber>
   </Customer>
 </ArrayOfCustomer>

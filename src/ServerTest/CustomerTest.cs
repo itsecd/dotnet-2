@@ -1,6 +1,5 @@
 using Lab2.Model;
-using Lab2.Repository;
-using System;
+using Lab2.Repositories;
 using System.Collections.Generic;
 using Xunit;
 
@@ -14,7 +13,7 @@ namespace ServerTest
             {
                 Id = id,
                 Name = name,
-                Number = new PhoneNumber
+                PhoneNumber = new PhoneNumber
                 {
                     CountryCode = new List<byte> ( 7 ),
                     LocalCode = new List<byte> { 9,6,7},

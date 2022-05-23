@@ -1,5 +1,5 @@
 using Lab2.Model;
-using Lab2.Repository;
+using Lab2.Repositories;
 using System;
 using System.Collections.Generic;
 using Xunit;

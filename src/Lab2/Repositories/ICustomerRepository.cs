@@ -1,7 +1,7 @@
 ﻿using Lab2.Model;
 using System.Collections.Generic;
 
-namespace Lab2.Repository
+namespace Lab2.Repositories
 {
     public interface ICustomerRepository
     {

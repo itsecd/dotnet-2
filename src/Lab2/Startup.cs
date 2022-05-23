@@ -1,4 +1,4 @@
-using Lab2.Repository;
+using Lab2.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

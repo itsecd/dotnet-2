@@ -1,6 +1,5 @@
 ﻿using Lab2.Model;
-using Lab2.NotFoundDataException;
-using Lab2.Repository;
+using Lab2.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

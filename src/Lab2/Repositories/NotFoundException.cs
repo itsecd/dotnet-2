@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lab2.NotFoundDataException
+namespace Lab2.Repositories
 {
     public class NotFoundException : Exception
     {

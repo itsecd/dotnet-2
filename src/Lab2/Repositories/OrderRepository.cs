@@ -1,12 +1,11 @@
 ﻿using Lab2.Model;
-using Lab2.NotFoundDataException;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace Lab2.Repository
+namespace Lab2.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
