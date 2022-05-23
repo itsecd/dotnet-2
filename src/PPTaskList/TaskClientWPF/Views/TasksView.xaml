@@ -10,6 +10,10 @@
         <viewModels:TasksViewModel/>
     </Window.DataContext>
     <Grid>
-        
+        <DataGrid ItemsSource="{Binding Tasks}" SelectionMode="Single" SelectedItem="{Binding SelectedTask}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Задача" Binding="{Binding }"
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

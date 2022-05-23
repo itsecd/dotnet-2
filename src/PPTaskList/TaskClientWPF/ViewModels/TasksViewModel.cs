@@ -3,7 +3,7 @@ using System.ComponentModel;
 using TaskClientWPF.Commands;
 using System.Threading.Tasks;
 using TaskClientWPF.Views;
-
+using Lab2TaskClient;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -25,7 +25,7 @@ namespace TaskClientWPF.ViewModels
         }
 
         public Command ShowTaskCommand { get; private set; }
-        public async Task InitializeAsync(TaskRepositoryClient taskRepository)
+        public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository)
         {
             _taskRepository = taskRepository;
 
@@ -33,7 +33,7 @@ namespace TaskClientWPF.ViewModels
             foreach(var task in tasks)
             {
                 var taskViewModel = new TasksViewModel();
-                await taskViewModel.InitializeAsync(taskRepository, task.HeaderText);
+                await taskViewModel.InitializeAsync(taskRepository, task.TaskId);
                 Tasks.Add(taskViewModel);
             }
             ShowTaskCommand = new Command(commandParameter =>

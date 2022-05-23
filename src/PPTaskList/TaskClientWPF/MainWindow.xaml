@@ -3,13 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TaskClientWPF"
+        xmlns:viewmodels="clr-namespace:TaskClientWPF.ViewModels"
         mc:Ignorable="d"
-        Title="Задачи" Height="450" Width="400">
+        Title="Задачи" Height="450" Width="400"
+        WindowState="Maximized"
+        Loaded="MainWindow_OnLoaded">
     <Window.DataContext>
-        <>
+        <viewmodels:TasksViewModel/>
     </Window.DataContext>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label FontSize="20" FontWeight="Bold">Список задач</Label> 
     </Grid>
 </Window>
