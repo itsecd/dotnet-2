@@ -39,23 +39,11 @@ namespace PPTask.Controllers
         /// </summary>
         /// <returns>Теги</returns>
         [HttpGet]
-        public ActionResult<List<TaskDto>> Get()
+        public ActionResult<List<Task>> Get()
         {
             try
             {
-                var tasks = new List <TaskDto>();
-                foreach(Task task in _taskRepository.GetTasks())
-                {
-                    tasks.Add(new TaskDto
-                    {
-                        HeaderText = task.HeaderText,
-                        TextDescription = task.TextDescription,
-                        TagsId = task.TagsId,
-                        Executor = _executorRepository.GetExecutors().Single(
-                            executor => executor.ExecutorId == task.ExecutorId)
-                    });
-                }
-                return tasks;
+                return _taskRepository.GetTasks();
             }
             catch
             {

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaskClientWPF.ViewModel;
 
 namespace TaskClientWPF
 {
@@ -23,6 +24,14 @@ namespace TaskClientWPF
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var viewModel = (TasksViewModel)DataContext;
+            var tasks = await viewModel.TaskRepositoryClient.GetTasksAsync();
+
+            
         }
     }
 }

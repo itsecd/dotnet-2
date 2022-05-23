@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace TaskClientWPF
+namespace Lab2TaskClient
 {
     public class TaskRepositoryClient
     {
-        private readonly TaskClient _client;
+        private readonly Client _client;
 
         public TaskRepositoryClient()
         {
             var httpClient = new HttpClient();
             var baseUrl = Settings.Default.OpenApiClient;
-            _client = new TaskClient(baseUrl,httpClient);
+            _client = new Client(baseUrl,httpClient);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace TaskClientWPF
         /// Метод добавления исполнителя 
         /// </summary>
         /// <param name="value">Новый исполнитель</param>
-        public Task PostExecutorAsync(ExecutorDto executor)
+        public System.Threading.Tasks.Task PostExecutorAsync(ExecutorDto executor)
         {
             return _client.ExecutorAsync(executor);
         }
@@ -59,7 +59,7 @@ namespace TaskClientWPF
         /// </summary>
         /// <param name="value">Новый исполнитель</param>
         /// /// <param name="id">Идентификатор заменяемого исполнителя</param>
-        public Task UpdateExecutorAsync(int id, ExecutorDto executor)
+        public System.Threading.Tasks.Task UpdateExecutorAsync(int id, ExecutorDto executor)
         {
             return _client.Executor3Async(id, executor);
         }
@@ -68,7 +68,7 @@ namespace TaskClientWPF
         /// Метод удаления исполнителя 
         /// </summary>
         /// <param name="id">Идентификатор удаляемого исполнителя</param>
-        public Task RemoveExecutorAsync(int id)
+        public System.Threading.Tasks.Task RemoveExecutorAsync(int id)
         {
             return _client.Executor4Async(id);
         }
@@ -96,7 +96,7 @@ namespace TaskClientWPF
         /// Метод добавления тега 
         /// </summary>
         /// <param name="value">Новый тег</param>
-        public Task PostTagAsync(TagDto tag)
+        public System.Threading.Tasks.Task PostTagAsync(TagDto tag)
         {
             return _client.TagAsync(tag);
         }
@@ -106,7 +106,7 @@ namespace TaskClientWPF
         /// </summary>
         /// <param name="value">Новый тег</param>
         /// /// <param name="id">Идентификатор заменяемого тега</param>
-        public Task UpdateTagAsync(int id, TagDto tag)
+        public System.Threading.Tasks.Task UpdateTagAsync(int id, TagDto tag)
         {
             return _client.Tag3Async(id, tag);
         }
@@ -115,7 +115,7 @@ namespace TaskClientWPF
         /// Метод удаления тега 
         /// </summary>
         /// <param name="id">Идентификатор удаляемого тега</param>
-        public Task RemoveTagAsync(int id)
+        public System.Threading.Tasks.Task RemoveTagAsync(int id)
         {
             return _client.Tag4Async(id);
         }
@@ -124,7 +124,7 @@ namespace TaskClientWPF
         /// Метод получения задач
         /// </summary>
         /// <returns>Теги</returns>
-        public Task<ICollection<TaskDto>> GetTasksAsync()
+        public Task<ICollection<Task>> GetTasksAsync()
         {
             return _client.TaskAllAsync();
         }
@@ -143,7 +143,7 @@ namespace TaskClientWPF
         /// Метод добавления задачи 
         /// </summary>
         /// <param name="value">Новая задача</param>
-        public Task PostTaskAsync(TaskDto task)
+        public System.Threading.Tasks.Task PostTaskAsync(TaskDto task)
         {
             return _client.TaskAsync(task);
         }
@@ -153,7 +153,7 @@ namespace TaskClientWPF
         /// </summary>
         /// <param name="value">Новая задача</param>
         /// /// <param name="id">Идентификатор заменяемой задачи</param>
-        public Task UpdateTaskAsync(int id, TaskDto task)
+        public System.Threading.Tasks.Task UpdateTaskAsync(int id, TaskDto task)
         {
             return _client.Task3Async(id, task);
         }
@@ -162,7 +162,7 @@ namespace TaskClientWPF
         /// Метод удаления задачи 
         /// </summary>
         /// <param name="id">Идентификатор удаляемой задачи</param>
-        public Task RemoveTaskAsync(int id)
+        public System.Threading.Tasks.Task RemoveTaskAsync(int id)
         {
             return _client.Task4Async(id);
         }
