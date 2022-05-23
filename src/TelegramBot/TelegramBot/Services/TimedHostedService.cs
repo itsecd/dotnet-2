@@ -11,7 +11,7 @@ namespace TelegramBot.Services
 {
     public class TimedHostedService : IHostedService, IDisposable
     {
-        private int executionCount = 0;
+        private int _executionCount;
         private Timer _timer;
         private readonly IConfiguration _configuration;
         private readonly ILogger<TimedHostedService> _logger;
@@ -19,6 +19,7 @@ namespace TelegramBot.Services
 
         public TimedHostedService(ILogger<TimedHostedService> logger, IConfiguration configuration, IUsersRepository usersRepository)
         {
+            _executionCount = 0;
             _configuration = configuration;
             _usersRepository = usersRepository;
             _logger = logger;
@@ -34,7 +35,7 @@ namespace TelegramBot.Services
 
         private void DoWork(object state)
         {
-            var count = Interlocked.Increment(ref executionCount);
+            var count = Interlocked.Increment(ref _executionCount);
             var users = _usersRepository.GetUsers();
             var botClient = new TelegramBotClient(_configuration.GetValue<string>("TelegramBotKey"));
             foreach (var user in users)
@@ -44,12 +45,16 @@ namespace TelegramBot.Services
                     if (((reminder.Time - DateTime.Now).TotalMinutes < 5) && ((reminder.Time - DateTime.Now).TotalMinutes >= 0))
                     {
                         botClient.SendTextMessageAsync(user.ChatId, $"{reminder.Name}: {reminder.Description}").Wait();
+                        if (reminder.RepeatPeriod.TotalMinutes > 0)
+                        {
+                            reminder.Time += reminder.RepeatPeriod;
+                        }
                         _logger.LogInformation($"Message to User {user.UserId} was sended");
                     }
                 }
             }
             _logger.LogInformation(
-                $"Timed Hosted Service is working. Count: {executionCount}");
+                $"Timed Hosted Service is working. Count: {_executionCount}");
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

@@ -26,7 +26,7 @@ namespace TelegramBot.Services
                 request.Name,
                 request.Description,
                 request.DateTime.ToDateTime(),
-                request.RepeatPeriod);
+                request.RepeatPeriod.ToTimeSpan());
                 _usersRepository.AddEventReminder(request.UserId, reminder);
             _logger.LogTrace($"Add new reminder for User {request.UserId}");
             return Task.FromResult(new ReminderOperationResponse { UserId = request.UserId, Result = true });
@@ -39,7 +39,7 @@ namespace TelegramBot.Services
                 request.Name,
                 request.Description,
                 request.DateTime.ToDateTime(),
-                request.RepeatPeriod);
+                request.RepeatPeriod.ToTimeSpan());
             _usersRepository.ChangeEventReminder(request.UserId, request.Id, reminder);
             _logger.LogTrace($"Change reminder {request.Id} of User {request.UserId}");
             return Task.FromResult(new ReminderOperationResponse { UserId = request.UserId, Result = true });
@@ -64,7 +64,7 @@ namespace TelegramBot.Services
                     Name = eventReminder.Name,
                     Description = eventReminder.Description,
                     DateTime = Timestamp.FromDateTime(eventReminder.Time),
-                    RepeatPeriod = eventReminder.RepeatPeriod,
+                    RepeatPeriod = Duration.FromTimeSpan(eventReminder.RepeatPeriod),
                     UserId = request.UserId
                 });
             }

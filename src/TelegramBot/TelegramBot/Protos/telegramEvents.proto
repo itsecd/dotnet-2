@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 
 option csharp_namespace = "TelegramBot.Proto";
 
@@ -22,7 +23,7 @@ message Reminder {
   string name = 3;
   string description = 4;
   google.protobuf.Timestamp dateTime = 5;
-  int32 repeatPeriod = 6; 
+  google.protobuf.Duration repeatPeriod = 6; 
 }
 
 message ReminderOperationResponse {

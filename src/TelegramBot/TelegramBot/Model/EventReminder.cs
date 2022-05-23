@@ -8,11 +8,11 @@ namespace TelegramBot.Model
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime Time { get; set; }
-        public int RepeatPeriod { get; set; }
+        public TimeSpan RepeatPeriod { get; set; }
 
         public EventReminder() {}
 
-        public EventReminder(long id, string name, string description, DateTime time, int repeatPeriod)
+        public EventReminder(long id, string name, string description, DateTime time, TimeSpan repeatPeriod)
         {
             Id = id;
             Name = name;
