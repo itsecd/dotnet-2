@@ -10,12 +10,12 @@ namespace OrderAccountingSystemTests
 {
     public class ProductRepositoryTest
     {
-        private static readonly IConfigurationRoot _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+        private static readonly IConfigurationRoot Ñonfig = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
 
         [Fact]
         public async Task AddProductTestAsync()
         {
-            ProductRepository repository = new ProductRepository(_config);
+            ProductRepository repository = new ProductRepository(Ñonfig);
             Product product = GenerateProduct();
             Guid productId = await repository.AddProductAsync(product);
             Assert.True(await repository.CheckProductAsync(productId));
@@ -25,7 +25,7 @@ namespace OrderAccountingSystemTests
         [Fact]
         public async Task DeleteProductTestAsync()
         {
-            ProductRepository repository = new ProductRepository(_config);
+            ProductRepository repository = new ProductRepository(Ñonfig);
             Product product = GenerateProduct();
             Guid productId = await repository.AddProductAsync(product);
             Assert.True(await repository.CheckProductAsync(productId));
@@ -36,7 +36,7 @@ namespace OrderAccountingSystemTests
         [Fact]
         public async Task ChangeProductTestAsync()
         {
-            ProductRepository repository = new ProductRepository(_config);
+            ProductRepository repository = new ProductRepository(Ñonfig);
             Product product = GenerateProduct();
             Guid productId = await repository.AddProductAsync(product);
             Assert.True(await repository.CheckProductAsync(productId));
