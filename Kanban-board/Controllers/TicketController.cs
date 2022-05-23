@@ -1,7 +1,6 @@
 ﻿using Kanban_board.Model;
 using Kanban_board.Repositories;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 

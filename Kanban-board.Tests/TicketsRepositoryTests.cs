@@ -1,6 +1,5 @@
 ﻿using Kanban_board.Model;
 using Kanban_board.Repositories;
-using System;
 using System.Collections.Generic;
 using Xunit;
 

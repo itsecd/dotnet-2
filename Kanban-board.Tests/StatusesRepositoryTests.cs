@@ -1,6 +1,5 @@
 using Kanban_board.Model;
 using Kanban_board.Repositories;
-using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -111,7 +110,7 @@ namespace Kanban_board.Tests
             StatusesRepository repository = new();
             repository.AddStatus(status);
             var returnedStatus = repository.DeleteStatus(status.Id);
-            
+
             Assert.True(returnedStatus.Equals(status));
             Assert.Null(repository.DeleteStatus("wrongId"));
 
