@@ -22,5 +22,5 @@ jobs:
         run: dotnet build TelegramBot
       - name: Build Tests
         run: dotnet build TelegramBotServerTests
-      - name: Test
+      - name: Run tests
         run: dotnet test 
