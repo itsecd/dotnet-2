@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -16,7 +18,7 @@ namespace MinesweeperClient.Views
         const int FIELD_WIDTH = 30;
         const int FIELD_HEIGHT = 16;
         const int MINE_COUNT = 99;
-        const int TILE_SIZE = 20;
+        const int TILE_SIZE = 35;
         // field
         private MinesweeperField _field = new(FIELD_HEIGHT, FIELD_WIDTH);
         private Panel _grid;
@@ -32,6 +34,7 @@ namespace MinesweeperClient.Views
         int _flagsCounter;
         // game
         GameStatus _gameStatus;
+        public Connection? _wire;
         public MainWindow()
         {
             InitializeComponent();
@@ -44,8 +47,25 @@ namespace MinesweeperClient.Views
             InitGrid();
             // info
             _playerList = this.FindControl<ItemsControl>("player_list");
+            _playerList.Items = _players;
             _flagsLabel = this.FindControl<Label>("flags_label");
             _flagsCounter = 99;
+            // connection
+            Task.Run(() => PlayerListUpdate());
+        }
+        void PlayerListUpdate()
+        {
+            while (true)
+            {
+                if (_wire != null && _wire.IsConnected)
+                {
+                    Thread.Sleep(500);
+                    Console.WriteLine("Checking player list...");
+                    Thread.Sleep(500);
+                }
+                else
+                    Thread.Sleep(2000);
+            }
         }
         private void InitGrid()
         {
