@@ -4,25 +4,23 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
-
-using DynamicData;
-using DynamicData.Binding;
-
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
-using Client.Services;
-using Server.Model;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
+using DynamicData;
+using DynamicData.Binding;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Client.Services;
 using Newtonsoft.Json;
-using System.Linq;
+using Server.Model;
+using Client.Properties;
 
 namespace Client.ViewModels
 {
     public sealed class MainViewModel : ReactiveObject
     {
-        private readonly string _requestAddress = "https://localhost:44349/api/UserEvent";
+        private readonly string _serverAddress = app.Default.serverAddress;
         public User User { get; init; }
 
         public ReadOnlyObservableCollection<UserEvent> UserEvents { get; }
@@ -45,11 +43,10 @@ namespace Client.ViewModels
 
         public Interaction<Unit, UserEvent?> EditUserEvent { get; } = new();
 
-
         private async Task<List<UserEvent>> GetUserEvents(string userName)
         {
             var httpClient = new HttpClient();
-            var getResponse = await httpClient.GetAsync($"{_requestAddress}");
+            var getResponse = await httpClient.GetAsync($"{_serverAddress}/api/UserEvent");
             var returnedUserEvents = JsonConvert.DeserializeObject<List<UserEvent>>(await getResponse.Content.ReadAsStringAsync());
             return new List<UserEvent>(from UserEvent userEvent in returnedUserEvents
                                        where userEvent.User.Name == userName
@@ -61,7 +58,7 @@ namespace Client.ViewModels
             var httpClient = new HttpClient();
             userEvent.User = User;
             var content = new StringContent(JsonConvert.SerializeObject(userEvent), System.Text.Encoding.UTF8, "application/json");
-            var postResponse = await httpClient.PostAsync(_requestAddress, content);
+            var postResponse = await httpClient.PostAsync($"{_serverAddress}/api/UserEvent", content);
             return postResponse;
         }
 
@@ -69,14 +66,14 @@ namespace Client.ViewModels
         {
             var httpClient = new HttpClient();
             var content = new StringContent(JsonConvert.SerializeObject(userEvent), System.Text.Encoding.UTF8, "application/json");
-            var putResponse = await httpClient.PutAsync($"{_requestAddress}/{userEvent.Id}", content);
+            var putResponse = await httpClient.PutAsync($"{_serverAddress}/api/UserEvent/{userEvent.Id}", content);
             return putResponse;
         }
 
         public async Task<HttpResponseMessage> DeleteUserEvent(UserEvent userEvent)
         {
             var httpClient = new HttpClient();
-            var deleteResponse = await httpClient.DeleteAsync($"{_requestAddress}/{userEvent.Id}");
+            var deleteResponse = await httpClient.DeleteAsync($"{_serverAddress}/api/UserEvent/{userEvent.Id}");
             return deleteResponse;
         }
 
@@ -140,7 +137,6 @@ namespace Client.ViewModels
 
         public MainViewModel(UserEventListService userEventListService, User user)
         {
-            {
                 User = user;
                 _userEventListService = userEventListService;
                 _ = _userEventListService
@@ -175,7 +171,6 @@ namespace Client.ViewModels
                 }
 
                 canExecute.OnNext(true);
-            }
         }
     }
 }

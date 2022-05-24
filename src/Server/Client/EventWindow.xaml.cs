@@ -1,9 +1,6 @@
 ﻿using System.Reactive;
-
 using ReactiveUI;
-
 using Client.ViewModels;
-using Server.Model;
 
 namespace Client
 {

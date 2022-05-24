@@ -1,13 +1,10 @@
 using System.Reactive.Linq;
-
 using ReactiveUI;
-
 using Client.ViewModels;
 using Server.Model;
 
 namespace Client
 {
-    // https://github.com/reactiveui/ReactiveUI/issues/2330#issuecomment-577968613
     public class MainWindowBase : ReactiveWindow<MainViewModel>
     {
     }
@@ -44,7 +41,7 @@ namespace Client
                     var eventViewModel = new EventViewModel(){};
                     eventViewModel.EventName = ViewModel.SelectedUserEvent!.EventName;
                     eventViewModel.DateNTime = ViewModel.SelectedUserEvent!.DateNTime.ToString("dd.MM.yyyy HH:mm");
-                    eventViewModel.EventFrequency = ViewModel.SelectedUserEvent!.EventFrequency;
+                    eventViewModel.EventFrequency = ViewModel.SelectedUserEvent!.EventFrequency.ToString();
                     var eventView = new EventWindow
                     {
                         Owner = this,

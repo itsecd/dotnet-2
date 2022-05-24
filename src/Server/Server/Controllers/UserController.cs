@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Server.Exceptions;
 using Server.Model;
 using Server.Repositories;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace Server.Controllers
 {
@@ -129,6 +131,16 @@ namespace Server.Controllers
         {
             try
             {
+                /*HttpClient httpClient = new HttpClient();
+                var getResponse = await httpClient.GetAsync(httpClient.BaseAddress);
+                var returnedUserEvents = JsonConvert.DeserializeObject<List<UserEvent>>(await getResponse.Content.ReadAsStringAsync());
+                foreach (var userEvent in returnedUserEvents)
+                {
+                    if (userEvent.User.Name == _userRepository.GetUser(id).Name)
+                    {
+                        await httpClient.DeleteAsync($"{httpClient.BaseAddress}/api/UserEvent/{userEvent.Id}");
+                    }
+                }*/
                 _userRepository.DeleteUser(id);
                 Response.StatusCode = 200;
             }

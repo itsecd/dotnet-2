@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Reactive;
-using System.Windows;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Threading.Tasks;
 using ReactiveUI;
-
+using ReactiveUI.Fody.Helpers;
 using Server.Model;
 
 namespace Client.ViewModels
 {
     public sealed class EventViewModel : ReactiveObject
     {
-        public string EventName { get; set; } = string.Empty;
+        [Reactive]
+        public string? EventName { get; set; } = string.Empty;
 
-        public string DateNTime { get; set; } = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+        [Reactive]
+        public string? DateNTime { get; set; } = string.Empty;
 
-        public int EventFrequency { get; set; } = 1;
+        [Reactive]
+        public string? EventFrequency { get; set; } = string.Empty;
 
         public ReactiveCommand<Unit, Unit> Ok { get; }
 
@@ -23,59 +28,40 @@ namespace Client.ViewModels
 
         public EventViewModel()
         {
-            Ok = ReactiveCommand.CreateFromObservable(OkImpl);
+            var canExecute = new Subject<bool>();
+            var isEnteredEventName = this.WhenAnyValue(o => o.EventName, (string? o) => (!string.IsNullOrWhiteSpace(o) && !string.IsNullOrEmpty(o)));
+            var isEnteredDateNtime = this.WhenAnyValue(o => o.DateNTime, (string? o) => (!string.IsNullOrWhiteSpace(o) && !string.IsNullOrEmpty(o) && DateTime.TryParse(o, out _)));
+            var isEnteredEventFrequency = this.WhenAnyValue(o => o.EventFrequency, (string? o) => (!string.IsNullOrWhiteSpace(o) && int.TryParse(o, out var data) && data > 0 && data < 8));
+
+            var canExecuteAndIsEntered = canExecute.CombineLatest(isEnteredEventName, isEnteredDateNtime, isEnteredEventFrequency,
+                (canExecute, isEnteredEventName, isEnteredDateNtime, isEnteredEventFrequency) => canExecute && isEnteredEventName && isEnteredDateNtime && isEnteredEventFrequency);
+
+            Ok = ReactiveCommand.CreateFromTask(() => ExclusiveWrapper(OkImpl), canExecuteAndIsEntered);
             Cancel = ReactiveCommand.CreateFromObservable(CancelImpl);
+
+            async Task ExclusiveWrapper(Func<IObservable<Unit>> impl)
+            {
+                try
+                {
+                    canExecute.OnNext(false);
+                    await impl();
+                }
+                finally
+                {
+                    canExecute.OnNext(false);
+                }
+            }
+            canExecute.OnNext(true);
         }
 
-        private bool IsValidName()
-        {
-            if (string.IsNullOrEmpty(EventName))
-            {
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(EventName))
-            {
-                return false;
-            }
-            if(EventName.Contains("  "))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private bool IsValidDateNTime()
-        {
-            return DateTime.TryParse(DateNTime, out _);
-        }
-
-        private bool IsValidFreq()
-        {
-            return (EventFrequency > 0 && EventFrequency < 8);
-        }
 
         private IObservable<Unit> OkImpl()
         {
-            if (!IsValidName())
-            {
-                MessageBox.Show("Event name is invalid");
-                return Close.Handle(null);
-            }
-            if (!IsValidDateNTime())
-            {
-                MessageBox.Show("Event date and time is invalid");
-                return Close.Handle(null);
-            }
-            if (!IsValidFreq())
-            {
-                MessageBox.Show("Event frequency is invalid");
-                return Close.Handle(null);
-            }
             var userEvent = new UserEvent
             {
                 EventName = EventName,
                 DateNTime = DateTime.Parse(DateNTime),
-                EventFrequency = EventFrequency
+                EventFrequency = int.Parse(EventFrequency)
             };
             return Close.Handle(userEvent);
         }

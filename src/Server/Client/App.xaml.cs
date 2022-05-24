@@ -1,11 +1,8 @@
 using System;
 using System.Reactive;
 using System.Windows;
-
-using ReactiveUI;
-
-using Client.Services;
 using Client.ViewModels;
+using ReactiveUI;
 
 namespace Client
 {
@@ -23,6 +20,8 @@ namespace Client
         {
             base.OnStartup(e);
             var authWindow = new AuthWindow();
+            var authViewModel = new AuthViewModel(authWindow);
+            authWindow.ViewModel = authViewModel;
             Current.MainWindow = authWindow;
             authWindow.Show();
         }
