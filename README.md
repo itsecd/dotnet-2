@@ -24,5 +24,5 @@
 * Кнопки "Update" и "Delete" становятся активными при выборе какого-либо события из списка
   * ![image](https://user-images.githubusercontent.com/73230915/170051901-ebb54d8d-d670-4c12-ba62-888fc272650b.png)
 * При нажатии на кнопку "Update" открывается окно для редактирования данных события с полями для ввода, заполненными данными выбранного события
-  * ![image](https://user-images.githubusercontent.com/73230915/170052347-e9c90721-722d-446a-8574-c02e0fc3efa5.png)
+  * ![image](https://user-images.githubusercontent.com/73230915/170082713-d91a19fb-89bb-4aab-86ed-e7fce311401e.png)
 * При нажатии на кнопку "Delete" выбранное событие удаляется
