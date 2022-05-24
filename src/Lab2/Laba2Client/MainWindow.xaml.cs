@@ -25,10 +25,9 @@ namespace Laba2Client
         {
             InitializeComponent();
         }
-        public MainWindow(OrderViewModel ordersViewModel)
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            InitializeComponent();
-            DataContext = ordersViewModel;
+            Application.Current.Dispatcher.Invoke(async () => await ((MainViewModel)DataContext).InitializeAsync());
         }
     }
 }

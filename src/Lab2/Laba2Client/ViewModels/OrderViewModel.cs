@@ -19,7 +19,7 @@ namespace Laba2Client.ViewModels
             _orderRepository = orderRepository;
 
             var orders = await _orderRepository.GetAllOrders();
-            var order = orders.FirstOrDefault(order => order.OrderId == orderId);
+            _order = orders.FirstOrDefault(order => order.OrderId == orderId);
         }
         public double AmountOrder
         {

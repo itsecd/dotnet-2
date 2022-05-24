@@ -28,19 +28,19 @@ namespace Laba2Client.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public async Task InitializeAsync(OrderSystemRepository orderRepository)
+        public async Task InitializeAsync()
         {
-            _orderRepository = orderRepository;
+            _orderRepository = new OrderSystemRepository();
 
             var orders = await _orderRepository.GetAllOrders();
             foreach (var order in orders)
             {
                 var orderViewModel = new OrderViewModel();
-                await orderViewModel.InitializeAsync(orderRepository, order.OrderId);
+                await orderViewModel.InitializeAsync(_orderRepository, order.OrderId);
                 Orders.Add(orderViewModel);
             }
         }
+
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
