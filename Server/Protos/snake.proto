@@ -1,0 +1,42 @@
+syntax = "proto3";
+option csharp_namespace = "SnakeServer";
+package snake;
+
+service Snake{
+    rpc Play (stream PlayerMessage) returns (stream ServerMessage);
+}
+
+message PlayerMessage { // обдумать насчет oneof
+    LoginRequest login_request = 1;
+    string text = 2;
+    string state = 3;
+  
+}
+
+message LoginRequest {
+  string name = 1; 
+}
+
+message ServerMessage {// обдумать насчет oneof
+    LoginReply login_reply = 1;
+    EndGameReply end_game_reply = 2;
+    string text = 3;
+    string state = 4;
+  
+}
+
+message LoginReply {
+  bool success = 1;
+}
+
+
+message EndGameReply {
+  OutcomeStatus status = 1;
+}
+
+enum OutcomeStatus {
+  VICTORY = 0;
+  DRAW = 1;
+  DEFEAT = 2;
+}
+
