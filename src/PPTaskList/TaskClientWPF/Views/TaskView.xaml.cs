@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TaskClientWPF.ViewModels;
 
 namespace TaskClientWPF.Views
 {
@@ -22,6 +23,12 @@ namespace TaskClientWPF.Views
         public TaskView()
         {
             InitializeComponent();
+        }
+
+        public TaskView(TaskViewModel taskViewModel)
+        {
+            InitializeComponent();
+            DataContext = taskViewModel;
         }
     }
 }

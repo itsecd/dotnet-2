@@ -10,10 +10,10 @@ namespace TaskClientWPF.ViewModels
     public class TasksViewModel: INotifyPropertyChanged
     {
         private TaskRepositoryClient _taskRepository;
-        public ObservableCollection<TasksViewModel> Tasks { get; } = new ObservableCollection<TasksViewModel>();
+        public ObservableCollection<TaskViewModel> Tasks { get; } = new ObservableCollection<TaskViewModel>();
 
-        private TasksViewModel _selectedTask;
-        public TasksViewModel SelectedTask
+        private TaskViewModel _selectedTask;
+        public TaskViewModel SelectedTask
         {
             get => _selectedTask;
             set
@@ -23,8 +23,8 @@ namespace TaskClientWPF.ViewModels
                 OnPropertyChanged(nameof(SelectedTask));
             }
         }
-
         public Command ShowTaskCommand { get; private set; }
+
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository)
         {
             _taskRepository = taskRepository;
@@ -32,7 +32,7 @@ namespace TaskClientWPF.ViewModels
             var tasks = await _taskRepository.GetTasksAsync();
             foreach(var task in tasks)
             {
-                var taskViewModel = new TasksViewModel();
+                var taskViewModel = new TaskViewModel();
                 await taskViewModel.InitializeAsync(taskRepository, task.TaskId);
                 Tasks.Add(taskViewModel);
             }

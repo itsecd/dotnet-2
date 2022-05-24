@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lab2TaskClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TaskClientWPF.ViewModels;
 
+
 namespace TaskClientWPF
 {
     /// <summary>
@@ -26,12 +28,13 @@ namespace TaskClientWPF
             InitializeComponent();
         }
 
-        private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            DataContext = new TasksViewModel();
             var viewModel = (TasksViewModel)DataContext;
-            var tasks = await viewModel.TaskRepositoryClient.GetTasksAsync();
+            var tasks = viewModel.Tasks;
 
-            
+
         }
     }
 }

@@ -49,13 +49,13 @@ namespace TaskClientWPF.ViewModels
         //    }
         //}
 
-        public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, string taskId)
+        public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
         {
             _taskRepository = taskRepository;
 
             var tasks = await _taskRepository.GetTasksAsync();
-            var task = tasks.FirstOrDefault(t => t.TaskId == int.Parse(taskId));
-            var taskExecutor = await _taskRepository.GetExecutorAsync(int.Parse(taskId));
+            var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
+            var taskExecutor = await _taskRepository.GetExecutorAsync(taskId);
 
             _task = task;
             _executor = new ExecutorViewModel(taskExecutor);

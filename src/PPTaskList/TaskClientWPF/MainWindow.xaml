@@ -5,21 +5,52 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:TaskClientWPF.ViewModels"
         mc:Ignorable="d"
-        Title="Задачи" Height="450" Width="400"
-        WindowState="Maximized"
+        Title="Список задач" Height="450" Width="400"
         Loaded="MainWindow_OnLoaded">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="MinHeight" Value="24"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+    </Window.Resources>
     <Window.DataContext>
         <viewmodels:TasksViewModel/>
     </Window.DataContext>
-    <Grid>
+    <Grid Margin="8">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label FontSize="20" FontWeight="Bold">Список задач</Label> 
+        <DataGrid ItemsSource="{Binding Tasks}" SelectionMode="Single" SelectedItem="{Binding SelectedTask}" AutoGenerateColumns="False">
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowTaskCommand}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Задача" Binding="{Binding TaskHeader}" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Описание" Binding="{Binding TaskDescription}" Width="*" IsReadOnly="True"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button 
+                Content="Изменить"
+                Command="{Binding UpdateTaskCommand}"
+                IsEnabled="False"/>
+            <Button 
+                Content="Добавить"
+                Command="{Binding AddTaskCommand}"/>
+        </StackPanel>
     </Grid>
 </Window>
