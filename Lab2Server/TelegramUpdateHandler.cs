@@ -11,7 +11,7 @@ namespace Lab2Server
 {
     public class TelegramUpdateHandler : IUpdateHandler
     {
-        readonly private IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
         public TelegramUpdateHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;

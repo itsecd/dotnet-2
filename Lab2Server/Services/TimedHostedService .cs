@@ -13,7 +13,7 @@ namespace Lab2Server.Services
 {
     public class TimedHostedService : IHostedService, IDisposable
     {
-        private int executionCount;
+        private int _executionCount;
         private readonly ILogger<TimedHostedService> _logger;
         private Timer _timer;
         private readonly IConfiguration _configuration;
@@ -38,7 +38,7 @@ namespace Lab2Server.Services
 
         private void DoWork(object state)
         {
-            var count = Interlocked.Increment(ref executionCount);
+            var count = Interlocked.Increment(ref _executionCount);
             List<User> users = _userRepository.GetUsers();
             if (users != null)
             {
@@ -52,7 +52,7 @@ namespace Lab2Server.Services
                             string bot = _configuration.GetValue(key, "");
                             var botClient = new TelegramBotClient(bot);
                             botClient.SendTextMessageAsync(chatId: user.ChatId, text: $"{reminder.Name}: {reminder.Description}").Wait();
-                            _logger.LogTrace("Messege was sended");
+                            _logger.LogTrace("Messege was sent");
                         }
                     }
                 }
@@ -72,21 +72,6 @@ namespace Lab2Server.Services
         public void Dispose()
         {
             _timer?.Dispose();
-        }
-
-        public IEnumerable<IConfigurationSection> GetChildren()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IChangeToken GetReloadToken()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IConfigurationSection GetSection(string key)
-        {
-            throw new NotImplementedException();
         }
     }
 }
