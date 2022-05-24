@@ -92,8 +92,8 @@ namespace TelegramBotServerTests
         {
             var usersRepository = CreateTestRepository();
             usersRepository.ChangeEventReminder(1, 0,
-                new EventReminder(0, "Successfull test", "ReminderDescription", new DateTime(2022, 5, 23, 21, 0, 0), new TimeSpan(0)));
-            Assert.True(usersRepository.FindUser(1).EventReminders[0].Name == "Successfull test");
+                new EventReminder(0, "Successful test", "ReminderDescription", new DateTime(2022, 5, 23, 21, 0, 0), new TimeSpan(0)));
+            Assert.True(usersRepository.FindUser(1).EventReminders[0].Name == "Successful test");
         }
 
         [Fact]

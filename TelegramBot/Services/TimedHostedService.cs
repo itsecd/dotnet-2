@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -40,17 +41,14 @@ namespace TelegramBot.Services
             var botClient = new TelegramBotClient(_configuration.GetValue<string>("TelegramBotKey"));
             foreach (var user in users)
             {
-                foreach (var reminder in user.EventReminders)
+                foreach (var reminder in user.EventReminders.Where(reminder => (reminder.Time - DateTime.Now).TotalMinutes is < 5 and >= 0))
                 {
-                    if (((reminder.Time - DateTime.Now).TotalMinutes < 5) && ((reminder.Time - DateTime.Now).TotalMinutes >= 0))
+                    botClient.SendTextMessageAsync(user.ChatId, $"{reminder.Name}: {reminder.Description}").Wait();
+                    if (reminder.RepeatPeriod.TotalMinutes > 0)
                     {
-                        botClient.SendTextMessageAsync(user.ChatId, $"{reminder.Name}: {reminder.Description}").Wait();
-                        if (reminder.RepeatPeriod.TotalMinutes > 0)
-                        {
-                            reminder.Time += reminder.RepeatPeriod;
-                        }
-                        _logger.LogInformation($"Message to User {user.UserId} was sended");
+                        reminder.Time += reminder.RepeatPeriod;
                     }
+                    _logger.LogInformation($"Message to User {user.UserId} was sended");
                 }
             }
             _logger.LogInformation(
