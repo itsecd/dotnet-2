@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Laba2Client.ViewModels;
 
 namespace Laba2Client
 {
@@ -23,6 +24,11 @@ namespace Laba2Client
         public MainWindow()
         {
             InitializeComponent();
+        }
+        public MainWindow(OrderViewModel ordersViewModel)
+        {
+            InitializeComponent();
+            DataContext = ordersViewModel;
         }
     }
 }

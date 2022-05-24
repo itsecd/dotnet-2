@@ -3,10 +3,48 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Laba2Client"
+        xmlns:local="clr-namespace:Laba2Client" 
+        xmlns:viewModels="clr-namespace:Laba2Client.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <Window.DataContext>
+        <viewModels:MainViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom"
+                                   Margin="5,5,5,5"
+                                   Orientation="Vertical">
+            <Button Content="Monthly Report"
+                         Padding="16,4,16,4" 
+                         VerticalAlignment="Stretch"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right"
+                                   Margin="5,10,0,5"
+                                   Orientation="Horizontal">
+            <Button Content="Add"
+                                   Padding="16,4,16,4"
+                                   Width="100"/>
+            <Button Content="Remove All"
+                                   Margin="5,0,5,0"
+                                   Padding="16,4,16,4"
+                                   Width="100"/>
+        </StackPanel>
+        <ListView Name="orderList" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding OrderId}" Header="Order ID" Width="190"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Dt}" Header="Date" Width="170" ></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding AmountOrder}" Header="Amount Order" Width="190"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status" Width="200"></GridViewColumn>
+                </GridView>
+            </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Show Full Info"></MenuItem>
+                    <MenuItem Header="Update"></MenuItem>
+                    <MenuItem Header="Remove"></MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
+    </DockPanel>
 </Window>
