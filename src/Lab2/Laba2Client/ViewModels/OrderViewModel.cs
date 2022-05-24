@@ -2,25 +2,49 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
+using System.Net.Http;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
+using Laba2Client.Properties;
 
 namespace Laba2Client.ViewModels
 {
     public class OrderViewModel : INotifyPropertyChanged
     {
-        private OrderSystemRepository _orderRepository;
+        private OrderSystemRepository _orderSystemRepository;
         private Order _order;
+
+        public OrderViewModel()
+        {
+            _order = new Order()
+            {
+                Dt = DateTime.Now,
+                Products = new List<Product>()
+            };
+        }
+        public int Id { get => _order.OrderId; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public async Task InitializeAsync(OrderSystemRepository orderRepository, int orderId)
         {
-            _orderRepository = orderRepository;
+            _orderSystemRepository = orderRepository;
 
-            var orders = await _orderRepository.GetAllOrders();
-            _order = orders.FirstOrDefault(order => order.OrderId == orderId);
+            var orders = await _orderSystemRepository.GetAllOrders();
+            var order = orders.FirstOrDefault(order => order.OrderId == orderId);
+            if (order == null)
+            {
+                return;
+            }
+            _order = order;
+            var customer = await _orderSystemRepository.GetCustomer(_order.CustomerId);
+            CustomerName = customer.FullName;
+            CustomerPhone = customer.PhoneNumber;
         }
+
+
+        public string CustomerName { get; set; }
+        public string CustomerPhone { get; set; }
         public double AmountOrder
         {
             get => _order.AmountOrder;

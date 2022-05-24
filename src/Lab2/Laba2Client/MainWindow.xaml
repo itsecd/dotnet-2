@@ -7,11 +7,19 @@
         xmlns:viewModels="clr-namespace:Laba2Client.ViewModels"
         mc:Ignorable="d"
         Loaded="MainWindow_OnLoaded"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Order Accounting System" Height="450" Width="800">
     <Window.DataContext>
         <viewModels:MainViewModel/>
     </Window.DataContext>
     <DockPanel>
+        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Right"
+                    Margin="5,5,5,5">
+            <Button Content="Customers"
+                    Command="{Binding OpenCustomerViewCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                      Padding="16,4,16,4"
+                      Width="90" />
+        </StackPanel>
         <StackPanel DockPanel.Dock="Bottom"
                                    Margin="5,5,5,5"
                                    Orientation="Vertical">
@@ -24,27 +32,35 @@
                                    Orientation="Horizontal">
             <Button Content="Add"
                                    Padding="16,4,16,4"
-                                   Width="100"/>
+                                   Width="100" 
+                    Command="{Binding AddOrderCommand}"/>
             <Button Content="Remove All"
                                    Margin="5,0,5,0"
                                    Padding="16,4,16,4"
                                    Width="100"/>
         </StackPanel>
-        <ListView Name="orderList" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}" >
+        <ListView Name="orderList" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}" SelectionMode="Single">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Dt}" Header="Date" Width="250"></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding AmountOrder}" Header="Amount Order" Width="200"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding CustomerName}" Header="Customer's name" Width="200"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Dt}" Header="Date" Width="200"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding AmountOrder}" Header="Amount Order" Width="150"></GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status" Width="200"></GridViewColumn>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Show Full Info"></MenuItem>
-                    <MenuItem Header="Update"></MenuItem>
+                    <MenuItem Header="Update" Command="{Binding UpdateOrderCommand}"></MenuItem>
                     <MenuItem Header="Remove"></MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
+            
         </ListView>
+        
     </DockPanel>
 </Window>

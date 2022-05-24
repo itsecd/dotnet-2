@@ -1,0 +1,65 @@
+﻿<Window x:Class="Laba2Client.Views.OrderView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Laba2Client.Views"
+        xmlns:viewModels="clr-namespace:Laba2Client.ViewModels"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
+        Title="Order">
+    <Window.DataContext>
+        <viewModels:OrderViewModel/>
+    </Window.DataContext>
+    <StackPanel  Margin="5,10,5,5" Orientation="Vertical">
+        <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
+            <TextBlock Name="TextBlock3" Text="Customer's full name" Height="30" Width="150" HorizontalAlignment="Left"
+                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
+            <TextBlock Name="TextBlock4" Text="{Binding CustomerName}" Height="30" Width="220" HorizontalAlignment="Right"
+                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBlock>
+        </StackPanel>
+        <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
+            <TextBlock Name="TextBlock5" Text="Phone number" Height="30" Width="150" HorizontalAlignment="Left"
+                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
+            <TextBlock Name="TextBlock6" Text="{Binding CustomerPhone}" Height="30" Width="220"
+                        Margin="5,0,5,0" Padding="16,4,16,4" />
+        </StackPanel>
+        <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
+            <TextBlock Name="TextBlock7" Text="Date order:" Height="30" Width="150" HorizontalAlignment="Left"
+                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
+            <TextBox Name="TextBlock8" Text="{Binding Dt}" Height="30" Width="220" HorizontalAlignment="Right"
+                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBox>
+        </StackPanel>
+        <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
+            <TextBlock Name="TextBlock9" Text="Amount Order" Height="30" Width="150" HorizontalAlignment="Left"
+                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
+            <TextBlock Name="TextBlock10" Text="{Binding AmountOrder}" Height="30" Width="220" HorizontalAlignment="Right"
+                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBlock>
+        </StackPanel>
+        <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
+            <TextBlock Name="TextBlock11" Text="Status" Height="30" Width="150" HorizontalAlignment="Left"
+                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
+            <TextBox Name="TextBlock12" Text="{Binding Status}" Height="30" Width="220" HorizontalAlignment="Right"
+                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBox>
+        </StackPanel>
+        <StackPanel Margin="5,10,5,5" Orientation="Horizontal" Height="175">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Name="TextBlock13" Text="Products" Height="30" Width="150" HorizontalAlignment="Left"
+                       Margin="0,0,5,0" Padding="16,4,16,4" VerticalAlignment="Top"></TextBlock>
+                <Button Height="20" Margin="10,8,10,10" Width="80" Content="Add"></Button>
+                <Button Height="20" Margin="10,8,10,10" Width="80" Content="Update"></Button>
+                <Button Height="20" Margin="10,8,10,10" Width="80" Content="Remove"></Button>
+                <Button Height="20" Margin="10,8,10,10" Width="80" Content="Remove All"></Button>
+            </StackPanel>
+            <ListView x:Name="orderList" ItemsSource="{Binding Products}" ScrollViewer.VerticalScrollBarVisibility="Visible" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding NameProduct}" Header="Name Product" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding CostProduct}" Header="Cost" Width="100" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+
+    </StackPanel>
+</Window>
