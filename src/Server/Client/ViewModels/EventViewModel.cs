@@ -60,8 +60,8 @@ namespace Client.ViewModels
             var userEvent = new UserEvent
             {
                 EventName = EventName,
-                DateNTime = DateTime.Parse(DateNTime),
-                EventFrequency = int.Parse(EventFrequency)
+                DateNTime = DateTime.Parse(DateNTime!),
+                EventFrequency = int.Parse(EventFrequency!)
             };
             return Close.Handle(userEvent);
         }

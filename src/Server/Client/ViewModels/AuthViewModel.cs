@@ -19,7 +19,7 @@ namespace Client.ViewModels
     public sealed class AuthViewModel : ReactiveObject
     {
         private readonly string _serverAddress = app.Default.serverAddress;
-        private char[] _keyForXor = "12341234123412341234123412341234".ToCharArray();
+        private readonly char[] _keyForXor = "12341234123412341234123412341234".ToCharArray();
         public AuthWindowBase AuthWindow;
 
         [Reactive]
@@ -46,7 +46,7 @@ namespace Client.ViewModels
             if (Code == code)
             {
                 AuthWindow.Hide();
-                _ = await interaction.Handle(await GetUser(UserName));
+                _ = await OpenMainWindow.Handle(await GetUser(UserName));
                 AuthWindow.Close();
                 App.Current.Shutdown();
             }
@@ -56,7 +56,7 @@ namespace Client.ViewModels
             }
         }
 
-        public Interaction<User, Unit> interaction { get; } = new();
+        public Interaction<User, Unit> OpenMainWindow { get; } = new();
 
         private async Task<User> GetUser(string userName)
         {

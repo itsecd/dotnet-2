@@ -20,7 +20,7 @@ namespace Client
                 if (ViewModel is null)
                     return;
                 ViewModel.AuthWindow = this;
-                cd.Add(ViewModel.interaction.RegisterHandler(interaction =>
+                cd.Add(ViewModel.OpenMainWindow.RegisterHandler(interaction =>
                 {
                     var userEventListService = new UserEventListService();
                     var mainViewModel = new MainViewModel(userEventListService, interaction.Input);
