@@ -11,12 +11,12 @@ namespace OrderAccountingSystemTests
 {
     public class OrderRepositoryTest
     {
-        private static readonly IConfigurationRoot Ñonfig = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+        private static readonly IConfigurationRoot Config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
 
         [Fact]
         public async Task AddOrderTestAsync()
         {
-            OrderRepository repository = new OrderRepository(Ñonfig);
+            OrderRepository repository = new OrderRepository(Config);
             Order order = GenerateOrder();
             Guid orderId = await repository.AddOrderAsync(order);
             Assert.True(await repository.CheckOrderAsync(orderId));
@@ -26,7 +26,7 @@ namespace OrderAccountingSystemTests
         [Fact]
         public async Task DeleteOrderTestAsync()
         {
-            OrderRepository repository = new OrderRepository(Ñonfig);
+            OrderRepository repository = new OrderRepository(Config);
             Order order = GenerateOrder();
             Guid orderId = await repository.AddOrderAsync(order);
             Assert.True(await repository.CheckOrderAsync(orderId));
@@ -37,7 +37,7 @@ namespace OrderAccountingSystemTests
         [Fact]
         public async Task ChangeOrderTestAsync()
         {
-            OrderRepository repository = new OrderRepository(Ñonfig);
+            OrderRepository repository = new OrderRepository(Config);
             Order order = GenerateOrder();
             Guid orderId = await repository.AddOrderAsync(order);
             Assert.True(await repository.CheckOrderAsync(orderId));
@@ -48,7 +48,7 @@ namespace OrderAccountingSystemTests
         [Fact]
         public async Task ChangeOrderStatusTestAsync()
         {
-            OrderRepository repository = new OrderRepository(Ñonfig);
+            OrderRepository repository = new OrderRepository(Config);
             Order order = GenerateOrder();
             Guid orderId = await repository.AddOrderAsync(order);
             Assert.True(await repository.CheckOrderAsync(orderId));
