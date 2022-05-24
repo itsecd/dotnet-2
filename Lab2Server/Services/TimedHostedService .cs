@@ -11,19 +11,17 @@ using Telegram.Bot;
 
 namespace Lab2Server.Services
 {
-    public class TimedHostedService : IHostedService, IDisposable, IConfiguration
+    public class TimedHostedService : IHostedService, IDisposable
     {
-        private int executionCount = 0;
+        private int executionCount;
         private readonly ILogger<TimedHostedService> _logger;
         private Timer _timer;
-        public readonly IConfiguration Configuration;
+        private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
-
-        public string this[string key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public TimedHostedService(ILogger<TimedHostedService> logger, IUserRepository userRepository, IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
             _userRepository = userRepository;
             _logger = logger;
         }
@@ -50,9 +48,9 @@ namespace Lab2Server.Services
                     {
                         if (((reminder.DateTime - DateTime.Now).TotalMinutes < 10) && ((reminder.DateTime - DateTime.Now).TotalMinutes >= 0))
                         {
-                            string Key = "123";
-                            string Bot = Configuration.GetValue(Key, "");
-                            var botClient = new TelegramBotClient(Bot);
+                            string key = "123";
+                            string bot = _configuration.GetValue(key, "");
+                            var botClient = new TelegramBotClient(bot);
                             botClient.SendTextMessageAsync(chatId: user.ChatId, text: $"{reminder.Name}: {reminder.Description}").Wait();
                             _logger.LogTrace("Messege was sended");
                         }

@@ -50,9 +50,9 @@ namespace Lab2Server
             {
                 endpoints.MapControllers();
             });
-            string Key = "123";
-            string Bot = Configuration.GetValue(Key, "");            
-            var botClient = new TelegramBotClient(Bot);
+            string key = "123";
+            string bot = Configuration.GetValue(key, "");            
+            var botClient = new TelegramBotClient(bot);
             botClient.StartReceiving(new TelegramUpdateHandler(userRepository));
         }
     }

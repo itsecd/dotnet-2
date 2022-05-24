@@ -54,19 +54,11 @@ namespace Lab2Server.Models
         }
         private bool ExistUser(User user)
         {
-            if (_users.Exists(x => x.UserId == user.UserId))
-            {
-                return true;
-            }
-            return false;
+            return _users.Exists(x => x.UserId == user.UserId);
         }
         private bool ExistUser(int id)
         {
-            if (_users.Exists(x => x.UserId == id))
-            {
-                return true;
-            }
-            return false;
+            return _users.Exists(x => x.UserId == id);
         }
         public User FindUser(int id)
         {

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Lab2ServerTest.Models
+namespace Lab2ServerTests.Models
 {
     public class UserRepositoryTests
     {
