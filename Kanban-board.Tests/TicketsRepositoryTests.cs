@@ -93,8 +93,14 @@ namespace Kanban_board.Tests
             ticket.StatusId = "red";
             Assert.True(returnedTicket.Equals(ticket));
 
-            ticket.Id = "wrongId";
-            Assert.Null(repository.EditTicket(ticket));
+            var ticketWithWrongId = new Ticket
+            {
+                Id = "wrongId",
+                Title = "2",
+                Description = "3",
+                StatusId = "yellow",
+            };
+            Assert.Null(repository.EditTicket(ticketWithWrongId));
 
             repository.DeleteTicket("1");
         }

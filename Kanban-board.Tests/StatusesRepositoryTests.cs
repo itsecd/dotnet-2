@@ -93,8 +93,14 @@ namespace Kanban_board.Tests
             status.Priority = "red";
             Assert.True(returnedStatus.Equals(status));
 
-            status.Id = "wrongId";
-            Assert.Null(repository.EditStatus(status));
+            var statusWithWrongId = new Status
+            {
+                Id = "wrongId",
+                Name = "2",
+                Description = "3",
+                Priority = "yellow",
+            };
+            Assert.Null(repository.EditStatus(statusWithWrongId));
 
             repository.DeleteStatus("1");
         }
