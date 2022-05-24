@@ -50,10 +50,12 @@ namespace Kanban_board.Tests
                 Description = "11",
                 Priority = "12",
             };
-            var addedStatuses = new List<Status>();
-            addedStatuses.Add(status1);
-            addedStatuses.Add(status2);
-            addedStatuses.Add(status3);
+            var addedStatuses = new List<Status>
+            {
+                status1,
+                status2,
+                status3
+            };
             StatusesRepository repository = new();
             repository.AddStatus(status1);
             repository.AddStatus(status2);
@@ -89,7 +91,7 @@ namespace Kanban_board.Tests
                 Priority = "red",
             });
             status.Priority = "red";
-            Assert.True(returnedStatus.Equals(returnedStatus));
+            Assert.True(returnedStatus.Equals(status));
 
             status.Id = "wrongId";
             Assert.Null(repository.EditStatus(status));

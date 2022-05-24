@@ -5,7 +5,7 @@
         /// <summary>
         /// Идентификатор задачи
         /// </summary>
-        public string Id { get; set; }
+        public string Id { get; init; }
         /// <summary>
         /// Название задачи
         /// </summary>

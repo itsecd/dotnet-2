@@ -6,7 +6,7 @@
         /// <summary>
         /// Идентификатор статуса
         /// </summary>
-        public string Id { get; set; }
+        public string Id { get; init; }
         /// <summary>
         /// Название статуса
         /// </summary>

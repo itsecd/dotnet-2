@@ -50,10 +50,12 @@ namespace Kanban_board.Tests
                 Description = "11",
                 StatusId = "12",
             };
-            var addedTickets = new List<Ticket>();
-            addedTickets.Add(ticket1);
-            addedTickets.Add(ticket2);
-            addedTickets.Add(ticket3);
+            var addedTickets = new List<Ticket>
+            {
+                ticket1,
+                ticket2,
+                ticket3
+            };
             TicketsRepository repository = new();
             repository.AddTicket(ticket1);
             repository.AddTicket(ticket2);
@@ -89,7 +91,7 @@ namespace Kanban_board.Tests
                 StatusId = "red",
             });
             ticket.StatusId = "red";
-            Assert.True(returnedTicket.Equals(returnedTicket));
+            Assert.True(returnedTicket.Equals(ticket));
 
             ticket.Id = "wrongId";
             Assert.Null(repository.EditTicket(ticket));
