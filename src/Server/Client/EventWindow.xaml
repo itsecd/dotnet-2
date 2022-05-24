@@ -20,7 +20,7 @@
                 <AdornedElementPlaceholder/>
             </DockPanel>
         </ControlTemplate>
-        <Style x:Key="Date">
+        <Style TargetType="xctk:WatermarkTextBox">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="xctk:WatermarkTextBox.ToolTip"

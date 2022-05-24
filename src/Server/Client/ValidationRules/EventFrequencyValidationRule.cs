@@ -8,7 +8,7 @@ namespace Client.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             var val = (string)value;
-            return (!string.IsNullOrWhiteSpace(val) && !string.IsNullOrEmpty(val) && int.TryParse(val, out var data) && data > 0 && data < 8) 
+            return !string.IsNullOrWhiteSpace(val) && int.TryParse(val, out var data) && data is > 0 and < 8
                 ? ValidationResult.ValidResult 
                 : new ValidationResult(false, "The entered value is not an integer or does not fall within the range of values 1-7");
         }

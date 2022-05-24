@@ -29,9 +29,9 @@ namespace Client.ViewModels
         public EventViewModel()
         {
             var canExecute = new Subject<bool>();
-            var isEnteredEventName = this.WhenAnyValue(o => o.EventName, (string? o) => (!string.IsNullOrWhiteSpace(o) && !string.IsNullOrEmpty(o)));
-            var isEnteredDateNtime = this.WhenAnyValue(o => o.DateNTime, (string? o) => (!string.IsNullOrWhiteSpace(o) && !string.IsNullOrEmpty(o) && DateTime.TryParse(o, out _)));
-            var isEnteredEventFrequency = this.WhenAnyValue(o => o.EventFrequency, (string? o) => (!string.IsNullOrWhiteSpace(o) && int.TryParse(o, out var data) && data > 0 && data < 8));
+            var isEnteredEventName = this.WhenAnyValue(o => o.EventName, (string? o) => !string.IsNullOrWhiteSpace(o));
+            var isEnteredDateNtime = this.WhenAnyValue(o => o.DateNTime, (string? o) => !string.IsNullOrWhiteSpace(o) && DateTime.TryParse(o, out _));
+            var isEnteredEventFrequency = this.WhenAnyValue(o => o.EventFrequency, (string? o) => !string.IsNullOrWhiteSpace(o) && int.TryParse(o, out var data) && data > 0 && data < 8);
 
             var canExecuteAndIsEntered = canExecute.CombineLatest(isEnteredEventName, isEnteredDateNtime, isEnteredEventFrequency,
                 (canExecute, isEnteredEventName, isEnteredDateNtime, isEnteredEventFrequency) => canExecute && isEnteredEventName && isEnteredDateNtime && isEnteredEventFrequency);

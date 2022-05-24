@@ -8,7 +8,7 @@ namespace Client.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             var val = (string)value;
-            return (!string.IsNullOrWhiteSpace(val) && !string.IsNullOrEmpty(val)) 
+            return !string.IsNullOrWhiteSpace(val)  
                 ? ValidationResult.ValidResult 
                 : new ValidationResult(false, "Name not entered");
         }

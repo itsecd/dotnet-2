@@ -30,7 +30,6 @@ namespace Client
                         ViewModel = mainViewModel
                     };
 
-                    // No async version of ShowDialog...
                     return Observable.Start(() =>
                     {
                         _ = mainView.ShowDialog();
