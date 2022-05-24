@@ -56,7 +56,7 @@
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Update" Command="{Binding UpdateOrderCommand}"></MenuItem>
-                    <MenuItem Header="Remove"></MenuItem>
+                    <MenuItem Header="Remove" Command="{Binding RemoveOrderCommand}"></MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
             

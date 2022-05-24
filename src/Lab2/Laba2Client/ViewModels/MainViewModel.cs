@@ -20,6 +20,8 @@ namespace Laba2Client.ViewModels
 
         public Command AddOrderCommand { get; }
         public Command UpdateOrderCommand { get; }
+        public Command RemoveOrderCommand { get; }
+
         public Command OpenCustomerViewCommand { get; }
 
         public MainViewModel()
@@ -36,8 +38,11 @@ namespace Laba2Client.ViewModels
 
             UpdateOrderCommand = new Command(_ =>
             {
-                var orderView = new OrderView(Orders.Single(ordView => ordView.Id == SelectedOrder.Id));
-                orderView.ShowDialog();
+                if (SelectedOrder is not null)
+                {
+                    var orderView = new OrderView(Orders.Single(ordView => ordView.Id == SelectedOrder.Id));
+                    orderView.ShowDialog();
+                }
             }, null);
             OpenCustomerViewCommand = new Command(async commandParameter =>
             {
@@ -50,7 +55,14 @@ namespace Laba2Client.ViewModels
                 Application.Current.MainWindow = customersView;
                 customersView.Show();
             }, null);
-
+            RemoveOrderCommand = new Command(async _ =>
+            {
+                if (SelectedOrder is not null)
+                {
+                    await _orderSystemRepository.DeleteOrder(SelectedOrder.Id);
+                    Orders.Remove(SelectedOrder);
+                }
+            }, null);
         }
         public OrderViewModel SelectedOrder
         {
@@ -75,7 +87,7 @@ namespace Laba2Client.ViewModels
                 await orderViewModel.InitializeAsync(_orderSystemRepository, order.OrderId);
                 Orders.Add(orderViewModel);
             }
-            
+
         }
 
         private void OnPropertyChanged(string propertyName)
