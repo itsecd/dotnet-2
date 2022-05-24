@@ -13,7 +13,7 @@ namespace ChatServer.Tests
             var initialMessage = new Serializers.DirectMessage(receiver, "new_test_name", "new_test_message");
 
             Serializers.DirectMessageSerializer.SerializeMessage(initialMessage);
-            var deserializedMessage = Serializers.DirectMessageSerializer.DeSerializeMessage(receiver)[0];
+            var deserializedMessage = Serializers.DirectMessageSerializer.DeserializeMessage(receiver)[0];
 
             Assert.Equal(initialMessage, deserializedMessage);
         }
@@ -36,10 +36,9 @@ namespace ChatServer.Tests
                 Serializers.DirectMessageSerializer.SerializeMessage(message);
             }
 
-            var deserializedCollection = Serializers.DirectMessageSerializer.DeSerializeMessage(receiver);
+            var deserializedCollection = Serializers.DirectMessageSerializer.DeserializeMessage(receiver);
 
             Assert.True(initialCollection.SequenceEqual(deserializedCollection));
-            //Assert.True(areTheyEqual);
         }
 
         [Fact]
@@ -61,7 +60,7 @@ namespace ChatServer.Tests
             }
             foreach (var receiver in receivers)
             {
-                deserializedCollection.Add(Serializers.DirectMessageSerializer.DeSerializeMessage(receiver)[0]);
+                deserializedCollection.Add(Serializers.DirectMessageSerializer.DeserializeMessage(receiver)[0]);
             }
 
             Assert.True(initialCollection.SequenceEqual(deserializedCollection));

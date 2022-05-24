@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ChatServer.Tests
@@ -12,7 +13,7 @@ namespace ChatServer.Tests
             var initialMessage = new Serializers.GroupMessage(group, "new_test_name", "new_test_message");
 
             Serializers.GroupMessageSerializer.SerializeMessage(initialMessage);
-            var deserializedMessage = Serializers.GroupMessageSerializer.DeSerializeMessage(group)[0];
+            var deserializedMessage = Serializers.GroupMessageSerializer.DeserializeMessage(group)[0];
 
             Assert.Equal(initialMessage, deserializedMessage);
         }
@@ -35,10 +36,9 @@ namespace ChatServer.Tests
                 Serializers.GroupMessageSerializer.SerializeMessage(message);
             }
 
-            var deserializedCollection = Serializers.GroupMessageSerializer.DeSerializeMessage(group);
+            var deserializedCollection = Serializers.GroupMessageSerializer.DeserializeMessage(group);
 
             Assert.True(initialCollection.SequenceEqual(deserializedCollection));
-            //Assert.True(areTheyEqual);
         }
 
         [Fact]
@@ -60,10 +60,26 @@ namespace ChatServer.Tests
             }
             foreach (var group in groups)
             {
-                deserializedCollection.Add(Serializers.GroupMessageSerializer.DeSerializeMessage(group)[0]);
+                deserializedCollection.Add(Serializers.GroupMessageSerializer.DeserializeMessage(group)[0]);
             }
 
             Assert.True(initialCollection.SequenceEqual(deserializedCollection));
+        }
+
+        [Fact]
+        public void GroupMessageConcurrent()
+        {
+            var tasks = new List<Task>();
+            for (var i = 0; i < 10; i++)
+            {
+                var userName = $"user{i}";
+                tasks.Add(Task.Run(() =>
+                {
+                    Serializers.GroupMessageSerializer.SerializeMessage(new Serializers.GroupMessage("test", userName, $"Message from {userName}"));
+                }));
+            }
+
+            Task.WaitAll(tasks.ToArray());
         }
     }
 }

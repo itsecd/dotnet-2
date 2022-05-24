@@ -8,7 +8,7 @@ namespace ChatServer
 {
     public class ChatHub : Hub
     {
-        private static Dictionary<string, string> Connections = new();
+        private static readonly Dictionary<string, string> Connections = new();
 
         public Task SendMessage(string user, string message)
         {
@@ -18,7 +18,7 @@ namespace ChatServer
         {
             Connections[user] = Context.ConnectionId;
 
-            var deSerializedDirectMessages = Serializers.DirectMessageSerializer.DeSerializeMessage(user);
+            var deSerializedDirectMessages = Serializers.DirectMessageSerializer.DeserializeMessage(user);
             foreach (var directMessage in deSerializedDirectMessages)
             {
                 Clients.Client(Connections[user]).SendAsync("ReceiveDirectMessage", directMessage.Name, directMessage.Message);
@@ -30,13 +30,12 @@ namespace ChatServer
         {
             string message = $"{user} has joined the group";
 
-            var deSerializedGroupMessages = Serializers.GroupMessageSerializer.DeSerializeMessage(groupName);
+            var deSerializedGroupMessages = Serializers.GroupMessageSerializer.DeserializeMessage(groupName);
             foreach (var groupMessage in deSerializedGroupMessages)
             {
                 await Clients.Caller.SendAsync("ReceiveMessageFromGroup", groupName, groupMessage.Name, groupMessage.Message);
             }
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            //await Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, message);
             await Clients.Group(groupName).SendAsync("ReceiveServiceMessage", groupName, message);
 
             Serializers.GroupMessageSerializer.SerializeMessage(new Serializers.GroupMessage(groupName, user, message));
