@@ -64,8 +64,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\Command.cs" />
     <Compile Include="TaskOpenApi.cs" />
     <Compile Include="TaskRepositoryClient.cs" />
+    <Compile Include="ViewModel\ExecutorsViewModel.cs" />
+    <Compile Include="ViewModel\ExecutorViewModel.cs" />
+    <Compile Include="ViewModel\MainTaskViewModel.cs" />
+    <Compile Include="ViewModel\TagsViewModel.cs" />
+    <Compile Include="ViewModel\TagViewModel.cs" />
+    <Compile Include="ViewModel\TaskViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,8 +118,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="View\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

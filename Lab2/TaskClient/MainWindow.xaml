@@ -3,10 +3,60 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:TaskClient.ViewModel"
         xmlns:local="clr-namespace:TaskClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Список задач" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="{x:Type ListView}">
+            <Setter Property="Margin" Value="8"/>
+        </Style>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="DarkGray" Offset="0" />
+            <GradientStop Color="#CCCCFF" Offset="0.5" />
+            <GradientStop Color="DarkGray" Offset="1" />
+        </LinearGradientBrush>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
+            <Setter Property="Width" Value="10" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
+    </Window.Resources>
+    <Window.DataContext>
+        <viewModel:MainTaskViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right"
+                                   Margin="5,10,0,5"
+                                   Orientation="Horizontal">
+            <Button Content="Add"
+                                   Padding="16,4,16,4"
+                                   Width="100"/>
+            <Button Content="Remove All"
+                                   Padding="16,4,16,4"
+                                   Width="100"/>
+        </StackPanel>
+        <ListView Name="taskList" ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedTask}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="80" Header ="Статус">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox IsChecked="{Binding State}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Имя задачи" Width="100"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Описание" Width="250"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding ExecutorName}" Header="Имя исполнителя" Width="120"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding ExecutorSurname}" Header="Фамилия исполнителя" Width="150"></GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </DockPanel>
 </Window>

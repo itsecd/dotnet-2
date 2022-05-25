@@ -75,7 +75,7 @@ namespace TaskClient
         /// Метод получения всех тэгов
         /// </summary>
         /// <returns>Исполнители</returns>
-        public Task<ICollection<Tags>> GetTagAsync()
+        public Task<ICollection<Tags>> GetTagsAsync()
         {
             return _openApiClient.TagsAllAsync();
         }
@@ -84,7 +84,7 @@ namespace TaskClient
         /// Метод получения тэга по идентификатору 
         /// </summary>
         /// <param name="id">Идентификатор исполнителя</param>
-        /// <returns>Исполнитель</returns>
+        /// <returns>тэг</returns>
         public Task<Tags> GetTagAsync(int id)
         {
             return _openApiClient.Tags3Async(id);
