@@ -8,20 +8,22 @@ namespace ChatServer.Tests
     public class GroupMessageRepositoriesTests
     {
         [Fact]
-        public void GroupMessageSerializerTest() {
+        public async void GroupMessageSerializerTest() {
             string group = "new_test_group";
             var initialMessage = new Serializers.GroupMessage(group, "new_test_name", "new_test_message");
 
             Serializers.GroupMessageSerializer.SerializeMessage(initialMessage);
-            var deserializedMessage = Serializers.GroupMessageSerializer.DeserializeMessage(group)[0];
+            var deserializedMessageList = await Serializers.GroupMessageSerializer.DeserializeMessage(group);
+
+            var deserializedMessage = deserializedMessageList[0];
 
             Assert.Equal(initialMessage, deserializedMessage);
         }
 
         [Fact]
-        public void GroupMessageSerializerCollectionOneGroupTest()
+        public async void GroupMessageSerializerCollectionOneGroupTest()
         {
-            string group = "test_group";
+            string group = "test_group_ordered";
             var initialCollection = new List<Serializers.GroupMessage>() { 
                 new Serializers.GroupMessage(group, "test_name", "test_message"),
                 new Serializers.GroupMessage(group, "test_name1", "test_message1"),
@@ -36,13 +38,13 @@ namespace ChatServer.Tests
                 Serializers.GroupMessageSerializer.SerializeMessage(message);
             }
 
-            var deserializedCollection = Serializers.GroupMessageSerializer.DeserializeMessage(group);
+            var deserializedCollection = await Serializers.GroupMessageSerializer.DeserializeMessage(group);
 
             Assert.True(initialCollection.SequenceEqual(deserializedCollection));
         }
 
         [Fact]
-        public void GroupMessageSerializerCollectionDifferentGroupsTest()
+        public async void GroupMessageSerializerCollectionDifferentGroupsTest()
         {
             var groups = new List<string>();
             var initialCollection = new List<Serializers.GroupMessage>();
@@ -50,7 +52,7 @@ namespace ChatServer.Tests
 
             for (int i = 0; i < 6; ++i)
             {
-                groups.Add($"test_group{i}");
+                groups.Add($"another_test_group{i}");
                 initialCollection.Add(new Serializers.GroupMessage(groups[i], "test_name", "test_message"));
 
             }
@@ -60,7 +62,8 @@ namespace ChatServer.Tests
             }
             foreach (var group in groups)
             {
-                deserializedCollection.Add(Serializers.GroupMessageSerializer.DeserializeMessage(group)[0]);
+                var deserializedCollectionFromOneGroup = await Serializers.GroupMessageSerializer.DeserializeMessage(group);
+                deserializedCollection.Add(deserializedCollectionFromOneGroup[0]);
             }
 
             Assert.True(initialCollection.SequenceEqual(deserializedCollection));
@@ -75,7 +78,7 @@ namespace ChatServer.Tests
                 var userName = $"user{i}";
                 tasks.Add(Task.Run(() =>
                 {
-                    Serializers.GroupMessageSerializer.SerializeMessage(new Serializers.GroupMessage("test", userName, $"Message from {userName}"));
+                    Serializers.GroupMessageSerializer.SerializeMessage(new Serializers.GroupMessage("test_group_parallel", userName, $"Message from {userName}"));
                 }));
             }
 

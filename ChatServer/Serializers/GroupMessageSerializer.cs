@@ -9,28 +9,28 @@ namespace ChatServer.Serializers
 {
     public static class GroupMessageSerializer
     {
-        public static void SerializeMessage(GroupMessage groupMessage)
+        public static async void SerializeMessage(GroupMessage groupMessage)
         {
-            var messages = DeserializeMessage(groupMessage.Group);
-
+            var fileName = "RoomDataBases/" + groupMessage.Group + ".json";
+            var messages = await DeserializeMessage(groupMessage.Group);
             messages.Add(groupMessage);
-            string jsonString = JsonSerializer.Serialize(messages);
-            File.WriteAllText("RoomDataBases/" + groupMessage.Group + ".json", jsonString);
+
+            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
+            {
+                await JsonSerializer.SerializeAsync(fs, messages);
+            }
         }
 
-        public static List<GroupMessage> DeserializeMessage(string groupName)
+        public static async Task<List<GroupMessage>> DeserializeMessage(string groupName)
         {
             var fileName = "RoomDataBases/" + groupName + ".json";
             var deserializedMessages = new List<GroupMessage>();
-            if (File.Exists(fileName))
+
+            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
             {
-                string toDeserialize = File.ReadAllText(fileName);
-                if (toDeserialize.Length > 0)
-                {
-                    deserializedMessages = JsonSerializer.Deserialize<List<GroupMessage>>(toDeserialize);
-                }
+                deserializedMessages = await JsonSerializer.DeserializeAsync<List<GroupMessage>>(fs);
             }
-            
+
             return deserializedMessages;
         }
     }

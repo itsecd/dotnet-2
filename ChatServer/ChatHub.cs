@@ -30,7 +30,7 @@ namespace ChatServer
         {
             string message = $"{user} has joined the group";
 
-            var deSerializedGroupMessages = Serializers.GroupMessageSerializer.DeserializeMessage(groupName);
+            var deSerializedGroupMessages = await Serializers.GroupMessageSerializer.DeserializeMessage(groupName);
             foreach (var groupMessage in deSerializedGroupMessages)
             {
                 await Clients.Caller.SendAsync("ReceiveMessageFromGroup", groupName, groupMessage.Name, groupMessage.Message);
