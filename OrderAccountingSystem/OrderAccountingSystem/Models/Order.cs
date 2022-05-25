@@ -31,6 +31,7 @@ namespace OrderAccountingSystem.Models
 
         public Order(Customer customer, List<Product> products, int status, DateTimeOffset date)
         {
+            OrderId = Guid.NewGuid();
             Customer = customer;
             Products = products;
             Status = status;
