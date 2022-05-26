@@ -1,212 +1,54 @@
-# Промышленное программирование. Проект № 2
+<p align="right">
+<a href="https://discord.gg/KnJGY9S">
+  <img src="https://github.com/fenix-hub/ColoredBadges/blob/master/svg/social/discord.svg" alt="react" style="vertical-align:top; margin:6px 4px">
+</a>
+</p>
 
-## Аннотация
+This plugin is now supported in [Godot Extended Library Discord](https://discord.gg/JNrcucg), check out the [Godot Extended Library Project](https://github.com/godot-extended-libraries)!
 
-### Цель
-Знакомство со способами реализации клиент-серверных проектов.
+<img src="addons/github-integration/github-logo.png" align="left" width="64" height="64">
 
-### Задачи
-* Реализация объектно-ориентированной модели данных
-* Изучение сериализации данных в XML и JSON
-* Изучение одного из способов реализации серверных приложений
-  * WebAPI/OpenAPI
-  * gRPC
-  * SignalR (WebSockets)
-* Реализация клиентского приложения с использованием WPF или других технологий
-* Изучение паттернов проектирования
-* Повторение основ работы с системами контроля версий
-* Unit-тестирование
+# GitHub Integration
+A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
-## Схема сдачи
+Author: *"Nicolo (fenix) Santilio"*  
+Version: *1.4.3*  
+Godot Version: *3.2.4-rc3*  
+Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*  
 
-1. Первый PR делается по серверной части приложения.
-2. Второй PR делается по клиентской части приложения и всему проекту в целом.
+<img align="center" src="addons/github-integration/screenshots/banner.png">
 
-В остальном схема идентична схеме сдачи первой лабораторной работы:
-1. Получить задание
-2. Если вдруг задание не понравилось - согласовать и изменить тему
-3. Сделать форк данного репозитория
-4. Выполнить серверную часть задания
-5. Сделать PR в данный репозиторий
-6. Исправить замечания после code review
-7. Получить approve 
-8. Прийти на занятие и защитить работу
-9. Повторить пункты 4-8 для клиентской части задания
+## What is this?
+*GitHub Integration* is a addon for Godot Engine that I've created mainly for a personal purpose.  
+Pushing and Pulling repositories while I'm working on Godot (especially if I'm under a GameJam) could take some time and force me to save the project, open the brwoser/git bash/git gui, and do all the stuff.  
+With this little addon which works directly in the editor, managing all your repositories will be very easy.  
 
-## Задание. Общая часть
+## What can it do?
+*Github Integration* offers the main functionalities provided by GitHub (and git itself), in a more accessible way.  
+Currenlty, you can:
+- Manage all of your public and private **repositories**, *including* the ones you share with organizations and the ones in which you are a collaborator (with proper permissions): create, delete, push and clone repositories within your Godot project
+- Manage all of your public and private **gists**: delete, edit and create gists with a functional text editor
+- Manage collaboration invitations, inviting user to your repositories or accept/decline invitations you have received
 
-**Целевая платформа**: .NET 5
+## How does it work?
+I'm currently working on a [Wiki](https://github.com/fenix-hub/godot-engine.github-integration/wiki) for this plugin. It is a process that will take some time to complete since I want to provide a well-organized wiki with some basic explanations about GitHub itself. Anyway, I'm working on a user-friendly plugin, so everything should be the very ease to use for GitHub experienced users, and a little intuitive for people who never used GitHub or are not so experienced.
+If you want to see some screenshots you can find them here `addons/github-integration/screenshots`
 
-**Целевой UI-фреймворк**: WPF или альтернатива (в случае альтернативы необходимо уведомить преподавателя)
+## Supporters page
+<table>
+  <tr>
+    <th><img src='https://avatars0.githubusercontent.com/u/9788627?s=64&v=4' alt='@masterworm2' width="64"/><br/><a href="https://github.com/masterworm2">masterworm2</a></th>
+    <th><img src='https://avatars0.githubusercontent.com/u/48778172?s=64&v=4' alt='@auctru' width="64"/><br/><a href="https://github.com/autcru">autcru</a></th> 
+  </tr>
+</table>
 
-**Хранение данных на сервере**: XML или JSON в зависимости от варианта.
+## :warning: Disclaimer  
+As a "work in progress" project, there is *no warranty* for any eventual issue and bug that may broke your project.  
+I don't assume any responsibility for possible corruptions of your project. It is always advisable to keep a copy of your project and check any changes you make in your Github repository.  
 
-**Обязательно**:
-* Реализация как серверной, так и клиентской части системы
-* Реализация серверной части на .NET 5
-* Реализация серверной части на указанной в варианте серверной технологии
-* Реализация unit-тестов
-* Создание минимальной документации к проекту: страница на GitHub с информацией о задании, скриншоты приложения и прочая информация
-
-**Факультативно**:
-* Автоматизация тестирования на уровне репозитория через [GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions)
-* Интеграционное тестирование
-* Реализация серверного хранилища в виде базы данных
-
-**Примеры сообщений для тестирования через Postman для варианта SignalR**
-
-{"protocol":"json","version":1}&#30;
-
-{"arguments":["postman", "hi"],"invocationId":"0","target":"SendMessage","type":1}&#30;
-
-Символ в конце сообщение (UTF8): 0x1E
-
-## Варианты заданий
-
-Варианты распределяются случайным образом преподавателем.
-Вы также можете предложить идею для своего проекта.
-
-<details>
-  <summary><strong>Вариант 1: Система учета заказов</strong></summary>
-  <p></p>
-
-  Вы разрабатываете систему по продаже свежих фруктов.
-  Пользователем системы является поставщик продукции, которому необходимо вести учет сведений о продажах.
-
-  Минимальный функционал:
-  - хранение информации о продуктах
-  - хранение информации о клиентах
-  - хранение информации о заказах
-  - выполнение CRUD-операций с перечисленными выше сущностями
-  - управление статусами заказов
-  - вывод отчета за месяц - самые продающиеся продукты и их суммарная стоимость
-
-  Варианты серверных технологий:
-  - OpenAPI
-  - gRPC
-</details>
-
-<details>
-  <summary><strong>Вариант 2: Список задач</strong></summary>
-  <p></p>
-
-  Вы разрабатываете корпоративную систему ведения задач.
-
-  Задачи представляют собой:
-  - текстовый заголовок 
-  - текстовое описание
-  - статус
-  - кому назначена
-  - набор тэгов, ассоциированных с задачей
-
-  Минимальный функционал:
-  - хранение информации о задачах
-  - хранение информации об исполнителях задач
-  - хранение информации о тэгах
-  - выполнение CRUD-операций с перечисленными выше сущностями
-  - управление статусами задач
-
-  Варианты серверных технологий:
-  - OpenAPI
-  - gRPC
-</details>
-
-<details>
-  <summary><strong>Вариант 3: Чат</strong></summary>
-  <p></p>
-
-  Вы разрабатываете чат для обмена текстовыми сообщениями между пользователями.
-
-  Минимальный функционал:
-  - хранение информации о пользователях на сервере
-  - хранение истории сообщений на клиентах
-  - поддержка групповых чатов с сохранением истории и состава группы на сервере
-
-  Варианты серверных технологий:  
-  - gRPC
-  - SignalR
-</details>
-
-<details>
-  <summary><strong>Вариант 4: Многопользовательская игра</strong></summary>
-  <p></p>
-
-  Вы разрабатываете игру, в которую могут одновременно играть несколько пользователей.
-
-  Варианты:
-  - Driving game - "гонки"
-  - Snake game - "змейка"
-  - Pong game - "пинг-понг"
-
-  Минимальный функционал:
-  - обеспечение работы нескольких пользователей
-  - хранение информации о пользователях на сервере
-  - хранение информации о набранных очках на сервере
-
-  В качестве клиентского приложения может выступать как WPF-приложение, так и Unity
-
-  Варианты серверных технологий:  
-  - gRPC
-  - SignalR
-</details>
-
-<details>
-  <summary><strong>Вариант 5: Telegram-бот</strong></summary>
-  <p></p>
-
-  Необходимо реализовать бота для Telegram, который будет оповещать в нужное время пользователя о предстоящем событии (например, предстоящей лекции).
-
-  Перечень событий должен храниться на сервере
-
-  Добавление события должно производиться в клиентском приложении (вне Telegram)
-
-  Минимальный функционал:
-  - хранение событий в привязке к пользователю
-  - обеспечение CRUD-операций с событиями
-  - поддержка повторяемых событий (например, раз в неделю в указанное время)
-
-  Библиотека для работы с API Telegram: https://github.com/TelegramBots/telegram.bot
-
-  Варианты серверных технологий:  
-  - OpenAPI
-  - gRPC
-</details>
-
-<details>
-  <summary><strong>Вариант 6: Геоинформационное приложение</strong></summary>
-  <p></p>
-
-  Вы разрабатываете приложение для отображения банкоматов на карте.
-
-  Каждый банкомат должен содержать информацию:
-  - о банке
-  - количестве денежных средств
-
-  Оператор системы может изменять количество денежных средств.
-
-  В клиентском приложении необходимо обеспечить функционал:
-  - отображения объектов на карте
-  - при выборе объекта на карте необходимо отобразить информацию о нем
-  - изменения количества денежных средств в конкретном банкомате
-
-  Компонент для отображения карты: http://mapsui.com/documentation/getting-started-wpf.html
-
-  Сведения о банкоматах: https://github.com/itsec-labs/dotnet-2/blob/main/atm.geojson
-
-  Варианты серверных технологий:  
-  - OpenAPI
-  - gRPC
-</details>
+-----------------
+> This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
 
 
-<details>
-  <summary><strong>Вариант 7: Свой вариант</strong></summary>
-  <p></p>
 
-  Вы разрабатываете приложение на свою собственную тему.
 
-  Тема и минимальный разрабатываемый функционал должны быть согласованы с преподавателем.
-
-  Возможные источники данных:
-  - https://data.gov.ru/
-</details>

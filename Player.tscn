@@ -1,0 +1,99 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Sprites/Player1-plug.jpg" type="Texture" id=1]
+[ext_resource path="res://Timer.cs" type="Script" id=2]
+[ext_resource path="res://Player.cs" type="Script" id=3]
+[ext_resource path="res://Player1.cs" type="Script" id=4]
+[ext_resource path="res://Sprites/HitBoxPart_State1.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/HitBoxPart_State0.png" type="Texture" id=6]
+[ext_resource path="res://InputCollision.cs" type="Script" id=7]
+[ext_resource path="res://Sprites/HitBoxPart_State2.png" type="Texture" id=8]
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 6.0
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ ExtResource( 6 ), ExtResource( 5 ), ExtResource( 8 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ ExtResource( 6 ), ExtResource( 5 ), ExtResource( 8 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="Player1" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Area" type="Area2D" parent="."]
+position = Vector2( 0, 1.13687e-13 )
+
+[node name="InputCollision" type="CollisionShape2D" parent="Area"]
+position = Vector2( -189, 163 )
+shape = SubResource( 3 )
+script = ExtResource( 7 )
+
+[node name="Player1" type="Sprite" parent="."]
+position = Vector2( 0, 9.53674e-07 )
+scale = Vector2( 0.111111, 0.0805556 )
+texture = ExtResource( 1 )
+script = ExtResource( 4 )
+
+[node name="HitBox1" type="AnimatedSprite" parent="Player1"]
+position = Vector2( 144, -3190.34 )
+scale = Vector2( 9, 12.4138 )
+frames = SubResource( 4 )
+offset = Vector2( -184, 85 )
+
+[node name="HitBox2" type="AnimatedSprite" parent="Player1"]
+position = Vector2( 144, -3190.34 )
+scale = Vector2( 9, 12.4138 )
+frames = SubResource( 5 )
+offset = Vector2( -135.797, 85.1108 )
+
+[node name="HitBox3" type="AnimatedSprite" parent="Player1"]
+position = Vector2( 144, -3190.34 )
+scale = Vector2( 9, 12.4138 )
+frames = SubResource( 4 )
+offset = Vector2( -88, 85 )
+
+[node name="HitBox4" type="AnimatedSprite" parent="Player1"]
+position = Vector2( 144, -3190.34 )
+scale = Vector2( 9, 12.4138 )
+frames = SubResource( 5 )
+offset = Vector2( -39.7971, 85.1108 )
+
+[node name="HitBox5" type="AnimatedSprite" parent="Player1"]
+position = Vector2( 1260, -1824.83 )
+scale = Vector2( 9, 12.4138 )
+frames = SubResource( 4 )
+offset = Vector2( -116, -25 )
+
+[node name="HitBox6" type="AnimatedSprite" parent="Player1"]
+position = Vector2( 1260, -1824.83 )
+scale = Vector2( 9, 12.4138 )
+frames = SubResource( 5 )
+offset = Vector2( -67.7971, -24.8892 )
+
+[node name="HitBox7" type="AnimatedSprite" parent="Player1"]
+position = Vector2( 2124, -1824.83 )
+scale = Vector2( 9, 12.4138 )
+frames = SubResource( 4 )
+offset = Vector2( -116, -25 )
+
+[node name="HitBox8" type="AnimatedSprite" parent="Player1"]
+position = Vector2( 2124, -1824.83 )
+scale = Vector2( 9, 12.4138 )
+frames = SubResource( 5 )
+offset = Vector2( -67.7971, -24.8892 )
+
+[node name="Timer" type="Timer" parent="Player1"]
+wait_time = 5.0
+one_shot = true
+script = ExtResource( 2 )
