@@ -12,7 +12,7 @@ namespace GomokuServer.Tests
         public void EnterIntoTheCellTest()
         {
             var gameplay = new Gameplay();
-            Point point = new Point { X = 1, Y = 5 };
+            Point point = new() { X = 1, Y = 5 };
             gameplay.EnterIntoTheCell(point, true);
             FieldExtensions.Cell expectedCell = FieldExtensions.Cell.FirstPlayer;
             var expectedPoint = new Point { X = 1, Y = 5 };
@@ -57,7 +57,7 @@ namespace GomokuServer.Tests
         public void CheckGameTest()
         {
             var gameplay = new Gameplay();
-            Point point = new Point { X = 1, Y = 5 };
+            Point point = new() { X = 1, Y = 5 };
             gameplay.EnterIntoTheCell(point, true);
             var expected = false;
 
