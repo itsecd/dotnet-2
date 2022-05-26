@@ -1,0 +1,78 @@
+﻿<Window x:Class="ChatClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatClient"
+        mc:Ignorable="d"
+        Title="Chat" Height="450" Width="800">
+    <Grid>
+        <Border Name="LoginScreen" Visibility="Visible">
+            <StackPanel>
+                <TextBlock Text="Login" HorizontalAlignment="Center"/>
+                <TextBox Name="LoginBox"/>
+                <PasswordBox Name="PasswordBox"/>
+                <Button Content ="Enter" Name="LoginButton" Click="LoginButton_Click" IsDefault="True"/>
+                <TextBlock Name="LoginMessageBlock" Visibility="Hidden"/>
+                <Button Content ="Register" Name="RegisterButton" Click="RegisterButton_Click" IsDefault="True"/>
+
+            </StackPanel>
+        </Border>
+
+        <Border Name ="RegisterScreen" Visibility="Hidden">
+            <StackPanel>
+                <TextBlock Text="Enter Login" HorizontalAlignment="Center"/>
+                <TextBox Name="RegLoginBox"/>
+                <PasswordBox Name="RegPasswordBox"/>
+                <PasswordBox Name="Reg2PasswordBox"/>
+                <Button Content ="Enter" Name="RegLoginButton" Click="RegisterButton_Click" IsDefault="True"/>
+                <TextBlock Name="RegisterMessageBlock" Visibility="Hidden"/>
+            </StackPanel>
+        </Border>
+
+        <Border Name="ChatScreen" Visibility="Hidden">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <Border Grid.Row="0">
+                        <TextBlock Text="Contacts" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <Border Grid.Row="1">
+                        <ListBox ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" Name ="ContactList">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <ListBoxItem>
+                                        <DockPanel LastChildFill="True">
+                                            <TextBlock Text ="{Binding Name}" DockPanel.Dock="Right"/>
+                                        </DockPanel>
+                                    </ListBoxItem>
+                                </DataTemplate>
+                                
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+                </Grid>
+
+             
+
+            </Grid>
+        </Border>
+
+
+
+    </Grid>
+
+
+
+
+</Window>
