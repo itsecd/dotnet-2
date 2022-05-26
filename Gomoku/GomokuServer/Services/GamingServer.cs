@@ -16,7 +16,7 @@ namespace GomokuServer.Services
 {
     public sealed class GamingServer
     {
-        private static SemaphoreSlim SemaphoreSlim = new(1, 1);
+        private static readonly SemaphoreSlim SemaphoreSlim = new(1, 1);
         private readonly ConcurrentDictionary<string, Player> _players = new();
         private readonly object _waitingPlayerLock = new();
         private Player? _waitingPlayer;
@@ -66,8 +66,10 @@ namespace GomokuServer.Services
             finally
             {
                 if (player is not null)
+                {
                     SavePlayerToFile(player);
-                _players.TryRemove(player.Login, out _);
+                    _players.TryRemove(player.Login, out _);
+                }
             }
         }
 
@@ -107,7 +109,7 @@ namespace GomokuServer.Services
             {
                 using var fileReader = new StreamReader(_filePath);
                 string jsonString = fileReader.ReadToEnd();
-                player = JsonSerializer.Deserialize<List<Player>>(jsonString).Find(x => x.Login == login);
+                player = (JsonSerializer.Deserialize<List<Player>>(jsonString) ?? throw new InvalidOperationException()).Find(x => x.Login == login);
             }
             finally
             {
@@ -115,10 +117,10 @@ namespace GomokuServer.Services
             }
             if (player is null)
             {
-                Console.WriteLine("Create new Player");
+                //Console.WriteLine("Create new Player");
                 return new Player(login, responseStream);
             }
-            Console.WriteLine("Open older Player");
+            //Console.WriteLine("Open older Player");
             return new Player(player.Login, player.CountGames, player.CountWinGames, responseStream);
         }
 
@@ -129,7 +131,7 @@ namespace GomokuServer.Services
             {
                 using var fileReader = new StreamReader(_filePath);
                 string jsonString = fileReader.ReadToEnd();
-                players = JsonSerializer.Deserialize<List<Player>>(jsonString);
+                players = JsonSerializer.Deserialize<List<Player>>(jsonString) ?? throw new InvalidOperationException();
                 if (players.Find(x => x.Login == player.Login) is null)
                 {
                     player.CountGames++;
@@ -137,7 +139,7 @@ namespace GomokuServer.Services
                 }
                 else
                 {
-                    players.Find(x => x.Login == player.Login).CountGames++;
+                    players.Find(x => x.Login == player.Login)!.CountGames++;
                 }
             }
             else

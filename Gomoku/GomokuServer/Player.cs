@@ -21,6 +21,7 @@ namespace GomokuServer
 
         public Player()
         {
+            Login = "";
         }
 
         public Player(string login, IServerStreamWriter<Reply> responseStream)
