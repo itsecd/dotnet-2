@@ -1,18 +1,31 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Gomoku;
 
 using Grpc.Core;
 
+using Microsoft.Extensions.Configuration;
+
 namespace GomokuServer.Services
 {
     public sealed class GamingServer
     {
+        private static SemaphoreSlim SemaphoreSlim = new(1, 1);
         private readonly ConcurrentDictionary<string, Player> _players = new();
         private readonly object _waitingPlayerLock = new();
         private Player? _waitingPlayer;
+        private readonly string _filePath;
+
+        public GamingServer(IConfiguration config)
+        {
+            _filePath = config.GetValue<string>("PathPlayers");
+        }
 
         public async Task Play(IAsyncStreamReader<Request> requestStream, IServerStreamWriter<Reply> responseStream)
         {
@@ -23,7 +36,6 @@ namespace GomokuServer.Services
                 return;
 
             var player = Login(requestStream.Current.LoginRequest, responseStream);
-
             try
             {
                 var loginReply = new LoginReply { Success = player is not null };
@@ -54,13 +66,14 @@ namespace GomokuServer.Services
             finally
             {
                 if (player is not null)
-                    _players.TryRemove(player.Login, out _);
+                    SavePlayerToFile(player);
+                _players.TryRemove(player.Login, out _);
             }
         }
 
         private Player? Login(LoginRequest loginRequest, IServerStreamWriter<Reply> responseStream)
         {
-            var player = new Player(loginRequest.Login, responseStream);
+            var player = GetPlayerFromFile(loginRequest.Login, responseStream).Result;
             return _players.TryAdd(player.Login, player) ? player : null;
         }
 
@@ -81,6 +94,69 @@ namespace GomokuServer.Services
             session.Start();
         }
 
+        private async Task<Player> GetPlayerFromFile(String login, IServerStreamWriter<Reply> responseStream)
+        {
+            if (!File.Exists(_filePath))
+            {
+                Console.WriteLine("File " + _filePath + " not found, create new Player");
+                return new Player(login, responseStream);
+            }
+            Player? player;
+            await SemaphoreSlim.WaitAsync();
+            try
+            {
+                using var fileReader = new StreamReader(_filePath);
+                string jsonString = fileReader.ReadToEnd();
+                player = JsonSerializer.Deserialize<List<Player>>(jsonString).Find(x => x.Login == login);
+            }
+            finally
+            {
+                SemaphoreSlim.Release();
+            }
+            if (player is null)
+            {
+                Console.WriteLine("Create new Player");
+                return new Player(login, responseStream);
+            }
+            Console.WriteLine("Open older Player");
+            return new Player(player.Login, player.CountGames, player.CountWinGames, responseStream);
+        }
+
+        private async void SavePlayerToFile(Player player)
+        {
+            List<Player> players = new();
+            if (File.Exists(_filePath))
+            {
+                using var fileReader = new StreamReader(_filePath);
+                string jsonString = fileReader.ReadToEnd();
+                players = JsonSerializer.Deserialize<List<Player>>(jsonString);
+                if (players.Find(x => x.Login == player.Login) is null)
+                {
+                    player.CountGames++;
+                    players.Add(player);
+                }
+                else
+                {
+                    players.Find(x => x.Login == player.Login).CountGames++;
+                }
+            }
+            else
+            {
+                players.Add(player);
+            }
+
+            await SemaphoreSlim.WaitAsync();
+            try
+            {
+                using FileStream createStream = File.Create(_filePath);
+                await JsonSerializer.SerializeAsync(createStream, players);
+                await createStream.DisposeAsync();
+            }
+            finally
+            {
+                SemaphoreSlim.Release();
+            }
+        }
     }
 }
 

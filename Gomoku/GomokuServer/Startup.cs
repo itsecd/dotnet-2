@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 using GomokuServer.Services;
 
 using Microsoft.AspNetCore.Builder;

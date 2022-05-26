@@ -20,7 +20,7 @@ namespace GomokuConsoleClient
 
                 try
                 {
-                    await session.FirstPlayer.Login("Lera");
+                    await session.FirstPlayer.Login("Anton");
                     await session.SecondPlayer.Login("Danila");
 
                     await session.FirstPlayer.FindOpponent();
