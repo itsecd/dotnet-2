@@ -53,7 +53,7 @@ namespace GomokuServer.Services
                         case Request.RequestOneofCase.LoginRequest:
                             throw new ApplicationException();
                         case Request.RequestOneofCase.FindOpponentRequest:
-                            FindOpponent(player, requestStream.Current.FindOpponentRequest);
+                            FindOpponent(player);
                             break;
                         case Request.RequestOneofCase.MakeTurnRequest:
                             player.Session?.MakeTurn(player, requestStream.Current.MakeTurnRequest);
@@ -79,7 +79,7 @@ namespace GomokuServer.Services
             return _players.TryAdd(player.Login, player) ? player : null;
         }
 
-        private void FindOpponent(Player player, FindOpponentRequest findOpponentRequest)
+        private void FindOpponent(Player player)
         {
             GamingSession session;
             lock (_waitingPlayerLock)
