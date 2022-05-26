@@ -13,7 +13,7 @@ namespace TaskClient.ViewModel
         private TaskRepositoryClient _taskRepository;
         public ObservableCollection<TagViewModel> Tags { get; } = new ObservableCollection<TagViewModel>();
 
-        public Tags _selectTag;
+        private Tags _selectTag;
 
         public Tags SelectedTag
         {

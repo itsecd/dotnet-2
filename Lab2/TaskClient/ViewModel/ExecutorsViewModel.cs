@@ -8,7 +8,7 @@ namespace TaskClient.ViewModel
         private TaskRepositoryClient _taskRepository;
         public ObservableCollection<ExecutorViewModel> Executors { get; } = new ObservableCollection<ExecutorViewModel>();
 
-        public Executor _selectExecutor;
+        private Executor _selectExecutor;
 
         public Executor SelectedExecutor
         {

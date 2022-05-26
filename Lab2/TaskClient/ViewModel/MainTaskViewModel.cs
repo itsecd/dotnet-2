@@ -1,5 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using TaskClient.Commands;
+using TaskClient.Views;
 
 namespace TaskClient.ViewModel
 {
@@ -9,10 +12,28 @@ namespace TaskClient.ViewModel
         private TaskRepositoryClient _taskRepository;
         public ObservableCollection<TaskViewModel> Tasks { get; } = new ObservableCollection<TaskViewModel>();
 
+        private TaskViewModel _selectTask;
 
-        public Task _selectTask;
+        public Command AddTaskCommand { get; }
+        public Command UpdateTaskCommand { get; }
+        public Command RemoveTaskCommand { get; }
 
-        public Task SelectedTask
+        
+        public MainTaskViewModel()
+        {
+            AddTaskCommand = new Command(async _ =>
+            {
+                var tasks = await _taskRepository.GetTasksAsync();
+                var id = tasks.Max(task => task.TaskId) + 1;
+                TaskViewModel taskViewModel = new TaskViewModel();
+                await taskViewModel.InitializeAsync(_taskRepository, id);
+                var taskView = new TaskView(taskViewModel);
+                taskView.ShowDialog();
+            }, null);
+
+        }
+
+        public TaskViewModel SelectedTask
         {
             get => _selectTask;
             set

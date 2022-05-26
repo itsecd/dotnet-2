@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using TaskClient.ViewModel;
 
 namespace TaskClient
 {
@@ -10,6 +11,11 @@ namespace TaskClient
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(async () => await ((MainTaskViewModel)DataContext).InitializeAsync());
         }
     }
 }

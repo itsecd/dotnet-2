@@ -2,22 +2,43 @@
 <ArrayOfTask xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Task>
     <TaskId>1</TaskId>
-    <Name>string</Name>
-    <Description>string</Description>
+    <Name>monday report</Name>
+    <Description>for weekly reporting</Description>
     <TaskState>false</TaskState>
-    <ExecutorId>0</ExecutorId>
+    <ExecutorId>2</ExecutorId>
     <TagsId>
-      <int>0</int>
+      <int>1</int>
     </TagsId>
   </Task>
   <Task>
     <TaskId>2</TaskId>
-    <Name>string</Name>
+    <Name>accounting statement</Name>
+    <Description>for the tax office</Description>
+    <TaskState>false</TaskState>
+    <ExecutorId>2</ExecutorId>
+    <TagsId>
+      <int>1</int>
+    </TagsId>
+  </Task>
+  <Task>
+    <TaskId>3</TaskId>
+    <Name>bb</Name>
     <Description>string</Description>
     <TaskState>false</TaskState>
-    <ExecutorId>0</ExecutorId>
+    <ExecutorId>1</ExecutorId>
     <TagsId>
-      <int>0</int>
+      <int>1</int>
+    </TagsId>
+  </Task>
+  <Task>
+    <TaskId>4</TaskId>
+    <Name>send documents to the chief's mail</Name>
+    <Description>this task must be completed by Wednesday, you need to put stamps</Description>
+    <TaskState>false</TaskState>
+    <ExecutorId>1</ExecutorId>
+    <TagsId>
+      <int>1</int>
+      <int>2</int>
     </TagsId>
   </Task>
 </ArrayOfTask>

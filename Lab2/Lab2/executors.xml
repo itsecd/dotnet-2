@@ -2,13 +2,13 @@
 <ArrayOfExecutor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Executor>
     <ExecutorId>1</ExecutorId>
-    <Name>string</Name>
-    <Surname>string</Surname>
+    <Name>Pavel</Name>
+    <Surname>Pavlov</Surname>
   </Executor>
   <Executor>
     <ExecutorId>2</ExecutorId>
-    <Name>string</Name>
-    <Surname>string</Surname>
+    <Name>Maria</Name>
+    <Surname>Antonova</Surname>
   </Executor>
   <Executor>
     <ExecutorId>3</ExecutorId>
