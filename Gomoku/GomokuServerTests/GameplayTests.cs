@@ -11,7 +11,8 @@ namespace GomokuServer.Tests
         [Fact]
         public void EnterIntoTheCellTest()
         {
-            var gameplay = new Gameplay();
+            var gameField = new FieldExtensions();
+            var gameplay = new Gameplay(gameField);
             Point point = new() { X = 1, Y = 5 };
             gameplay.EnterIntoTheCell(point, true);
             FieldExtensions.Cell expectedCell = FieldExtensions.Cell.FirstPlayer;
@@ -27,7 +28,8 @@ namespace GomokuServer.Tests
         [Fact]
         public void CheckFieldTest()
         {
-            var gameplay = new Gameplay();
+            var gameField = new FieldExtensions();
+            var gameplay = new Gameplay(gameField);
             var expected = new List<Point>();
             for (var i = 0; i < 5; ++i)
             {
@@ -44,7 +46,8 @@ namespace GomokuServer.Tests
         [Fact]
         public void CheckDefeatTest()
         {
-            var gameplay = new Gameplay();
+            var gameField = new FieldExtensions();
+            var gameplay = new Gameplay(gameField);
             gameplay.CheckDraw();
             FieldExtensions.Cell? expected = null;
 
@@ -56,7 +59,8 @@ namespace GomokuServer.Tests
         [Fact]
         public void CheckGameTest()
         {
-            var gameplay = new Gameplay();
+            var gameField = new FieldExtensions();
+            var gameplay = new Gameplay(gameField);
             Point point = new() { X = 1, Y = 5 };
             gameplay.EnterIntoTheCell(point, true);
             var expected = false;
