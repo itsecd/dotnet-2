@@ -6,47 +6,50 @@
         xmlns:local="clr-namespace:Laba2Client.Views"
         xmlns:viewModels="clr-namespace:Laba2Client.ViewModels"
         mc:Ignorable="d"
-        Title="CustomerView" Height="450" Width="800">
+        Title="Customers" Height="450" Width="650">
     <Window.DataContext>
         <viewModels:CustomersViewModel/>
     </Window.DataContext>
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Right"
                     Margin="5,5,5,5">
-            <Button Content="Orders"
+            <Button Content="Orders" Width="90" 
                     Command="{Binding OpenMainWindowCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                      Padding="16,4,16,4"
-                      Width="90" />
+                    Padding="16,4,16,4"/>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right"
-                                   Margin="5,10,0,5"
-                                   Orientation="Horizontal">
-            <Button Content="Add"
-                                   Padding="16,4,16,4"
-                                   Width="100" 
+        <StackPanel DockPanel.Dock="Bottom"
+                    HorizontalAlignment="Right" 
+                    Orientation="Horizontal"
+                    Margin="5,10,0,5">
+            <Button Content="Add" Width="100" 
+                    Padding="16,4,16,4"
                     Command="{Binding AddCustomerCommand}"/>
-            <Button Content="Remove All"
-                                   Margin="5,0,5,0"
-                                   Padding="16,4,16,4"
-                                   Width="100"/>
+            <Button Content="Remove All"  Width="100"
+                    Margin="5,0,5,0" Padding="16,4,16,4"
+                    Command="{Binding RemoveAllCustomersCommand}"/>
+            <Button Content="OK" Width="100"
+                    Padding="16,4,16,4"
+                    Command="{Binding SelectCustomerCommand}"   
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Button Content="Cancel" Width="100"
+                    Margin="5,0,5,0" Padding="16,4,16,4"
+                    Command="{Binding CancelCustomerCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
         </StackPanel>
         <ListView Name="orderList" ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}" SelectionMode="Single">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding FullName}" Header="Customer's name" Width="200"></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding PhoneNumber}" Header="Phone number" Width="150"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding FullName}" Header="Customer's name" Width="300"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding PhoneNumber}" Header="Phone number" Width="300"></GridViewColumn>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Update" Command="{Binding UpdateCustomerCommand}"></MenuItem>
-                    <MenuItem Header="Remove"></MenuItem>
+                    <MenuItem Header="Update" Command="{Binding UpdateCustomerCommand}" ></MenuItem>
+                    <MenuItem Header="Remove" Command="{Binding RemoveCustomerCommand}"></MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
-
         </ListView>
-
     </DockPanel>
-
 </Window>

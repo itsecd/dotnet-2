@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Laba2Client.Commands;
@@ -17,13 +14,22 @@ namespace Laba2Client.ViewModels
         public ObservableCollection<OrderViewModel> Orders { get; } = new();
 
         private OrderViewModel _selectedOrder;
-
+        public OrderViewModel SelectedOrder
+        {
+            get => _selectedOrder;
+            set
+            {
+                if (value == _selectedOrder) return;
+                _selectedOrder = value;
+                OnPropertyChanged(nameof(SelectedOrder));
+            }
+        }
         public Command AddOrderCommand { get; }
         public Command UpdateOrderCommand { get; }
         public Command RemoveOrderCommand { get; }
-
+        public Command RemoveAllOrdersCommand { get; }
         public Command OpenCustomerViewCommand { get; }
-
+        public event PropertyChangedEventHandler PropertyChanged;
         public MainViewModel()
         {
             AddOrderCommand = new Command(async _ =>
@@ -32,15 +38,21 @@ namespace Laba2Client.ViewModels
                 var id = orders.Max(order => order.OrderId) + 1;
                 OrderViewModel orderViewModel = new();
                 await orderViewModel.InitializeAsync(_orderSystemRepository, id);
+                orderViewModel.Mode = "Add";
                 var orderView = new OrderView(orderViewModel);
-                orderView.ShowDialog();
+                if (orderView.ShowDialog() == true)
+                {
+                    Orders.Clear();
+                    await InitializeAsync();
+                }
             }, null);
-
             UpdateOrderCommand = new Command(_ =>
             {
                 if (SelectedOrder is not null)
                 {
-                    var orderView = new OrderView(Orders.Single(ordView => ordView.Id == SelectedOrder.Id));
+                    var orderViewModel = Orders.Single(ordView => ordView.Id == SelectedOrder.Id);
+                    orderViewModel.Mode = "Update";
+                    var orderView = new OrderView(orderViewModel);
                     orderView.ShowDialog();
                 }
             }, null);
@@ -49,6 +61,7 @@ namespace Laba2Client.ViewModels
                 var window = (Window)commandParameter;
                 var customersViewModel = new CustomersViewModel();
                 await customersViewModel.InitializeAsync(_orderSystemRepository);
+                customersViewModel.ModeCustomer = "Another";
                 var customersView = new CustomersView(customersViewModel);
                 window.Hide();
                 customersView.Owner = window;
@@ -63,33 +76,24 @@ namespace Laba2Client.ViewModels
                     Orders.Remove(SelectedOrder);
                 }
             }, null);
-        }
-        public OrderViewModel SelectedOrder
-        {
-            get => _selectedOrder;
-            set
+            RemoveAllOrdersCommand = new Command(async _ =>
             {
-                if (value == _selectedOrder) return;
-                _selectedOrder = value;
-                OnPropertyChanged(nameof(SelectedOrder));
-            }
+                await _orderSystemRepository.DeleteAllOrder();
+                Orders.Clear();
+            }, null);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
         public async Task InitializeAsync()
         {
             _orderSystemRepository = new OrderSystemRepository();
-
             var orders = await _orderSystemRepository.GetAllOrders();
             foreach (var order in orders)
             {
                 var orderViewModel = new OrderViewModel();
                 await orderViewModel.InitializeAsync(_orderSystemRepository, order.OrderId);
+                orderViewModel.Mode = "Update";
                 Orders.Add(orderViewModel);
             }
-
         }
-
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

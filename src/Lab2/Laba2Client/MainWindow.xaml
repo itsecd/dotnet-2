@@ -14,30 +14,24 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Right"
                     Margin="5,5,5,5">
-            <Button Content="Customers"
+            <Button Content="Customers" Width="90"
+                    Padding="16,4,16,4"
                     Command="{Binding OpenCustomerViewCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                      Padding="16,4,16,4"
-                      Width="90" />
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Bottom"
-                                   Margin="5,5,5,5"
-                                   Orientation="Vertical">
-            <Button Content="Monthly Report"
-                         Padding="16,4,16,4" 
-                         VerticalAlignment="Stretch"/>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical" Margin="5,5,5,5">
+            <Button Content="Monthly Report" VerticalAlignment="Stretch"
+                    Padding="16,4,16,4"/>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right"
-                                   Margin="5,10,0,5"
-                                   Orientation="Horizontal">
-            <Button Content="Add"
-                                   Padding="16,4,16,4"
-                                   Width="100" 
+                    Orientation="Horizontal"
+                    Margin="5,10,0,5">
+            <Button Content="Add" Width="100"
+                    Padding="16,4,16,4"                
                     Command="{Binding AddOrderCommand}"/>
-            <Button Content="Remove All"
-                                   Margin="5,0,5,0"
-                                   Padding="16,4,16,4"
-                                   Width="100"/>
+            <Button Content="Remove All" Width="100"
+                    Margin="5,0,5,0" Padding="16,4,16,4"   
+                    Command="{Binding RemoveAllOrdersCommand}"/>
         </StackPanel>
         <ListView Name="orderList" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}" SelectionMode="Single">
             <ListView.ItemContainerStyle>
@@ -59,8 +53,6 @@
                     <MenuItem Header="Remove" Command="{Binding RemoveOrderCommand}"></MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
-            
         </ListView>
-        
     </DockPanel>
 </Window>

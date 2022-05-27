@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
-using System.Net.Http;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
-using Laba2Client.Properties;
+using Laba2Client.Commands;
+using System.Windows;
 
 namespace Laba2Client.ViewModels
 {
@@ -13,14 +10,9 @@ namespace Laba2Client.ViewModels
     {
         private OrderSystemRepository _orderSystemRepository;
         private Customer _customer;
-
-        public CustomerViewModel()
-        {
-            _customer = new Customer();
-        }
-        public int Id { get => _customer.Id; }
+        public int Id => _customer.Id;
         public string FullName
-        { 
+        {
             get => _customer.FullName;
             set
             {
@@ -39,13 +31,35 @@ namespace Laba2Client.ViewModels
                 OnPropertyChanged(nameof(PhoneNumber));
             }
         }
-
+        public Command AddOrUpdateCustomerCommand { get; }
+        public string ModeCust { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-
+        public CustomerViewModel()
+        {
+            _customer = new Customer();
+            AddOrUpdateCustomerCommand = new Command(async commandParameter =>
+            {
+                var newCustomer = new Customer()
+                {
+                    FullName = _customer.FullName,
+                    PhoneNumber = _customer.PhoneNumber
+                };
+                if (ModeCust == "Adding")
+                {
+                    await _orderSystemRepository.AddCustomer(newCustomer);
+                }
+                else
+                {
+                    await _orderSystemRepository.ReplaceCustomer(_customer.Id, newCustomer);
+                }
+                var window = (Window)commandParameter;
+                window.DialogResult = true;
+                window.Close();
+            },null);  
+        }
         public async Task InitializeAsync(OrderSystemRepository orderRepository, int customerId)
         {
             _orderSystemRepository = orderRepository;
-
             var customers = await _orderSystemRepository.GetAllCustomers();
             var customer = customers.FirstOrDefault(customer => customer.Id == customerId);
             if (customer == null)
@@ -54,7 +68,6 @@ namespace Laba2Client.ViewModels
             }
             _customer = customer;
         }
-
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

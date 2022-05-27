@@ -95,5 +95,4 @@ namespace Laba2Client
             return _openApiClient.MonthlyTotalCostAsync();
         }
     }
-
 }
