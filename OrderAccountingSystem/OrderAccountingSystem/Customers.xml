@@ -20,4 +20,9 @@
     <Name>Bob</Name>
     <Phone>111</Phone>
   </Customer>
+  <Customer>
+    <CustomerId>503328e6-7324-46f3-a997-61e4b280af16</CustomerId>
+    <Name>213123</Name>
+    <Phone>32132132</Phone>
+  </Customer>
 </ArrayOfCustomer>

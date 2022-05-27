@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace OrderAccountingSystem.Models
+namespace OrderAccountingSystemClient.Models
 {
     /// <summary>Info about order</summary>
     [System.Serializable]
@@ -37,6 +38,7 @@ namespace OrderAccountingSystem.Models
             Products = products;
             Status = status;
             Date = date;
+            Price = products.Sum(f => f.Price);
         }
         public Order(Guid orderId, Customer customer, List<Product> products, int status, DateTimeOffset date)
         {
@@ -45,6 +47,7 @@ namespace OrderAccountingSystem.Models
             Products = products;
             Status = status;
             Date = date;
+            Price = products.Sum(f => f.Price);
         }
 
     }

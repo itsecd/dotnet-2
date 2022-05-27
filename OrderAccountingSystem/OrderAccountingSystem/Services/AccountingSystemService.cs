@@ -437,7 +437,6 @@ namespace OrderAccountingSystem.Services
             try
             {
                 Order order = new Order();
-                order.OrderId = Guid.NewGuid();
                 if (IsGuid(request.Customer.CustomerId))
                 {
                     if (_customerRepository.CheckCustomerAsync(Guid.Parse(request.Customer.CustomerId)).Result)

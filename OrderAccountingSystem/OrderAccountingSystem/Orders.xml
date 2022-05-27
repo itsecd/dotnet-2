@@ -1,54 +1,44 @@
 <?xml version="1.0"?>
 <ArrayOfOrder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Order>
-    <OrderId>f432e304-3317-4569-a02e-c75175786518</OrderId>
+    <OrderId>933cee4d-7101-4dc0-b812-031125265385</OrderId>
     <Customer>
-      <CustomerId>e0aad35a-0970-4dc0-bdd4-54347a033e93</CustomerId>
-      <Name>dolor laboris tempor</Name>
-      <Phone>sit proident</Phone>
+      <CustomerId>abc0e758-65f1-4d89-91fd-2a6e97347ff4</CustomerId>
+      <Name>dsadsad</Name>
+      <Phone>dsadsadas</Phone>
     </Customer>
     <Products>
       <Product>
-        <ProductId>09dbd2da-077f-42a8-ad29-83a828f80ccb</ProductId>
-        <Name>nulla</Name>
-        <Price>111</Price>
+        <ProductId>f4e3c82c-0269-4d42-8ff9-6db267a7cee3</ProductId>
+        <Name>Bobb</Name>
+        <Price>30</Price>
       </Product>
       <Product>
-        <ProductId>3173a958-9a49-4cf1-b2df-8452ea1ce995</ProductId>
-        <Name>eiusmod</Name>
-        <Price>222</Price>
+        <ProductId>14463dce-d45f-4230-a6a9-017bd9de9c29</ProductId>
+        <Name>Ananas</Name>
+        <Price>100</Price>
       </Product>
     </Products>
-    <Status>1</Status>
-    <Price>333</Price>
+    <Status>2</Status>
+    <Price>130</Price>
     <Date />
   </Order>
   <Order>
-    <OrderId>d66a3653-5dd3-40f9-80e2-20b3cc6046af</OrderId>
+    <OrderId>4a0847ae-af68-4aa3-81ef-6fe12b93d368</OrderId>
     <Customer>
-      <CustomerId>b5196369-3501-4d9d-ae0c-6f94c588181d</CustomerId>
-      <Name>aute voluptate sed id</Name>
-      <Phone>sint reprehenderit adipisicing officia aliqua</Phone>
+      <CustomerId>3ff5f480-8a50-4e90-af5d-ab205ac70299</CustomerId>
+      <Name>Anton</Name>
+      <Phone>888</Phone>
     </Customer>
     <Products>
       <Product>
-        <ProductId>b09d609b-a1b0-4498-9243-fb76ef3542b8</ProductId>
-        <Name>in laboris</Name>
-        <Price>INF</Price>
-      </Product>
-      <Product>
-        <ProductId>77e665bb-b7b8-4fa7-be97-4d367b192751</ProductId>
-        <Name>labore sint</Name>
-        <Price>NaN</Price>
-      </Product>
-      <Product>
-        <ProductId>53514440-aa9e-4210-a464-8006a6c1f3f5</ProductId>
-        <Name>sit ad fugiat</Name>
-        <Price>-62406087.236814976</Price>
+        <ProductId>14463dce-d45f-4230-a6a9-017bd9de9c29</ProductId>
+        <Name>Ananas</Name>
+        <Price>100</Price>
       </Product>
     </Products>
-    <Status>488487740</Status>
-    <Price>NaN</Price>
+    <Status>3</Status>
+    <Price>100</Price>
     <Date />
   </Order>
 </ArrayOfOrder>
