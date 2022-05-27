@@ -38,6 +38,17 @@ namespace TaskClientWPF.ViewModels
             }
         }
 
+        //public string TaskExecutor
+        //{
+        //    get => _task?.HeaderText;
+        //    set
+        //    {
+        //        if (value == _task.HeaderText) return;
+        //        _task.HeaderText = value;
+        //        OnPropertyChanged(nameof(TaskHeader));
+        //    }
+        //}
+
         //public List<string> Tags
         //{
         //    get => _tag; 
@@ -49,16 +60,24 @@ namespace TaskClientWPF.ViewModels
         //    }
         //}
 
+        public TaskViewModel()
+        {
+            _task = new Lab2TaskClient.Task();
+        }
+
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
         {
             _taskRepository = taskRepository;
 
             var tasks = await _taskRepository.GetTasksAsync();
             var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
-            var taskExecutor = await _taskRepository.GetExecutorAsync(taskId);
-
             _task = task;
-            _executor = new ExecutorViewModel(taskExecutor);
+            if (task != null)
+            {
+                var taskExecutor = await _taskRepository.GetExecutorAsync(taskId);
+            }
+
+            //_executor = new ExecutorViewModel(taskExecutor);
 
         }
 

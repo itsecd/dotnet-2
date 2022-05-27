@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:TaskClientWPF.ViewModels"
+        xmlns:local="clr-namespace:TaskClientWPF"
         mc:Ignorable="d"
         Title="Список задач" Height="450" Width="400"
         Loaded="MainWindow_OnLoaded">
@@ -20,7 +21,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
     </Window.Resources>
     <Window.DataContext>
         <viewmodels:TasksViewModel/>
@@ -34,6 +34,14 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button 
+                Content="Изменить"
+                Command="{Binding ShowTaskCommand}"/>
+            <Button 
+                Content="Добавить"
+                Command="{Binding AddTaskCommand}"/>
+        </StackPanel>
         <DataGrid ItemsSource="{Binding Tasks}" SelectionMode="Single" SelectedItem="{Binding SelectedTask}" AutoGenerateColumns="False">
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowTaskCommand}"/>
@@ -42,15 +50,7 @@
                 <DataGridTextColumn Header="Задача" Binding="{Binding TaskHeader}" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="Описание" Binding="{Binding TaskDescription}" Width="*" IsReadOnly="True"></DataGridTextColumn>
             </DataGrid.Columns>
+
         </DataGrid>
-        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button 
-                Content="Изменить"
-                Command="{Binding UpdateTaskCommand}"
-                IsEnabled="False"/>
-            <Button 
-                Content="Добавить"
-                Command="{Binding AddTaskCommand}"/>
-        </StackPanel>
     </Grid>
 </Window>

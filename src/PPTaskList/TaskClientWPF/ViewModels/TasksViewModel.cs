@@ -4,6 +4,7 @@ using TaskClientWPF.Commands;
 using System.Threading.Tasks;
 using TaskClientWPF.Views;
 using Lab2TaskClient;
+using System.Linq;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -24,18 +25,43 @@ namespace TaskClientWPF.ViewModels
             }
         }
         public Command ShowTaskCommand { get; private set; }
+        public Command AddTaskCommand { get; private set; }
+        public Command RemoveTaskCommand { get; private set; }
+        public Command RemoveAllTasksCommand { get; private set; }
 
-        public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository)
+        public TasksViewModel()
         {
-            _taskRepository = taskRepository;
+            AddTaskCommand = new Command(async _ =>
+            {
+                var tasks = await _taskRepository.GetTasksAsync();
+                var id = tasks.Max(t => t.TaskId) + 1;
+                var taskViewModel = new TaskViewModel();
+                await taskViewModel.InitializeAsync(_taskRepository, id);
+                var taskView = new TaskView(taskViewModel);
+                taskView.ShowDialog();
+            }, null);
+        }
+
+        public async System.Threading.Tasks.Task InitializeAsync()
+        {
+            _taskRepository = new TaskRepositoryClient();
 
             var tasks = await _taskRepository.GetTasksAsync();
             foreach(var task in tasks)
             {
                 var taskViewModel = new TaskViewModel();
-                await taskViewModel.InitializeAsync(taskRepository, task.TaskId);
+                await taskViewModel.InitializeAsync(_taskRepository, task.TaskId);
                 Tasks.Add(taskViewModel);
             }
+
+            //AddTaskCommand = new Command(async commandParameter => {
+            //    var id = tasks.Max(t => t.TaskId) + 1;
+            //    var taskViewModel = new TaskViewModel();
+            //    await taskViewModel.InitializeAsync(_taskRepository, id);
+            //    var taskView = new TaskView(taskViewModel);
+            //    taskView.ShowDialog();
+            //}, null);
+
             ShowTaskCommand = new Command(commandParameter =>
             {
                 var taskInfoView = new TaskView(SelectedTask);
