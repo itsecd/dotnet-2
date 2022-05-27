@@ -100,6 +100,7 @@ namespace GomokuServer
                     else
                     {
                         SendEndGameReply(activePlayer, OutcomeStatus.Victory, WinPoints);
+                        activePlayer.CountWinGames++;
                         SendEndGameReply(notActivePlayer, OutcomeStatus.Defeat, WinPoints);
                     }
                 }

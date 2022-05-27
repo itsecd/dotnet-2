@@ -132,6 +132,7 @@ namespace GomokuServer.Services
                 using var fileReader = new StreamReader(_filePath);
                 string jsonString = fileReader.ReadToEnd();
                 players = JsonSerializer.Deserialize<List<Player>>(jsonString) ?? throw new InvalidOperationException();
+                var currentPlayer = players.Find(x => x.Login == player.Login);
                 if (players.Find(x => x.Login == player.Login) is null)
                 {
                     player.CountGames++;
@@ -139,7 +140,9 @@ namespace GomokuServer.Services
                 }
                 else
                 {
-                    players.Find(x => x.Login == player.Login)!.CountGames++;
+                    currentPlayer!.CountGames++;
+                    if (player.CountWinGames != currentPlayer.CountWinGames)
+                        currentPlayer.CountWinGames++;
                 }
             }
             else
