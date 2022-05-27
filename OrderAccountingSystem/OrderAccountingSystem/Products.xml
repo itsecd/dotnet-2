@@ -135,4 +135,19 @@
     <Name>sit ad fugiat</Name>
     <Price>-62406087.236814976</Price>
   </Product>
+  <Product>
+    <ProductId>d0a17188-9b13-4373-8118-c2eb3ef05814</ProductId>
+    <Name>ggg</Name>
+    <Price>0.001</Price>
+  </Product>
+  <Product>
+    <ProductId>8d4b9a87-bc55-4eb8-8645-77cf46e9f4e1</ProductId>
+    <Name>321321</Name>
+    <Price>0</Price>
+  </Product>
+  <Product>
+    <ProductId>f4e3c82c-0269-4d42-8ff9-6db267a7cee3</ProductId>
+    <Name>Bobb</Name>
+    <Price>30</Price>
+  </Product>
 </ArrayOfProduct>

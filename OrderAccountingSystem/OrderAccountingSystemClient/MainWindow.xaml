@@ -11,6 +11,7 @@
             <ColumnDefinition Width="17*"/>
             <ColumnDefinition Width="143*"/>
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="1" Content="Add Customer" HorizontalAlignment="Left" Margin="588,72,0,0" VerticalAlignment="Top" Click="Add_Customer_Click"/>
+        <Button x:Name="AddCustomerButton" Grid.Column="1" Content="Add Customer" HorizontalAlignment="Left" Margin="564,72,0,0" VerticalAlignment="Top" Click="Add_Customer_Click" Height="45" Width="120" FontSize="18"/>
+        <Button x:Name="AddProductButton" Grid.Column="1" Content="Add Product" HorizontalAlignment="Left" Margin="564,135,0,0" VerticalAlignment="Top" Click="Add_Product_Click" Height="45" Width="120" FontSize="18"/>
     </Grid>
 </Window>

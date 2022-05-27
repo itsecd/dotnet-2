@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderAccountingSystem", "Or
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderAccountingSystemTests", "OrderAccountingSystemTests\OrderAccountingSystemTests.csproj", "{4AA423A1-91FE-4767-B374-65DCEAB5AC87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderAccountingSystemClient", "OrderAccountingSystemClient\OrderAccountingSystemClient.csproj", "{2DEBA804-96B1-497B-AB96-E9A0CA6B6768}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderAccountingSystemClient", "OrderAccountingSystemClient\OrderAccountingSystemClient.csproj", "{1BA6CAAA-339E-4C0B-8868-917BE07E2981}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{4AA423A1-91FE-4767-B374-65DCEAB5AC87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AA423A1-91FE-4767-B374-65DCEAB5AC87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AA423A1-91FE-4767-B374-65DCEAB5AC87}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DEBA804-96B1-497B-AB96-E9A0CA6B6768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DEBA804-96B1-497B-AB96-E9A0CA6B6768}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DEBA804-96B1-497B-AB96-E9A0CA6B6768}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DEBA804-96B1-497B-AB96-E9A0CA6B6768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BA6CAAA-339E-4C0B-8868-917BE07E2981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BA6CAAA-339E-4C0B-8868-917BE07E2981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BA6CAAA-339E-4C0B-8868-917BE07E2981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BA6CAAA-339E-4C0B-8868-917BE07E2981}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -25,8 +25,14 @@ namespace OrderAccountingSystemClient
 
         private void Add_Customer_Click(object sender, RoutedEventArgs e)
         {
-            CustomerWindow customerWindow = new CustomerWindow();
+            AddCustomerWindow customerWindow = new AddCustomerWindow();
             customerWindow.Show();
+        }
+
+        private void Add_Product_Click(object sender, RoutedEventArgs e)
+        {
+            AddProductWindow productWindow = new AddProductWindow();    
+            productWindow.Show();
         }
     }
 }
