@@ -7,7 +7,7 @@ using Grpc.Net.Client;
 
 namespace GomokuConsoleClient
 {
-    public static class Program
+    public static class ProgramVictory
     {
         public static async Task Main()
         {
