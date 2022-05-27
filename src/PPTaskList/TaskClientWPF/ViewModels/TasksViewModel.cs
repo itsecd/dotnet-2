@@ -6,6 +6,7 @@ using TaskClientWPF.Views;
 using Lab2TaskClient;
 using System.Linq;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -30,6 +31,7 @@ namespace TaskClientWPF.ViewModels
         public Command UpdateTaskCommand { get; private set; }
         public Command RemoveTaskCommand { get; private set; }
         public Command RemoveAllTasksCommand { get; private set; }
+        public Command FindTasksCommand { get; private set; }
 
         public TasksViewModel()
         {
@@ -52,6 +54,13 @@ namespace TaskClientWPF.ViewModels
                     taskView.ShowDialog();
                 }
             }, null);
+
+            //FindTasksCommand = new Command(async _ =>
+            //{
+            //    var tasks = await _taskRepository.GetTasksAsync();
+            //    List<Task>
+
+            //}, null);
         }
 
         public async System.Threading.Tasks.Task InitializeAsync()

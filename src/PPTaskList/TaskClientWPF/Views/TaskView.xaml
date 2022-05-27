@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:TaskClientWPF.ViewModels"
+        xmlns:validationRules="clr-namespace:TaskClientWPF.ValidationRules"
         mc:Ignorable="d"
-        Title="Информация о задаче" Height="450" Width="300">
+        Title="Информация о задаче" Height="200" Width="300">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Margin" Value="8"/>
@@ -15,8 +16,8 @@
         </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="8"/>
-            <Setter Property="MinWidth" Value="100"/>
-            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="MinWidth" Value="70"/>
+            <Setter Property="MinHeight" Value="20"/>
             <Setter Property="HorizontalAlignment" Value="Right"></Setter>
         </Style>
         <ControlTemplate x:Key="ValidationTemplate">
@@ -42,9 +43,58 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="Задача:"/>
-        <Label Grid.Row="0" Grid.Column="1" Content="{Binding TaskHeader}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+            <TextBox.Text>
+                <Binding Path="TaskHeader">
+                    <Binding.ValidationRules>
+                        <validationRules:TaskHeaderValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+            <TextBox.Style>
+                <Style>
+                    <Style.Setters>
+                        <Setter Property="TextBox.VerticalContentAlignment" Value="Center"/>
+                    </Style.Setters>
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="true">
+                            <Setter Property="TextBox.ToolTip"
+                                    Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                Path=(Validation.Errors)/ErrorContent}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
         <Label Grid.Row="1" Grid.Column="0" Content="Описание задачи:"/>
-        <Label Grid.Row="1" Grid.Column="1" Content="{Binding TaskDescription}"/>
-
+        <TextBox Grid.Row="1" Grid.Column="1" Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+            <TextBox.Text>
+                <Binding Path="TaskDescription">
+                    <Binding.ValidationRules>
+                        <validationRules:TaskDescriptionValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+            <TextBox.Style>
+                <Style>
+                    <Style.Setters>
+                        <Setter Property="TextBox.VerticalContentAlignment" Value="Center"/>
+                    </Style.Setters>
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="true">
+                            <Setter Property="TextBox.ToolTip"
+                                    Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                Path=(Validation.Errors)/ErrorContent}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Command="{Binding UpdateTaskCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    IsDefault="True">OK</Button>
+            <Button IsCancel="True">Отмена</Button>
+        </StackPanel>
     </Grid>
 </Window>

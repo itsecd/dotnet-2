@@ -34,6 +34,16 @@ namespace TaskClientWPF.ViewModels
                 OnPropertyChanged(nameof(ExecutorName));
             }
         }
+        public int ExecutorId
+        {
+            get => Executor.ExecutorId;
+            set
+            {
+                if (value == Executor.ExecutorId) return;
+                Executor.ExecutorId = value;
+                OnPropertyChanged(nameof(ExecutorId));
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)

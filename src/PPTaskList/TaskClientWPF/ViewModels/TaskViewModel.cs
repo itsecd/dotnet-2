@@ -6,6 +6,7 @@ using TaskClientWPF.Views;
 using Lab2TaskClient;
 using System.Linq;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -48,16 +49,16 @@ namespace TaskClientWPF.ViewModels
             }
         }
 
-        //public string TaskExecutor
-        //{
-        //    get => _task?.HeaderText;
-        //    set
-        //    {
-        //        if (value == _task.HeaderText) return;
-        //        _task.HeaderText = value;
-        //        OnPropertyChanged(nameof(TaskHeader));
-        //    }
-        //}
+        public int TaskExecutorId
+        {
+            get => _executor.ExecutorId;
+            set
+            {
+                if (value == _executor.ExecutorId) return;
+                _executor.ExecutorId = value;
+                OnPropertyChanged(nameof(TaskExecutorId));
+            }
+        }
 
         //public List<string> Tags
         //{
@@ -70,9 +71,12 @@ namespace TaskClientWPF.ViewModels
         //    }
         //}
 
+        public Command UpdateTaskCommand { get; private set; }
+
         public TaskViewModel()
         {
             _task = new Lab2TaskClient.Task();
+            _executor = new ExecutorViewModel();
         }
 
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
@@ -82,12 +86,22 @@ namespace TaskClientWPF.ViewModels
             var tasks = await _taskRepository.GetTasksAsync();
             var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
             _task = task;
-            if (task != null)
-            {
-                var taskExecutor = await _taskRepository.GetExecutorAsync(taskId);
-            }
+            var taskExecutor = await _taskRepository.GetExecutorAsync(taskId);
+            _executor = new ExecutorViewModel(taskExecutor);
 
-            //_executor = new ExecutorViewModel(taskExecutor);
+            UpdateTaskCommand = new Command(commandParameter =>
+            {
+                var window = (Window)commandParameter;
+                var taskDto = new TaskDto {
+                    HeaderText = task.HeaderText,
+                    TextDescription = task.TextDescription,
+                    Executor = taskExecutor,
+                    TagsId = task.TagsId,
+                };
+                _taskRepository.UpdateTaskAsync(taskId, taskDto);
+                window.DialogResult = true;
+                window.Close();
+            },null);
 
         }
 
