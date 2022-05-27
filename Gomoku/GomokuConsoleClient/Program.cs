@@ -29,15 +29,34 @@ namespace GomokuConsoleClient
 
                     await Task.Delay(1000);
 
-                    await session.FirstPlayer.MakeTurn(new Point { X = 2, Y = 3 });
+                    await session.FirstPlayer.MakeTurn(new Point { X = 0, Y = 0 });
                     await Task.Delay(1000);
                     await session.SecondPlayer.MakeTurn(new Point { X = 1, Y = 0 });
 
                     await Task.Delay(1000);
 
-                    await session.FirstPlayer.MakeTurn(new Point { X = 3, Y = 5 });
+                    await session.FirstPlayer.MakeTurn(new Point { X = 0, Y = 1 });
                     await Task.Delay(1000);
                     await session.SecondPlayer.MakeTurn(new Point { X = 1, Y = 2 });
+
+                    await Task.Delay(1000);
+
+                    await session.FirstPlayer.MakeTurn(new Point { X = 0, Y = 2 });
+                    await Task.Delay(1000);
+                    await session.SecondPlayer.MakeTurn(new Point { X = 4, Y = 5 });
+
+                    await Task.Delay(1000);
+
+                    await session.FirstPlayer.MakeTurn(new Point { X = 0, Y = 3 });
+                    await Task.Delay(1000);
+                    await session.SecondPlayer.MakeTurn(new Point { X = 4, Y = 6 });
+
+                    await Task.Delay(1000);
+
+                    await session.FirstPlayer.MakeTurn(new Point { X = 0, Y = 4 });
+                    await Task.Delay(1000);
+                    await session.SecondPlayer.MakeTurn(new Point { X = 5, Y = 5 });
+
                 }
                 catch (Exception e)
                 {
