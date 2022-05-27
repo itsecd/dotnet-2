@@ -63,7 +63,7 @@ message EndGameReply {
 }
 
 enum OutcomeStatus {
-  VICTORY = 1;
-  DRAW = 2;
-  DEFEAT = 3;
+  VICTORY = 0;
+  DRAW = 1;
+  DEFEAT = 2;
 }

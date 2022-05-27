@@ -44,7 +44,7 @@ namespace GomokuServer.Tests
         }
 
         [Fact]
-        public void CheckDrawTest()
+        public void CheckDefeatTest()
         {
             var gameField = new FieldExtensions();
             var gameplay = new Gameplay(gameField);
