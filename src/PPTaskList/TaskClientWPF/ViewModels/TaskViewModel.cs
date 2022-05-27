@@ -16,6 +16,16 @@ namespace TaskClientWPF.ViewModels
         private TagViewModel _tag;
         private ExecutorViewModel _executor;
 
+        public int IdTask
+        {
+            get => _task.TaskId;
+            set
+            {
+                if (value == _task.TaskId) return;
+                _task.TaskId = value;
+                OnPropertyChanged(nameof(IdTask));
+            }
+        }
         public string TaskHeader
         {
             get => _task?.HeaderText;

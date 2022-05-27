@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TaskClientWPF.Views;
 using Lab2TaskClient;
 using System.Linq;
+using System.Windows;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -26,6 +27,7 @@ namespace TaskClientWPF.ViewModels
         }
         public Command ShowTaskCommand { get; private set; }
         public Command AddTaskCommand { get; private set; }
+        public Command UpdateTaskCommand { get; private set; }
         public Command RemoveTaskCommand { get; private set; }
         public Command RemoveAllTasksCommand { get; private set; }
 
@@ -40,6 +42,16 @@ namespace TaskClientWPF.ViewModels
                 var taskView = new TaskView(taskViewModel);
                 taskView.ShowDialog();
             }, null);
+
+            UpdateTaskCommand = new Command(_ =>
+            {
+                if(SelectedTask != null)
+                {
+                    var taskViewModel = Tasks.Single(t => t.IdTask == SelectedTask.IdTask);
+                    var taskView = new TaskView(taskViewModel);
+                    taskView.ShowDialog();
+                }
+            }, null);
         }
 
         public async System.Threading.Tasks.Task InitializeAsync()
@@ -53,14 +65,6 @@ namespace TaskClientWPF.ViewModels
                 await taskViewModel.InitializeAsync(_taskRepository, task.TaskId);
                 Tasks.Add(taskViewModel);
             }
-
-            //AddTaskCommand = new Command(async commandParameter => {
-            //    var id = tasks.Max(t => t.TaskId) + 1;
-            //    var taskViewModel = new TaskViewModel();
-            //    await taskViewModel.InitializeAsync(_taskRepository, id);
-            //    var taskView = new TaskView(taskViewModel);
-            //    taskView.ShowDialog();
-            //}, null);
 
             ShowTaskCommand = new Command(commandParameter =>
             {
