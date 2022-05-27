@@ -9,6 +9,7 @@ namespace GomokuServer
 {
     public class Gameplay
     {
+
         public Cell? _winner = null;
 
         public FieldExtensions _gameField = new FieldExtensions();
@@ -16,6 +17,11 @@ namespace GomokuServer
         public List<Point> _winPoints = new List<Point>();
 
         public Point _point = new Point { X = 0, Y = 0 };
+
+        public Gameplay(FieldExtensions fieldExtensions)
+        {
+            _gameField = fieldExtensions;
+        }
 
         public void EnterIntoTheCell(Point point, bool _isFirstTurn)
         {

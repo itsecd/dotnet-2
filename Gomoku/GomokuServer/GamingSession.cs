@@ -11,6 +11,7 @@ namespace GomokuServer
     {
         private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(1000);
 
+        FieldExtensions gameField = new();
         public Player FirstPlayer { get; }
 
         public Player SecondPlayer { get; }
@@ -56,7 +57,7 @@ namespace GomokuServer
         {
             lock (_timer)
             {
-                var gameplay = new Gameplay();
+                var gameplay = new Gameplay(gameField);
 
                 var activePlayer = FirstPlayer;
                 var notActivePlayer = SecondPlayer;
@@ -102,8 +103,10 @@ namespace GomokuServer
                         SendEndGameReply(notActivePlayer, OutcomeStatus.Defeat, WinPoints);
                     }
                 }
-
-                ChangeActivePlayer();
+                else
+                {
+                    ChangeActivePlayer();
+                }
 
                 _isTimerActive = true;
                 _timer.Start();
