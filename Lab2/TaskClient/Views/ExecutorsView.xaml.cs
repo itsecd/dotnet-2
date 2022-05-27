@@ -16,28 +16,18 @@ using TaskClient.ViewModel;
 namespace TaskClient.Views
 {
     /// <summary>
-    /// Логика взаимодействия для TaskView.xaml
+    /// Логика взаимодействия для ExecutorsView.xaml
     /// </summary>
-    public partial class TaskView : Window
+    public partial class ExecutorsView : Window
     {
-        public TaskView()
+        public ExecutorsView()
         {
             InitializeComponent();
         }
-
-        public TaskView(TaskViewModel taskViewModel)
+        public ExecutorsView(ExecutorsViewModel executorsViewModel)
         {
             InitializeComponent();
-            DataContext = taskViewModel;
-        }
-        private void btnOk_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
+            DataContext = executorsViewModel;
         }
     }
 }

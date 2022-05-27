@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using TaskClient.Commands;
 
 namespace TaskClient.ViewModel
 {
@@ -10,6 +11,14 @@ namespace TaskClient.ViewModel
         private Task _task;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public TaskViewModel()
+        {
+            _task = new Task()
+            {
+                Name = string.Empty, 
+                Description = string.Empty
+            };       
+        }
 
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
         {
@@ -17,24 +26,23 @@ namespace TaskClient.ViewModel
 
             var tasks = await _taskRepository.GetTasksAsync();
             var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
+            if (task == null)
+            {
+                return;
+            }
+
             _task = task;
             var executor = await _taskRepository.GetExecutorAsync(_task.ExecutorId);
             ExecutorName = executor.Name;
             ExecutorSurname = executor.Surname;
-            for(int i=0; i<TagsId.Count; i++)
-            {
-                var tagId = TagsId[i];
-                var tag = await _taskRepository.GetTagAsync(tagId);
-                TagName = tag.Name;
-            }
         }
 
-
+        public int Id { get => _task.TaskId; }
         public string TagName { get; set; }
         
         public List<int> TagsId
         {
-            get => (List<int>)_task.TagsId;
+            get => (List<int>)_task?.TagsId;
             set
             {
                 if (value == _task.TagsId) return;
@@ -47,7 +55,7 @@ namespace TaskClient.ViewModel
         
         public string Name
         {
-            get => _task.Name;
+            get => _task?.Name;
             set
             {
                 if (value == _task.Name)
@@ -62,7 +70,7 @@ namespace TaskClient.ViewModel
 
         public string Description
         {
-            get => _task.Description;
+            get => _task?.Description;
             set
             {
                 if (value == _task.Description)

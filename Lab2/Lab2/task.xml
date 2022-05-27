@@ -30,15 +30,4 @@
       <int>1</int>
     </TagsId>
   </Task>
-  <Task>
-    <TaskId>4</TaskId>
-    <Name>send documents to the chief's mail</Name>
-    <Description>this task must be completed by Wednesday, you need to put stamps</Description>
-    <TaskState>false</TaskState>
-    <ExecutorId>1</ExecutorId>
-    <TagsId>
-      <int>1</int>
-      <int>2</int>
-    </TagsId>
-  </Task>
 </ArrayOfTask>

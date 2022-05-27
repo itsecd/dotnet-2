@@ -62,12 +62,12 @@ namespace Lab2.Controllers
         /// </summary>
         /// <param name="tag">Новый тэг</param>
         [HttpPost]
-        public IActionResult Post([FromBody] TagDto tag)
+        public IActionResult Post([FromBody] Tags tag)
         {
 
             try
             {
-                _tagRepository.AddTag(new Tags { Name = tag.Name, Color = tag.Color });
+                _tagRepository.AddTag(tag);
                 return CreatedAtAction(nameof(Post), tag);
             }
             catch
@@ -82,12 +82,12 @@ namespace Lab2.Controllers
         /// <param name="id">Идентификатор</param>
         /// <param name="tag">Новый тэг</param>
         [HttpPut("{id:int}")]
-        public IActionResult Put(int id, [FromBody] TagDto tag)
+        public IActionResult Put(int id, [FromBody] Tags tag)
         {
 
             try
             {
-                _tagRepository.UpdateTag(id, new Tags { TagId = id, Name = tag.Name, Color = tag.Color });
+                _tagRepository.UpdateTag(id, tag);
                 return Ok();
             }
             catch (ArgumentOutOfRangeException)

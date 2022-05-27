@@ -39,7 +39,7 @@ namespace TaskClient
         /// Метод добавления исполнителя 
         /// </summary>
         /// <param name="value">Новый исполнитель</param>
-        public System.Threading.Tasks.Task PostExecutorAsync(ExecutorDto executor)
+        public System.Threading.Tasks.Task PostExecutorAsync(Executor executor)
         {
             return _openApiClient.ExecutorAsync(executor);
         }
@@ -49,7 +49,7 @@ namespace TaskClient
         /// </summary>
         /// <param name="value">Новый исполнитель</param>
         /// /// <param name="id">Идентификатор заменяемого исполнителя</param>
-        public System.Threading.Tasks.Task PutExecutorAsync(int id, ExecutorDto executor)
+        public System.Threading.Tasks.Task PutExecutorAsync(int id, Executor executor)
         {
             return _openApiClient.Executor4Async(id, executor);
         }
@@ -94,7 +94,7 @@ namespace TaskClient
         /// Метод добавления тега 
         /// </summary>
         /// <param name="value">Новый тег</param>
-        public System.Threading.Tasks.Task PostTagAsync(TagDto tag)
+        public System.Threading.Tasks.Task PostTagAsync(Tags tag)
         {
             return _openApiClient.TagsAsync(tag);
         }
@@ -105,7 +105,7 @@ namespace TaskClient
         /// </summary>
         /// <param name="value">Новый тег</param>
         /// /// <param name="id">Идентификатор заменяемого тега</param>
-        public System.Threading.Tasks.Task PutTagAsync(int id, TagDto tag)
+        public System.Threading.Tasks.Task PutTagAsync(int id, Tags tag)
         {
             return _openApiClient.Tags4Async(id, tag);
         }
@@ -151,7 +151,7 @@ namespace TaskClient
         /// Метод добавления задачи 
         /// </summary>
         /// <param name="value">Новая задача</param>
-        public System.Threading.Tasks.Task PostTaskAsync(TaskDto task)
+        public System.Threading.Tasks.Task PostTaskAsync(Task task)
         {
             return _openApiClient.TaskAsync(task);
         }
@@ -161,7 +161,7 @@ namespace TaskClient
         /// </summary>
         /// <param name="value">Новая задача</param>
         /// /// <param name="id">Идентификатор заменяемой задачи</param>
-        public System.Threading.Tasks.Task PutTaskAsync(int id, TaskDto task)
+        public System.Threading.Tasks.Task PutTaskAsync(int id, Task task)
         {
             return _openApiClient.Task4Async(id, task);
         }

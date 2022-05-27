@@ -126,7 +126,7 @@ namespace TaskClient
         /// <param name="body">Новый исполнитель задач</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ExecutorAsync(ExecutorDto body)
+        public System.Threading.Tasks.Task ExecutorAsync(Executor body)
         {
             return ExecutorAsync(body, System.Threading.CancellationToken.None);
         }
@@ -136,7 +136,7 @@ namespace TaskClient
         /// <param name="body">Новый исполнитель задач</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ExecutorAsync(ExecutorDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ExecutorAsync(Executor body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Executor");
@@ -348,7 +348,7 @@ namespace TaskClient
         /// <param name="body">Новый исполнитель задач</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task Executor4Async(int id, ExecutorDto body)
+        public System.Threading.Tasks.Task Executor4Async(int id, Executor body)
         {
             return Executor4Async(id, body, System.Threading.CancellationToken.None);
         }
@@ -359,7 +359,7 @@ namespace TaskClient
         /// <param name="body">Новый исполнитель задач</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task Executor4Async(int id, ExecutorDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task Executor4Async(int id, Executor body, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -574,7 +574,7 @@ namespace TaskClient
         /// <param name="body">Новый тэг</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task TagsAsync(TagDto body)
+        public System.Threading.Tasks.Task TagsAsync(Tags body)
         {
             return TagsAsync(body, System.Threading.CancellationToken.None);
         }
@@ -584,7 +584,7 @@ namespace TaskClient
         /// <param name="body">Новый тэг</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task TagsAsync(TagDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task TagsAsync(Tags body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tags");
@@ -796,7 +796,7 @@ namespace TaskClient
         /// <param name="body">Новый тэг</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task Tags4Async(int id, TagDto body)
+        public System.Threading.Tasks.Task Tags4Async(int id, Tags body)
         {
             return Tags4Async(id, body, System.Threading.CancellationToken.None);
         }
@@ -807,7 +807,7 @@ namespace TaskClient
         /// <param name="body">Новый тэг</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task Tags4Async(int id, TagDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task Tags4Async(int id, Tags body, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -1022,7 +1022,7 @@ namespace TaskClient
         /// <param name="body">Новая задача</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task TaskAsync(TaskDto body)
+        public System.Threading.Tasks.Task TaskAsync(Task body)
         {
             return TaskAsync(body, System.Threading.CancellationToken.None);
         }
@@ -1032,7 +1032,7 @@ namespace TaskClient
         /// <param name="body">Новая задача</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task TaskAsync(TaskDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task TaskAsync(Task body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Task");
@@ -1244,7 +1244,7 @@ namespace TaskClient
         /// <param name="body">Новая задача</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task Task4Async(int id, TaskDto body)
+        public System.Threading.Tasks.Task Task4Async(int id, Task body)
         {
             return Task4Async(id, body, System.Threading.CancellationToken.None);
         }
@@ -1255,7 +1255,7 @@ namespace TaskClient
         /// <param name="body">Новая задача</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task Task4Async(int id, TaskDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task Task4Async(int id, Task body, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -1513,21 +1513,6 @@ namespace TaskClient
 
     }
 
-    /// <summary>Исполнитель задачи</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ExecutorDto
-    {
-        /// <summary>Имя исполнителя</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-
-        /// <summary>Фамилия исполнителя</summary>
-        [Newtonsoft.Json.JsonProperty("surname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Surname { get; set; }
-
-
-    }
-
     /// <summary>Модель получения метки</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Tags
@@ -1547,21 +1532,6 @@ namespace TaskClient
 
     }
 
-    /// <summary>Теги</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class TagDto
-    {
-        /// <summary>Имя метки</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-
-        /// <summary>цвет метки</summary>
-        [Newtonsoft.Json.JsonProperty("color", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Color { get; set; }
-
-
-    }
-
     /// <summary>Модель запроса задачи</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Task
@@ -1570,33 +1540,6 @@ namespace TaskClient
         [Newtonsoft.Json.JsonProperty("taskId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int TaskId { get; set; }
 
-        /// <summary>имя задачи</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-
-        /// <summary>описание задачи</summary>
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Description { get; set; }
-
-        /// <summary>статус завершенности задачи</summary>
-        [Newtonsoft.Json.JsonProperty("taskState", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool TaskState { get; set; }
-
-        /// <summary>Идентификатор исполнителя</summary>
-        [Newtonsoft.Json.JsonProperty("executorId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int ExecutorId { get; set; }
-
-        /// <summary>Список идентификаторов тегов</summary>
-        [Newtonsoft.Json.JsonProperty("tagsId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<int> TagsId { get; set; }
-
-
-    }
-
-    /// <summary>Исполнитель задачи</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class TaskDto
-    {
         /// <summary>имя задачи</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }

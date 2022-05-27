@@ -40,4 +40,9 @@
     <Name>string</Name>
     <Surname>string</Surname>
   </Executor>
+  <Executor>
+    <ExecutorId>10</ExecutorId>
+    <Name>string</Name>
+    <Surname>string</Surname>
+  </Executor>
 </ArrayOfExecutor>

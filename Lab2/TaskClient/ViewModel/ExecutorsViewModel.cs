@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
+using TaskClient.Commands;
 
 namespace TaskClient.ViewModel
 {
@@ -9,6 +11,20 @@ namespace TaskClient.ViewModel
         public ObservableCollection<ExecutorViewModel> Executors { get; } = new ObservableCollection<ExecutorViewModel>();
 
         private Executor _selectExecutor;
+
+        public Command OpenMainWindowCommand { get; }
+
+        public ExecutorsViewModel()
+        {
+            OpenMainWindowCommand = new Command(async commandParameter =>
+            {
+                var window = (Window)commandParameter;
+                window.Hide();
+                var mainWindow = window.Owner;
+                Application.Current.MainWindow = mainWindow;
+                mainWindow.Show();
+            }, null);
+        }
 
         public Executor SelectedExecutor
         {

@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace TaskClient.Commands
 {
-    public class Command
+    public class Command : ICommand
     {
         public event EventHandler CanExecuteChanged;
 

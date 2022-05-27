@@ -64,12 +64,12 @@ namespace Lab2.Controllers
         /// </summary>
         /// <param name="executor">Новый исполнитель задач</param>
         [HttpPost]
-        public IActionResult Post([FromBody] ExecutorDto executor)
+        public IActionResult Post([FromBody] Executor executor)
         {
             try
             {
 
-                _executorRepository.AddExecutor(new Executor { Name = executor.Name, Surname = executor.Surname });
+                _executorRepository.AddExecutor(executor);
                 return CreatedAtAction(nameof(Post), executor);
             }
             catch
@@ -84,11 +84,11 @@ namespace Lab2.Controllers
         /// <param name="id">Идентификатор</param>
         /// <param name="executor">Новый исполнитель задач</param>
         [HttpPut("{id:int}")]
-        public IActionResult Put(int id, [FromBody] ExecutorDto executor)
+        public IActionResult Put(int id, [FromBody] Executor executor)
         {
             try
             {
-                _executorRepository.UpdateExecutor(id, new Executor { ExecutorId = id, Name = executor.Name, Surname = executor.Surname });
+                _executorRepository.UpdateExecutor(id, executor);
                 return Ok();
             }
             catch (ArgumentOutOfRangeException)

@@ -30,17 +30,27 @@
         <viewModel:MainTaskViewModel/>
     </Window.DataContext>
     <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center"
+                    Margin="5,5,5,5">
+            <Button Content="Список исполнителей задач"
+                    Command="{Binding OpenExecutorsViewCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                      Padding="16,4,16,4"
+                      Width="200" />
+        </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right"
                                    Margin="5,10,0,5"
                                    Orientation="Horizontal">
-            <Button Content="Add"
+            <Button Content="Новая задача"
                                    Padding="16,4,16,4"
-                                   Width="100"/>
-            <Button Content="Remove All"
+                                   Width="120"
+                     Command="{Binding AddTaskCommand}"/>
+            <Button Content="Удалить все"
                                    Padding="16,4,16,4"
-                                   Width="100"/>
+                                   Width="100"
+                    Command="{Binding RemoveAllTasksCommand}"/>
         </StackPanel>
-        <ListView Name="taskList" ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedTask}">
+        <ListView Name="taskList" ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedTask}" SelectionMode="Single">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="50" Header ="Статус">
@@ -59,6 +69,12 @@
                     <GridViewColumn DisplayMemberBinding="{Binding TagName}" Header="Тэги" Width="150"></GridViewColumn>
                 </GridView>
             </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Изменить" Command="{Binding UpdateTaskCommand}"></MenuItem>
+                    <MenuItem Header="Удалить" Command="{Binding RemoveTaskCommand}"></MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
         </ListView>
     </DockPanel>
 </Window>

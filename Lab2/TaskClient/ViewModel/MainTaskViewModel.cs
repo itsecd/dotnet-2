@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using TaskClient.Commands;
 using TaskClient.Views;
 
@@ -17,10 +18,13 @@ namespace TaskClient.ViewModel
         public Command AddTaskCommand { get; }
         public Command UpdateTaskCommand { get; }
         public Command RemoveTaskCommand { get; }
+        public Command RemoveAllTasksCommand { get; }
 
-        
+        public Command OpenExecutorsViewCommand { get; }
+
         public MainTaskViewModel()
         {
+
             AddTaskCommand = new Command(async _ =>
             {
                 var tasks = await _taskRepository.GetTasksAsync();
@@ -29,6 +33,44 @@ namespace TaskClient.ViewModel
                 await taskViewModel.InitializeAsync(_taskRepository, id);
                 var taskView = new TaskView(taskViewModel);
                 taskView.ShowDialog();
+            }, null);
+
+            UpdateTaskCommand = new Command(async _ =>
+            {
+                if (SelectedTask!= null)
+                {
+                    var taskView = new TaskView(Tasks.Single(tv => tv.Id == SelectedTask.Id));
+                    taskView.ShowDialog();                   
+                }
+            }, null);
+
+            RemoveTaskCommand = new Command(async _ =>
+            {
+                if (SelectedTask!=null)
+                {
+                    await _taskRepository.RemoveTaskAsync(SelectedTask.Id);
+                    Tasks.Remove(SelectedTask);
+                }
+            }, null);
+            RemoveAllTasksCommand = new Command(async _ =>
+            {
+                if (SelectedTask != null)
+                {
+                    await _taskRepository.DeleteAllTaskAsync();
+                    Tasks.Clear();
+                }
+            }, null);
+
+            OpenExecutorsViewCommand = new Command(async commandParameter =>
+            {
+                var window = (Window)commandParameter;
+                var executorsViewModel = new ExecutorsViewModel();
+                await executorsViewModel.InitializeAsync(_taskRepository);
+                var executorsView = new ExecutorsView(executorsViewModel);
+                window.Hide();
+                executorsView.Owner = window;
+                Application.Current.MainWindow = executorsView;
+                executorsView.Show();
             }, null);
 
         }

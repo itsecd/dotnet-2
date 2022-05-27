@@ -64,18 +64,12 @@ namespace Lab2.Controllers
         /// </summary>
         /// <param name="task">Новая задача</param>
         [HttpPost]
-        public IActionResult Post([FromBody] TaskDto task)
+        public IActionResult Post([FromBody] Task task)
         {
 
             try
             {
-                _taskListRepository.AddTask(new Task
-                {
-                    Name = task.Name,
-                    Description = task.Description,
-                    ExecutorId = task.ExecutorId,
-                    TagsId = task.TagsId
-                });
+                _taskListRepository.AddTask(task);
                 return CreatedAtAction(nameof(Post), task);
             }
             catch
@@ -90,19 +84,12 @@ namespace Lab2.Controllers
         /// <param name="id">Идентификатор</param>
         /// <param name="task">Новая задача</param>
         [HttpPut("{id:int}")]
-        public IActionResult Put(int id, [FromBody] TaskDto task)
+        public IActionResult Put(int id, [FromBody] Task task)
         {
 
             try
             {
-                _taskListRepository.UpdateTask(id, new Task
-                {
-                    TaskId = id,
-                    Name = task.Name,
-                    Description = task.Description,
-                    ExecutorId = task.ExecutorId,
-                    TagsId = task.TagsId
-                });
+                _taskListRepository.UpdateTask(id,task);
                 return Ok();
             }
             catch (ArgumentOutOfRangeException)
