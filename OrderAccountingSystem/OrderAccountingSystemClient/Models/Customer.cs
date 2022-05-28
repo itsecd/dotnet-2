@@ -7,27 +7,13 @@ namespace OrderAccountingSystemClient.Models
     public class Customer
     {
         /// <summary>Customer ID</summary>
-        public Guid CustomerId { get; set; }
+        public string CustomerId { get; set; } = string.Empty;
 
         /// <summary>Customer Name</summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>Customer Phone Number</summary>
-        public string Phone { get; set; }
-
-        public Customer(string name, string phone)
-        {
-            CustomerId = Guid.NewGuid();
-            Name = name;
-            Phone = phone;
-        }
-
-        public Customer(Guid customerId, string name, string phone)
-        {
-            CustomerId = customerId;
-            Name = name;
-            Phone = phone;
-        }
+        public string Phone { get; set; } = string.Empty;
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Grpc.Net.Client;
 using OrderAccountingSystemClient.Models;
+using OrderAccountingSystemClient.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -27,8 +28,14 @@ namespace OrderAccountingSystemClient
 
         private void Add_Customer_Click(object sender, RoutedEventArgs e)
         {
-            AddCustomerWindow customerWindow = new AddCustomerWindow();
-            customerWindow.Show();
+            var customerViewModel = new AddCustomerViewModel();
+            var customerWindow = new AddCustomerWindow
+            {
+                Owner = this,
+                ViewModel = customerViewModel
+            };
+
+            _ = customerWindow.ShowDialog();
             Update_Customer_Table();
         }
 
@@ -46,8 +53,14 @@ namespace OrderAccountingSystemClient
 
         private void Add_Product_Click(object sender, RoutedEventArgs e)
         {
-            AddProductWindow productWindow = new AddProductWindow();
-            productWindow.Show();
+            var productViewModel = new AddProductViewModel();
+            var productWindow = new AddProductWindow
+            {
+                Owner = this,
+                ViewModel = productViewModel
+            };
+
+            _ = productWindow.ShowDialog();
             Update_Order_Table();
         }
 
@@ -65,8 +78,13 @@ namespace OrderAccountingSystemClient
 
         private void Add_Order_Click(object sender, RoutedEventArgs e)
         {
-            AddOrderWindow orderWindow = new AddOrderWindow();
-            orderWindow.Show();
+            var orderViewModel = new AddOrderViewModel();
+            var orderWindow = new AddOrderWindow
+            {
+                Owner = this,
+                ViewModel = orderViewModel
+            };
+            _ = orderWindow.ShowDialog();
             Update_Product_Table();
         }
 
@@ -124,6 +142,7 @@ namespace OrderAccountingSystemClient
 
         private void Update_Customer_Table()
         {
+            /*
             var reply = client.GetAllCustomers(new OrderAccountingSystem.NullRequest { });
             List<Customer> customers = new List<Customer>();
             foreach (var customer in reply.Customers)
@@ -131,10 +150,12 @@ namespace OrderAccountingSystemClient
                 customers.Add(new Customer(Guid.Parse(customer.CustomerId), customer.Name, customer.Phone));
             }
             CustomersTable.ItemsSource = customers;
+            */
         }
 
         private void Update_Order_Table()
         {
+            /*
             var reply = client.GetAllOrders(new OrderAccountingSystem.NullRequest { });
             List<Order> orders = new List<Order>();
             foreach (var order in reply.Orders)
@@ -162,6 +183,7 @@ namespace OrderAccountingSystemClient
                 Date = x.Date.ToString()
             }).ToList();
             OrdersTable.ItemsSource = itemSource;
+            */
         }
 
         private void Update_Product_Table()
@@ -170,7 +192,7 @@ namespace OrderAccountingSystemClient
             List<Product> products = new List<Product>();
             foreach (var product in reply.Products)
             {
-                products.Add(new Product(Guid.Parse(product.ProductId), product.Name, product.Price));
+                //products.Add(new Product(Guid.Parse(product.ProductId), product.Name, product.Price));
             }
             ProductsTable.ItemsSource = products;
         }

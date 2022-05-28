@@ -59,4 +59,22 @@
     <Price>200</Price>
     <Date>28.05.2022 9:19:24</Date>
   </Order>
+  <Order>
+    <OrderId>a592967b-f19d-467d-873b-9fec45807a15</OrderId>
+    <Customer>
+      <CustomerId>abc0e758-65f1-4d89-91fd-2a6e97347ff4</CustomerId>
+      <Name>dsadsad</Name>
+      <Phone>dsadsadas</Phone>
+    </Customer>
+    <Products>
+      <Product>
+        <ProductId>0287cad6-68ee-4dc6-86cd-4a5d8dfb88cc</ProductId>
+        <Name>Bob</Name>
+        <Price>100</Price>
+      </Product>
+    </Products>
+    <Status>3</Status>
+    <Price>100</Price>
+    <Date>29.05.2022 1:07:48</Date>
+  </Order>
 </ArrayOfOrder>

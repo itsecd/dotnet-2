@@ -1,31 +1,31 @@
-﻿using Grpc.Net.Client;
-using System.Windows;
-using WpfApp1;
+﻿using OrderAccountingSystemClient.ViewModels;
+using ReactiveUI;
+using System.Reactive;
 
 namespace OrderAccountingSystemClient
 {
-    public partial class AddCustomerWindow : Window
+    public class AddCustomerWindowBase : ReactiveWindow<AddCustomerViewModel>
     {
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient client = new(GrpcChannel.ForAddress(App.Default.Host));
+    }
 
+    public partial class AddCustomerWindow : AddCustomerWindowBase
+    {
         public AddCustomerWindow()
         {
             InitializeComponent();
-        }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void Add_Click(object sender, RoutedEventArgs e)
-        {
-            var reply = client.AddCustomer(new OrderAccountingSystem.CustomerRequest
+            _ = this.WhenActivated(cd =>
             {
-                Name = this.NameInput.Text,
-                Phone = this.PhoneInput.Text
+                if (ViewModel is null)
+                    return;
+
+                cd.Add(ViewModel.Close.RegisterHandler(interaction =>
+                {
+                    Tag = interaction.Input;
+                    interaction.SetOutput(Unit.Default);
+                    Close();
+                }));
             });
-            this.Close();
         }
     }
 }

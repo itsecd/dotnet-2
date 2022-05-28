@@ -8,13 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.21.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.21.1" />
     <PackageReference Include="Grpc.Net.Client" Version="2.46.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.46.0" />
     <PackageReference Include="Grpc.Tools" Version="2.46.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="ReactiveUI.WPF" Version="13.2.10" />
   </ItemGroup>
 
   <ItemGroup>

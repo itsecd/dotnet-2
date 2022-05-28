@@ -30,4 +30,14 @@
     <Name>hfgf</Name>
     <Phone>gfhfh</Phone>
   </Customer>
+  <Customer>
+    <CustomerId>1deb99cf-e03e-41d0-bb0e-a643d43dc6f0</CustomerId>
+    <Name>;;;</Name>
+    <Phone>;;;;</Phone>
+  </Customer>
+  <Customer>
+    <CustomerId>a97b6813-0a77-4994-9311-00400d5e177e</CustomerId>
+    <Name>321</Name>
+    <Phone>321</Phone>
+  </Customer>
 </ArrayOfCustomer>

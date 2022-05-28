@@ -7,6 +7,5 @@ namespace WpfApp1
     /// </summary>
     public partial class App : Application
     {
-        public static object Default { get; internal set; }
     }
 }
