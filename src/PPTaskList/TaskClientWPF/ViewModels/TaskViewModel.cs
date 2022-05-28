@@ -1,12 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using TaskClientWPF.Commands;
-using System.Threading.Tasks;
-using TaskClientWPF.Views;
 using Lab2TaskClient;
 using System.Linq;
-using System.Collections.Generic;
-using System.Windows;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -60,6 +55,17 @@ namespace TaskClientWPF.ViewModels
             }
         }
 
+        public ExecutorViewModel Executor
+        {
+            get => _executor;
+            set
+            {
+                if (value == _executor) return;
+                _executor = value;
+                OnPropertyChanged(nameof(Executor));
+            }
+        }
+
         //public List<string> Tags
         //{
         //    get => _tag; 
@@ -71,7 +77,8 @@ namespace TaskClientWPF.ViewModels
         //    }
         //}
 
-        public Command UpdateTaskCommand { get; private set; }
+        public Command ModifiedTaskCommand { get; private set; }
+        //public Command AddTaskCommand { get; private set; }
 
         public TaskViewModel()
         {
@@ -85,24 +92,62 @@ namespace TaskClientWPF.ViewModels
 
             var tasks = await _taskRepository.GetTasksAsync();
             var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
+            // var taskExecutor = new Executor();
+            if (task == null) return;
             _task = task;
-            var taskExecutor = await _taskRepository.GetExecutorAsync(taskId);
-            _executor = new ExecutorViewModel(taskExecutor);
+           // _task = new Lab2TaskClient.Task();
+            //if (task != null)
+            //{
+            //    taskExecutor = await _taskRepository.GetExecutorAsync(taskId);
+            //    _task = task;
 
-            UpdateTaskCommand = new Command(commandParameter =>
-            {
-                var window = (Window)commandParameter;
-                var taskDto = new TaskDto {
-                    HeaderText = task.HeaderText,
-                    TextDescription = task.TextDescription,
-                    Executor = taskExecutor,
-                    TagsId = task.TagsId,
-                };
-                _taskRepository.UpdateTaskAsync(taskId, taskDto);
-                window.DialogResult = true;
-                window.Close();
-            },null);
+                //ModifiedTaskCommand = new Command(commandParameter =>
+                //{
+                //    var window = (Window)commandParameter;
+                //    var taskDto = new TaskDto
+                //    {
+                //        HeaderText = _task.HeaderText,
+                //        TextDescription = _task.TextDescription,
+                //        Executor = taskExecutor,
+                //        TagsId = _task.TagsId,
+                //    };
 
+                //    _taskRepository.UpdateTaskAsync(taskId, taskDto);
+                //    window.DialogResult = true;
+                //    window.Close();
+                //}, null);
+            //}
+            //_executor = new ExecutorViewModel(taskExecutor);
+
+            //ModifiedTaskCommand = new Command(commandParameter =>
+            //{
+            //    var window = (Window)commandParameter;
+            //    var taskDto = new TaskDto {
+            //        HeaderText = _task.HeaderText,
+            //        TextDescription = _task.TextDescription,
+            //        Executor = taskExecutor,
+            //        TagsId = _task.TagsId,
+            //    };
+
+            //    _taskRepository.UpdateTaskAsync(taskId, taskDto);
+            //    window.DialogResult = true;
+            //    window.Close();
+            //},null);
+
+            //ModifiedTaskCommand = new Command(commandParameter =>
+            //{
+            //    var window = (Window)commandParameter;
+            //    var taskDto = new TaskDto
+            //    {
+            //        HeaderText = _task.HeaderText,
+            //        TextDescription = _task.TextDescription,
+            //        Executor = taskExecutor,
+            //        TagsId = _task.TagsId,
+            //    };
+            //    _taskRepository.PostTaskAsync(taskDto);
+            //    window.DialogResult = true;
+            //    window.Close();
+            //}, null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -91,7 +91,7 @@
             </TextBox.Style>
         </TextBox>
         <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Command="{Binding UpdateTaskCommand}" 
+            <Button Command="{Binding ModifiedTaskCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     IsDefault="True">OK</Button>
             <Button IsCancel="True">Отмена</Button>

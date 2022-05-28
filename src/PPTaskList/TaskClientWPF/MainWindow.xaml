@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:TaskClientWPF.ViewModels"
-        xmlns:local="clr-namespace:TaskClientWPF"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Список задач" Height="450" Width="400"
         Loaded="MainWindow_OnLoaded">
     <Window.Resources>
@@ -16,7 +16,7 @@
             <Setter Property="HorizontalAlignment" Value="Right"/>
 
             <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
+                <Trigger Property="IsEnabled" Value="False"> 
                     <Setter Property="Opacity" Value="0.5" />
                 </Trigger>
             </Style.Triggers>
@@ -27,20 +27,34 @@
     </Window.DataContext>
     <Grid Margin="8">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height = "*"/>
+            <RowDefinition Height = "Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button 
                 Content="Изменить"
-                Command="{Binding UpdateTaskCommand}"/>
+                Command="{Binding ShowTaskCommand}"
+                CommandParameter="{Binding SelectedTask}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="8"/>
+                        <Setter Property="MinWidth" Value="100"/>
+                        <Setter Property="MinHeight" Value="24"/>
+                        <Style.Triggers>
+                            <Trigger Property="CommandParameter" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
             <Button 
                 Content="Добавить"
-                Command="{Binding AddTaskCommand}"/>
+                Command="{Binding NewTaskCommand}"/>
             <Button 
                 Content="Поиск"
                 Command="{Binding FindTasksCommand}"/>
