@@ -29,6 +29,7 @@ namespace Laba2Client.ViewModels
         public Command RemoveOrderCommand { get; }
         public Command RemoveAllOrdersCommand { get; }
         public Command OpenCustomerViewCommand { get; }
+        public Command OpenMonthlyReportCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
         public MainViewModel()
         {
@@ -80,6 +81,15 @@ namespace Laba2Client.ViewModels
             {
                 await _orderSystemRepository.DeleteAllOrder();
                 Orders.Clear();
+            }, null);
+            OpenMonthlyReportCommand = new Command(async _ =>
+            {
+                var products = await _orderSystemRepository.MonthlyReport();
+                var totalCost = await _orderSystemRepository.MonthlyTotalCost();
+                var monthlyReportViewModel = new MonthlyReportViewModel();
+                monthlyReportViewModel.Initialize(products, totalCost);
+                var monthlyView = new MonthlyReportView(monthlyReportViewModel);
+                monthlyView.ShowDialog();
             }, null);
         }
         public async Task InitializeAsync()

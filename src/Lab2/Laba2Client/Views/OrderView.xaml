@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Laba2Client.Views"
         xmlns:viewModels="clr-namespace:Laba2Client.ViewModels"
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
@@ -84,7 +83,8 @@
                         Command="{Binding RemoveAllProductsCommand}">
                 </Button>
             </StackPanel>
-            <ListView x:Name="orderList" ItemsSource="{Binding ProductsCollection}" ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedItem="{Binding SelectedProduct}" >
+            <ListView x:Name="orderList" ItemsSource="{Binding ProductsCollection}" 
+                      ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedItem="{Binding SelectedProduct}" >
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding NameProduct}" Header="Name Product" Width="100"/>
