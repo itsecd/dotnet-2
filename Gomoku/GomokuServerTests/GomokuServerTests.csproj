@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+
+    <Nullable>enable</Nullable>
     <TargetFramework>.NETCoreApp,Version=v5.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
