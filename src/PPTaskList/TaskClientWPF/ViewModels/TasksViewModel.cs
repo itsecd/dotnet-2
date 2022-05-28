@@ -24,7 +24,7 @@ namespace TaskClientWPF.ViewModels
             }
         }
         public Command ShowTaskCommand { get; private set; }
-        public Command NewTaskCommand { get; private set; }
+        public Command AddTaskCommand { get; private set; }
 
         public Command UpdateTaskCommand { get; private set; }
 
@@ -47,21 +47,22 @@ namespace TaskClientWPF.ViewModels
             //}, null);
 
 
-            //AddTaskCommand = new Command(async _ =>
-            //{
-            //    var tasks = await _taskRepository.GetTasksAsync();
-            //    var id = tasks.Max(t => t.TaskId) + 1;
-            //    var taskViewModel = new TaskViewModel();
-            //    await taskViewModel.InitializeAsync(_taskRepository, id);
-            //    var taskView = new TaskView(taskViewModel);
-            //    taskView.ShowDialog();
-            //}, null);
+            AddTaskCommand = new Command(async _ =>
+            {
+                var tasks = await _taskRepository.GetTasksAsync();
+                var id = tasks.Max(t => t.TaskId) + 1;
+                var taskViewModel = new TaskViewModel();
+                await taskViewModel.InitializeAsync(_taskRepository, id);
+                var taskView = new TaskView(taskViewModel);
+                taskView.ShowDialog();
+                Tasks.Add(taskViewModel);
+            }, null);
 
             UpdateTaskCommand = new Command(_ =>
             {
                 if (SelectedTask != null)
                 {
-                    var taskViewModel = Tasks.Single(t => t.IdTask == SelectedTask.IdTask);
+                    var taskViewModel = Tasks.First(t => t.IdTask == SelectedTask.IdTask);
                     var taskView = new TaskView(taskViewModel);
                     taskView.ShowDialog();
                 }

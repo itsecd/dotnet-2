@@ -45,16 +45,17 @@ namespace TaskClientWPF.ViewModels
             }
         }
 
-        public int TaskExecutorId
-        {
-            get => _executor.ExecutorId;
-            set
-            {
-                if (value == _executor.ExecutorId) return;
-                _executor.ExecutorId = value;
-                OnPropertyChanged(nameof(TaskExecutorId));
-            }
-        }
+        //public int TaskExecutorId
+        //{
+        //    get => _executor.ExecutorId;
+        //    set
+        //    {
+        //        if (value == _executor.ExecutorId) return;
+        //        _task.ExecutorId = value;
+        //        _executor.ExecutorId = value;
+        //        OnPropertyChanged(nameof(TaskExecutorId));
+        //    }
+        //}
 
         public ExecutorViewModel Executor
         {
@@ -63,6 +64,7 @@ namespace TaskClientWPF.ViewModels
             {
                 if (value == _executor) return;
                 _executor = value;
+                _task.ExecutorId = _executor.ExecutorId;
                 OnPropertyChanged(nameof(Executor));
             }
         }
@@ -95,34 +97,27 @@ namespace TaskClientWPF.ViewModels
             var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
             var taskExecutor = new Executor();
 
-            if (task == null) return;
+            if (task == null)
+            {
+                ModifiedTaskCommand = new Command(commandParameter =>
+                {
+                    var window = (Window)commandParameter;
+                    var taskDto = new TaskDto
+                    {
+                        HeaderText = _task.HeaderText,
+                        TextDescription = _task.TextDescription,
+                        Executor = taskExecutor,
+                        TagsId = _task.TagsId,
+                    };
+                    _taskRepository.PostTaskAsync(taskDto);
+                    window.DialogResult = true;
+                    window.Close();
+                }, null);
+
+                return;
+            }
+
             _task = task;
-
-
-            // _task = new Lab2TaskClient.Task();
-            //if (task != null)
-            //{
-            //    taskExecutor = await _taskRepository.GetExecutorAsync(taskId);
-            //    _task = task;
-
-            //ModifiedTaskCommand = new Command(commandParameter =>
-            //{
-            //    var window = (Window)commandParameter;
-            //    var taskDto = new TaskDto
-            //    {
-            //        HeaderText = _task.HeaderText,
-            //        TextDescription = _task.TextDescription,
-            //        Executor = taskExecutor,
-            //        TagsId = _task.TagsId,
-            //    };
-
-            //    _taskRepository.UpdateTaskAsync(taskId, taskDto);
-            //    window.DialogResult = true;
-            //    window.Close();
-            //}, null);
-            //}
-            //_executor = new ExecutorViewModel(taskExecutor);
-
             ModifiedTaskCommand = new Command(async commandParameter =>
             {
                 var window = (Window)commandParameter;
@@ -133,26 +128,10 @@ namespace TaskClientWPF.ViewModels
                     Executor = taskExecutor,
                     TagsId = _task.TagsId,
                 };
-
                 await _taskRepository.UpdateTaskAsync(taskId, taskDto);
                 window.DialogResult = true;
                 window.Close();
             }, null);
-
-            //ModifiedTaskCommand = new Command(commandParameter =>
-            //{
-            //    var window = (Window)commandParameter;
-            //    var taskDto = new TaskDto
-            //    {
-            //        HeaderText = _task.HeaderText,
-            //        TextDescription = _task.TextDescription,
-            //        Executor = taskExecutor,
-            //        TagsId = _task.TagsId,
-            //    };
-            //    _taskRepository.PostTaskAsync(taskDto);
-            //    window.DialogResult = true;
-            //    window.Close();
-            //}, null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

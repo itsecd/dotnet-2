@@ -54,7 +54,7 @@
 
             <Button 
                 Content="Добавить"
-                Command="{Binding NewTaskCommand}"/>
+                Command="{Binding AddTaskCommand}"/>
             <Button 
                 Content="Поиск"
                 Command="{Binding FindTasksCommand}"/>
