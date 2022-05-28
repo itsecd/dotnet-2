@@ -15,13 +15,15 @@ namespace GomokuServer
         [System.Text.Json.Serialization.JsonIgnore]
         public GamingSession? Session { get; set; }
         [System.Text.Json.Serialization.JsonIgnore]
-        private readonly IServerStreamWriter<Reply> _responseStream;
+        private readonly IServerStreamWriter<Reply>? _responseStream;
         [System.Text.Json.Serialization.JsonIgnore]
         private Task _responseStreamTask = Task.CompletedTask;
+        private IServerStreamWriter<Reply> ResponseStream => _responseStream ?? throw new InvalidOperationException();
 
         public Player()
         {
             Login = "";
+            _responseStream = null;
         }
 
         public Player(string login, IServerStreamWriter<Reply> responseStream)
@@ -39,24 +41,24 @@ namespace GomokuServer
 
         public void WriteAsync(Reply reply)
         {
-            lock (_responseStream)
+            lock (ResponseStream)
             {
                 if (_responseStreamTask.IsCompleted)
                 {
-                    _responseStreamTask = _responseStream.WriteAsync(reply);
+                    _responseStreamTask = ResponseStream.WriteAsync(reply);
                     return;
                 }
 
                 _responseStreamTask = _responseStreamTask.ContinueWith(t =>
                 {
-                    _responseStream.WriteAsync(reply);
+                    ResponseStream.WriteAsync(reply);
                 });
             }
         }
 
         public override string ToString()
         {
-            return "\nLogin " + Login + "\nCount: " + CountGames + "\nWin: " + CountWinGames + "\n" ;
+            return "\nLogin " + Login + "\nCount: " + CountGames + "\nWin: " + CountWinGames + "\n";
         }
     }
 }
