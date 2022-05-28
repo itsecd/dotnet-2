@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos/*" GrpcServices="Client" />
+        <Protobuf Include="../GomokuServer/Protos/*" GrpcServices="Client" />
     </ItemGroup>
 
 </Project>
