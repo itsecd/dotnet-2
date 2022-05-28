@@ -18,7 +18,7 @@ namespace GomokuServer.Tests
             Cell expectedCell = Cell.FirstPlayer;
             var expectedPoint = new Point { X = 1, Y = 5 };
 
-            var actualCell = gameplay._gameField[1, 5];
+            var actualCell = gameplay.GameField[1, 5];
             var actualPoint = point;
 
             Assert.Equal(expectedCell, actualCell);
@@ -36,7 +36,7 @@ namespace GomokuServer.Tests
                 expected.Add(new Point { X = 1, Y = i + 1 });
                 gameplay.EnterIntoTheCell(expected[i], true);
             }
-            gameplay._point = expected[0];
+            expected.Reverse();
 
             var actual = gameplay.CheckField(Cell.FirstPlayer, 0, 1);
 
@@ -51,7 +51,7 @@ namespace GomokuServer.Tests
             gameplay.CheckDraw();
             Cell? expected = null;
 
-            var actual = gameplay._winner;
+            var actual = gameplay.Winner;
 
             Assert.Equal(expected, actual);
         }

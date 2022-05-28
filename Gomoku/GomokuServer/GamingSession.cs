@@ -11,10 +11,11 @@ namespace GomokuServer
     {
         private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(1000);
 
-        Playground gameField = new();
-        public Player FirstPlayer { get; }
+        private readonly Playground _playground = new();
 
-        public Player SecondPlayer { get; }
+        private readonly Player _firstPlayer;
+
+        private readonly Player _secondPlayer;
 
         private readonly Timer _timer = new(_timeout.TotalMilliseconds) { AutoReset = false };
 
@@ -24,11 +25,11 @@ namespace GomokuServer
 
         public GamingSession(Player firstPlayer, Player secondPlayer)
         {
-            FirstPlayer = firstPlayer;
-            FirstPlayer.Session = this;
+            _firstPlayer = firstPlayer;
+            _firstPlayer.Session = this;
 
-            SecondPlayer = secondPlayer;
-            SecondPlayer.Session = this;
+            _secondPlayer = secondPlayer;
+            _secondPlayer.Session = this;
 
             _timer.Elapsed += OnTimeout;
         }
@@ -39,14 +40,14 @@ namespace GomokuServer
 
             Task.Run(() =>
             {
-                SendFindOpponentReply(FirstPlayer, SecondPlayer.Login);
-                SendActivePlayerReply(FirstPlayer, true);
+                SendFindOpponentReply(_firstPlayer, _secondPlayer.Login);
+                SendActivePlayerReply(_firstPlayer, true);
             });
 
             Task.Run(() =>
             {
-                SendFindOpponentReply(SecondPlayer, FirstPlayer.Login);
-                SendActivePlayerReply(SecondPlayer, false);
+                SendFindOpponentReply(_secondPlayer, _firstPlayer.Login);
+                SendActivePlayerReply(_secondPlayer, false);
             });
 
             _isTimerActive = true;
@@ -57,15 +58,15 @@ namespace GomokuServer
         {
             lock (_timer)
             {
-                var gameplay = new Gameplay(gameField);
+                var gameplay = new Gameplay(_playground);
 
-                var activePlayer = FirstPlayer;
-                var notActivePlayer = SecondPlayer;
+                var activePlayer = _firstPlayer;
+                var notActivePlayer = _secondPlayer;
 
                 if (!_isFirstTurn)
                 {
-                    activePlayer = SecondPlayer;
-                    notActivePlayer = FirstPlayer;
+                    activePlayer = _secondPlayer;
+                    notActivePlayer = _firstPlayer;
                 }
 
                 if (player != activePlayer)
@@ -89,13 +90,13 @@ namespace GomokuServer
                 if (gameOver)
                 {
 
-                    List<Point> WinPoints = gameplay._winPoints;
+                    List<Point> WinPoints = gameplay.WinPoints;
 
-                    if (gameplay._winner == Cell.Empty)
+                    if (gameplay.Winner == Cell.Empty)
                     {
                         var status = OutcomeStatus.Draw;
-                        SendEndGameReply(FirstPlayer, status, WinPoints);
-                        SendEndGameReply(SecondPlayer, status, WinPoints);
+                        SendEndGameReply(_firstPlayer, status, WinPoints);
+                        SendEndGameReply(_secondPlayer, status, WinPoints);
                     }
                     else
                     {
@@ -117,8 +118,6 @@ namespace GomokuServer
 
         private void OnTimeout(object sender, ElapsedEventArgs e)
         {
-            Console.WriteLine("timer");
-
             lock (_timer)
             {
                 if (!_isTimerActive)
@@ -131,8 +130,8 @@ namespace GomokuServer
         private void ChangeActivePlayer()
         {
             _isFirstTurn = !_isFirstTurn;
-            SendActivePlayerReply(FirstPlayer, _isFirstTurn);
-            SendActivePlayerReply(SecondPlayer, !_isFirstTurn);
+            SendActivePlayerReply(_firstPlayer, _isFirstTurn);
+            SendActivePlayerReply(_secondPlayer, !_isFirstTurn);
         }
 
         private static void SendFindOpponentReply(Player player, string login)
