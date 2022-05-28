@@ -2,7 +2,7 @@ namespace GomokuServer
 {
     public class Playground
     {
-        private Cell[,] _playground = new Cell[15, 15];
+        private readonly Cell[,] _playground = new Cell[15, 15];
 
         public Cell this[int x, int y]
         {

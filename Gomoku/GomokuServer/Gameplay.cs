@@ -38,7 +38,7 @@ namespace GomokuServer
 
         public List<Point> CheckField(Cell player, int kx, int ky)
         {
-            List<Point> Win = new List<Point>();
+            List<Point> Win = new();
 
             for (var i = 0; i < 5; ++i)
             {
