@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Laba2Client.Commands;
 using System.Windows;
 using Laba2Client.Views;
+using System.Collections.ObjectModel;
 
 namespace Laba2Client.ViewModels
 {
@@ -76,8 +77,24 @@ namespace Laba2Client.ViewModels
                 OnPropertyChanged(nameof(Products));
             }
         }
+        public ObservableCollection<ProductViewModel> ProductsCollection { get; } = new();
+        private ProductViewModel _selectedProduct;
+        public ProductViewModel SelectedProduct
+        {
+            get => _selectedProduct;
+            set
+            {
+                if (value == _selectedProduct) return;
+                _selectedProduct = value;
+                OnPropertyChanged(nameof(SelectedProduct));
+            }
+        }
         public Command AddOrder { get; }
         public Command OpenCustomerViewCommand { get; }
+        public Command AddProductCommand { get; }
+        public Command UpdateProductCommand { get; }
+        public Command RemoveAllProductsCommand { get; }
+        public Command RemoveProductCommand { get; }
         public string Mode { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public OrderViewModel()
@@ -89,20 +106,13 @@ namespace Laba2Client.ViewModels
             };
             AddOrder = new Command(async commandParameter =>
             {
-                var newOrder = new Order()
-                {
-                    AmountOrder = _order.AmountOrder,
-                    Status = _order.Status,
-                    Products = _order.Products,
-                    Dt = _order.Dt,
-                };
                 if (Mode == "Add")
                 {
-                    await _orderSystemRepository.AddOrder(newOrder);
+                    await _orderSystemRepository.AddOrder(_order);
                 }
                 else
                 {
-                    await _orderSystemRepository.ReplaceOrder(_order.OrderId, newOrder);
+                    await _orderSystemRepository.ReplaceOrder(_order.OrderId, _order);
                 }
                 var window = (Window)commandParameter;
                 window.DialogResult = true;
@@ -122,6 +132,93 @@ namespace Laba2Client.ViewModels
                     CustomerPhone = customer.PhoneNumber;
                 }
             }, (obj) => Mode == "Add");
+            AddProductCommand = new Command(async _ =>
+            {
+                var product = new Product();
+                ProductViewModel productViewModel = new();
+                productViewModel.Initialize(product);
+                var productView = new ProductView(productViewModel);
+                if (productView.ShowDialog() == true)
+                {
+                    if (Mode == "Add")
+                    {
+                        Products.Add(product);
+                        ProductsCollection.Add(productViewModel);
+                        productViewModel.Num = ProductsCollection.Count;
+                    }
+                    else
+                    {
+                        await _orderSystemRepository.AddProduct(_order.OrderId, product);
+                        Products.Add(product);
+                        productViewModel.NameProduct = product.NameProduct;
+                        productViewModel.CostProduct = product.CostProduct;
+                        ProductsCollection.Add(productViewModel);
+                        productViewModel.Num = ProductsCollection.Count;
+                    }
+                }
+                GetAllCostOrder();
+            }, null);
+            UpdateProductCommand = new Command(async _ =>
+            {
+                if (SelectedProduct is not null)
+                {
+                    ProductViewModel productViewModel = ProductsCollection.Single(prodView => prodView.Num == SelectedProduct.Num);
+                    var productView = new ProductView(productViewModel);
+                    if (productView.ShowDialog() == true)
+                    {
+                        Products[SelectedProduct.Num - 1].NameProduct = productViewModel.NameProduct;
+                        Products[SelectedProduct.Num - 1].CostProduct = productViewModel.CostProduct;
+                        if (Mode == "Update")
+                        {
+                            var product = new Product
+                            {
+                                NameProduct = productViewModel.NameProduct,
+                                CostProduct = productViewModel.CostProduct
+                            };
+                            await _orderSystemRepository.ReplaceProduct(_order.OrderId, SelectedProduct.Num, product);
+                        }
+                    } 
+                    GetAllCostOrder();
+                }
+            }, null);
+            RemoveProductCommand = new Command(async _ =>
+            {
+                if (SelectedProduct is not null)
+                {
+                    if (Mode == "Add")
+                    {
+                        Products.RemoveAt(SelectedProduct.Num-1);
+                        ProductsCollection.Remove(SelectedProduct);
+                    }
+                    else
+                    {
+                        await _orderSystemRepository.DeleteProduct(_order.OrderId, SelectedProduct.Num);
+                        Products.RemoveAt(SelectedProduct.Num - 1);
+                        ProductsCollection.Remove(SelectedProduct);
+                        int i = 1;
+                        foreach (var prod in ProductsCollection)
+                        {
+                            ProductsCollection[i - 1].Num = i++;
+                        }
+                    }
+                }
+                GetAllCostOrder();
+            }, null);
+            RemoveAllProductsCommand = new Command(async _ =>
+            {
+                if(Mode == "Add")
+                {
+                    Products.Clear();
+                    ProductsCollection.Clear();
+                }
+                else
+                {
+                    await _orderSystemRepository.DeleteProducts(_order.OrderId);
+                    Products.Clear();
+                    ProductsCollection.Clear();
+                }
+                GetAllCostOrder();
+            }, null);
         }
         public async Task InitializeAsync(OrderSystemRepository orderRepository, int orderId)
         {
@@ -133,9 +230,21 @@ namespace Laba2Client.ViewModels
                 return;
             }
             _order = order;
+            int i = 1;
+            foreach(var prod in _order.Products)
+            {
+                var productViewModel = new ProductViewModel();
+                productViewModel.Initialize(prod);
+                productViewModel.Num = i++;
+                ProductsCollection.Add(productViewModel);
+            }
             var customer = await _orderSystemRepository.GetCustomer(_order.CustomerId);
             CustomerName = customer.FullName;
             CustomerPhone = customer.PhoneNumber;
+        }
+        public void GetAllCostOrder()
+        {
+            AmountOrder = Products.Sum(product => product.CostProduct);
         }
         private void OnPropertyChanged(string propertyName)
         {

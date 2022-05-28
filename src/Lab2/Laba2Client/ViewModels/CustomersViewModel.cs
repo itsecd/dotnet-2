@@ -26,8 +26,6 @@ namespace Laba2Client.ViewModels
                 OnPropertyChanged(nameof(SelectedCustomer));
             }
         }
-        public string ModeCustomer { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
         public Command OpenMainWindowCommand { get; }
         public Command AddCustomerCommand { get; }
         public Command UpdateCustomerCommand { get; }
@@ -35,6 +33,8 @@ namespace Laba2Client.ViewModels
         public Command SelectCustomerCommand { get; }
         public Command RemoveAllCustomersCommand { get; }
         public Command CancelCustomerCommand { get; }
+        public string ModeCustomer { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
         public CustomersViewModel()
         {
             OpenMainWindowCommand = new Command(commandParameter =>

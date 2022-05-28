@@ -3,16 +3,16 @@ using Laba2Client.ViewModels;
 
 namespace Laba2Client.Views
 {
-    public partial class CustomerView : Window
+    public partial class ProductView : Window
     {
-        public CustomerView()
+        public ProductView()
         {
             InitializeComponent();
         }
-        public CustomerView(CustomerViewModel customerViewModel)
+        public ProductView(ProductViewModel productViewModel)
         {
             InitializeComponent();
-            DataContext = customerViewModel;
+            DataContext = productViewModel;
         }
     }
 }

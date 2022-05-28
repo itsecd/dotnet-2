@@ -55,7 +55,7 @@ namespace Laba2Client.ViewModels
                 var window = (Window)commandParameter;
                 window.DialogResult = true;
                 window.Close();
-            },null);  
+            }, null);
         }
         public async Task InitializeAsync(OrderSystemRepository orderRepository, int customerId)
         {
@@ -72,6 +72,5 @@ namespace Laba2Client.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }
