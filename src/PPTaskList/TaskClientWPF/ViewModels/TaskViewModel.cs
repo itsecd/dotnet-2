@@ -2,6 +2,7 @@
 using TaskClientWPF.Commands;
 using Lab2TaskClient;
 using System.Linq;
+using System.Windows;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -92,37 +93,23 @@ namespace TaskClientWPF.ViewModels
 
             var tasks = await _taskRepository.GetTasksAsync();
             var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
-            // var taskExecutor = new Executor();
+            var taskExecutor = new Executor();
+
             if (task == null) return;
             _task = task;
-           // _task = new Lab2TaskClient.Task();
+
+
+            // _task = new Lab2TaskClient.Task();
             //if (task != null)
             //{
             //    taskExecutor = await _taskRepository.GetExecutorAsync(taskId);
             //    _task = task;
 
-                //ModifiedTaskCommand = new Command(commandParameter =>
-                //{
-                //    var window = (Window)commandParameter;
-                //    var taskDto = new TaskDto
-                //    {
-                //        HeaderText = _task.HeaderText,
-                //        TextDescription = _task.TextDescription,
-                //        Executor = taskExecutor,
-                //        TagsId = _task.TagsId,
-                //    };
-
-                //    _taskRepository.UpdateTaskAsync(taskId, taskDto);
-                //    window.DialogResult = true;
-                //    window.Close();
-                //}, null);
-            //}
-            //_executor = new ExecutorViewModel(taskExecutor);
-
             //ModifiedTaskCommand = new Command(commandParameter =>
             //{
             //    var window = (Window)commandParameter;
-            //    var taskDto = new TaskDto {
+            //    var taskDto = new TaskDto
+            //    {
             //        HeaderText = _task.HeaderText,
             //        TextDescription = _task.TextDescription,
             //        Executor = taskExecutor,
@@ -132,7 +119,25 @@ namespace TaskClientWPF.ViewModels
             //    _taskRepository.UpdateTaskAsync(taskId, taskDto);
             //    window.DialogResult = true;
             //    window.Close();
-            //},null);
+            //}, null);
+            //}
+            //_executor = new ExecutorViewModel(taskExecutor);
+
+            ModifiedTaskCommand = new Command(async commandParameter =>
+            {
+                var window = (Window)commandParameter;
+                var taskDto = new TaskDto
+                {
+                    HeaderText = _task.HeaderText,
+                    TextDescription = _task.TextDescription,
+                    Executor = taskExecutor,
+                    TagsId = _task.TagsId,
+                };
+
+                await _taskRepository.UpdateTaskAsync(taskId, taskDto);
+                window.DialogResult = true;
+                window.Close();
+            }, null);
 
             //ModifiedTaskCommand = new Command(commandParameter =>
             //{

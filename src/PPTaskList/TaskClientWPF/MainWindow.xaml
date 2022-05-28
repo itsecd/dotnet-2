@@ -36,7 +36,7 @@
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button 
                 Content="Изменить"
-                Command="{Binding ShowTaskCommand}"
+                Command="{Binding UpdateTaskCommand}"
                 CommandParameter="{Binding SelectedTask}">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">

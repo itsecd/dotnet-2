@@ -1,12 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using TaskClientWPF.Commands;
-using System.Threading.Tasks;
 using TaskClientWPF.Views;
 using Lab2TaskClient;
 using System.Linq;
-using System.Windows;
-using System.Collections.Generic;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -29,7 +26,8 @@ namespace TaskClientWPF.ViewModels
         public Command ShowTaskCommand { get; private set; }
         public Command NewTaskCommand { get; private set; }
 
-        //public Command UpdateTaskCommand { get; private set; }
+        public Command UpdateTaskCommand { get; private set; }
+
         //public Command RemoveTaskCommand { get; private set; }
         //public Command RemoveAllTasksCommand { get; private set; }
         public Command FindTasksCommand { get; private set; }
@@ -42,30 +40,32 @@ namespace TaskClientWPF.ViewModels
                 taskInfoView.ShowDialog();
             }, null);
 
-            //    NewTaskCommand = new Command(commandParameter =>
-            //    {
-            //        var newTask = new TaskView();
-            //        newTask.ShowDialog();
-            //    }, null);
-            //    //    //AddTaskCommand = new Command(async _ =>
-            //    //    //{
-            //    //    //    var tasks = await _taskRepository.GetTasksAsync();
-            //    //    //    var id = tasks.Max(t => t.TaskId) + 1;
-            //    //    //    var taskViewModel = new TaskViewModel();
-            //    //    //    await taskViewModel.InitializeAsync(_taskRepository, id);
-            //    //    //    var taskView = new TaskView(taskViewModel);
-            //    //    //    taskView.ShowDialog();
-            //    //    //}, null);
+            //NewTaskCommand = new Command(commandParameter =>
+            //{
+            //    var newTask = new TaskView();
+            //    newTask.ShowDialog();
+            //}, null);
 
-            //    //    UpdateTaskCommand = new Command(_ =>
-            //    //    {
-            //    //        if(SelectedTask != null)
-            //    //        {
-            //    //            var taskViewModel = Tasks.Single(t => t.IdTask == SelectedTask.IdTask);
-            //    //            var taskView = new TaskView(taskViewModel);
-            //    //            taskView.ShowDialog();
-            //    //        }
-            //    //    }, null);
+
+            //AddTaskCommand = new Command(async _ =>
+            //{
+            //    var tasks = await _taskRepository.GetTasksAsync();
+            //    var id = tasks.Max(t => t.TaskId) + 1;
+            //    var taskViewModel = new TaskViewModel();
+            //    await taskViewModel.InitializeAsync(_taskRepository, id);
+            //    var taskView = new TaskView(taskViewModel);
+            //    taskView.ShowDialog();
+            //}, null);
+
+            UpdateTaskCommand = new Command(_ =>
+            {
+                if (SelectedTask != null)
+                {
+                    var taskViewModel = Tasks.Single(t => t.IdTask == SelectedTask.IdTask);
+                    var taskView = new TaskView(taskViewModel);
+                    taskView.ShowDialog();
+                }
+            }, null);
 
             //    //    //FindTasksCommand = new Command(async _ =>
             //    //    //{
@@ -86,18 +86,6 @@ namespace TaskClientWPF.ViewModels
                 await taskViewModel.InitializeAsync(_taskRepository, task.TaskId);
                 Tasks.Add(taskViewModel);
             }
-
-            //ShowTaskCommand = new Command(commandParameter =>
-            //{
-            //    var taskInfoView = new TaskView(SelectedTask);
-            //    taskInfoView.ShowDialog();
-            //}, null);
-
-            //NewTaskCommand = new Command(commandParameter =>
-            //{
-            //    var newTask = new TaskView();
-            //    newTask.ShowDialog();
-            //}, null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
