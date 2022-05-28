@@ -10,13 +10,11 @@ namespace GomokuServer.Services
 {
     public class GomokuService : Gomoku.Gomoku.GomokuBase
     {
-        private readonly ILogger<GomokuService> _logger;
 
         private readonly GamingServer _server;
 
-        public GomokuService(ILogger<GomokuService> logger, GamingServer server)
+        public GomokuService(GamingServer server)
         {
-            _logger = logger;
             _server = server;
         }
 
