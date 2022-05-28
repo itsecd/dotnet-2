@@ -16,7 +16,7 @@ namespace GomokuServer.Services
 {
     public sealed class GamingServer
     {
-        private static readonly SemaphoreSlim SemaphoreSlim = new(1, 1);
+        private readonly SemaphoreSlim _databaseLock = new(1, 1);
         private readonly ConcurrentDictionary<string, Player> _players = new();
         private readonly object _waitingPlayerLock = new();
         private Player? _waitingPlayer;
@@ -104,7 +104,7 @@ namespace GomokuServer.Services
                 return new Player(login, responseStream);
             }
             Player? player;
-            await SemaphoreSlim.WaitAsync();
+            await _databaseLock.WaitAsync();
             try
             {
                 using var fileReader = new StreamReader(_filePath);
@@ -113,7 +113,7 @@ namespace GomokuServer.Services
             }
             finally
             {
-                SemaphoreSlim.Release();
+                _databaseLock.Release();
             }
             if (player is null)
             {
@@ -150,7 +150,7 @@ namespace GomokuServer.Services
                 players.Add(player);
             }
 
-            await SemaphoreSlim.WaitAsync();
+            await _databaseLock.WaitAsync();
             try
             {
                 using FileStream createStream = File.Create(_filePath);
@@ -159,7 +159,7 @@ namespace GomokuServer.Services
             }
             finally
             {
-                SemaphoreSlim.Release();
+                _databaseLock.Release();
             }
         }
     }
