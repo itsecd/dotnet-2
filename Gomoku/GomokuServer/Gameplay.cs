@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 using Gomoku;
 
-using static GomokuServer.FieldExtensions;
-
 namespace GomokuServer
 {
     public class Gameplay
@@ -12,20 +10,20 @@ namespace GomokuServer
 
         public Cell? _winner = null;
 
-        public FieldExtensions _gameField = new FieldExtensions();
+        public Playground _gameField = new Playground();
 
         public List<Point> _winPoints = new List<Point>();
 
         public Point _point = new Point { X = 0, Y = 0 };
 
-        public Gameplay(FieldExtensions fieldExtensions)
+        public Gameplay(Playground fieldExtensions)
         {
             _gameField = fieldExtensions;
         }
 
         public void EnterIntoTheCell(Point point, bool _isFirstTurn)
         {
-            _gameField._field[point.X, point.Y] =
+            _gameField._playground[point.X, point.Y] =
                 _isFirstTurn
                 ? Cell.FirstPlayer
                 : Cell.SecondPlayer;

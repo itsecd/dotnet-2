@@ -11,11 +11,11 @@ namespace GomokuServer.Tests
         [Fact]
         public void EnterIntoTheCellTest()
         {
-            var gameField = new FieldExtensions();
+            var gameField = new Playground();
             var gameplay = new Gameplay(gameField);
             Point point = new() { X = 1, Y = 5 };
             gameplay.EnterIntoTheCell(point, true);
-            FieldExtensions.Cell expectedCell = FieldExtensions.Cell.FirstPlayer;
+            Cell expectedCell = Cell.FirstPlayer;
             var expectedPoint = new Point { X = 1, Y = 5 };
 
             var actualCell = gameplay._gameField[1, 5];
@@ -28,7 +28,7 @@ namespace GomokuServer.Tests
         [Fact]
         public void CheckFieldTest()
         {
-            var gameField = new FieldExtensions();
+            var gameField = new Playground();
             var gameplay = new Gameplay(gameField);
             var expected = new List<Point>();
             for (var i = 0; i < 5; ++i)
@@ -38,7 +38,7 @@ namespace GomokuServer.Tests
             }
             gameplay._point = expected[0];
 
-            var actual = gameplay.CheckField(FieldExtensions.Cell.FirstPlayer, 0, 1);
+            var actual = gameplay.CheckField(Cell.FirstPlayer, 0, 1);
 
             Assert.Equal(expected, actual);
         }
@@ -46,10 +46,10 @@ namespace GomokuServer.Tests
         [Fact]
         public void CheckDefeatTest()
         {
-            var gameField = new FieldExtensions();
+            var gameField = new Playground();
             var gameplay = new Gameplay(gameField);
             gameplay.CheckDraw();
-            FieldExtensions.Cell? expected = null;
+            Cell? expected = null;
 
             var actual = gameplay._winner;
 
@@ -59,7 +59,7 @@ namespace GomokuServer.Tests
         [Fact]
         public void CheckGameTest()
         {
-            var gameField = new FieldExtensions();
+            var gameField = new Playground();
             var gameplay = new Gameplay(gameField);
             Point point = new() { X = 1, Y = 5 };
             gameplay.EnterIntoTheCell(point, true);

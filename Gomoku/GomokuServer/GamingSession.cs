@@ -11,7 +11,7 @@ namespace GomokuServer
     {
         private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(1000);
 
-        FieldExtensions gameField = new();
+        Playground gameField = new();
         public Player FirstPlayer { get; }
 
         public Player SecondPlayer { get; }
@@ -91,7 +91,7 @@ namespace GomokuServer
 
                     List<Point> WinPoints = gameplay._winPoints;
 
-                    if (gameplay._winner == FieldExtensions.Cell.Empty)
+                    if (gameplay._winner == Cell.Empty)
                     {
                         var status = OutcomeStatus.Draw;
                         SendEndGameReply(FirstPlayer, status, WinPoints);
