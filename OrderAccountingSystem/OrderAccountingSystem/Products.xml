@@ -5,4 +5,9 @@
     <Name>Ananas</Name>
     <Price>100</Price>
   </Product>
+  <Product>
+    <ProductId>0287cad6-68ee-4dc6-86cd-4a5d8dfb88cc</ProductId>
+    <Name>Bob</Name>
+    <Price>100</Price>
+  </Product>
 </ArrayOfProduct>

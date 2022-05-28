@@ -1,7 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Grpc.Net.Client;
+﻿using Grpc.Net.Client;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -47,7 +45,7 @@ namespace OrderAccountingSystemClient
                 }
             }
             orderRequest.Status = int.Parse((string)((ComboBoxItem)StatusComboBox.SelectedItem).DataContext);
-            orderRequest.Date = Timestamp.FromDateTimeOffset((DateTimeOffset)DatePicker.SelectedDate);
+            orderRequest.Date = DatePicker.SelectedDate.ToString();
             var reply = client.AddOrder(orderRequest);
             this.Close();
         }

@@ -355,7 +355,7 @@ namespace OrderAccountingSystem.Services
                 }
                 orderReply.Price = order.Price;
                 orderReply.Status = order.Status;
-                orderReply.Date = Timestamp.FromDateTimeOffset(order.Date);
+                orderReply.Date = order.Date;
                 allOrderReply.Orders.Add(orderReply);
             }
             return Task.FromResult(allOrderReply);
@@ -385,7 +385,7 @@ namespace OrderAccountingSystem.Services
                 }
                 orderReply.Price = order.Price;
                 orderReply.Status = order.Status;
-                orderReply.Date = Timestamp.FromDateTimeOffset(order.Date);
+                orderReply.Date = order.Date;
                 return Task.FromResult(orderReply);
             }
             catch (NotFoundException)
@@ -480,7 +480,7 @@ namespace OrderAccountingSystem.Services
 
                 }
                 order.Status = request.Status;
-                order.Date = request.Date.ToDateTimeOffset();
+                order.Date = request.Date;
                 return Task.FromResult(new OrderReply
                 {
                     OrderId = _orderRepository.AddOrderAsync(order).Result.ToString()
@@ -556,7 +556,7 @@ namespace OrderAccountingSystem.Services
 
                 }
                 order.Status = request.Status;
-                order.Date = request.Date.ToDateTime();
+                order.Date = request.Date;
                 return Task.FromResult(new OrderReply
                 {
                     OrderId = _orderRepository.ChangeOrderAsync(Guid.Parse(request.OrderId), order).Result.ToString()

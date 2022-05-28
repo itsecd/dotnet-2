@@ -24,69 +24,67 @@ namespace OrderAccountingSystem {
     static AccountingSystemReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChdhY2NvdW50aW5nX3N5c3RlbS5wcm90bxIRYWNjb3VudGluZ19zeXN0ZW0a",
-            "H2dvb2dsZS9wcm90b2J1Zi90aW1lc3RhbXAucHJvdG8iDQoLTnVsbFJlcXVl",
-            "c3QiQAoOUHJvZHVjdFJlcXVlc3QSEQoJcHJvZHVjdElkGAEgASgJEgwKBG5h",
-            "bWUYAiABKAkSDQoFcHJpY2UYAyABKAEiRAoPQWxsUHJvZHVjdFJlcGx5EjEK",
-            "CHByb2R1Y3RzGAEgAygLMh8uYWNjb3VudGluZ19zeXN0ZW0uUHJvZHVjdFJl",
-            "cGx5In4KDFByb2R1Y3RSZXBseRI+ChFleGFtaW5hdGlvbl9yZXBseRgBIAEo",
-            "CzIjLmFjY291bnRpbmdfc3lzdGVtLkV4YW1pbmF0aW9uUmVwbHkSEQoJcHJv",
-            "ZHVjdElkGAIgASgJEgwKBG5hbWUYAyABKAkSDQoFcHJpY2UYBCABKAEiQgoP",
-            "Q3VzdG9tZXJSZXF1ZXN0EhIKCmN1c3RvbWVySWQYASABKAkSDAoEbmFtZRgC",
-            "IAEoCRINCgVwaG9uZRgDIAEoCSJHChBBbGxDdXN0b21lclJlcGx5EjMKCWN1",
-            "c3RvbWVycxgBIAMoCzIgLmFjY291bnRpbmdfc3lzdGVtLkN1c3RvbWVyUmVw",
-            "bHkigAEKDUN1c3RvbWVyUmVwbHkSPgoRZXhhbWluYXRpb25fcmVwbHkYASAB",
-            "KAsyIy5hY2NvdW50aW5nX3N5c3RlbS5FeGFtaW5hdGlvblJlcGx5EhIKCmN1",
-            "c3RvbWVySWQYAiABKAkSDAoEbmFtZRgDIAEoCRINCgVwaG9uZRgEIAEoCSLE",
-            "AQoMT3JkZXJSZXF1ZXN0Eg8KB29yZGVySWQYASABKAkSNAoIY3VzdG9tZXIY",
-            "AiABKAsyIi5hY2NvdW50aW5nX3N5c3RlbS5DdXN0b21lclJlcXVlc3QSMwoI",
-            "cHJvZHVjdHMYAyADKAsyIS5hY2NvdW50aW5nX3N5c3RlbS5Qcm9kdWN0UmVx",
-            "dWVzdBIOCgZzdGF0dXMYBCABKAUSKAoEZGF0ZRgFIAEoCzIaLmdvb2dsZS5w",
-            "cm90b2J1Zi5UaW1lc3RhbXAiPgoNQWxsT3JkZXJSZXBseRItCgZvcmRlcnMY",
-            "ASADKAsyHS5hY2NvdW50aW5nX3N5c3RlbS5PcmRlclJlcGx5Io0CCgpPcmRl",
-            "clJlcGx5Ej4KEWV4YW1pbmF0aW9uX3JlcGx5GAEgASgLMiMuYWNjb3VudGlu",
-            "Z19zeXN0ZW0uRXhhbWluYXRpb25SZXBseRIPCgdvcmRlcklkGAIgASgJEjIK",
-            "CGN1c3RvbWVyGAMgASgLMiAuYWNjb3VudGluZ19zeXN0ZW0uQ3VzdG9tZXJS",
-            "ZXBseRIxCghwcm9kdWN0cxgEIAMoCzIfLmFjY291bnRpbmdfc3lzdGVtLlBy",
-            "b2R1Y3RSZXBseRINCgVwcmljZRgFIAEoARIOCgZzdGF0dXMYBiABKAUSKAoE",
-            "ZGF0ZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiXAoQRXhh",
-            "bWluYXRpb25SZXBseRIaChJhcmd1bWVudF9leGNlcHRpb24YASABKAgSGwoT",
-            "bm90X2ZvdW5kX2V4Y2VwdGlvbhgCIAEoCBIPCgdwcm9ibGVtGAMgASgIMp0L",
-            "ChdBY2NvdW50aW5nU3lzdGVtR3JlZXRlchJUCg5HZXRBbGxQcm9kdWN0cxIe",
-            "LmFjY291bnRpbmdfc3lzdGVtLk51bGxSZXF1ZXN0GiIuYWNjb3VudGluZ19z",
-            "eXN0ZW0uQWxsUHJvZHVjdFJlcGx5ElAKCkdldFByb2R1Y3QSIS5hY2NvdW50",
-            "aW5nX3N5c3RlbS5Qcm9kdWN0UmVxdWVzdBofLmFjY291bnRpbmdfc3lzdGVt",
-            "LlByb2R1Y3RSZXBseRJQCgpBZGRQcm9kdWN0EiEuYWNjb3VudGluZ19zeXN0",
-            "ZW0uUHJvZHVjdFJlcXVlc3QaHy5hY2NvdW50aW5nX3N5c3RlbS5Qcm9kdWN0",
-            "UmVwbHkSUwoNQ2hhbmdlUHJvZHVjdBIhLmFjY291bnRpbmdfc3lzdGVtLlBy",
-            "b2R1Y3RSZXF1ZXN0Gh8uYWNjb3VudGluZ19zeXN0ZW0uUHJvZHVjdFJlcGx5",
-            "ElMKDURlbGV0ZVByb2R1Y3QSIS5hY2NvdW50aW5nX3N5c3RlbS5Qcm9kdWN0",
-            "UmVxdWVzdBofLmFjY291bnRpbmdfc3lzdGVtLlByb2R1Y3RSZXBseRJWCg9H",
-            "ZXRBbGxDdXN0b21lcnMSHi5hY2NvdW50aW5nX3N5c3RlbS5OdWxsUmVxdWVz",
-            "dBojLmFjY291bnRpbmdfc3lzdGVtLkFsbEN1c3RvbWVyUmVwbHkSUwoLR2V0",
-            "Q3VzdG9tZXISIi5hY2NvdW50aW5nX3N5c3RlbS5DdXN0b21lclJlcXVlc3Qa",
-            "IC5hY2NvdW50aW5nX3N5c3RlbS5DdXN0b21lclJlcGx5ElMKC0FkZEN1c3Rv",
-            "bWVyEiIuYWNjb3VudGluZ19zeXN0ZW0uQ3VzdG9tZXJSZXF1ZXN0GiAuYWNj",
-            "b3VudGluZ19zeXN0ZW0uQ3VzdG9tZXJSZXBseRJWCg5DaGFuZ2VDdXN0b21l",
-            "chIiLmFjY291bnRpbmdfc3lzdGVtLkN1c3RvbWVyUmVxdWVzdBogLmFjY291",
-            "bnRpbmdfc3lzdGVtLkN1c3RvbWVyUmVwbHkSVgoORGVsZXRlQ3VzdG9tZXIS",
-            "Ii5hY2NvdW50aW5nX3N5c3RlbS5DdXN0b21lclJlcXVlc3QaIC5hY2NvdW50",
-            "aW5nX3N5c3RlbS5DdXN0b21lclJlcGx5ElAKDEdldEFsbE9yZGVycxIeLmFj",
-            "Y291bnRpbmdfc3lzdGVtLk51bGxSZXF1ZXN0GiAuYWNjb3VudGluZ19zeXN0",
-            "ZW0uQWxsT3JkZXJSZXBseRJKCghHZXRPcmRlchIfLmFjY291bnRpbmdfc3lz",
-            "dGVtLk9yZGVyUmVxdWVzdBodLmFjY291bnRpbmdfc3lzdGVtLk9yZGVyUmVw",
-            "bHkSTwoOR2V0TW9udGhseVNhbGUSHi5hY2NvdW50aW5nX3N5c3RlbS5OdWxs",
-            "UmVxdWVzdBodLmFjY291bnRpbmdfc3lzdGVtLk9yZGVyUmVwbHkSSgoIQWRk",
-            "T3JkZXISHy5hY2NvdW50aW5nX3N5c3RlbS5PcmRlclJlcXVlc3QaHS5hY2Nv",
-            "dW50aW5nX3N5c3RlbS5PcmRlclJlcGx5Ek0KC0NoYW5nZU9yZGVyEh8uYWNj",
-            "b3VudGluZ19zeXN0ZW0uT3JkZXJSZXF1ZXN0Gh0uYWNjb3VudGluZ19zeXN0",
-            "ZW0uT3JkZXJSZXBseRJTChFDaGFuZ2VPcmRlclN0YXR1cxIfLmFjY291bnRp",
-            "bmdfc3lzdGVtLk9yZGVyUmVxdWVzdBodLmFjY291bnRpbmdfc3lzdGVtLk9y",
-            "ZGVyUmVwbHkSTQoLRGVsZXRlT3JkZXISHy5hY2NvdW50aW5nX3N5c3RlbS5P",
-            "cmRlclJlcXVlc3QaHS5hY2NvdW50aW5nX3N5c3RlbS5PcmRlclJlcGx5Qhiq",
-            "AhVPcmRlckFjY291bnRpbmdTeXN0ZW1iBnByb3RvMw=="));
+            "ChdhY2NvdW50aW5nX3N5c3RlbS5wcm90bxIRYWNjb3VudGluZ19zeXN0ZW0i",
+            "DQoLTnVsbFJlcXVlc3QiQAoOUHJvZHVjdFJlcXVlc3QSEQoJcHJvZHVjdElk",
+            "GAEgASgJEgwKBG5hbWUYAiABKAkSDQoFcHJpY2UYAyABKAEiRAoPQWxsUHJv",
+            "ZHVjdFJlcGx5EjEKCHByb2R1Y3RzGAEgAygLMh8uYWNjb3VudGluZ19zeXN0",
+            "ZW0uUHJvZHVjdFJlcGx5In4KDFByb2R1Y3RSZXBseRI+ChFleGFtaW5hdGlv",
+            "bl9yZXBseRgBIAEoCzIjLmFjY291bnRpbmdfc3lzdGVtLkV4YW1pbmF0aW9u",
+            "UmVwbHkSEQoJcHJvZHVjdElkGAIgASgJEgwKBG5hbWUYAyABKAkSDQoFcHJp",
+            "Y2UYBCABKAEiQgoPQ3VzdG9tZXJSZXF1ZXN0EhIKCmN1c3RvbWVySWQYASAB",
+            "KAkSDAoEbmFtZRgCIAEoCRINCgVwaG9uZRgDIAEoCSJHChBBbGxDdXN0b21l",
+            "clJlcGx5EjMKCWN1c3RvbWVycxgBIAMoCzIgLmFjY291bnRpbmdfc3lzdGVt",
+            "LkN1c3RvbWVyUmVwbHkigAEKDUN1c3RvbWVyUmVwbHkSPgoRZXhhbWluYXRp",
+            "b25fcmVwbHkYASABKAsyIy5hY2NvdW50aW5nX3N5c3RlbS5FeGFtaW5hdGlv",
+            "blJlcGx5EhIKCmN1c3RvbWVySWQYAiABKAkSDAoEbmFtZRgDIAEoCRINCgVw",
+            "aG9uZRgEIAEoCSKoAQoMT3JkZXJSZXF1ZXN0Eg8KB29yZGVySWQYASABKAkS",
+            "NAoIY3VzdG9tZXIYAiABKAsyIi5hY2NvdW50aW5nX3N5c3RlbS5DdXN0b21l",
+            "clJlcXVlc3QSMwoIcHJvZHVjdHMYAyADKAsyIS5hY2NvdW50aW5nX3N5c3Rl",
+            "bS5Qcm9kdWN0UmVxdWVzdBIOCgZzdGF0dXMYBCABKAUSDAoEZGF0ZRgFIAEo",
+            "CSI+Cg1BbGxPcmRlclJlcGx5Ei0KBm9yZGVycxgBIAMoCzIdLmFjY291bnRp",
+            "bmdfc3lzdGVtLk9yZGVyUmVwbHki8QEKCk9yZGVyUmVwbHkSPgoRZXhhbWlu",
+            "YXRpb25fcmVwbHkYASABKAsyIy5hY2NvdW50aW5nX3N5c3RlbS5FeGFtaW5h",
+            "dGlvblJlcGx5Eg8KB29yZGVySWQYAiABKAkSMgoIY3VzdG9tZXIYAyABKAsy",
+            "IC5hY2NvdW50aW5nX3N5c3RlbS5DdXN0b21lclJlcGx5EjEKCHByb2R1Y3Rz",
+            "GAQgAygLMh8uYWNjb3VudGluZ19zeXN0ZW0uUHJvZHVjdFJlcGx5Eg0KBXBy",
+            "aWNlGAUgASgBEg4KBnN0YXR1cxgGIAEoBRIMCgRkYXRlGAcgASgJIlwKEEV4",
+            "YW1pbmF0aW9uUmVwbHkSGgoSYXJndW1lbnRfZXhjZXB0aW9uGAEgASgIEhsK",
+            "E25vdF9mb3VuZF9leGNlcHRpb24YAiABKAgSDwoHcHJvYmxlbRgDIAEoCDKd",
+            "CwoXQWNjb3VudGluZ1N5c3RlbUdyZWV0ZXISVAoOR2V0QWxsUHJvZHVjdHMS",
+            "Hi5hY2NvdW50aW5nX3N5c3RlbS5OdWxsUmVxdWVzdBoiLmFjY291bnRpbmdf",
+            "c3lzdGVtLkFsbFByb2R1Y3RSZXBseRJQCgpHZXRQcm9kdWN0EiEuYWNjb3Vu",
+            "dGluZ19zeXN0ZW0uUHJvZHVjdFJlcXVlc3QaHy5hY2NvdW50aW5nX3N5c3Rl",
+            "bS5Qcm9kdWN0UmVwbHkSUAoKQWRkUHJvZHVjdBIhLmFjY291bnRpbmdfc3lz",
+            "dGVtLlByb2R1Y3RSZXF1ZXN0Gh8uYWNjb3VudGluZ19zeXN0ZW0uUHJvZHVj",
+            "dFJlcGx5ElMKDUNoYW5nZVByb2R1Y3QSIS5hY2NvdW50aW5nX3N5c3RlbS5Q",
+            "cm9kdWN0UmVxdWVzdBofLmFjY291bnRpbmdfc3lzdGVtLlByb2R1Y3RSZXBs",
+            "eRJTCg1EZWxldGVQcm9kdWN0EiEuYWNjb3VudGluZ19zeXN0ZW0uUHJvZHVj",
+            "dFJlcXVlc3QaHy5hY2NvdW50aW5nX3N5c3RlbS5Qcm9kdWN0UmVwbHkSVgoP",
+            "R2V0QWxsQ3VzdG9tZXJzEh4uYWNjb3VudGluZ19zeXN0ZW0uTnVsbFJlcXVl",
+            "c3QaIy5hY2NvdW50aW5nX3N5c3RlbS5BbGxDdXN0b21lclJlcGx5ElMKC0dl",
+            "dEN1c3RvbWVyEiIuYWNjb3VudGluZ19zeXN0ZW0uQ3VzdG9tZXJSZXF1ZXN0",
+            "GiAuYWNjb3VudGluZ19zeXN0ZW0uQ3VzdG9tZXJSZXBseRJTCgtBZGRDdXN0",
+            "b21lchIiLmFjY291bnRpbmdfc3lzdGVtLkN1c3RvbWVyUmVxdWVzdBogLmFj",
+            "Y291bnRpbmdfc3lzdGVtLkN1c3RvbWVyUmVwbHkSVgoOQ2hhbmdlQ3VzdG9t",
+            "ZXISIi5hY2NvdW50aW5nX3N5c3RlbS5DdXN0b21lclJlcXVlc3QaIC5hY2Nv",
+            "dW50aW5nX3N5c3RlbS5DdXN0b21lclJlcGx5ElYKDkRlbGV0ZUN1c3RvbWVy",
+            "EiIuYWNjb3VudGluZ19zeXN0ZW0uQ3VzdG9tZXJSZXF1ZXN0GiAuYWNjb3Vu",
+            "dGluZ19zeXN0ZW0uQ3VzdG9tZXJSZXBseRJQCgxHZXRBbGxPcmRlcnMSHi5h",
+            "Y2NvdW50aW5nX3N5c3RlbS5OdWxsUmVxdWVzdBogLmFjY291bnRpbmdfc3lz",
+            "dGVtLkFsbE9yZGVyUmVwbHkSSgoIR2V0T3JkZXISHy5hY2NvdW50aW5nX3N5",
+            "c3RlbS5PcmRlclJlcXVlc3QaHS5hY2NvdW50aW5nX3N5c3RlbS5PcmRlclJl",
+            "cGx5Ek8KDkdldE1vbnRobHlTYWxlEh4uYWNjb3VudGluZ19zeXN0ZW0uTnVs",
+            "bFJlcXVlc3QaHS5hY2NvdW50aW5nX3N5c3RlbS5PcmRlclJlcGx5EkoKCEFk",
+            "ZE9yZGVyEh8uYWNjb3VudGluZ19zeXN0ZW0uT3JkZXJSZXF1ZXN0Gh0uYWNj",
+            "b3VudGluZ19zeXN0ZW0uT3JkZXJSZXBseRJNCgtDaGFuZ2VPcmRlchIfLmFj",
+            "Y291bnRpbmdfc3lzdGVtLk9yZGVyUmVxdWVzdBodLmFjY291bnRpbmdfc3lz",
+            "dGVtLk9yZGVyUmVwbHkSUwoRQ2hhbmdlT3JkZXJTdGF0dXMSHy5hY2NvdW50",
+            "aW5nX3N5c3RlbS5PcmRlclJlcXVlc3QaHS5hY2NvdW50aW5nX3N5c3RlbS5P",
+            "cmRlclJlcGx5Ek0KC0RlbGV0ZU9yZGVyEh8uYWNjb3VudGluZ19zeXN0ZW0u",
+            "T3JkZXJSZXF1ZXN0Gh0uYWNjb3VudGluZ19zeXN0ZW0uT3JkZXJSZXBseUIY",
+            "qgIVT3JkZXJBY2NvdW50aW5nU3lzdGVtYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::OrderAccountingSystem.NullRequest), global::OrderAccountingSystem.NullRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::OrderAccountingSystem.ProductRequest), global::OrderAccountingSystem.ProductRequest.Parser, new[]{ "ProductId", "Name", "Price" }, null, null, null, null),
@@ -1795,7 +1793,7 @@ namespace OrderAccountingSystem {
       customer_ = other.customer_ != null ? other.customer_.Clone() : null;
       products_ = other.products_.Clone();
       status_ = other.status_;
-      date_ = other.date_ != null ? other.date_.Clone() : null;
+      date_ = other.date_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1854,13 +1852,13 @@ namespace OrderAccountingSystem {
 
     /// <summary>Field number for the "date" field.</summary>
     public const int DateFieldNumber = 5;
-    private global::Google.Protobuf.WellKnownTypes.Timestamp date_;
+    private string date_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Google.Protobuf.WellKnownTypes.Timestamp Date {
+    public string Date {
       get { return date_; }
       set {
-        date_ = value;
+        date_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1883,7 +1881,7 @@ namespace OrderAccountingSystem {
       if (!object.Equals(Customer, other.Customer)) return false;
       if(!products_.Equals(other.products_)) return false;
       if (Status != other.Status) return false;
-      if (!object.Equals(Date, other.Date)) return false;
+      if (Date != other.Date) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1895,7 +1893,7 @@ namespace OrderAccountingSystem {
       if (customer_ != null) hash ^= Customer.GetHashCode();
       hash ^= products_.GetHashCode();
       if (Status != 0) hash ^= Status.GetHashCode();
-      if (date_ != null) hash ^= Date.GetHashCode();
+      if (Date.Length != 0) hash ^= Date.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1927,9 +1925,9 @@ namespace OrderAccountingSystem {
         output.WriteRawTag(32);
         output.WriteInt32(Status);
       }
-      if (date_ != null) {
+      if (Date.Length != 0) {
         output.WriteRawTag(42);
-        output.WriteMessage(Date);
+        output.WriteString(Date);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1954,9 +1952,9 @@ namespace OrderAccountingSystem {
         output.WriteRawTag(32);
         output.WriteInt32(Status);
       }
-      if (date_ != null) {
+      if (Date.Length != 0) {
         output.WriteRawTag(42);
-        output.WriteMessage(Date);
+        output.WriteString(Date);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1978,8 +1976,8 @@ namespace OrderAccountingSystem {
       if (Status != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Status);
       }
-      if (date_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Date);
+      if (Date.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Date);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2006,11 +2004,8 @@ namespace OrderAccountingSystem {
       if (other.Status != 0) {
         Status = other.Status;
       }
-      if (other.date_ != null) {
-        if (date_ == null) {
-          Date = new global::Google.Protobuf.WellKnownTypes.Timestamp();
-        }
-        Date.MergeFrom(other.Date);
+      if (other.Date.Length != 0) {
+        Date = other.Date;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2047,10 +2042,7 @@ namespace OrderAccountingSystem {
             break;
           }
           case 42: {
-            if (date_ == null) {
-              Date = new global::Google.Protobuf.WellKnownTypes.Timestamp();
-            }
-            input.ReadMessage(Date);
+            Date = input.ReadString();
             break;
           }
         }
@@ -2088,10 +2080,7 @@ namespace OrderAccountingSystem {
             break;
           }
           case 42: {
-            if (date_ == null) {
-              Date = new global::Google.Protobuf.WellKnownTypes.Timestamp();
-            }
-            input.ReadMessage(Date);
+            Date = input.ReadString();
             break;
           }
         }
@@ -2319,7 +2308,7 @@ namespace OrderAccountingSystem {
       products_ = other.products_.Clone();
       price_ = other.price_;
       status_ = other.status_;
-      date_ = other.date_ != null ? other.date_.Clone() : null;
+      date_ = other.date_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2402,13 +2391,13 @@ namespace OrderAccountingSystem {
 
     /// <summary>Field number for the "date" field.</summary>
     public const int DateFieldNumber = 7;
-    private global::Google.Protobuf.WellKnownTypes.Timestamp date_;
+    private string date_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Google.Protobuf.WellKnownTypes.Timestamp Date {
+    public string Date {
       get { return date_; }
       set {
-        date_ = value;
+        date_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -2433,7 +2422,7 @@ namespace OrderAccountingSystem {
       if(!products_.Equals(other.products_)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Price, other.Price)) return false;
       if (Status != other.Status) return false;
-      if (!object.Equals(Date, other.Date)) return false;
+      if (Date != other.Date) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2447,7 +2436,7 @@ namespace OrderAccountingSystem {
       hash ^= products_.GetHashCode();
       if (Price != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Price);
       if (Status != 0) hash ^= Status.GetHashCode();
-      if (date_ != null) hash ^= Date.GetHashCode();
+      if (Date.Length != 0) hash ^= Date.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2487,9 +2476,9 @@ namespace OrderAccountingSystem {
         output.WriteRawTag(48);
         output.WriteInt32(Status);
       }
-      if (date_ != null) {
+      if (Date.Length != 0) {
         output.WriteRawTag(58);
-        output.WriteMessage(Date);
+        output.WriteString(Date);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -2522,9 +2511,9 @@ namespace OrderAccountingSystem {
         output.WriteRawTag(48);
         output.WriteInt32(Status);
       }
-      if (date_ != null) {
+      if (Date.Length != 0) {
         output.WriteRawTag(58);
-        output.WriteMessage(Date);
+        output.WriteString(Date);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -2552,8 +2541,8 @@ namespace OrderAccountingSystem {
       if (Status != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Status);
       }
-      if (date_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Date);
+      if (Date.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Date);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2589,11 +2578,8 @@ namespace OrderAccountingSystem {
       if (other.Status != 0) {
         Status = other.Status;
       }
-      if (other.date_ != null) {
-        if (date_ == null) {
-          Date = new global::Google.Protobuf.WellKnownTypes.Timestamp();
-        }
-        Date.MergeFrom(other.Date);
+      if (other.Date.Length != 0) {
+        Date = other.Date;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2641,10 +2627,7 @@ namespace OrderAccountingSystem {
             break;
           }
           case 58: {
-            if (date_ == null) {
-              Date = new global::Google.Protobuf.WellKnownTypes.Timestamp();
-            }
-            input.ReadMessage(Date);
+            Date = input.ReadString();
             break;
           }
         }
@@ -2693,10 +2676,7 @@ namespace OrderAccountingSystem {
             break;
           }
           case 58: {
-            if (date_ == null) {
-              Date = new global::Google.Protobuf.WellKnownTypes.Timestamp();
-            }
-            input.ReadMessage(Date);
+            Date = input.ReadString();
             break;
           }
         }

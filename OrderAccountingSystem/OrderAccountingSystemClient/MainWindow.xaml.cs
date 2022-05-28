@@ -117,6 +117,12 @@ namespace OrderAccountingSystemClient
             Update_Product_Table();
         }
 
+        private void Get_Monthly_Sale_Click(object sender, RoutedEventArgs e)
+        {
+            var reply = client.GetMonthlySale(new OrderAccountingSystem.NullRequest { });
+            MessageBox.Show("Monthly Sale is " + reply.Price.ToString());
+        }
+
         private void Update_Customer_Table()
         {
             var reply = client.GetAllCustomers(new OrderAccountingSystem.NullRequest { });
@@ -144,7 +150,7 @@ namespace OrderAccountingSystemClient
                     new Customer(Guid.Parse(order.Customer.CustomerId), order.Customer.Name, order.Customer.Phone),
                     products,
                     order.Status,
-                    order.Date.ToDateTimeOffset()
+                    order.Date.ToString()
                     ));
             }
             var itemSource = orders.Select(x => new {

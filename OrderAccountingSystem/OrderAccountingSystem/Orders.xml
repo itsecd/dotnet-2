@@ -1,7 +1,25 @@
 <?xml version="1.0"?>
 <ArrayOfOrder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Order>
-    <OrderId>933cee4d-7101-4dc0-b812-031125265385</OrderId>
+    <OrderId>803e5ad0-a568-4871-8fd6-a8f21c509c5f</OrderId>
+    <Customer>
+      <CustomerId>aa7277a1-037c-4e13-8b93-f939265a5bd5</CustomerId>
+      <Name>Gleb</Name>
+      <Phone>999</Phone>
+    </Customer>
+    <Products>
+      <Product>
+        <ProductId>14463dce-d45f-4230-a6a9-017bd9de9c29</ProductId>
+        <Name>Ananas</Name>
+        <Price>100</Price>
+      </Product>
+    </Products>
+    <Status>0</Status>
+    <Price>100</Price>
+    <Date>17.05.2022 0:00:00</Date>
+  </Order>
+  <Order>
+    <OrderId>0d4aa0f0-845d-4143-8c23-5a4a7cfd7341</OrderId>
     <Customer>
       <CustomerId>abc0e758-65f1-4d89-91fd-2a6e97347ff4</CustomerId>
       <Name>dsadsad</Name>
@@ -9,26 +27,21 @@
     </Customer>
     <Products>
       <Product>
-        <ProductId>f4e3c82c-0269-4d42-8ff9-6db267a7cee3</ProductId>
-        <Name>Bobb</Name>
-        <Price>30</Price>
-      </Product>
-      <Product>
         <ProductId>14463dce-d45f-4230-a6a9-017bd9de9c29</ProductId>
         <Name>Ananas</Name>
         <Price>100</Price>
       </Product>
     </Products>
-    <Status>2</Status>
-    <Price>130</Price>
-    <Date />
+    <Status>0</Status>
+    <Price>100</Price>
+    <Date>28.05.2022 9:18:53</Date>
   </Order>
   <Order>
-    <OrderId>4a0847ae-af68-4aa3-81ef-6fe12b93d368</OrderId>
+    <OrderId>b6dadf72-484e-4626-a709-634ff4f63b6c</OrderId>
     <Customer>
-      <CustomerId>3ff5f480-8a50-4e90-af5d-ab205ac70299</CustomerId>
-      <Name>Anton</Name>
-      <Phone>888</Phone>
+      <CustomerId>abc0e758-65f1-4d89-91fd-2a6e97347ff4</CustomerId>
+      <Name>dsadsad</Name>
+      <Phone>dsadsadas</Phone>
     </Customer>
     <Products>
       <Product>
@@ -36,9 +49,14 @@
         <Name>Ananas</Name>
         <Price>100</Price>
       </Product>
+      <Product>
+        <ProductId>0287cad6-68ee-4dc6-86cd-4a5d8dfb88cc</ProductId>
+        <Name>Bob</Name>
+        <Price>100</Price>
+      </Product>
     </Products>
-    <Status>3</Status>
-    <Price>100</Price>
-    <Date />
+    <Status>2</Status>
+    <Price>200</Price>
+    <Date>28.05.2022 9:19:24</Date>
   </Order>
 </ArrayOfOrder>

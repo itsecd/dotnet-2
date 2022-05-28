@@ -3,6 +3,8 @@ using OrderAccountingSystem.Exceptions;
 using OrderAccountingSystem.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -62,7 +64,7 @@ namespace OrderAccountingSystem.Repository
         public async Task<double> GetMonthlySales()
         {
             await ReadOrdersFileAsync();
-            List<Order> orders = _orders.Where(f => f.Date.AddDays(30) > DateTime.Today).ToList();
+            List<Order> orders = _orders.Where(f => DateTime.Parse(f.Date).AddDays(30) > DateTime.Today).ToList();
             return orders.Sum(f => f.Price);
         }
 

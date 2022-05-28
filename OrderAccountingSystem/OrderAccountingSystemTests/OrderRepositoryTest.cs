@@ -62,7 +62,7 @@ namespace OrderAccountingSystemTests
                 new Customer("Kris", "88888"),
                 new List<Product>() { new Product("Banana", 100) },
                 1,
-                DateTime.Now
+                DateTime.Now.ToString()
                 );
             return order;
         }
