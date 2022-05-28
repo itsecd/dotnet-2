@@ -25,4 +25,9 @@
     <Name>213123</Name>
     <Phone>32132132</Phone>
   </Customer>
+  <Customer>
+    <CustomerId>d1319e60-c779-46e9-bfdc-7e0ac3d70417</CustomerId>
+    <Name>hfgf</Name>
+    <Phone>gfhfh</Phone>
+  </Customer>
 </ArrayOfCustomer>

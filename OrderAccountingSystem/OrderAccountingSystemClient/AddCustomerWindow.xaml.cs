@@ -1,15 +1,15 @@
 ﻿using Grpc.Net.Client;
 using System.Windows;
+using WpfApp1;
 
 namespace OrderAccountingSystemClient
 {
     public partial class AddCustomerWindow : Window
     {
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient client = new(GrpcChannel.ForAddress("https://localhost:5001"));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient client = new(GrpcChannel.ForAddress(App.Default.Host));
 
         public AddCustomerWindow()
         {
-            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
 

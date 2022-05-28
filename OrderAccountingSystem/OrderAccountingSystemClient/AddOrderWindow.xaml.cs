@@ -7,11 +7,10 @@ namespace OrderAccountingSystemClient
 {
     public partial class AddOrderWindow : Window
     {
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient client = new(GrpcChannel.ForAddress("https://localhost:5001"));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient client = new(GrpcChannel.ForAddress(App.Default.Host));
 
         public AddOrderWindow()
         {
-            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
         private void Add_Order_Loaded(object sender, RoutedEventArgs e)
@@ -52,7 +51,7 @@ namespace OrderAccountingSystemClient
 
         private void Update_Products_Items()
         {
-            var reply = client.GetAllProducts(new OrderAccountingSystem.NullRequest{});
+            var reply = client.GetAllProducts(new OrderAccountingSystem.NullRequest { });
             foreach (var item in reply.Products)
             {
                 ProductComboBox.Items.Add(new ComboBoxItem()

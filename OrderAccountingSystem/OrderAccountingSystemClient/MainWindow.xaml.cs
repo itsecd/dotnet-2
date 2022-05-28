@@ -12,11 +12,10 @@ namespace OrderAccountingSystemClient
 {
     public partial class MainWindow : Window
     {
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient client = new(GrpcChannel.ForAddress("https://localhost:5001"));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient client = new(GrpcChannel.ForAddress(App.Default.Host));
 
         public MainWindow()
         {
-            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
         private void Start_Page_Loaded(object sender, RoutedEventArgs e)
@@ -35,7 +34,7 @@ namespace OrderAccountingSystemClient
 
         private void Delete_Customer_Click(object sender, RoutedEventArgs e)
         {
-            if(CustomersTable.SelectedItem != null)
+            if (CustomersTable.SelectedItem != null)
             {
                 client.DeleteCustomer(new OrderAccountingSystem.CustomerRequest
                 {
@@ -47,7 +46,7 @@ namespace OrderAccountingSystemClient
 
         private void Add_Product_Click(object sender, RoutedEventArgs e)
         {
-            AddProductWindow productWindow = new AddProductWindow();    
+            AddProductWindow productWindow = new AddProductWindow();
             productWindow.Show();
             Update_Order_Table();
         }
@@ -85,8 +84,8 @@ namespace OrderAccountingSystemClient
                 {
                     OrderId = element.Tag.ToString(),
                     Status = int.Parse((string)((ComboBoxItem)StatusComboBox.SelectedItem).DataContext)
-            });
-            Update_Order_Table();
+                });
+                Update_Order_Table();
             }
         }
 
@@ -146,14 +145,15 @@ namespace OrderAccountingSystemClient
                     products.Add(new Product(Guid.Parse(product.ProductId), product.Name, product.Price));
                 }
                 orders.Add(new Order(
-                    Guid.Parse(order.OrderId), 
+                    Guid.Parse(order.OrderId),
                     new Customer(Guid.Parse(order.Customer.CustomerId), order.Customer.Name, order.Customer.Phone),
                     products,
                     order.Status,
                     order.Date.ToString()
                     ));
             }
-            var itemSource = orders.Select(x => new {
+            var itemSource = orders.Select(x => new
+            {
                 Id = x.OrderId.ToString(),
                 CustomerName = x.Customer.Name,
                 ProductName = String.Join("\n", x.Products.Select(f => f.Name).ToArray()),
