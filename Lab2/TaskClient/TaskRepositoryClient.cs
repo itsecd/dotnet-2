@@ -70,64 +70,7 @@ namespace TaskClient
         {
             return _openApiClient.Executor2Async();
         }
-
-        /// <summary>
-        /// Метод получения всех тэгов
-        /// </summary>
-        /// <returns>Исполнители</returns>
-        public Task<ICollection<Tags>> GetTagsAsync()
-        {
-            return _openApiClient.TagsAllAsync();
-        }
-
-        /// <summary>
-        /// Метод получения тэга по идентификатору 
-        /// </summary>
-        /// <param name="id">Идентификатор исполнителя</param>
-        /// <returns>тэг</returns>
-        public Task<Tags> GetTagAsync(int id)
-        {
-            return _openApiClient.Tags3Async(id);
-        }
-
-        /// <summary>
-        /// Метод добавления тега 
-        /// </summary>
-        /// <param name="value">Новый тег</param>
-        public System.Threading.Tasks.Task PostTagAsync(Tags tag)
-        {
-            return _openApiClient.TagsAsync(tag);
-        }
-
-
-        /// <summary>
-        /// Метод замены тега 
-        /// </summary>
-        /// <param name="value">Новый тег</param>
-        /// /// <param name="id">Идентификатор заменяемого тега</param>
-        public System.Threading.Tasks.Task PutTagAsync(int id, Tags tag)
-        {
-            return _openApiClient.Tags4Async(id, tag);
-        }
-
-        /// <summary>
-        /// Метод удаления тега 
-        /// </summary>
-        /// <param name="id">Идентификатор удаляемого тега</param>
-        public System.Threading.Tasks.Task DeleteTagAsync(int id)
-        {
-            return _openApiClient.Tags5Async(id);
-        }
-
-        /// <summary>
-        /// Метод удаления всех тегов
-        /// </summary>
-        /// <param name="id">Идентификатор удаляемого тега</param>
-        public System.Threading.Tasks.Task DeleteAllTagsAsync()
-        {
-            return _openApiClient.Tags2Async();
-        }
-
+      
         /// <summary>
         /// Метод получения задач
         /// </summary>
@@ -181,6 +124,35 @@ namespace TaskClient
         public System.Threading.Tasks.Task DeleteAllTaskAsync()
         {
             return _openApiClient.Task2Async();
+        }
+
+        public System.Threading.Tasks.Task<ICollection<Tags>> GetAllProducts(int id)
+        {
+            return _openApiClient.TagsAllAsync(id);
+        }
+
+        public System.Threading.Tasks.Task<int> AddTag(int id, Tags tag)
+        {
+            return _openApiClient.TagsAsync(id, tag);
+        }
+
+        public System.Threading.Tasks.Task<int> DeleteTag(int id)
+        {
+            return _openApiClient.Tags2Async(id);
+        }
+
+        public System.Threading.Tasks.Task<Tags> GetTag(int id, int num)
+        {
+            return _openApiClient.Tags3Async(id, num);
+        }
+
+        public System.Threading.Tasks.Task<int> DeleteTag(int id, int num)
+        {
+            return _openApiClient.Tags4Async(id, num);
+        }
+        public System.Threading.Tasks.Task<int> ReplaceProduct(int id, int num, Tags newTag)
+        {
+            return _openApiClient.Tags5Async(id, num, newTag);
         }
     }
 }

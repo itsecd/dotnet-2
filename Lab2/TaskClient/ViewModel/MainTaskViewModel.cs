@@ -24,7 +24,6 @@ namespace TaskClient.ViewModel
 
         public MainTaskViewModel()
         {
-
             AddTaskCommand = new Command(async _ =>
             {
                 var tasks = await _taskRepository.GetTasksAsync();
@@ -32,33 +31,36 @@ namespace TaskClient.ViewModel
                 TaskViewModel taskViewModel = new TaskViewModel();
                 await taskViewModel.InitializeAsync(_taskRepository, id);
                 var taskView = new TaskView(taskViewModel);
-                taskView.ShowDialog();
+                if (taskView.ShowDialog() == true)
+                {
+                    Tasks.Clear();
+                    await InitializeAsync();
+                }
             }, null);
 
-            UpdateTaskCommand = new Command(async _ =>
+            UpdateTaskCommand = new Command(_ =>
             {
-                if (SelectedTask!= null)
+                if (SelectedTask != null)
                 {
-                    var taskView = new TaskView(Tasks.Single(tv => tv.Id == SelectedTask.Id));
-                    taskView.ShowDialog();                   
+                    var taskViewModel = Tasks.Single(tv => tv.Id == SelectedTask.Id);
+                    var taskView = new TaskView(taskViewModel);
+                    taskView.ShowDialog();
                 }
             }, null);
 
             RemoveTaskCommand = new Command(async _ =>
             {
-                if (SelectedTask!=null)
+                if (SelectedTask != null)
                 {
                     await _taskRepository.RemoveTaskAsync(SelectedTask.Id);
                     Tasks.Remove(SelectedTask);
                 }
             }, null);
+
             RemoveAllTasksCommand = new Command(async _ =>
             {
-                if (SelectedTask != null)
-                {
-                    await _taskRepository.DeleteAllTaskAsync();
-                    Tasks.Clear();
-                }
+                 await _taskRepository.DeleteAllTaskAsync();
+                 Tasks.Clear();
             }, null);
 
             OpenExecutorsViewCommand = new Command(async commandParameter =>

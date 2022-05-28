@@ -11,15 +11,12 @@ namespace Lab2
         private Timer _timer;
 
         private readonly IExecutorRepository _executorRepository;
-        private readonly ITagRepository _tagRepository;
         private readonly ITaskRepository _taskRepository;
 
         public TimeredHostedService(IExecutorRepository executorRepository,
-            ITagRepository tagRepository,
             ITaskRepository taskRepository)
         {
             _executorRepository = executorRepository;
-            _tagRepository = tagRepository;
             _taskRepository = taskRepository;
         }
 
@@ -33,7 +30,6 @@ namespace Lab2
         private void DoWork(object state)
         {
             _executorRepository.WriteToFile();
-            _tagRepository.WriteToFile();
             _taskRepository.WriteToFile();
         }
 

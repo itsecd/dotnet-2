@@ -6,15 +6,30 @@
         xmlns:viewModels="clr-namespace:TaskClient.ViewModel"
         mc:Ignorable="d"
         Title="Задача" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="{x:Type ListView}">
+            <Setter Property="Margin" Value="8"/>
+        </Style>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="DarkGray" Offset="0" />
+            <GradientStop Color="#CCCCFF" Offset="0.5" />
+            <GradientStop Color="DarkGray" Offset="1" />
+        </LinearGradientBrush>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
+            <Setter Property="Width" Value="10" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
+    </Window.Resources>
     <Window.DataContext>
         <viewModels:TaskViewModel/>
     </Window.DataContext>
     <StackPanel  Margin="5,10,5,5" Orientation="Vertical">
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock Name="TextBlock1" Text="Статус" Height="30" Width="300" HorizontalAlignment="Left"
-                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
-            <TextBlock Name="TextBlock2" Text="{Binding State}" Height="30" Width="220" HorizontalAlignment="Right"
-                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBlock>
+            <CheckBox Content="Статус задачи" IsChecked="{Binding State}"></CheckBox>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
             <TextBlock Name="TextBlock3" Text="Имя задачи" Height="30" Width="300" HorizontalAlignment="Left"
@@ -31,26 +46,31 @@
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
             <TextBlock Name="TextBlock7" Text="Имя исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left"
                        Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
-            <TextBlock Name="TextBlock8" Text="{Binding ExecutorName}" Height="30" Width="220" HorizontalAlignment="Right"
-                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBlock>
+            <TextBox Name="TextBlock8" Text="{Binding ExecutorName}" Height="30" Width="220" HorizontalAlignment="Right"
+                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBox>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
             <TextBlock Name="TextBlock9" Text="Фамилия исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left"
                        Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
-            <TextBlock Name="TextBlock10" Text="{Binding ExecutorSurname}" Height="30" Width="250" HorizontalAlignment="Right"
-                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBlock>
-        </StackPanel>
-        <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock Name="TextBlock11" Text="Тэги" Height="30" Width="300" HorizontalAlignment="Left"
-                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
-            <TextBox Name="TextBlock12" Text="{Binding TagName}" Height="30" Width="250" HorizontalAlignment="Right"
+            <TextBox Name="TextBlock10" Text="{Binding ExecutorSurname}" Height="30" Width="250" HorizontalAlignment="Right"
                         Margin="5,0,5,0" Padding="16,4,16,4" ></TextBox>
         </StackPanel>
-        <StackPanel Margin="5,10,5,5" Orientation="Vertical" Height="150">
-            <StackPanel Orientation="Horizontal"  Width="170" HorizontalAlignment="Right" Margin="10,8,10,10" >
-                <Button x:Name="btnOk" Content="ОК" Click="btnOk_Click" Width="80" Margin="5,0,5,0" IsDefault="True"/>
-                <Button x:Name="btnCancel" Content="Назад" Click="btnCancel_Click"  Height="25" Width="80" Margin="0,0,5,0" IsCancel="True"/>
-            </StackPanel>
+        <ListView x:Name="taskList" ItemsSource="{Binding Tags}" Width="150" HorizontalAlignment="Left">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Тэги" Width="150"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                    Margin="5,10,0,5">
+            <Button Content="OK"  Width="80" Padding="16,4,16,4"       
+                    Command="{Binding AddTask}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="29"/>
+            <Button Content="Cancel" Width="80"
+                    Margin="5,0,5,0" Padding="16,4,16,4"
+                    IsCancel="True" Height="29"/>
         </StackPanel>
     </StackPanel>
 </Window>

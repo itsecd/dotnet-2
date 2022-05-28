@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using TaskClient.Commands;
 
 namespace TaskClient.ViewModel
@@ -9,15 +10,32 @@ namespace TaskClient.ViewModel
     {
         private TaskRepositoryClient _taskRepository;
         private Task _task;
+        public int Id => _task.TaskId; 
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public Command AddTask { get; }
         public TaskViewModel()
         {
             _task = new Task()
             {
                 Name = string.Empty, 
-                Description = string.Empty
-            };       
+                Description = string.Empty,  
+            };
+            AddTask = new Command(async commandParameter =>
+            {
+                var newTask = new Task()
+                {
+                    Name = _task.Name,
+                    Description = _task.Description,
+                    TaskState = _task.TaskState,
+                    Tags = _task.Tags
+                    
+                };
+                await _taskRepository.PostTaskAsync(newTask);
+                var window = (Window)commandParameter;
+                window.DialogResult = true;
+                window.Close();
+            }, null);
         }
 
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
@@ -32,27 +50,44 @@ namespace TaskClient.ViewModel
             }
 
             _task = task;
-            var executor = await _taskRepository.GetExecutorAsync(_task.ExecutorId);
+            var executorId = _task.ExecutorId;
+            var executor = await _taskRepository.GetExecutorAsync(executorId);
             ExecutorName = executor.Name;
             ExecutorSurname = executor.Surname;
         }
-
-        public int Id { get => _task.TaskId; }
-        public string TagName { get; set; }
-        
-        public List<int> TagsId
+        public string Mode { get; set; }
+        private string _executorName;
+        public string ExecutorName
         {
-            get => (List<int>)_task?.TagsId;
+            get => _executorName;
             set
             {
-                if (value == _task.TagsId) return;
-                _task.TagsId = value;
-                OnPropertyChanged(nameof(TagsId));
+                if (value == _executorName)
+                {
+                    return;
+                }
+
+                _executorName = value;
+                OnPropertyChanged(nameof(ExecutorName));
             }
         }
-        public string ExecutorName { get; set; }
-        public string ExecutorSurname { get; set; }
-        
+
+        private string _executorSurname;
+        public string ExecutorSurname
+        {
+            get => _executorSurname;
+            set
+            {
+                if (value == _executorSurname)
+                {
+                    return;
+                }
+
+                _executorSurname = value;
+                OnPropertyChanged(nameof(ExecutorSurname));
+            }
+        }
+
         public string Name
         {
             get => _task?.Name;
@@ -68,6 +103,16 @@ namespace TaskClient.ViewModel
             }
         }
 
+        public List<Tags> Tags
+        {
+            get => (List<Tags>)_task?.Tags;
+            set
+            {
+                if (value == _task.Tags) return;
+                _task.Tags = value;
+                OnPropertyChanged(nameof(Tags));
+            }
+        }
         public string Description
         {
             get => _task?.Description;

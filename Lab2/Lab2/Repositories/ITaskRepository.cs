@@ -50,5 +50,12 @@ namespace Lab2.Repositories
         /// <param name="id">Идентификатор задачи</param>
         /// <returns>Задача</returns>
         Task Get(int id);
+
+        List<Tags> GetTags(int id);
+        int AddTag(int id, Tags tag);
+        Tags GetTag(int id, int num);
+        int RemoveTag(int id, int num);
+        int ReplaceTag(int id, int num, Tags newTag);
+        int RemoveAllTags(int id);
     }
 }

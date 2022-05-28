@@ -130,7 +130,50 @@ namespace Lab2.Repositories
         public int UpdateTask(int id, Task newTask)
         {
             var taskIndex = _tasks.FindIndex(p => p.TaskId == id);
-            _tasks[taskIndex] = newTask;
+            Task task = _tasks[taskIndex];
+            task.Tags = newTask.Tags;         
+            return id;
+        }
+
+        public List<Tags> GetTags(int id)
+        {
+            Task task = Get(id);
+            return task.Tags;
+        }
+
+        public int AddTag(int id, Tags tag)
+        {
+            Task task = Get(id);
+            task.Tags.Add(tag);
+            return id;
+        }
+
+        public Tags GetTag(int id, int count)
+        {
+            Task task = Get(id);
+            return task.Tags[count - 1];
+        }
+
+        public int ReplaceTag(int id, int count, Tags newTag)
+        {
+            Task task = Get(id);
+            Tags tag = GetTag(id, count);
+            tag.Name = newTag.Name;
+            tag.Color = tag.Color;
+            return id;
+        }
+
+        public int RemoveTag(int id, int count)
+        {
+            Task task = Get(id);
+            task.Tags.Remove(GetTag(id, count));
+            return id;
+        }
+
+        public int RemoveAllTags(int id)
+        {
+            Task task = Get(id);
+            task.Tags.Clear();
             return id;
         }
 

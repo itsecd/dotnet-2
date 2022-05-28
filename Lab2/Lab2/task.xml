@@ -2,32 +2,16 @@
 <ArrayOfTask xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Task>
     <TaskId>1</TaskId>
-    <Name>monday report</Name>
-    <Description>for weekly reporting</Description>
-    <TaskState>false</TaskState>
-    <ExecutorId>2</ExecutorId>
-    <TagsId>
-      <int>1</int>
-    </TagsId>
-  </Task>
-  <Task>
-    <TaskId>2</TaskId>
-    <Name>accounting statement</Name>
-    <Description>for the tax office</Description>
-    <TaskState>false</TaskState>
-    <ExecutorId>2</ExecutorId>
-    <TagsId>
-      <int>1</int>
-    </TagsId>
-  </Task>
-  <Task>
-    <TaskId>3</TaskId>
-    <Name>bb</Name>
-    <Description>string</Description>
-    <TaskState>false</TaskState>
+    <Name>работа</Name>
+    <Description>работать</Description>
+    <TaskState>true</TaskState>
     <ExecutorId>1</ExecutorId>
-    <TagsId>
-      <int>1</int>
-    </TagsId>
+    <Tags>
+      <Tags>
+        <TagId>1</TagId>
+        <Name>понедельник</Name>
+        <Color>0</Color>
+      </Tags>
+    </Tags>
   </Task>
 </ArrayOfTask>

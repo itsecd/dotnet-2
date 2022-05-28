@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Linq;
+using System.Windows;
+using TaskClient.Commands;
 
 namespace TaskClient.ViewModel
 {
@@ -8,6 +10,8 @@ namespace TaskClient.ViewModel
         private TaskRepositoryClient _taskRepository;
         private Executor _executor;
 
+        public int Id => _executor.ExecutorId; 
+
         public ExecutorViewModel()
         {
             _executor = new Executor();
@@ -15,8 +19,6 @@ namespace TaskClient.ViewModel
 
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public int Id { get => _executor.ExecutorId; }
 
         public string Name
         {
@@ -54,9 +56,13 @@ namespace TaskClient.ViewModel
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int executorId)
         {
             _taskRepository = taskRepository;
-
             var executors = await _taskRepository.GetExecutorsAsync();
-            _executor = executors.FirstOrDefault(executor => executor.ExecutorId == executorId);
+            var executor = executors.FirstOrDefault(ex => ex.ExecutorId == executorId);
+            if (executor == null)
+            {
+                return;
+            }
+            _executor = executor;
         }
     }
 }

@@ -35,9 +35,9 @@ namespace Lab2.Models
         public int ExecutorId { get; set; }
 
         /// <summary>
-        /// Список идентификаторов тегов
+        /// Список тегов
         /// </summary>
-        public List<int> TagsId { get; set; }
+        public List<Tags> Tags { get; set; }
 
         /// <summary>
         /// Конструкор по умолчанию
@@ -51,12 +51,12 @@ namespace Lab2.Models
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
-        public Task(string name, string description, int executorId, List<int> tagsId)
+        public Task(string name, string description, int executorId, List<Tags> tags)
         {
             Name = name;
             Description = description;
             ExecutorId = executorId;
-            TagsId = tagsId;
+            Tags = tags;
         }
     }
 }

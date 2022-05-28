@@ -25,7 +25,6 @@ namespace Lab2
         {
             services.AddSingleton<IExecutorRepository, ExecutorRepository>();
             services.AddSingleton<ITaskRepository, TaskRepository>();
-            services.AddSingleton<ITagRepository, TagRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

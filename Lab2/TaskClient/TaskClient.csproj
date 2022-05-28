@@ -70,8 +70,6 @@
     <Compile Include="ViewModel\ExecutorsViewModel.cs" />
     <Compile Include="ViewModel\ExecutorViewModel.cs" />
     <Compile Include="ViewModel\MainTaskViewModel.cs" />
-    <Compile Include="ViewModel\TagsViewModel.cs" />
-    <Compile Include="ViewModel\TagViewModel.cs" />
     <Compile Include="ViewModel\TaskViewModel.cs" />
     <Compile Include="Views\ExecutorsView.xaml.cs">
       <DependentUpon>ExecutorsView.xaml</DependentUpon>
@@ -118,8 +116,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="..\..\..\..\..\OneDrive\Рабочий стол\newswagger.json">
-      <Link>OpenAPIs\newswagger.json</Link>
+    <None Include="..\..\..\..\..\OneDrive\Рабочий стол\swagger.json">
+      <Link>OpenAPIs\swagger.json</Link>
       <Namespace>TaskClient</Namespace>
       <CodeGenerator>NSwagCSharp</CodeGenerator>
     </None>

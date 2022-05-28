@@ -41,7 +41,7 @@
         <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right"
                                    Margin="5,10,0,5"
                                    Orientation="Horizontal">
-            <Button Content="Новая задача"
+            <Button Content="Add"
                                    Padding="16,4,16,4"
                                    Width="120"
                      Command="{Binding AddTaskCommand}"/>
@@ -62,11 +62,10 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Имя задачи" Width="100"></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Описание" Width="250"></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding ExecutorName}" Header="Имя" Width="50"></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding ExecutorSurname}" Header="Фамилия исполнителя" Width="150"></GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding TagName}" Header="Тэги" Width="150"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Имя задачи" Width="150"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Описание" Width="260"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding ExecutorName}" Header="Имя" Width="120"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding ExecutorSurname}" Header="Фамилия исполнителя" Width="200"></GridViewColumn>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>

@@ -64,13 +64,12 @@ namespace Lab2.Controllers
         /// </summary>
         /// <param name="executor">Новый исполнитель задач</param>
         [HttpPost]
-        public IActionResult Post([FromBody] Executor executor)
+        public ActionResult<int> Post([FromBody] Executor executor)
         {
             try
             {
 
-                _executorRepository.AddExecutor(executor);
-                return CreatedAtAction(nameof(Post), executor);
+                return _executorRepository.AddExecutor(executor);             
             }
             catch
             {
@@ -84,12 +83,11 @@ namespace Lab2.Controllers
         /// <param name="id">Идентификатор</param>
         /// <param name="executor">Новый исполнитель задач</param>
         [HttpPut("{id:int}")]
-        public IActionResult Put(int id, [FromBody] Executor executor)
+        public ActionResult<int> Put(int id, [FromBody] Executor executor)
         {
             try
             {
-                _executorRepository.UpdateExecutor(id, executor);
-                return Ok();
+               return _executorRepository.UpdateExecutor(id, executor);
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -105,17 +103,9 @@ namespace Lab2.Controllers
         /// Удаление всех исполнителей задач
         /// </summary>
         [HttpDelete]
-        public IActionResult Delete()
-        {
-            try
-            {
-                _executorRepository.RemoveAllExecutors();
-                return Ok();
-            }
-            catch
-            {
-                return Problem();
-            }
+        public void Delete()
+        {        
+           _executorRepository.RemoveAllExecutors();
         }
 
         /// <summary>
@@ -123,12 +113,11 @@ namespace Lab2.Controllers
         /// </summary>
         /// <param name="id">Идентификатор</param>
         [HttpDelete("{id:int}")]
-        public IActionResult Delete(int id)
+        public ActionResult<int> Delete(int id)
         {
             try
             {
-                _executorRepository.RemoveExecutor(id);
-                return Ok();
+                return _executorRepository.RemoveExecutor(id);
             }
             catch (ArgumentOutOfRangeException)
             {
