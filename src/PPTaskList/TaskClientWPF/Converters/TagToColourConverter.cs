@@ -10,22 +10,21 @@ namespace TaskClientWPF.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is Tag tag)
+            if (value != null && value is String)
             {
-                switch (tag.TagColour)
+                switch (value)
                 {
                     case "Green":
-                        return Brushes.Green;
+                        return Brushes.YellowGreen;
                     case "Red":
-                        return Brushes.Red;
+                        return Brushes.Tomato;
                     case "Yellow":
-                        return Brushes.Yellow;
+                        return Brushes.PeachPuff;
                     default:
                         return Brushes.Transparent;
                 }
-            } 
-            else 
-                return Brushes.Transparent;
+            }
+            return Brushes.Transparent;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

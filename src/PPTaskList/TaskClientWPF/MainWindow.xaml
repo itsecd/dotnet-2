@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:TaskClientWPF.ViewModels"
+        xmlns:converters="clr-namespace:TaskClientWPF.Converters"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Список задач" Height="450" Width="500"
         Loaded="MainWindow_OnLoaded">
     <Window.Resources>
-        <viewmodels:TasksViewModel x:Key="Statuses"/>
+        <converters:TagToColourConverter x:Key="TagToColourConverter"/>
+        <!--<viewmodels:TaskViewModel x:Key="Statuses"/>-->
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="8"/>
             <Setter Property="MinWidth" Value="100"/>
@@ -27,6 +29,7 @@
         <viewmodels:TasksViewModel/>
     </Window.DataContext>
     <Grid Margin="8">
+        <!--
         <Grid.Resources>
             <DataTemplate x:Key="DataTemplate">
                 <Border>
@@ -34,6 +37,7 @@
                 </Border>
             </DataTemplate>
         </Grid.Resources>
+        -->
         <Grid.RowDefinitions>
             <RowDefinition Height = "*"/>
             <RowDefinition Height = "Auto"/>
@@ -90,8 +94,15 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Задача" Binding="{Binding TaskHeader}" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="Описание" Binding="{Binding TaskDescription}" Width="*" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Header="Статус" Binding="{Binding TagsStatuses}" Width="70" IsReadOnly="True"></DataGridTextColumn>
-                <!-- <DataGridTemplateColumn Header="Статус" CellTemplate="{StaticResource DataTemplate}" Width="70" IsReadOnly="True"></DataGridTemplateColumn>
+                <DataGridTextColumn Header="Статус" Binding="{Binding TagsStatuses}" Width="70" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Background" Value="{Binding TagsColors, Converter={StaticResource TagToColourConverter}}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <!--
+                <DataGridTemplateColumn Header="Статус" CellTemplate="{StaticResource DataTemplate}" Width="70" IsReadOnly="True"></DataGridTemplateColumn>
                 -->
             </DataGrid.Columns>
         </DataGrid>
