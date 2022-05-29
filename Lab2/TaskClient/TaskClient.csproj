@@ -70,9 +70,13 @@
     <Compile Include="ViewModel\ExecutorsViewModel.cs" />
     <Compile Include="ViewModel\ExecutorViewModel.cs" />
     <Compile Include="ViewModel\MainTaskViewModel.cs" />
+    <Compile Include="ViewModel\TagViewModel.cs" />
     <Compile Include="ViewModel\TaskViewModel.cs" />
     <Compile Include="Views\ExecutorsView.xaml.cs">
       <DependentUpon>ExecutorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TagView.xaml.cs">
+      <DependentUpon>TagView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TaskView.xaml.cs">
       <DependentUpon>TaskView.xaml</DependentUpon>
@@ -90,6 +94,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ExecutorsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TagView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,8 +124,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="..\..\..\..\..\OneDrive\Рабочий стол\swagger.json">
-      <Link>OpenAPIs\swagger.json</Link>
+    <None Include="..\..\..\..\..\OneDrive\Рабочий стол\server.json">
+      <Link>OpenAPIs\server.json</Link>
       <Namespace>TaskClient</Namespace>
       <CodeGenerator>NSwagCSharp</CodeGenerator>
     </None>
@@ -133,5 +141,6 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

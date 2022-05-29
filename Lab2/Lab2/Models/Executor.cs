@@ -20,24 +20,5 @@
         /// </summary>
         public string Surname { get; set; }
 
-
-        /// <summary>
-        /// Конструкор по умолчанию
-        /// </summary>
-        public Executor()
-        {
-            Name = string.Empty;
-            Surname = string.Empty;
-        }
-
-        /// <summary>
-        /// Конструктор с параметрами
-        /// </summary>
-        public Executor(int id, string name, string surname)
-        {
-            ExecutorId = id;
-            Name = name;
-            Surname = surname;
-        }
     }
 }

@@ -23,7 +23,7 @@ namespace Lab2
         public Task StartAsync(CancellationToken stoppingToken)
         {
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromSeconds(5));
+                TimeSpan.FromSeconds(10));
             return Task.CompletedTask;
         }
 

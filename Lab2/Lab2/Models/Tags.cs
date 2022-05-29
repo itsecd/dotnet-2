@@ -19,22 +19,5 @@
         /// цвет метки
         /// </summary>
         public int Color { get; set; }
-
-        /// <summary>
-        /// Конструкор по умолчанию
-        /// </summary>
-        public Tags()
-        {
-            Name = string.Empty;
-        }
-
-        /// <summary>
-        /// Конструктор с параметрами
-        /// </summary>
-        public Tags(string name, int color)
-        {
-            Name = name;
-            Color = color;
-        }
     }
 }

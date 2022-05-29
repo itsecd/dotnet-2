@@ -1327,17 +1327,7 @@ namespace TaskClient
         /// <param name="num">Номер тэга</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<int> Tags4Async
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            (int id, int num, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<int> Tags4Async(int id, int num, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");

@@ -14,12 +14,24 @@ namespace TaskClient.ViewModel
         public ObservableCollection<TaskViewModel> Tasks { get; } = new ObservableCollection<TaskViewModel>();
 
         private TaskViewModel _selectTask;
+        public TaskViewModel SelectedTask
+        {
+            get => _selectTask;
+            set
+            {
+                if (value == _selectTask)
+                {
+                    return;
+                }
 
+                _selectTask = value;
+                OnPropertyChanged(nameof(SelectedTask));
+            }
+        }
         public Command AddTaskCommand { get; }
         public Command UpdateTaskCommand { get; }
         public Command RemoveTaskCommand { get; }
         public Command RemoveAllTasksCommand { get; }
-
         public Command OpenExecutorsViewCommand { get; }
 
         public MainTaskViewModel()
@@ -29,7 +41,9 @@ namespace TaskClient.ViewModel
                 var tasks = await _taskRepository.GetTasksAsync();
                 var id = tasks.Max(task => task.TaskId) + 1;
                 TaskViewModel taskViewModel = new TaskViewModel();
+                taskViewModel.Mode = "Add";
                 await taskViewModel.InitializeAsync(_taskRepository, id);
+           
                 var taskView = new TaskView(taskViewModel);
                 if (taskView.ShowDialog() == true)
                 {
@@ -43,6 +57,7 @@ namespace TaskClient.ViewModel
                 if (SelectedTask != null)
                 {
                     var taskViewModel = Tasks.Single(tv => tv.Id == SelectedTask.Id);
+                    taskViewModel.Mode = "Update";
                     var taskView = new TaskView(taskViewModel);
                     taskView.ShowDialog();
                 }
@@ -77,20 +92,7 @@ namespace TaskClient.ViewModel
 
         }
 
-        public TaskViewModel SelectedTask
-        {
-            get => _selectTask;
-            set
-            {
-                if (value == _selectTask)
-                {
-                    return;
-                }
-
-                _selectTask = value;
-                OnPropertyChanged(nameof(SelectedTask));
-            }
-        }
+      
 
         public event PropertyChangedEventHandler PropertyChanged;
         public async System.Threading.Tasks.Task InitializeAsync()
@@ -102,6 +104,7 @@ namespace TaskClient.ViewModel
             {
                 var taskViewModel = new TaskViewModel();
                 await taskViewModel.InitializeAsync(_taskRepository, task.TaskId);
+                taskViewModel.Mode = "Update";
                 Tasks.Add(taskViewModel);
             }
         }

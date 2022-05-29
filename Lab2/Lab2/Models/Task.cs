@@ -38,25 +38,5 @@ namespace Lab2.Models
         /// Список тегов
         /// </summary>
         public List<Tags> Tags { get; set; }
-
-        /// <summary>
-        /// Конструкор по умолчанию
-        /// </summary>
-        public Task()
-        {
-            Name = string.Empty;
-            Description = string.Empty;
-        }
-
-        /// <summary>
-        /// Конструктор с параметрами
-        /// </summary>
-        public Task(string name, string description, int executorId, List<Tags> tags)
-        {
-            Name = name;
-            Description = description;
-            ExecutorId = executorId;
-            Tags = tags;
-        }
     }
 }

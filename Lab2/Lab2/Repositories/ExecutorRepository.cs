@@ -24,6 +24,11 @@ namespace Lab2.Repositories
         /// </summary>
         private readonly List<Executor> _executors;
 
+        public ExecutorRepository()
+        {
+            _executors = new();
+        }
+
         /// <summary>
         /// Файл хранения
         /// </summary>
@@ -56,11 +61,14 @@ namespace Lab2.Repositories
         /// </summary>
         public void WriteToFile()
         {
-            var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
-            using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
-            xmlSerializer.Serialize(fileWriter, _executors);
+            lock (locer)
+            {
+                var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
+                using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
+                xmlSerializer.Serialize(fileWriter, _executors);
+            }
         }
-
+        object locer = new object();
         /// <summary>
         /// Мeтод добавления исполнителя 
         /// </summary>

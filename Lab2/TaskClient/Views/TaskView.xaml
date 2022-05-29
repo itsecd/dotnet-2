@@ -28,32 +28,36 @@
         <viewModels:TaskViewModel/>
     </Window.DataContext>
     <StackPanel  Margin="5,10,5,5" Orientation="Vertical">
+       
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <CheckBox Content="Статус задачи" IsChecked="{Binding State}"></CheckBox>
+            <CheckBox Content="Статус задачи" IsChecked="{Binding State}"/>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock Name="TextBlock3" Text="Имя задачи" Height="30" Width="300" HorizontalAlignment="Left"
-                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
-            <TextBox Name="TextBlock4" Text="{Binding Name}" Height="30" Width="220" HorizontalAlignment="Right"
-                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBox>
+            <TextBlock x:Name="TextBlock3" Text="Имя задачи" Height="30" Width="300" HorizontalAlignment="Left"
+                       Margin="0,0,5,0" Padding="16,4,16,4"/>
+            <TextBox x:Name="TextBlock4" Text="{Binding Name}" Height="30" Width="220" HorizontalAlignment="Right"
+                        Margin="5,0,5,0" Padding="16,4,16,4" />
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock Name="TextBlock5" Text="Описание задачи" Height="30" Width="300" HorizontalAlignment="Left"
-                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
-            <TextBox Name="TextBlock6" Text="{Binding Description}" Height="30" Width="220"
-                        Margin="5,0,5,0" Padding="16,4,16,4"></TextBox>
+            <TextBlock x:Name="TextBlock5" Text="Описание задачи" Height="30" Width="300" HorizontalAlignment="Left"
+                       Margin="0,0,5,0" Padding="16,4,16,4"/>
+            <TextBox x:Name="TextBlock6" Text="{Binding Description}" Height="30" Width="220"
+                        Margin="5,0,5,0" Padding="16,4,16,4"/>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock Name="TextBlock7" Text="Имя исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left"
-                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
-            <TextBox Name="TextBlock8" Text="{Binding ExecutorName}" Height="30" Width="220" HorizontalAlignment="Right"
-                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBox>
+            <TextBlock x:Name="TextBlock7" Text="Имя исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left"
+                       Margin="0,0,5,0" Padding="16,4,16,4"/>
+            <TextBlock x:Name="TextBlock8" Text="{Binding ExecutorName}" Height="30" Width="220" HorizontalAlignment="Right"
+                        Margin="5,0,5,0" Padding="16,4,16,4" />
+            <Button Content="Выбрать исполнителя" Width="150" 
+                    Padding="16,4,16,4"
+                    Command="{Binding OpenExecutorsViewCommand}"/>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock Name="TextBlock9" Text="Фамилия исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left"
-                       Margin="0,0,5,0" Padding="16,4,16,4"></TextBlock>
-            <TextBox Name="TextBlock10" Text="{Binding ExecutorSurname}" Height="30" Width="250" HorizontalAlignment="Right"
-                        Margin="5,0,5,0" Padding="16,4,16,4" ></TextBox>
+            <TextBlock x:Name="TextBlock9" Text="Фамилия исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left"
+                       Margin="0,0,5,0" Padding="16,4,16,4"/>
+            <TextBlock x:Name="TextBlock10" Text="{Binding ExecutorSurname}" Height="30" Width="250" HorizontalAlignment="Right"
+                        Margin="5,0,5,0" Padding="16,4,16,4" />
         </StackPanel>
         <ListView x:Name="taskList" ItemsSource="{Binding Tags}" Width="150" HorizontalAlignment="Left">
             <ListView.View>
@@ -62,6 +66,13 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Margin="5,10,0,5">
+            <Button Content="Добавить тэг"  Width="120" Padding="16,4,16,4"       
+                    Command="{Binding AddTagCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="29"/>
+        </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right"
                     Orientation="Horizontal"
                     Margin="5,10,0,5">

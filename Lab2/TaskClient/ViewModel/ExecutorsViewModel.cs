@@ -15,6 +15,9 @@ namespace TaskClient.ViewModel
         private ExecutorViewModel _selectExecutor;
 
         public Command OpenMainWindowCommand { get; }
+        public Command SelectExecutorCommand { get; }
+        public Command CancelExecutorCommand { get; }
+        public string ModeExecutor { get; set; }
         public ExecutorsViewModel()
         {
             OpenMainWindowCommand = new Command(commandParameter =>
@@ -25,6 +28,18 @@ namespace TaskClient.ViewModel
                 Application.Current.MainWindow = mainWindow;
                 mainWindow.Show();
             }, null);
+            SelectExecutorCommand = new Command(commandParameter =>
+            {
+                var window = (Window)commandParameter;
+                window.DialogResult = true;
+                window.Close();
+            }, (obj) => ModeExecutor == "Select");
+            CancelExecutorCommand = new Command(commandParameter =>
+            {
+                var window = (Window)commandParameter;
+                window.DialogResult = false;
+                window.Close();
+            }, (obj) => ModeExecutor == "Select");
         }
 
         public ExecutorViewModel SelectedExecutor

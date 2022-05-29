@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using TaskClient.Commands;
+using System.Collections.ObjectModel;
+using TaskClient.Views;
 
 namespace TaskClient.ViewModel
 {
@@ -10,52 +12,8 @@ namespace TaskClient.ViewModel
     {
         private TaskRepositoryClient _taskRepository;
         private Task _task;
-        public int Id => _task.TaskId; 
+        public int Id => _task.TaskId;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public Command AddTask { get; }
-        public TaskViewModel()
-        {
-            _task = new Task()
-            {
-                Name = string.Empty, 
-                Description = string.Empty,  
-            };
-            AddTask = new Command(async commandParameter =>
-            {
-                var newTask = new Task()
-                {
-                    Name = _task.Name,
-                    Description = _task.Description,
-                    TaskState = _task.TaskState,
-                    Tags = _task.Tags
-                    
-                };
-                await _taskRepository.PostTaskAsync(newTask);
-                var window = (Window)commandParameter;
-                window.DialogResult = true;
-                window.Close();
-            }, null);
-        }
-
-        public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
-        {
-            _taskRepository = taskRepository;
-
-            var tasks = await _taskRepository.GetTasksAsync();
-            var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
-            if (task == null)
-            {
-                return;
-            }
-
-            _task = task;
-            var executorId = _task.ExecutorId;
-            var executor = await _taskRepository.GetExecutorAsync(executorId);
-            ExecutorName = executor.Name;
-            ExecutorSurname = executor.Surname;
-        }
-        public string Mode { get; set; }
         private string _executorName;
         public string ExecutorName
         {
@@ -87,6 +45,101 @@ namespace TaskClient.ViewModel
                 OnPropertyChanged(nameof(ExecutorSurname));
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public Command AddTask { get; }
+        public Command OpenExecutorsViewCommand { get; }
+        public Command AddTagCommand { get; }
+        public ObservableCollection<TagViewModel> TagCollection { get; } = new ObservableCollection<TagViewModel>();
+        public TaskViewModel()
+        {
+            _task = new Task() { 
+                Tags = new List<Tags>()
+            };
+            AddTask = new Command(async commandParameter =>
+            {
+                if (Mode == "Add")
+                {
+                    await _taskRepository.PostTaskAsync(_task);
+                }
+                else
+                {
+                    await _taskRepository.PutTaskAsync(_task.TaskId, _task);
+                }
+                var window = (Window)commandParameter;
+                window.DialogResult = true;
+                window.Close();
+            }, null);
+            OpenExecutorsViewCommand = new Command(async _ =>
+            {
+                var executorsViewModel = new ExecutorsViewModel();
+                await executorsViewModel.InitializeAsync(_taskRepository);
+                executorsViewModel.ModeExecutor = "Select";
+                var executorsView = new ExecutorsView(executorsViewModel);
+                if ((bool)executorsView.ShowDialog())
+                {
+                    _task.ExecutorId = executorsViewModel.SelectedExecutor.Id;
+                    var executor = await _taskRepository.GetExecutorAsync(_task.ExecutorId);
+                    ExecutorName = executor.Name;
+                    ExecutorSurname = executor.Surname;
+                }
+            }, (obj) => Mode == "Add");
+            AddTagCommand = new Command(async _ =>
+            {
+                var tag = new Tags();
+                TagViewModel tagViewModel = new TagViewModel();
+                tagViewModel.Initialize(tag);
+                var tagView = new TagView(tagViewModel);
+                if (tagView.ShowDialog() == true)
+                {
+                    if (Mode == "Add")
+                    {
+                        Tags.Add(tag);
+                        TagCollection.Add(tagViewModel);
+                        tagViewModel.Num = TagCollection.Count;
+                    }
+                    else
+                    {
+                        await _taskRepository.AddTag(_task.TaskId, tag);
+                        Tags.Add(tag);
+                        tagViewModel.NameTag = tag.Name;
+                        TagCollection.Add(tagViewModel);
+                        tagViewModel.Num = TagCollection.Count;
+                    }
+                };
+            }, null);
+        }
+
+        public string Mode { get; set; }
+        public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
+        {
+            _taskRepository = taskRepository;
+
+            if(Mode == "Add")
+            {
+                ExecutorName = string.Empty;
+                ExecutorSurname = string.Empty;
+                return;
+            }
+            _task = await _taskRepository.GetTaskAsync(taskId);
+            Executor executor = await _taskRepository.GetExecutorAsync(_task.ExecutorId);
+            ExecutorName = executor.Name;   
+            ExecutorSurname = executor.Surname;
+            int i = 1;
+            foreach (var prod in _task.Tags)
+            {
+                var tagViewModel = new TagViewModel();
+                tagViewModel.Initialize(prod);
+                tagViewModel.Num = i++;
+                TagCollection.Add(tagViewModel);
+            }
+            // var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
+            //_task = task;
+            //Executor executor = await _taskRepository.GetExecutorAsync(_task.ExecutorId);
+            //ExecutorName = executor.Name;   
+            //ExecutorSurname = executor.Surname;
+        }
+
 
         public string Name
         {
@@ -130,7 +183,7 @@ namespace TaskClient.ViewModel
 
         public bool State
         {
-            get => _task.TaskState;
+            get => (bool)(_task?.TaskState);
             set
             {
                 if (value == _task.TaskState)

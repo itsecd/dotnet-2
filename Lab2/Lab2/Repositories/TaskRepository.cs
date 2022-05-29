@@ -23,6 +23,11 @@ namespace Lab2.Repositories
         /// </summary>
         private readonly List<Task> _tasks;
 
+        public TaskRepository()
+        {
+            _tasks = new();
+        }
+
         /// <summary>
         /// Файл хранения
         /// </summary>
@@ -39,7 +44,7 @@ namespace Lab2.Repositories
                 return;
             }
             var xmlSerializer = new XmlSerializer(typeof(List<Task>));
-            using var fileReader = new FileStream(_storageFileName, FileMode.OpenOrCreate);
+            using var fileReader = new FileStream(_storageFileName, FileMode.Open);
             _tasks = (List<Task>)xmlSerializer.Deserialize(fileReader);
         }
 
@@ -48,10 +53,14 @@ namespace Lab2.Repositories
         /// </summary>
         public void WriteToFile()
         {
-            var xmlSerializer = new XmlSerializer(typeof(List<Task>));
-            using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
-            xmlSerializer.Serialize(fileWriter, _tasks);
+            lock (locer)
+            {
+                var xmlSerializer = new XmlSerializer(typeof(List<Task>));
+                using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
+                xmlSerializer.Serialize(fileWriter, _tasks);
+            }
         }
+        object locer = new object();
 
         /// <summary>
         /// Мeтод получения задачи по ее идентификатору
