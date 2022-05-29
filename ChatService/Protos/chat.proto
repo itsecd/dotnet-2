@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option csharp_namespace = "ChatService";
+
+package chat;
+
+service ChatGreeter {
+	rpc Create(stream Message) returns(stream Message); 
+	rpc Join(stream Message) returns (stream Message);
+}
+
+message Message{
+	string roomName = 1;
+	string userName = 2;
+	string text = 3;
+}
