@@ -3,6 +3,7 @@ using TaskClientWPF.Commands;
 using Lab2TaskClient;
 using System.Linq;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -10,8 +11,10 @@ namespace TaskClientWPF.ViewModels
     {
         private TaskRepositoryClient _taskRepository;
         private Lab2TaskClient.Task _task;
-        private TagViewModel _tag;
         private ExecutorViewModel _executor;
+        private List<string> _tagsStatuses;
+        private List<string> _tagsColors;
+        public Command ModifiedTaskCommand { get; private set; }
 
         public int IdTask
         {
@@ -69,24 +72,60 @@ namespace TaskClientWPF.ViewModels
             }
         }
 
-        //public List<string> Tags
-        //{
-        //    get => _tag; 
-        //    set
-        //    {
-        //        if (value == _task.TextDescription) return;
-        //        _task.TextDescription = value;
-        //        OnPropertyChanged(nameof(TaskDescription));
-        //    }
-        //}
+        public string TagsStatuses
+        {
+            get
+            {
+                var tagsId = _task.TagsId;
+                if(tagsId != null)
+                {
+                    foreach (var id in tagsId)
+                    {
+                        var tag = _taskRepository.GetTagAsync(id).Result;
+                        _tagsStatuses.Add(tag.TagStatus);
+                    }
+                    return _tagsStatuses[0];
+                }
+                return string.Empty;
+            } 
+            set
+            {
+                if (_tagsStatuses.Contains(value)) return;
+                _tagsStatuses.Add(value);
+                OnPropertyChanged(nameof(TagsStatuses));
+            }
+        }
 
-        public Command ModifiedTaskCommand { get; private set; }
-        //public Command AddTaskCommand { get; private set; }
+        public string TagsColors
+        {
+            get
+            {
+                var tagsId = _task.TagsId;
+                if (tagsId != null)
+                {
+                    foreach (var id in tagsId)
+                    {
+                        var tag = _taskRepository.GetTagAsync(id).Result;
+                        _tagsColors.Add(tag.TagColour);
+                    }
+                    return _tagsColors[0];
+                }
+                return string.Empty;
+            }
+            set
+            {
+                if ( _tagsColors.Contains(value)) return;
+                _tagsColors.Add(value);
+                OnPropertyChanged(nameof(TagsColors));
+            }
+        }
 
         public TaskViewModel()
         {
             _task = new Lab2TaskClient.Task();
             _executor = new ExecutorViewModel();
+            _tagsStatuses = new List<string>();
+            _tagsColors = new List<string>();
         }
 
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)

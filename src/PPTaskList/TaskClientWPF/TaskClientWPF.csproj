@@ -80,12 +80,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Converters\TagToColourConverter.cs" />
     <Compile Include="TaskClient.cs" />
     <Compile Include="TaskRepositoryClient.cs" />
     <Compile Include="ValidationRules\TaskDescriptionValidationRule.cs" />
     <Compile Include="ValidationRules\TaskHeaderValidationRule.cs" />
     <Compile Include="ViewModels\ExecutorViewModel.cs" />
-    <Compile Include="ViewModels\TagViewModel.cs" />
     <Compile Include="ViewModels\TasksViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="Views\TaskView.xaml.cs">
