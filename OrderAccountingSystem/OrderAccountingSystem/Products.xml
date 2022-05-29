@@ -1,13 +1,28 @@
 <?xml version="1.0"?>
 <ArrayOfProduct xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Product>
-    <ProductId>14463dce-d45f-4230-a6a9-017bd9de9c29</ProductId>
-    <Name>Ananas</Name>
-    <Price>100</Price>
+    <ProductId>31dc9da6-3c5c-46b6-afe7-63752c8e6b21</ProductId>
+    <Name>;;;</Name>
+    <Price>111</Price>
   </Product>
   <Product>
-    <ProductId>0287cad6-68ee-4dc6-86cd-4a5d8dfb88cc</ProductId>
-    <Name>Bob</Name>
-    <Price>100</Price>
+    <ProductId>0554ca03-332a-4021-a11a-d7d2befe13fd</ProductId>
+    <Name>32121</Name>
+    <Price>111</Price>
+  </Product>
+  <Product>
+    <ProductId>c711c666-b835-4002-b6ee-9a443e0a768a</ProductId>
+    <Name>dsadasdas</Name>
+    <Price>111</Price>
+  </Product>
+  <Product>
+    <ProductId>1f656ec8-dd7a-4b85-8816-c5faaca39c4c</ProductId>
+    <Name>321321</Name>
+    <Price>3213123</Price>
+  </Product>
+  <Product>
+    <ProductId>fec59fd1-1703-4e6e-a1c4-d4b2f57ce57e</ProductId>
+    <Name>3213</Name>
+    <Price>321321</Price>
   </Product>
 </ArrayOfProduct>

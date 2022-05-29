@@ -17,7 +17,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         public ComboBoxItem SelectCustomer { get; set; } = new();
 
-        public ComboBoxItem SelectStatus { get; set; } = new();
+        public ComboBoxItem SelectStatus { get; set; } = new() { DataContext = "0" };
 
         public DateTime SelectedDate { get; set; } = DateTime.Now;
 

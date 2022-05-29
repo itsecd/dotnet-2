@@ -18,7 +18,6 @@ namespace OrderAccountingSystemClient
             {
                 if (ViewModel is null)
                     return;
-
                 cd.Add(ViewModel.Close.RegisterHandler(interaction =>
                 {
                     Tag = interaction.Input;

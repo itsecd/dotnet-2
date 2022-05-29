@@ -26,18 +26,8 @@
     <Phone>32132132</Phone>
   </Customer>
   <Customer>
-    <CustomerId>d1319e60-c779-46e9-bfdc-7e0ac3d70417</CustomerId>
-    <Name>hfgf</Name>
-    <Phone>gfhfh</Phone>
-  </Customer>
-  <Customer>
-    <CustomerId>1deb99cf-e03e-41d0-bb0e-a643d43dc6f0</CustomerId>
-    <Name>;;;</Name>
-    <Phone>;;;;</Phone>
-  </Customer>
-  <Customer>
-    <CustomerId>a97b6813-0a77-4994-9311-00400d5e177e</CustomerId>
-    <Name>321</Name>
-    <Phone>321</Phone>
+    <CustomerId>d04945c6-03e2-4893-b41e-36b84a64fb69</CustomerId>
+    <Name>3213</Name>
+    <Phone>3213213</Phone>
   </Customer>
 </ArrayOfCustomer>

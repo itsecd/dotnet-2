@@ -37,44 +37,26 @@
     <Date>28.05.2022 9:18:53</Date>
   </Order>
   <Order>
-    <OrderId>b6dadf72-484e-4626-a709-634ff4f63b6c</OrderId>
+    <OrderId>74343fdc-5b8f-47bc-9df5-963b8c4fb6fb</OrderId>
     <Customer>
-      <CustomerId>abc0e758-65f1-4d89-91fd-2a6e97347ff4</CustomerId>
-      <Name>dsadsad</Name>
-      <Phone>dsadsadas</Phone>
+      <CustomerId>3ff5f480-8a50-4e90-af5d-ab205ac70299</CustomerId>
+      <Name>Anton</Name>
+      <Phone>888</Phone>
     </Customer>
     <Products>
       <Product>
-        <ProductId>14463dce-d45f-4230-a6a9-017bd9de9c29</ProductId>
-        <Name>Ananas</Name>
-        <Price>100</Price>
+        <ProductId>bbaac972-04ef-44d3-8b5d-64001cbc50b2</ProductId>
+        <Name>;;;</Name>
+        <Price>111</Price>
       </Product>
       <Product>
-        <ProductId>0287cad6-68ee-4dc6-86cd-4a5d8dfb88cc</ProductId>
-        <Name>Bob</Name>
-        <Price>100</Price>
+        <ProductId>c711c666-b835-4002-b6ee-9a443e0a768a</ProductId>
+        <Name>dsadasdas</Name>
+        <Price>111</Price>
       </Product>
     </Products>
-    <Status>2</Status>
-    <Price>200</Price>
-    <Date>28.05.2022 9:19:24</Date>
-  </Order>
-  <Order>
-    <OrderId>a592967b-f19d-467d-873b-9fec45807a15</OrderId>
-    <Customer>
-      <CustomerId>abc0e758-65f1-4d89-91fd-2a6e97347ff4</CustomerId>
-      <Name>dsadsad</Name>
-      <Phone>dsadsadas</Phone>
-    </Customer>
-    <Products>
-      <Product>
-        <ProductId>0287cad6-68ee-4dc6-86cd-4a5d8dfb88cc</ProductId>
-        <Name>Bob</Name>
-        <Price>100</Price>
-      </Product>
-    </Products>
-    <Status>3</Status>
-    <Price>100</Price>
-    <Date>29.05.2022 1:07:48</Date>
+    <Status>0</Status>
+    <Price>222</Price>
+    <Date>29.05.2022 14:24:36</Date>
   </Order>
 </ArrayOfOrder>

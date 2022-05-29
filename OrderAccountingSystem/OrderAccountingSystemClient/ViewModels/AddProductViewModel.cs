@@ -39,11 +39,6 @@ namespace OrderAccountingSystemClient.ViewModels
                     Name = NameInput,
                     Price = double.Parse(PriceInput)
                 });
-                return Close.Handle(null);
-            }
-            else
-            {
-                ErrorTextBlock = "Incorrect!";
             }
             return Close.Handle(null);
         }
