@@ -1,44 +1,50 @@
 ﻿using Grpc.Net.Client;
-using Server;
 using System;
-using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SnakeClient
 {
-    internal class Program
+    public class Program
     {
-        static async Task Main(string[] args)
+        public static async Task Main()
         {
-            var userName = Console.ReadLine();
-            var channel = GrpcChannel.ForAddress("http://localhost:5000");
-            var client = new Snake.SnakeClient(channel);
+            SessionWrapper sessionWrapper;
 
-            using(var chat = client.Join())
+            using var channel = GrpcChannel.ForAddress("http://localhost:5000");
             {
-                _ = Task.Run(async () =>
-                {
-                    while (await chat.ResponseStream.MoveNext(cancellationToken: CancellationToken.None))
-                    {
-                        var responce = chat.ResponseStream.Current;
-                        Console.WriteLine($"{responce.Name}: {responce.Message}");
-                    }
-                });
-                await chat.RequestStream.WriteAsync(new PlayerMessage() { Name = userName, Message = $"{userName} joined" });
-                string line;
-                while ((line = Console.ReadLine()) != null)
-                {
-                    if(line == "bye")
-                    {
-                        break;
-                    }
-                    await chat.RequestStream.WriteAsync(new PlayerMessage() { Name = userName, Message = line});
-                }
-                await chat.RequestStream.CompleteAsync();
-             }
-            Console.WriteLine("Disconnected");
-            await channel.ShutdownAsync();
+                await using var session = new SessionWrapper(channel);
+                sessionWrapper = session;
 
+                try
+                {
+                    await session.FirstPlayer.Login("valera");
+                    await session.SecondPlayer.Login("Lera");
+/*
+                    await session.FirstPlayer.FindOpponent();
+                    await Task.Delay(1000);
+                    await session.SecondPlayer.FindOpponent();
+
+                    await Task.Delay(1000);
+*/
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+
+            foreach (var reply in sessionWrapper.FirstPlayer.Replies)
+                Console.WriteLine(reply);
+
+            Console.WriteLine();
+
+            foreach (var reply in sessionWrapper.SecondPlayer.Replies)
+                Console.WriteLine(reply);
+
+            Console.ReadKey();
         }
     }
 }
+
+

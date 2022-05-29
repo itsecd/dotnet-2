@@ -7,10 +7,15 @@ service Snake{
 }
 
 message PlayerMessage { // обдумать насчет oneof
-    LoginRequest login_request = 1;
-    string text = 2;
-    string state = 3;
-  
+ oneof playerMessage {
+     LoginRequest login_request = 1;
+     string text = 2;
+     string state = 3;
+     FindOpponentRequest find_opponent_request = 4;
+    }
+
+}
+message FindOpponentRequest {
 }
 
 message LoginRequest {
@@ -18,17 +23,27 @@ message LoginRequest {
 }
 
 message ServerMessage {// обдумать насчет oneof
-    LoginReply login_reply = 1;
-    EndGameReply end_game_reply = 2;
-    string text = 3;
-    string state = 4;
-  
+    oneof serverMessage {
+        LoginReply login_reply = 1;
+        EndGameReply end_game_reply = 2;
+        string text = 3;
+        string state = 4;
+        FindOpponentReply find_opponent_reply = 5;
+           ActivePlayerReply active_player_reply = 6;
+    }
+}
+
+message FindOpponentReply {
+  string login = 1;
 }
 
 message LoginReply {
   bool success = 1;
 }
 
+message ActivePlayerReply {
+  bool your_turn = 1;
+}
 
 message EndGameReply {
   OutcomeStatus status = 1;

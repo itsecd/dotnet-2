@@ -15,8 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\Server\Protos\greet.proto" GrpcServices="Client">
-      <Link>Protos\greet.proto</Link>
+    <ProjectReference Include="..\Server\Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\Server\Protos\snake.proto" GrpcServices="Client">
+      <Link>Protos\snake.proto</Link>
     </Protobuf>
   </ItemGroup>
 

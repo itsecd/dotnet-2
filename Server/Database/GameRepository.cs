@@ -16,7 +16,7 @@ namespace SnakeServer.Database
         {
             _config = config;
         }
-        public bool TryAddPlayer(string name) => _players.TryAdd(name, new Player());
+      //  public bool TryAddPlayer(string name) => _players.TryAdd(name, new Player());
         public void ReadFile()// redo under xml
         {
             if (File.Exists(_config["PathPlayers"]))
@@ -31,5 +31,9 @@ namespace SnakeServer.Database
             await JsonSerializer.SerializeAsync<ConcurrentDictionary<string, Player>>(stream, _players, new JsonSerializerOptions { WriteIndented = true });
         }
 
+        public bool TryAddPlayer(string name)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

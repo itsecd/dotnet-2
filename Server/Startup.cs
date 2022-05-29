@@ -4,10 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Server.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SnakeServer.Database;
 
 namespace Server
 {
@@ -17,6 +14,7 @@ namespace Server
         {
             services.AddGrpc();
             services.AddSingleton<GameService>();
+            //services.AddScoped<IGameNetwork, GameNetwork>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -27,6 +25,11 @@ namespace Server
             }
 
             app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<SnakeService>();
+            });
 
         }
     }
