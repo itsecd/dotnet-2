@@ -6,7 +6,7 @@
         xmlns:viewmodels="clr-namespace:TaskClientWPF.ViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Список задач" Height="450" Width="400"
+        Title="Список задач" Height="450" Width="500"
         Loaded="MainWindow_OnLoaded">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
@@ -51,7 +51,23 @@
                     </Style>
                 </Button.Style>
             </Button>
-
+            <Button 
+                Content="Удалить"
+                Command="{Binding RemoveTaskCommand}"
+                CommandParameter="{Binding SelectedTask}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="8"/>
+                        <Setter Property="MinWidth" Value="100"/>
+                        <Setter Property="MinHeight" Value="24"/>
+                        <Style.Triggers>
+                            <Trigger Property="CommandParameter" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
             <Button 
                 Content="Добавить"
                 Command="{Binding AddTaskCommand}"/>

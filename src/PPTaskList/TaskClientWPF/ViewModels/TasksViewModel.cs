@@ -23,14 +23,13 @@ namespace TaskClientWPF.ViewModels
                 OnPropertyChanged(nameof(SelectedTask));
             }
         }
-        public Command ShowTaskCommand { get; private set; }
-        public Command AddTaskCommand { get; private set; }
+        public Command ShowTaskCommand { get;}
+        public Command AddTaskCommand { get;}
+        public Command UpdateTaskCommand { get;}
 
-        public Command UpdateTaskCommand { get; private set; }
-
-        //public Command RemoveTaskCommand { get; private set; }
+        public Command RemoveTaskCommand { get;}
         //public Command RemoveAllTasksCommand { get; private set; }
-        public Command FindTasksCommand { get; private set; }
+        public Command FindTasksCommand { get; }
 
         public TasksViewModel()
         {
@@ -39,13 +38,6 @@ namespace TaskClientWPF.ViewModels
                 var taskInfoView = new TaskView(SelectedTask);
                 taskInfoView.ShowDialog();
             }, null);
-
-            //NewTaskCommand = new Command(commandParameter =>
-            //{
-            //    var newTask = new TaskView();
-            //    newTask.ShowDialog();
-            //}, null);
-
 
             AddTaskCommand = new Command(async _ =>
             {
@@ -62,18 +54,27 @@ namespace TaskClientWPF.ViewModels
             {
                 if (SelectedTask != null)
                 {
-                    var taskViewModel = Tasks.First(t => t.IdTask == SelectedTask.IdTask);
+                    var taskViewModel = Tasks.FirstOrDefault(t => t.IdTask == SelectedTask.IdTask);
                     var taskView = new TaskView(taskViewModel);
                     taskView.ShowDialog();
                 }
             }, null);
 
-            //    //    //FindTasksCommand = new Command(async _ =>
-            //    //    //{
-            //    //    //    var tasks = await _taskRepository.GetTasksAsync();
-            //    //    //    List<Task>
+            RemoveTaskCommand = new Command(async _ =>
+            {
+                if (SelectedTask != null)
+                {
+                    await _taskRepository.RemoveTaskAsync(SelectedTask.IdTask);
+                    Tasks.Remove(SelectedTask);
+                }
+            }, null);
 
-            //    //    //}, null);
+            //FindTasksCommand = new Command(async _ =>
+            //{
+            //    var tasks = await _taskRepository.GetTasksAsync();
+            //    List<Task>
+
+            //}, null);
         }
 
         public async System.Threading.Tasks.Task InitializeAsync()
