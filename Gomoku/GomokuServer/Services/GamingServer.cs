@@ -100,7 +100,6 @@ namespace GomokuServer.Services
         {
             if (!File.Exists(_filePath))
             {
-                Console.WriteLine("File " + _filePath + " not found, create new Player");
                 return new Player(login, responseStream);
             }
             Player? player;
@@ -117,42 +116,40 @@ namespace GomokuServer.Services
             }
             if (player is null)
             {
-                //Console.WriteLine("Create new Player");
                 return new Player(login, responseStream);
             }
-            //Console.WriteLine("Open older Player");
             return new Player(player.Login, player.CountGames, player.CountWinGames, responseStream);
         }
 
         private async void SavePlayerToFile(Player player)
         {
             List<Player> players = new();
-            if (File.Exists(_filePath))
-            {
-                using var fileReader = new StreamReader(_filePath);
-                string jsonString = fileReader.ReadToEnd();
-                players = JsonSerializer.Deserialize<List<Player>>(jsonString) ?? throw new InvalidOperationException();
-                var currentPlayer = players.Find(x => x.Login == player.Login);
-                if (players.Find(x => x.Login == player.Login) is null)
-                {
-                    player.CountGames++;
-                    players.Add(player);
-                }
-                else
-                {
-                    currentPlayer!.CountGames++;
-                    if (player.CountWinGames != currentPlayer.CountWinGames)
-                        currentPlayer.CountWinGames++;
-                }
-            }
-            else
-            {
-                players.Add(player);
-            }
-
             await _databaseLock.WaitAsync();
             try
             {
+                if (File.Exists(_filePath))
+                {
+                    using var fileReader = new StreamReader(_filePath);
+                    string jsonString = fileReader.ReadToEnd();
+                    players = JsonSerializer.Deserialize<List<Player>>(jsonString) ?? throw new InvalidOperationException();
+                    var currentPlayer = players.Find(x => x.Login == player.Login);
+                    if (players.Find(x => x.Login == player.Login) is null)
+                    {
+                        player.CountGames++;
+                        players.Add(player);
+                    }
+                    else
+                    {
+                        currentPlayer!.CountGames++;
+                        if (player.CountWinGames != currentPlayer.CountWinGames)
+                            currentPlayer.CountWinGames++;
+                    }
+                }
+                else
+                {
+                    players.Add(player);
+                }
+
                 using FileStream createStream = File.Create(_filePath);
                 await JsonSerializer.SerializeAsync(createStream, players);
                 await createStream.DisposeAsync();
