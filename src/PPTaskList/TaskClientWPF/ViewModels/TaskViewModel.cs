@@ -50,18 +50,6 @@ namespace TaskClientWPF.ViewModels
             }
         }
 
-        //public int TaskExecutorId
-        //{
-        //    get => _executor.ExecutorId;
-        //    set
-        //    {
-        //        if (value == _executor.ExecutorId) return;
-        //        _task.ExecutorId = value;
-        //        _executor.ExecutorId = value;
-        //        OnPropertyChanged(nameof(TaskExecutorId));
-        //    }
-        //}
-
         public ExecutorViewModel Executor
         {
             get => _executor;
@@ -82,11 +70,9 @@ namespace TaskClientWPF.ViewModels
                 {
                     return _tagsStatuses[0];
                 }
-
                 var ids = _task.TagsId;
                 if (ids == null|| ids.Count == 0 || _taskRepository == null)
                     return string.Empty;
-
                 var id = ids.FirstOrDefault();
                 var tag = _taskRepository.GetTagAsync(id).Result;
                 return tag.TagStatus;
@@ -108,7 +94,6 @@ namespace TaskClientWPF.ViewModels
                 {
                     return _tagsColors[0];
                 }
-
                 var ids = _task.TagsId;
                 if (ids == null || ids.Count == 0 || _taskRepository == null)
                     return string.Empty;
@@ -153,9 +138,7 @@ namespace TaskClientWPF.ViewModels
                     foreach (var tag in tags)
                     {
                         if (tag.TagColour == TagsColors && tag.TagStatus == TagsStatuses)
-                            //_task.TagsId = new List<int>(tag.TagId);
                             _task.TagsId.Add(tag.TagId);
-                        //_task.TagsId = new List<int> { tag.TagId };
                     }
 
                     var taskDto = new TaskDto
@@ -166,7 +149,7 @@ namespace TaskClientWPF.ViewModels
                         TagsId = _task.TagsId
                     };
                     await _taskRepository.PostTaskAsync(taskDto);
-
+                    _addTag = false;
                     window.DialogResult = true;
                     window.Close();
                 }, null);
@@ -178,6 +161,17 @@ namespace TaskClientWPF.ViewModels
             ModifiedTaskCommand = new Command(async commandParameter =>
             {
                 var window = (Window)commandParameter;
+
+                _task.TagsId.Clear();
+                _addTag = true;
+                var tags = await _taskRepository.GetTagsAsync();
+                foreach (var tag in tags)
+                {
+                    if (tag.TagColour == TagsColors && tag.TagStatus == TagsStatuses)
+                    {
+                        _task.TagsId.Add(tag.TagId);
+                    }   
+                }
                 var taskDto = new TaskDto
                 {
                     HeaderText = _task.HeaderText,
@@ -186,6 +180,7 @@ namespace TaskClientWPF.ViewModels
                     TagsId = _task.TagsId,
                 };
                 await _taskRepository.UpdateTaskAsync(taskId, taskDto);
+                _addTag = false;
                 window.DialogResult = true;
                 window.Close();
             }, null);

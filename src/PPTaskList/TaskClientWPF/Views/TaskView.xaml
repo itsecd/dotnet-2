@@ -93,7 +93,7 @@
             </TextBox.Style>
         </TextBox>
         <Label Grid.Row="2" Grid.Column="0" Content="Статус:"/>
-        <ComboBox Name="comboBoxStatus" Grid.Row="2" Grid.Column="1" SelectedIndex="0"  SelectedItem ="{Binding TagsStatuses}">
+        <ComboBox Name="comboBoxStatus" Grid.Row="2" Grid.Column="1"  SelectedIndex="0"  SelectedItem ="{Binding TagsStatuses}">
             <ComboBoxItem Visibility="Collapsed">Выберите статус</ComboBoxItem>
             <ComboBoxItem Content="Done"/>
             <ComboBoxItem Content="Remake"/>
@@ -102,7 +102,7 @@
             <ComboBoxItem Content="Not ready yet"/>
         </ComboBox>
         <Label Grid.Row="3" Grid.Column="0" Content="Цвет:"/>
-        <ComboBox Name="comboBoxColor" Grid.Row="3" Grid.Column="1" SelectedIndex="0" SelectedItem="{Binding TagsColors}" >
+        <ComboBox Name="comboBoxColor" Grid.Row="3" Grid.Column="1"  SelectedIndex="0" SelectedItem="{Binding TagsColors}" >
             <ComboBoxItem Visibility="Collapsed">Выберите цвет тега</ComboBoxItem>
             <ComboBoxItem Content="Green"/>
             <ComboBoxItem Content="Red"/>
