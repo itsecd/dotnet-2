@@ -8,11 +8,12 @@
         Loaded="MainWindow_OnLoaded"
         Title="Список задач" Height="450" Width="800">
     <Window.Resources>
+        <Style TargetType="DockPanel">
+            <Setter Property="Background" Value="WhiteSmoke"></Setter>
+        </Style>
         <Style TargetType="{x:Type ListView}">
             <Setter Property="Margin" Value="8"/>
-        </Style>
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="GhostWhite"></Setter>
         </Style>
         <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="DarkGray" Offset="0" />
@@ -32,24 +33,30 @@
         <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center"
                     Margin="5,5,5,5">
             <Button Content="Список исполнителей задач"
+                    FontFamily="Verdana"
+                    FontWeight="ExtraBlack"
                     Command="{Binding OpenExecutorsViewCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                      Padding="16,4,16,4"
-                      Width="200" />
+                    Padding="16,4,16,4"
+                   Width="300" />
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right"
                                    Margin="5,10,0,5"
                                    Orientation="Horizontal">
-            <Button Content="Add"
-                                   Padding="16,4,16,4"
-                                   Width="120"
-                     Command="{Binding AddTaskCommand}"/>
+            <Button Content="Добавить"
+                    FontFamily="Verdana"
+                    FontWeight="ExtraBlack"
+                    Padding="16,4,16,4"
+                    Width="120"
+                    Command="{Binding AddTaskCommand}"/>
             <Button Content="Удалить все"
-                                   Padding="16,4,16,4"
-                                   Width="100"
+                    FontFamily="Verdana"
+                    FontWeight="ExtraBlack"
+                    Padding="16,4,16,4"
+                    Width="120"
                     Command="{Binding RemoveAllTasksCommand}"/>
         </StackPanel>
-        <ListView ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedTask}" SelectionMode="Single">
+        <ListView ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedTask}" SelectionMode="Single" FontFamily="Cordia New" Foreground="DarkBlue">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="50" Header ="Статус">

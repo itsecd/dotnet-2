@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="Задача" Height="450" Width="800">
     <Window.Resources>
+        <Style TargetType="StackPanel">
+            <Setter Property="Background" Value="WhiteSmoke"></Setter>
+        </Style>
         <Style TargetType="{x:Type ListView}">
             <Setter Property="Margin" Value="8"/>
         </Style>
@@ -30,39 +33,40 @@
     <Window.DataContext>
         <viewModels:TaskViewModel/>
     </Window.DataContext>
-    <StackPanel  Margin="5,0,5,5" Orientation="Vertical">
-       
-        <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <CheckBox Content="Статус задачи" IsChecked="{Binding State}"/>
+    <StackPanel  Margin="0,0,0,0" Orientation="Vertical">
+        <StackPanel Margin="20,6,5,10" Orientation="Horizontal">
+            <CheckBox Content="Статус задачи" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue" IsChecked="{Binding State}"/>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock x:Name="TextBlock3" Text="Имя задачи" Height="30" Width="300" HorizontalAlignment="Left"
+            <TextBlock x:Name="TextBlock3" Text="Имя задачи" Height="30" Width="300" HorizontalAlignment="Left" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
                        Margin="0,0,5,0" Padding="16,4,16,4"/>
-            <TextBox x:Name="TextBlock4" Text="{Binding Name}" Height="30" Width="220" HorizontalAlignment="Right"
+            <TextBox x:Name="TextBlock4" Text="{Binding Name}" Height="30" Width="220" HorizontalAlignment="Right"  FontFamily="Cordia New" Foreground="DarkSlateBlue"
                         Margin="5,0,5,0" Padding="16,4,16,4" />
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock x:Name="TextBlock5" Text="Описание задачи" Height="30" Width="300" HorizontalAlignment="Left"
+            <TextBlock x:Name="TextBlock5" Text="Описание задачи" Height="30" Width="300" HorizontalAlignment="Left"  FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
                        Margin="0,0,5,0" Padding="16,4,16,4"/>
-            <TextBox x:Name="TextBlock6" Text="{Binding Description}" Height="30" Width="220"
+            <TextBox x:Name="TextBlock6" Text="{Binding Description}" Height="30" Width="220" FontFamily="Cordia New" Foreground="DarkSlateBlue"
                         Margin="5,0,5,0" Padding="16,4,16,4"/>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock x:Name="TextBlock7" Text="Имя исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left"
+            <TextBlock x:Name="TextBlock7" Text="Имя исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
                        Margin="0,0,5,0" Padding="16,4,16,4"/>
-            <TextBlock x:Name="TextBlock8" Text="{Binding ExecutorName}" Height="30" Width="220" HorizontalAlignment="Right"
+            <TextBlock x:Name="TextBlock8" Text="{Binding ExecutorName}" Height="30" Width="220" HorizontalAlignment="Right" FontFamily="Cordia New" Foreground="DarkSlateBlue"
                         Margin="5,0,5,0" Padding="16,4,16,4" />
-            <Button Content="Выбрать исполнителя" Width="160" 
+            <Button Content="Выбрать исполнителя" Width="200" 
+                    FontFamily="Verdana"
+                    FontWeight="ExtraBlack"
                     Padding="16,4,16,4"
                     Command="{Binding OpenExecutorsViewCommand}"/>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock x:Name="TextBlock9" Text="Фамилия исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left"
+            <TextBlock x:Name="TextBlock9" Text="Фамилия исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
                        Margin="0,0,5,0" Padding="16,4,16,4"/>
-            <TextBlock x:Name="TextBlock10" Text="{Binding ExecutorSurname}" Height="30" Width="250" HorizontalAlignment="Right"
+            <TextBlock x:Name="TextBlock10" Text="{Binding ExecutorSurname}" Height="30" Width="250" HorizontalAlignment="Right" FontFamily="Cordia New" Foreground="DarkSlateBlue"
                         Margin="5,0,5,0" Padding="16,4,16,4" />
         </StackPanel>
-        <ListView x:Name="taskList" ItemsSource="{Binding Tags}" Width="150" HorizontalAlignment="Left">
+        <ListView ItemsSource="{Binding Tags}" Width="150" HorizontalAlignment="Left">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Тэги" Width="150"/>
@@ -72,17 +76,23 @@
         <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center"
                     Orientation="Horizontal"
                     Margin="5,0,0,5">
-            <Button Content="Добавить тэг"  Width="120" Padding="16,4,16,4"       
+            <Button Content="Добавить тэг"  Width="160" Padding="16,4,16,4"  
+                    FontFamily="Verdana"
+                    FontWeight="ExtraBlack"
                     Command="{Binding AddTagCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="29"/>
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Right"
                     Orientation="Horizontal"
                     Margin="5,0,0,5">
-            <Button Content="OK"  Width="80" Padding="16,4,16,4"       
+            <Button Content="OK"  Width="80" Padding="16,4,16,4"    
+                    FontFamily="Verdana"
+                    FontWeight="ExtraBlack"
                     Command="{Binding AddTask}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="29"/>
             <Button Content="Назад" Width="80"
+                    FontFamily="Verdana"
+                    FontWeight="ExtraBlack"
                     Margin="5,0,5,0" Padding="16,4,16,4"
                     IsCancel="True" Height="29"/>
         </StackPanel>

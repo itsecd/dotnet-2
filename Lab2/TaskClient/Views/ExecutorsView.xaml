@@ -9,9 +9,10 @@
     <Window.Resources>
         <Style TargetType="{x:Type ListView}">
             <Setter Property="Margin" Value="8"/>
+            <Setter Property="Background" Value="GhostWhite"></Setter>
         </Style>
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style TargetType="DockPanel">
+            <Setter Property="Background" Value="WhiteSmoke"></Setter>
         </Style>
         <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="DarkGray" Offset="0" />
@@ -33,6 +34,8 @@
                     Orientation="Horizontal"
                     Margin="5,10,0,5">
             <Button Content="Назад к задачам" Width="150" 
+                    FontFamily="Verdana"
+                    FontWeight="ExtraBlack"
                     Padding="16,4,16,4"
                     Command="{Binding OpenMainWindowCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
@@ -43,14 +46,18 @@
                     Margin="5,10,0,5">
             <Button Content="OK" Width="100"
                     Padding="16,4,16,4"
+                    FontFamily="Verdana"
+                    FontWeight="ExtraBlack"
                     Command="{Binding SelectExecutorCommand}"   
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
             <Button Content="Отмена" Width="100"
                     Margin="5,0,5,0" Padding="16,4,16,4"
+                    FontFamily="Verdana"
+                    FontWeight="ExtraBlack"
                     Command="{Binding CancelExecutorCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="27"/>
         </StackPanel>
-        <ListView ItemsSource="{Binding Executors}" SelectedItem="{Binding SelectedExecutor}" SelectionMode="Single">
+        <ListView ItemsSource="{Binding Executors}" SelectedItem="{Binding SelectedExecutor}" SelectionMode="Single" FontFamily="Cordia New" Foreground="DarkBlue">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Имя" Width="150"></GridViewColumn>

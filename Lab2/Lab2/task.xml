@@ -2,85 +2,19 @@
 <ArrayOfTask xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Task>
     <TaskId>1</TaskId>
-    <Name>работа</Name>
-    <Description>работать</Description>
+    <Name>провести собрание</Name>
+    <Description>обсудить на собрании план продаж</Description>
     <TaskState>true</TaskState>
     <ExecutorId>1</ExecutorId>
     <Tags>
       <Tags>
-        <TagId>1</TagId>
+        <TagId>0</TagId>
         <Name>понедельник</Name>
         <Color>0</Color>
       </Tags>
-    </Tags>
-  </Task>
-  <Task>
-    <TaskId>2</TaskId>
-    <Name>продать</Name>
-    <Description>продать акционные товары</Description>
-    <TaskState>true</TaskState>
-    <ExecutorId>4</ExecutorId>
-    <Tags>
-      <Tags>
-        <TagId>5</TagId>
-        <Name>товар</Name>
-        <Color>0</Color>
-      </Tags>
-    </Tags>
-  </Task>
-  <Task>
-    <TaskId>4</TaskId>
-    <Name>gggggggggggg</Name>
-    <Description>rrrrrrrrrrrrrrrrr</Description>
-    <TaskState>true</TaskState>
-    <ExecutorId>1</ExecutorId>
-    <Tags>
       <Tags>
         <TagId>0</TagId>
-        <Name>vvvv</Name>
-        <Color>0</Color>
-      </Tags>
-      <Tags>
-        <TagId>0</TagId>
-        <Name>tttt</Name>
-        <Color>0</Color>
-      </Tags>
-      <Tags>
-        <TagId>0</TagId>
-        <Name>gggg</Name>
-        <Color>0</Color>
-      </Tags>
-    </Tags>
-  </Task>
-  <Task>
-    <TaskId>5</TaskId>
-    <Name>t</Name>
-    <Description>g</Description>
-    <TaskState>true</TaskState>
-    <ExecutorId>4</ExecutorId>
-    <Tags>
-      <Tags>
-        <TagId>0</TagId>
-        <Name>g</Name>
-        <Color>0</Color>
-      </Tags>
-    </Tags>
-  </Task>
-  <Task>
-    <TaskId>6</TaskId>
-    <Name>y</Name>
-    <Description>h</Description>
-    <TaskState>false</TaskState>
-    <ExecutorId>4</ExecutorId>
-    <Tags>
-      <Tags>
-        <TagId>0</TagId>
-        <Name>g</Name>
-        <Color>0</Color>
-      </Tags>
-      <Tags>
-        <TagId>0</TagId>
-        <Name>t</Name>
+        <Name>продажи</Name>
         <Color>0</Color>
       </Tags>
     </Tags>

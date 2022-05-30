@@ -39,7 +39,15 @@ namespace TaskClient.ViewModel
             AddTaskCommand = new Command(async _ =>
             {
                 var tasks = await _taskRepository.GetTasksAsync();
-                var id = tasks.Max(task => task.TaskId) + 1;
+                int id;
+                if (tasks.Count == 0)
+                {
+                    id = 1;
+                }
+                else
+                {
+                    id = tasks.Max(task => task.TaskId) + 1;
+                }
                 TaskViewModel taskViewModel = new TaskViewModel();
                 taskViewModel.Mode = "Add";
                 await taskViewModel.InitializeAsync(_taskRepository, id);
@@ -102,7 +110,7 @@ namespace TaskClient.ViewModel
             {
                 var taskViewModel = new TaskViewModel();
                 taskViewModel.Mode = "Update";
-                await taskViewModel.InitializeAsync(_taskRepository, task.TaskId);           
+                await taskViewModel.InitializeAsync(_taskRepository, task.TaskId);
                 Tasks.Add(taskViewModel);
             }
         }
