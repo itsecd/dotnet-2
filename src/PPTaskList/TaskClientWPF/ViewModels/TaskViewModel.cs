@@ -4,6 +4,7 @@ using Lab2TaskClient;
 using System.Linq;
 using System.Windows;
 using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -12,8 +13,9 @@ namespace TaskClientWPF.ViewModels
         private TaskRepositoryClient _taskRepository;
         private Lab2TaskClient.Task _task;
         private ExecutorViewModel _executor;
-        private List<string> _tagsStatuses;
-        private List<string> _tagsColors;
+        private List<string> _tagsStatuses = new List<string>();
+        private List<string> _tagsColors = new List<string>();
+        private bool _addTag = false;
         public Command ModifiedTaskCommand { get; private set; }
 
         public int IdTask
@@ -76,18 +78,20 @@ namespace TaskClientWPF.ViewModels
         {
             get
             {
-                var tagsId = _task.TagsId;
-                if(tagsId != null)
+                if (_addTag == true)
                 {
-                    foreach (var id in tagsId)
-                    {
-                        var tag = _taskRepository.GetTagAsync(id).Result;
-                        _tagsStatuses.Add(tag.TagStatus);
-                    }
                     return _tagsStatuses[0];
                 }
-                return string.Empty;
-            } 
+
+                var ids = _task.TagsId;
+                if (ids == null|| ids.Count == 0 || _taskRepository == null)
+                    return string.Empty;
+
+                var id = ids.FirstOrDefault();
+                var tag = _taskRepository.GetTagAsync(id).Result;
+                return tag.TagStatus;
+
+            }
             set
             {
                 if (_tagsStatuses.Contains(value)) return;
@@ -100,17 +104,17 @@ namespace TaskClientWPF.ViewModels
         {
             get
             {
-                var tagsId = _task.TagsId;
-                if (tagsId != null)
+                if(_addTag == true)
                 {
-                    foreach (var id in tagsId)
-                    {
-                        var tag = _taskRepository.GetTagAsync(id).Result;
-                        _tagsColors.Add(tag.TagColour);
-                    }
                     return _tagsColors[0];
                 }
-                return string.Empty;
+
+                var ids = _task.TagsId;
+                if (ids == null || ids.Count == 0 || _taskRepository == null)
+                    return string.Empty;
+                var id = ids.FirstOrDefault();
+                var tag = _taskRepository.GetTagAsync(id).Result;
+                return tag.TagColour;
             }
             set
             {
@@ -122,10 +126,11 @@ namespace TaskClientWPF.ViewModels
 
         public TaskViewModel()
         {
-            _task = new Lab2TaskClient.Task();
+            _task = new Lab2TaskClient.Task()
+            {
+                TagsId = new List<int>()
+            };
             _executor = new ExecutorViewModel();
-            _tagsStatuses = new List<string>();
-            _tagsColors = new List<string>();
         }
 
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
@@ -138,17 +143,30 @@ namespace TaskClientWPF.ViewModels
 
             if (task == null)
             {
-                ModifiedTaskCommand = new Command(commandParameter =>
+                ModifiedTaskCommand = new Command(async commandParameter =>
                 {
                     var window = (Window)commandParameter;
+
+                    _addTag = true;
+                    
+                    var tags = await _taskRepository.GetTagsAsync();
+                    foreach (var tag in tags)
+                    {
+                        if (tag.TagColour == TagsColors && tag.TagStatus == TagsStatuses)
+                            //_task.TagsId = new List<int>(tag.TagId);
+                            _task.TagsId.Add(tag.TagId);
+                        //_task.TagsId = new List<int> { tag.TagId };
+                    }
+
                     var taskDto = new TaskDto
                     {
                         HeaderText = _task.HeaderText,
                         TextDescription = _task.TextDescription,
                         Executor = taskExecutor,
-                        TagsId = _task.TagsId,
+                        TagsId = _task.TagsId
                     };
-                    _taskRepository.PostTaskAsync(taskDto);
+                    await _taskRepository.PostTaskAsync(taskDto);
+
                     window.DialogResult = true;
                     window.Close();
                 }, null);

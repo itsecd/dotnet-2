@@ -13,6 +13,11 @@ namespace TaskClientWPF.ViewModels
         public ObservableCollection<TaskViewModel> Tasks { get; } = new ObservableCollection<TaskViewModel>();
 
         private TaskViewModel _selectedTask;
+        public Command ShowTaskCommand { get; }
+        public Command AddTaskCommand { get; }
+        public Command UpdateTaskCommand { get; }
+        public Command RemoveTaskCommand { get; }
+        public Command FindTasksCommand { get; }
         public TaskViewModel SelectedTask
         {
             get => _selectedTask;
@@ -23,14 +28,6 @@ namespace TaskClientWPF.ViewModels
                 OnPropertyChanged(nameof(SelectedTask));
             }
         }
-        public Command ShowTaskCommand { get;}
-        public Command AddTaskCommand { get;}
-        public Command UpdateTaskCommand { get;}
-
-        public Command RemoveTaskCommand { get;}
-        //public Command RemoveAllTasksCommand { get; private set; }
-        public Command FindTasksCommand { get; }
-
         public TasksViewModel()
         {
             ShowTaskCommand = new Command(commandParameter =>
