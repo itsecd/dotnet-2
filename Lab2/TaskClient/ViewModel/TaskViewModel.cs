@@ -53,6 +53,7 @@ namespace TaskClient.ViewModel
             };
             AddTask = new Command(async commandParameter =>
             {
+                if (_taskRepository == null) return;
                 if (Mode == "Add")
                 {
                     await _taskRepository.PostTaskAsync(_task);
@@ -67,20 +68,22 @@ namespace TaskClient.ViewModel
             }, null);
             OpenExecutorsViewCommand = new Command(async _ =>
             {
+                if (_taskRepository == null) return;
                 var executorsViewModel = new ExecutorsViewModel();
                 await executorsViewModel.InitializeAsync(_taskRepository);
                 executorsViewModel.Mode = "Select";
                 var executorsView = new ExecutorsView(executorsViewModel);
-                if ((bool)executorsView.ShowDialog())
-                {
-                    _task.ExecutorId = executorsViewModel.SelectedExecutor.Id;
-                    var executor = await _taskRepository.GetExecutorAsync(_task.ExecutorId);
-                    ExecutorName = executor.Name;
-                    ExecutorSurname = executor.Surname;
-                }
+
+                var dialogResult = executorsView.ShowDialog();
+                if (!dialogResult.HasValue || !dialogResult.Value) return;
+                _task.ExecutorId = executorsViewModel.SelectedExecutor.Id;
+                var executor = await _taskRepository.GetExecutorAsync(_task.ExecutorId);
+                ExecutorName = executor.Name;
+                ExecutorSurname = executor.Surname;
             }, (obj) => Mode == "Add");
             AddTagCommand = new Command(async _ =>
             {
+                if (_taskRepository == null) return;
                 var tag = new Tags();
                 TagViewModel tagViewModel = new TagViewModel();
                 tagViewModel.Initialize(tag);
@@ -176,7 +179,7 @@ namespace TaskClient.ViewModel
 
         public bool State
         {
-            get => (bool)(_task?.TaskState);
+            get => _task.TaskState;
             set
             {
                 if (value == _task.TaskState)

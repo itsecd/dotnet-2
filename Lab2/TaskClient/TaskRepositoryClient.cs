@@ -36,9 +36,9 @@ namespace TaskClient
         }
 
         /// <summary>
-        /// Метод добавления исполнителя 
+        /// Добавление исполнителя задачи
         /// </summary>
-        /// <param name="value">Новый исполнитель</param>
+        /// <param name="executor">Новый исполнитель задач</param>
         public System.Threading.Tasks.Task PostExecutorAsync(Executor executor)
         {
             return _openApiClient.ExecutorAsync(executor);
@@ -47,8 +47,8 @@ namespace TaskClient
         /// <summary>
         /// Метод замены исполнителя 
         /// </summary>
-        /// <param name="value">Новый исполнитель</param>
-        /// /// <param name="id">Идентификатор заменяемого исполнителя</param>
+        /// <param name="executor">Новый исполнитель</param>
+        /// <param name="id">Идентификатор заменяемого исполнителя</param>
         public System.Threading.Tasks.Task PutExecutorAsync(int id, Executor executor)
         {
             return _openApiClient.Executor4Async(id, executor);
@@ -93,7 +93,7 @@ namespace TaskClient
         /// <summary>
         /// Метод добавления задачи 
         /// </summary>
-        /// <param name="value">Новая задача</param>
+        /// <param name="task">Новая задача</param>
         public System.Threading.Tasks.Task PostTaskAsync(Task task)
         {
             return _openApiClient.TaskAsync(task);
@@ -102,8 +102,8 @@ namespace TaskClient
         /// <summary>
         /// Метод замены задачи 
         /// </summary>
-        /// <param name="value">Новая задача</param>
-        /// /// <param name="id">Идентификатор заменяемой задачи</param>
+        /// <param name="task">Новая задача</param>
+        /// <param name="id">Идентификатор заменяемой задачи</param>
         public System.Threading.Tasks.Task PutTaskAsync(int id, Task task)
         {
             return _openApiClient.Task4Async(id, task);
@@ -126,31 +126,59 @@ namespace TaskClient
             return _openApiClient.Task2Async();
         }
 
+        /// <summary>
+        /// Метод получения всех тэгов
+        /// </summary>
         public System.Threading.Tasks.Task<ICollection<Tags>> GetAllProducts(int id)
         {
             return _openApiClient.TagsAllAsync(id);
         }
 
+        /// <summary>
+        /// Добавление тэга к определенной задаче
+        /// </summary>
+        /// <param name="tag">Новый тэг</param>
         public System.Threading.Tasks.Task<int> AddTag(int id, Tags tag)
         {
             return _openApiClient.TagsAsync(id, tag);
         }
 
+        /// <summary>
+        /// Удаление тэга,относящегося к определенной задаче
+        /// </summary>
+        /// <param name="id">Идентификатор задачи</param>
         public System.Threading.Tasks.Task<int> DeleteTag(int id)
         {
             return _openApiClient.Tags2Async(id);
         }
 
+        /// <summary>
+        /// Получение опреденного  тэга,относящегося к определенной задаче
+        /// </summary>
+        /// <param name="id">Идентификатор задачи</param>
+        /// <param name="num">Номер тэга</param>
         public System.Threading.Tasks.Task<Tags> GetTag(int id, int num)
         {
             return _openApiClient.Tags3Async(id, num);
         }
 
+        /// <summary>
+        /// Удаление опреденного  тэга,относящегося к определенной задаче
+        /// </summary>
+        /// <param name="id">Идентификатор задачи</param>
+        ///<param name="num">Номер тэга</param>
         public System.Threading.Tasks.Task<int> DeleteTag(int id, int num)
         {
             return _openApiClient.Tags4Async(id, num);
         }
-        public System.Threading.Tasks.Task<int> ReplaceProduct(int id, int num, Tags newTag)
+
+        /// <summary>
+        /// Изменение опреденного  тэга,относящегося к определенной задаче
+        /// </summary>
+        /// <param name="id">Идентификатор задачи</param>
+        /// <param name="num">Номер тэга</param>
+        /// <param name="newTag">Новый тэг</param>
+        public System.Threading.Tasks.Task<int> UpdateProduct(int id, int num, Tags newTag)
         {
             return _openApiClient.Tags5Async(id, num, newTag);
         }
