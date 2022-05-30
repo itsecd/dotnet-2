@@ -11,8 +11,6 @@ namespace OrderAccountingSystemClient
 
     public partial class AddOrderWindow : AddOrderWindowBase
     {
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient client = new(GrpcChannel.ForAddress(App.Default.Host));
-
         public AddOrderWindow()
         {
             InitializeComponent();

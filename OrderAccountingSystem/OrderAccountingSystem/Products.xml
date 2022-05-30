@@ -20,9 +20,4 @@
     <Name>321321</Name>
     <Price>3213123</Price>
   </Product>
-  <Product>
-    <ProductId>fec59fd1-1703-4e6e-a1c4-d4b2f57ce57e</ProductId>
-    <Name>3213</Name>
-    <Price>321321</Price>
-  </Product>
 </ArrayOfProduct>

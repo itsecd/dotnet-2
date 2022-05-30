@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Reactive;
 using System.Windows;
-using OrderAccountingSystemClient;
 using OrderAccountingSystemClient.ViewModels;
 using ReactiveUI;
 
-namespace WpfApp1
+namespace OrderAccountingSystemClient
 {
     public partial class App : Application
     {

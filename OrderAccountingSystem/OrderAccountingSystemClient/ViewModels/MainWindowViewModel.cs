@@ -33,7 +33,7 @@ namespace OrderAccountingSystemClient.ViewModels
         public Interaction<Unit, Unit> CreateCustomer { get; } = new();
         public Interaction<Unit, Unit> CreateProduct { get; } = new();
         public Interaction<Unit, Unit> CreateOrder { get; } = new();
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient _client = new(GrpcChannel.ForAddress(App.Default.Host));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient _client = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
 
         public MainWindowViewModel()
         {
