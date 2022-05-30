@@ -20,6 +20,12 @@ namespace ChatServer
             Connections[_user.Name] = Context.ConnectionId;
             Serializers.UserSerializer.SerializeUser(_user);
 
+            var deserializedDirectMessages = Serializers.DirectMessageSerializer.DeserializeMessage(user);
+            foreach(var directMessage in deserializedDirectMessages)
+            {
+                Clients.Client(Connections[user]).SendAsync("ReceiveDirectMessage", directMessage.Name, directMessage.Message);
+            }
+
             Console.WriteLine($"{user} is connected");
 
             return Clients.Others.SendAsync("ReceiveMessage", user, $"{user} is connected");
@@ -44,6 +50,7 @@ namespace ChatServer
 
         public Task SendMessageToUser(string user, string message, string receiver)
         {
+            Serializers.DirectMessageSerializer.SerializeMessage(new Serializers.DirectMessage(receiver, user, message));
             return Clients.Client(Connections[receiver]).SendAsync("ReceiveDirectMessage", user, message);
         }
 

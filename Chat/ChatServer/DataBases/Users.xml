@@ -24,4 +24,10 @@
   <User>
     <Name>Lera</Name>
   </User>
+  <User>
+    <Name>us1</Name>
+  </User>
+  <User>
+    <Name>u2</Name>
+  </User>
 </ArrayOfUser>

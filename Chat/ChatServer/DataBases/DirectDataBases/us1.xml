@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ArrayOfDirectMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us2</Name>
+    <Message> really hi!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us2</Name>
+    <Message> really Russian language</Message>
+  </DirectMessage>
+</ArrayOfDirectMessage>
