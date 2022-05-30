@@ -20,9 +20,4 @@
     <Name>Арина</Name>
     <Surname>Абрикосова</Surname>
   </Executor>
-  <Executor>
-    <ExecutorId>5</ExecutorId>
-    <Name>g</Name>
-    <Surname>t</Surname>
-  </Executor>
 </ArrayOfExecutor>

@@ -9,7 +9,6 @@ namespace TaskClient.ViewModel
 {
     public class MainTaskViewModel : INotifyPropertyChanged
     {
-
         private TaskRepositoryClient _taskRepository;
         public ObservableCollection<TaskViewModel> Tasks { get; } = new ObservableCollection<TaskViewModel>();
 
@@ -28,30 +27,16 @@ namespace TaskClient.ViewModel
                 OnPropertyChanged(nameof(SelectedTask));
             }
         }
-        public Command AddTaskCommand { get; }
-        public Command UpdateTaskCommand { get; }
-        public Command RemoveTaskCommand { get; }
-        public Command RemoveAllTasksCommand { get; }
-        public Command OpenExecutorsViewCommand { get; }
 
         public MainTaskViewModel()
         {
             AddTaskCommand = new Command(async _ =>
             {
-                var tasks = await _taskRepository.GetTasksAsync();
-                int id;
-                if (tasks.Count == 0)
-                {
-                    id = 1;
-                }
-                else
-                {
-                    id = tasks.Max(task => task.TaskId) + 1;
-                }
                 TaskViewModel taskViewModel = new TaskViewModel();
+                int id = taskViewModel.Id;
                 taskViewModel.Mode = "Add";
                 await taskViewModel.InitializeAsync(_taskRepository, id);
-                var taskView = new TaskView(taskViewModel);
+                TaskView taskView = new TaskView(taskViewModel);
                 if (taskView.ShowDialog() == true)
                 {
                     Tasks.Clear();
@@ -63,9 +48,9 @@ namespace TaskClient.ViewModel
             {
                 if (SelectedTask != null)
                 {
-                    var taskViewModel = Tasks.Single(tv => tv.Id == SelectedTask.Id);
+                    TaskViewModel taskViewModel = Tasks.Single(tv => tv.Id == SelectedTask.Id);
                     taskViewModel.Mode = "Update";
-                    var taskView = new TaskView(taskViewModel);
+                    TaskView taskView = new TaskView(taskViewModel);
                     taskView.ShowDialog();
                 }
             }, null);
@@ -88,9 +73,9 @@ namespace TaskClient.ViewModel
             OpenExecutorsViewCommand = new Command(async commandParameter =>
             {
                 var window = (Window)commandParameter;
-                var executorsViewModel = new ExecutorsViewModel();
+                ExecutorsViewModel executorsViewModel = new ExecutorsViewModel();
                 await executorsViewModel.InitializeAsync(_taskRepository);
-                var executorsView = new ExecutorsView(executorsViewModel);
+                ExecutorsView executorsView = new ExecutorsView(executorsViewModel);
                 window.Hide();
                 executorsView.Owner = window;
                 Application.Current.MainWindow = executorsView;
@@ -99,8 +84,6 @@ namespace TaskClient.ViewModel
 
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public async System.Threading.Tasks.Task InitializeAsync()
         {
             _taskRepository = new TaskRepositoryClient();
@@ -108,12 +91,19 @@ namespace TaskClient.ViewModel
             var tasks = await _taskRepository.GetTasksAsync();
             foreach (var task in tasks)
             {
-                var taskViewModel = new TaskViewModel();
+                TaskViewModel taskViewModel = new TaskViewModel();
                 taskViewModel.Mode = "Update";
                 await taskViewModel.InitializeAsync(_taskRepository, task.TaskId);
                 Tasks.Add(taskViewModel);
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public Command AddTaskCommand { get; }
+        public Command UpdateTaskCommand { get; }
+        public Command RemoveTaskCommand { get; }
+        public Command RemoveAllTasksCommand { get; }
+        public Command OpenExecutorsViewCommand { get; }
 
         private void OnPropertyChanged(string propertyName)
         {

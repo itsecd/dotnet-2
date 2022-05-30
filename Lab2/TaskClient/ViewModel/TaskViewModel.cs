@@ -12,7 +12,7 @@ namespace TaskClient.ViewModel
         private TaskRepositoryClient _taskRepository;
         private Task _task;
         public int Id => _task.TaskId;
-
+        public ObservableCollection<TagViewModel> TagCollection { get; } = new ObservableCollection<TagViewModel>();
         private string _executorName;
         public string ExecutorName
         {
@@ -45,11 +45,6 @@ namespace TaskClient.ViewModel
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public Command AddTask { get; }
-        public Command OpenExecutorsViewCommand { get; }
-        public Command AddTagCommand { get; }
-        public ObservableCollection<TagViewModel> TagCollection { get; } = new ObservableCollection<TagViewModel>();
         public TaskViewModel()
         {
             _task = new Task()
@@ -74,7 +69,7 @@ namespace TaskClient.ViewModel
             {
                 var executorsViewModel = new ExecutorsViewModel();
                 await executorsViewModel.InitializeAsync(_taskRepository);
-                executorsViewModel.ModeExecutor = "Select";
+                executorsViewModel.Mode = "Select";
                 var executorsView = new ExecutorsView(executorsViewModel);
                 if ((bool)executorsView.ShowDialog())
                 {
@@ -110,7 +105,6 @@ namespace TaskClient.ViewModel
             }, null);
         }
 
-        public string Mode { get; set; }
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
         {
             _taskRepository = taskRepository;
@@ -134,7 +128,6 @@ namespace TaskClient.ViewModel
                 TagCollection.Add(tagViewModel);
             }
         }
-
 
         public string Name
         {
@@ -165,6 +158,7 @@ namespace TaskClient.ViewModel
                 OnPropertyChanged(nameof(Tags));
             }
         }
+
         public string Description
         {
             get => _task?.Description;
@@ -194,6 +188,12 @@ namespace TaskClient.ViewModel
                 OnPropertyChanged(nameof(State));
             }
         }
+
+        public string Mode { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public Command AddTask { get; }
+        public Command OpenExecutorsViewCommand { get; }
+        public Command AddTagCommand { get; }
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

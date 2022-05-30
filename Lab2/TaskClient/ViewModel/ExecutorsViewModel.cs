@@ -12,10 +12,6 @@ namespace TaskClient.ViewModel
 
         private ExecutorViewModel _selectExecutor;
 
-        public Command OpenMainWindowCommand { get; }
-        public Command SelectExecutorCommand { get; }
-        public Command CancelExecutorCommand { get; }
-        public string ModeExecutor { get; set; }
         public ExecutorsViewModel()
         {
             OpenMainWindowCommand = new Command(commandParameter =>
@@ -31,13 +27,13 @@ namespace TaskClient.ViewModel
                 var window = (Window)commandParameter;
                 window.DialogResult = true;
                 window.Close();
-            }, (obj) => ModeExecutor == "Select");
+            }, (obj) => Mode == "Select");
             CancelExecutorCommand = new Command(commandParameter =>
             {
                 var window = (Window)commandParameter;
                 window.DialogResult = false;
                 window.Close();
-            }, (obj) => ModeExecutor == "Select");
+            }, (obj) => Mode == "Select");
         }
 
         public ExecutorViewModel SelectedExecutor
@@ -62,13 +58,17 @@ namespace TaskClient.ViewModel
             var executors = await _taskRepository.GetExecutorsAsync();
             foreach (var executor in executors)
             {
-                var executorViewModel = new ExecutorViewModel();
+                ExecutorViewModel executorViewModel = new ExecutorViewModel();
                 await executorViewModel.InitializeAsync(_taskRepository, executor.ExecutorId);
                 Executors.Add(executorViewModel);
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public Command OpenMainWindowCommand { get; }
+        public Command SelectExecutorCommand { get; }
+        public Command CancelExecutorCommand { get; }
+        public string Mode { get; set; }
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

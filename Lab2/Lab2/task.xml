@@ -2,19 +2,47 @@
 <ArrayOfTask xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Task>
     <TaskId>1</TaskId>
-    <Name>провести собрание</Name>
-    <Description>обсудить на собрании план продаж</Description>
-    <TaskState>true</TaskState>
-    <ExecutorId>1</ExecutorId>
+    <Name>встреча с партнерами</Name>
+    <Description>состоится сделка, взять документы</Description>
+    <TaskState>false</TaskState>
+    <ExecutorId>2</ExecutorId>
     <Tags>
       <Tags>
         <TagId>0</TagId>
-        <Name>понедельник</Name>
+        <Name>сделка</Name>
+        <Color>0</Color>
+      </Tags>
+    </Tags>
+  </Task>
+  <Task>
+    <TaskId>2</TaskId>
+    <Name>составить план продаж</Name>
+    <Description>план на следующий месяц</Description>
+    <TaskState>true</TaskState>
+    <ExecutorId>4</ExecutorId>
+    <Tags>
+      <Tags>
+        <TagId>0</TagId>
+        <Name>продажи</Name>
+        <Color>0</Color>
+      </Tags>
+    </Tags>
+  </Task>
+  <Task>
+    <TaskId>3</TaskId>
+    <Name>встретиться с парнерами </Name>
+    <Description>обсудить закупки </Description>
+    <TaskState>true</TaskState>
+    <ExecutorId>2</ExecutorId>
+    <Tags>
+      <Tags>
+        <TagId>0</TagId>
+        <Name>срочно</Name>
         <Color>0</Color>
       </Tags>
       <Tags>
         <TagId>0</TagId>
-        <Name>продажи</Name>
+        <Name>понедельник</Name>
         <Color>0</Color>
       </Tags>
     </Tags>

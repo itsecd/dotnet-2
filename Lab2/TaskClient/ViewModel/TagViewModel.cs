@@ -7,9 +7,6 @@ namespace TaskClient.ViewModel
     public class TagViewModel : INotifyPropertyChanged
     {
         private Tags _tag;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public int Num { get; set; }
         public string NameTag
         {
@@ -25,8 +22,6 @@ namespace TaskClient.ViewModel
                 OnPropertyChanged(nameof(NameTag));
             }
         }
-        public Command OkTagCommand { get; }
-        public Command CancelTagCommand { get; }
         public TagViewModel()
         {
             _tag = new Tags()
@@ -50,6 +45,9 @@ namespace TaskClient.ViewModel
         {
             _tag = tag;
         }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public Command OkTagCommand { get; }
+        public Command CancelTagCommand { get; }
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
