@@ -8,6 +8,7 @@ namespace GeoAppATM.Repository
         GeoJsonATM GetATMByID(string id);
 
         GeoJsonATM ChangeBalanceByID(string id, int balance);
+
         List<GeoJsonATM> GetAllATM();
     }
 }

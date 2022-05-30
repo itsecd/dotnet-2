@@ -5,7 +5,7 @@ namespace GeoAppATM.Model
 {
 
     /// <summary>
-    /// Тип данных для чтения банкоматов из geojson
+    /// Data type for reading ATMs from geojson
     /// </summary>
     public class GeoJsonATMList
     {
@@ -13,24 +13,24 @@ namespace GeoAppATM.Model
         public List<GeoJsonATM> ATMs { get; set; }
     }
     /// <summary>
-    /// Класс содержащий информацию о банкомате
+    /// A class containing information about an ATM
     /// </summary>
     public class GeoJsonATM
     {
         /// <summary>
-        /// Координаты банкомата
+        /// Contains the coordinates of the ATM
         /// </summary>
         [JsonPropertyName("geometry")]
         public Geometry Geometry { get; set; }
 
         /// <summary>
-        /// Идентификатор, оператор, баланс
+        /// Contains the ID, operator name, balance of the ATM
         /// </summary>
         [JsonPropertyName("properties")]
         public Properties Properties { get; set; }
 
         /// <summary>
-        /// Сравнение двух банкоматов
+        /// Equal ATMs
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -45,7 +45,7 @@ namespace GeoAppATM.Model
         }
 
         /// <summary>
-        /// Хеш-код банкомата по его идентификатору
+        /// Hash code ATM by ID
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
@@ -62,7 +62,7 @@ namespace GeoAppATM.Model
     }
 
     /// <summary>
-    /// Класс для хранения координат
+    /// A class for storing ATM coordinates
     /// </summary>
     public class Geometry
     {
@@ -71,7 +71,7 @@ namespace GeoAppATM.Model
     }
 
     /// <summary>
-    /// Класс для хранения идентификатора, оператора, баланса
+    /// A class for storing ATM ID, operator name, balance
     /// </summary>
     public class Properties
     {

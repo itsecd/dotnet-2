@@ -1,17 +1,17 @@
 ﻿namespace GeoAppATM.Model
 {
     /// <summary>
-    /// Класс для хранения идентификатора и баланса в Json
+    /// Class for storing ID and balance
     /// </summary>
     public class JsonATM
     {
         /// <summary>
-        /// Идентификатор
+        /// ID
         /// </summary>
         public string Id { get; set; }
 
         /// <summary>
-        /// Баланс
+        /// Balance
         /// </summary>
         public int Balance { get; set; }
     }
