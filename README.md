@@ -29,3 +29,4 @@
 Окно формирования заказа:
 
 ![image](https://user-images.githubusercontent.com/92379489/171016126-73911a3c-672b-40d3-9249-5d03bece7f14.png)
+
