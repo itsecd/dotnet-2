@@ -15,7 +15,7 @@ namespace ConsoleChatClient
             Console.WriteLine("User Name");
             var userName = Console.ReadLine();
             var channel = GrpcChannel.ForAddress("https://localhost:5001");
-            var client = new ChatGreeter.ChatGreeterClient(channel);
+            var client = new Chat.ChatClient(channel);
 
             using (var chat = client.Create())
             {

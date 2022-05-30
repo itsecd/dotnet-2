@@ -1,18 +1,15 @@
 using ChatService.Exceptions;
 using ChatService.Repository;
 using Grpc.Core;
-using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace ChatService
+namespace ChatService.Services
 {
-    public class GreeterService : ChatGreeter.ChatGreeterBase
+    public class ChatServerService : Chat.ChatBase
     {
-        private readonly ILogger<GreeterService> _logger;
         private readonly IRoomRepository _repository;
-        public GreeterService(ILogger<GreeterService> logger, IRoomRepository repository)
+        public ChatServerService(IRoomRepository repository)
         {
-            _logger = logger;
             _repository = repository;
         }
 
@@ -57,7 +54,6 @@ namespace ChatService
                 }
                 while (await requestStream.MoveNext())
                 {
-                    var currentMessage = requestStream.Current;
                     await _repository.BroadcastMessage(requestStream.Current, requestStream.Current.RoomName);
                     await _repository.WriteFileAsync();
                 }

@@ -25,10 +25,10 @@ namespace ChatService {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgpjaGF0LnByb3RvEgRjaGF0IjsKB01lc3NhZ2USEAoIcm9vbU5hbWUYASAB",
-            "KAkSEAoIdXNlck5hbWUYAiABKAkSDAoEdGV4dBgDIAEoCTJjCgtDaGF0R3Jl",
-            "ZXRlchIqCgZDcmVhdGUSDS5jaGF0Lk1lc3NhZ2UaDS5jaGF0Lk1lc3NhZ2Uo",
-            "ATABEigKBEpvaW4SDS5jaGF0Lk1lc3NhZ2UaDS5jaGF0Lk1lc3NhZ2UoATAB",
-            "Qg6qAgtDaGF0U2VydmljZWIGcHJvdG8z"));
+            "KAkSEAoIdXNlck5hbWUYAiABKAkSDAoEdGV4dBgDIAEoCTJcCgRDaGF0EioK",
+            "BkNyZWF0ZRINLmNoYXQuTWVzc2FnZRoNLmNoYXQuTWVzc2FnZSgBMAESKAoE",
+            "Sm9pbhINLmNoYXQuTWVzc2FnZRoNLmNoYXQuTWVzc2FnZSgBMAFCDqoCC0No",
+            "YXRTZXJ2aWNlYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {

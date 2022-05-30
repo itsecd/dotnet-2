@@ -1,7 +1,6 @@
 ﻿using ChatService.Exceptions;
 using ChatService.Models;
 using Grpc.Core;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +35,6 @@ namespace ChatService.Repository
             if (!CheckUser(room, userName))
             {
                 room.Users.Add(new User() { Name = userName, Connect = response });
-                Console.WriteLine("User " + userName + " Is Add");
             }
             else
             {
@@ -67,7 +65,7 @@ namespace ChatService.Repository
 
         public void Disconnect(string roomName, string userName)
         {
-            _rooms.Where(f => f.Name == roomName).First().Users.Where(x => x.Name == userName).First().Connect = null;
+            _rooms.First(f => f.Name == roomName).Users.First(x => x.Name == userName).Connect = null;
         }
 
         public async Task BroadcastMessage(Message message, string roomName)
@@ -95,7 +93,10 @@ namespace ChatService.Repository
                 XmlSerializer formatter = new XmlSerializer(typeof(Room));
                 await using FileStream fileStream = new FileStream(name + ".xml", FileMode.OpenOrCreate);
                 Room room = (Room)formatter.Deserialize(fileStream);
-                _rooms.Where(f => f.Name == name).First().Messages = room.Messages;
+                if(room != null)
+                {
+                    _rooms.First(f => f.Name == name).Messages = room.Messages;
+                }
             }
             finally
             {

@@ -8,9 +8,9 @@
 using grpc = global::Grpc.Core;
 
 namespace ChatService {
-  public static partial class ChatGreeter
+  public static partial class Chat
   {
-    static readonly string __ServiceName = "chat.ChatGreeter";
+    static readonly string __ServiceName = "chat.Chat";
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
@@ -70,30 +70,30 @@ namespace ChatService {
       get { return global::ChatService.ChatReflection.Descriptor.Services[0]; }
     }
 
-    /// <summary>Client for ChatGreeter</summary>
-    public partial class ChatGreeterClient : grpc::ClientBase<ChatGreeterClient>
+    /// <summary>Client for Chat</summary>
+    public partial class ChatClient : grpc::ClientBase<ChatClient>
     {
-      /// <summary>Creates a new client for ChatGreeter</summary>
+      /// <summary>Creates a new client for Chat</summary>
       /// <param name="channel">The channel to use to make remote calls.</param>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public ChatGreeterClient(grpc::ChannelBase channel) : base(channel)
+      public ChatClient(grpc::ChannelBase channel) : base(channel)
       {
       }
-      /// <summary>Creates a new client for ChatGreeter that uses a custom <c>CallInvoker</c>.</summary>
+      /// <summary>Creates a new client for Chat that uses a custom <c>CallInvoker</c>.</summary>
       /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public ChatGreeterClient(grpc::CallInvoker callInvoker) : base(callInvoker)
+      public ChatClient(grpc::CallInvoker callInvoker) : base(callInvoker)
       {
       }
       /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      protected ChatGreeterClient() : base()
+      protected ChatClient() : base()
       {
       }
       /// <summary>Protected constructor to allow creation of configured clients.</summary>
       /// <param name="configuration">The client configuration.</param>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      protected ChatGreeterClient(ClientBaseConfiguration configuration) : base(configuration)
+      protected ChatClient(ClientBaseConfiguration configuration) : base(configuration)
       {
       }
 
@@ -119,9 +119,9 @@ namespace ChatService {
       }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      protected override ChatGreeterClient NewInstance(ClientBaseConfiguration configuration)
+      protected override ChatClient NewInstance(ClientBaseConfiguration configuration)
       {
-        return new ChatGreeterClient(configuration);
+        return new ChatClient(configuration);
       }
     }
 

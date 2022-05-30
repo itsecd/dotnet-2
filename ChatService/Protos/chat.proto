@@ -4,7 +4,7 @@ option csharp_namespace = "ChatService";
 
 package chat;
 
-service ChatGreeter {
+service Chat {
 	rpc Create(stream Message) returns(stream Message); 
 	rpc Join(stream Message) returns (stream Message);
 }

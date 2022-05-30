@@ -1,4 +1,5 @@
 ﻿using ChatService.Repository;
+using ChatService.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace ChatService
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<ChatServerService>();
 
                 endpoints.MapGet("/", async context =>
                 {
