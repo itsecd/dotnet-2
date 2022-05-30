@@ -30,7 +30,6 @@ namespace Laba2Client.ViewModels
         }
         public Command OkProductCommand { get; }
         public Command CancelProductCommand { get; }
-        public event PropertyChangedEventHandler PropertyChanged;
         public ProductViewModel()
         {
             _product = new Product()
@@ -55,6 +54,7 @@ namespace Laba2Client.ViewModels
         {
             _product = product;
         }
+        public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

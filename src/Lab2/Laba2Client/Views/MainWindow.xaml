@@ -34,7 +34,7 @@
                     Margin="5,0,5,0" Padding="16,4,16,4"   
                     Command="{Binding RemoveAllOrdersCommand}"/>
         </StackPanel>
-        <ListView Name="orderList" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}"
+        <ListView ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}"
                    ScrollViewer.VerticalScrollBarVisibility="Visible" SelectionMode="Single">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">

@@ -32,8 +32,7 @@ namespace Laba2Client.ViewModels
             }
         }
         public Command AddOrUpdateCustomerCommand { get; }
-        public string ModeCust { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
+        public string Mode { get; set; }
         public CustomerViewModel()
         {
             _customer = new Customer();
@@ -44,13 +43,16 @@ namespace Laba2Client.ViewModels
                     FullName = _customer.FullName,
                     PhoneNumber = _customer.PhoneNumber
                 };
-                if (ModeCust == "Adding")
+                if (_orderSystemRepository != null)
                 {
-                    await _orderSystemRepository.AddCustomer(newCustomer);
-                }
-                else
-                {
-                    await _orderSystemRepository.ReplaceCustomer(_customer.Id, newCustomer);
+                    if (Mode == "Adding")
+                    {
+                        await _orderSystemRepository.AddCustomer(newCustomer);
+                    }
+                    else
+                    {
+                        await _orderSystemRepository.ReplaceCustomer(_customer.Id, newCustomer);
+                    }
                 }
                 var window = (Window)commandParameter;
                 window.DialogResult = true;
@@ -68,6 +70,7 @@ namespace Laba2Client.ViewModels
             }
             _customer = customer;
         }
+        public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

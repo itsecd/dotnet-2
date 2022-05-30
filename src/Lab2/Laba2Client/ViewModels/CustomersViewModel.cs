@@ -34,7 +34,6 @@ namespace Laba2Client.ViewModels
         public Command RemoveAllCustomersCommand { get; }
         public Command CancelCustomerCommand { get; }
         public string ModeCustomer { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
         public CustomersViewModel()
         {
             OpenMainWindowCommand = new Command(commandParameter =>
@@ -64,7 +63,7 @@ namespace Laba2Client.ViewModels
                 var id = customers.Max(customer => customer.Id) + 1;
                 CustomerViewModel customerViewModel = new();
                 await customerViewModel.InitializeAsync(_orderSystemRepository, id);
-                customerViewModel.ModeCust = "Adding";
+                customerViewModel.Mode = "Adding";
                 var customerView = new CustomerView(customerViewModel);
                 if (customerView.ShowDialog() == true)
                 {
@@ -77,7 +76,7 @@ namespace Laba2Client.ViewModels
                 if (SelectedCustomer is not null)
                 {
                     var customerViewModel = Customers.Single(custView => custView.Id == SelectedCustomer.Id);
-                    customerViewModel.ModeCust = "Updating";
+                    customerViewModel.Mode = "Updating";
                     var customerView = new CustomerView(customerViewModel);
                     customerView.ShowDialog();
                 }
@@ -106,6 +105,7 @@ namespace Laba2Client.ViewModels
                 Customers.Add(customerViewModel);
             }
         }
+        public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

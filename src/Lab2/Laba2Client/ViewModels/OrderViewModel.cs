@@ -96,7 +96,6 @@ namespace Laba2Client.ViewModels
         public Command RemoveAllProductsCommand { get; }
         public Command RemoveProductCommand { get; }
         public string Mode { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
         public OrderViewModel()
         {
             _order = new Order()
@@ -246,6 +245,7 @@ namespace Laba2Client.ViewModels
         {
             AmountOrder = Products.Sum(product => product.CostProduct);
         }
+        public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

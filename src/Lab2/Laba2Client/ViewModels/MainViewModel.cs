@@ -30,15 +30,13 @@ namespace Laba2Client.ViewModels
         public Command RemoveAllOrdersCommand { get; }
         public Command OpenCustomerViewCommand { get; }
         public Command OpenMonthlyReportCommand { get; }
-        public event PropertyChangedEventHandler PropertyChanged;
         public MainViewModel()
         {
             AddOrderCommand = new Command(async _ =>
             {
                 var orders = await _orderSystemRepository.GetAllOrders();
-                var id = orders.Max(order => order.OrderId) + 1;
                 OrderViewModel orderViewModel = new();
-                await orderViewModel.InitializeAsync(_orderSystemRepository, id);
+                await orderViewModel.InitializeAsync(_orderSystemRepository, 0);
                 orderViewModel.Mode = "Add";
                 var orderView = new OrderView(orderViewModel);
                 if (orderView.ShowDialog() == true)
@@ -104,6 +102,7 @@ namespace Laba2Client.ViewModels
                 Orders.Add(orderViewModel);
             }
         }
+        public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

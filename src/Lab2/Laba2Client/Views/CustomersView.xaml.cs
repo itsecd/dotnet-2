@@ -9,10 +9,10 @@ namespace Laba2Client.Views
         {
             InitializeComponent();
         }
-        public CustomersView(CustomersViewModel cutomersViewModel)
+        public CustomersView(CustomersViewModel customersViewModel)
         {
             InitializeComponent();
-            DataContext = cutomersViewModel;
+            DataContext = customersViewModel;
         }
     }
 }
