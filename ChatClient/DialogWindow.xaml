@@ -7,12 +7,12 @@
         mc:Ignorable="d"
         Title="DialogWindow" Height="300" Width="500" ResizeMode="NoResize" Background="#e6e6ff">
     
-        <StackPanel VerticalAlignment="Center" Width="300" >
+        <StackPanel VerticalAlignment="Center" Width="300">
         <Label Content="Name:" Margin="10"/>
-        <TextBox  Margin="10"/>
+        <TextBox Name="userName"  Margin="10"/>
         <Label Content="Room name:" Margin="10"/>
-        <TextBox Margin="10"/>
-        <Button Content="Ok" Margin="10" Width="100"/>
+        <TextBox Name="roomName" Margin="10"/>
+        <Button Content="Ok" Margin="10" Width="100" Click="OnOkclicked" />
     </StackPanel>
 
 </Window>

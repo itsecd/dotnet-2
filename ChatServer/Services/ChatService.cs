@@ -36,6 +36,7 @@ namespace ChatServer.Services
                     var room = _chatRooms.FindRoom(nameRoom);
                     _users.AddUser(userName);
                     room.Join(userName, responseStream);
+                    //перенос списка на общий доступ через proto
                     room.AddUser(userName);
                     await _chatRooms.WriteAsyncToFile();
                     await _users.WriteAsyncToFile();
@@ -70,6 +71,7 @@ namespace ChatServer.Services
                 if (_users.IsUserExist(userName))
                     _users.AddUser(userName);
                 await _users.WriteAsyncToFile();
+                await _chatRooms.WriteAsyncToFile();
                 await responseStream.WriteAsync(new Message { Text = "Connection success" });
                 await room.BroadcastMessage(new Message { Text = $"{userName} connected" });
             }
@@ -102,6 +104,35 @@ namespace ChatServer.Services
             }
 
 
+        }
+
+        public async override Task<UsersInfoResponse> GetUsers(RoomInfo request, ServerCallContext context)
+        {
+            await _chatRooms.ReadFromFileAsync(request.RoomName);
+            var room = _chatRooms.FindRoom(request.RoomName);
+            var result = new UsersInfoResponse();
+            
+            foreach (var user in room.Users)
+            {
+                result.Users.Add(new UserInfo { UserName=user.Name, Id=user.ID });
+            }
+            
+            return result;
+        }
+
+        public async override Task<HistoryOfMessages> GetHistoryOfMessages(RoomInfo request, ServerCallContext context)
+        {
+            await _chatRooms.ReadFromFileAsync(request.RoomName);
+            var room = _chatRooms.FindRoom(request.RoomName);
+            var result = new HistoryOfMessages();
+
+            foreach (var message in room.History)
+            {
+                result.Messages.Add(new Message { User = message.Value.User, Text = message.Value.Text, Command = message.Value.Command}, );
+                result.DateOfMessage.Add(message.Key.ToString());
+            }
+
+            return result;
         }
     }
 }
