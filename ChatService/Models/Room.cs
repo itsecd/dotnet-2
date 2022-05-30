@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace ChatService.Models
@@ -9,7 +10,7 @@ namespace ChatService.Models
     {
         public string Name { get; set; }
         [XmlIgnore]
-        public ConcurrentBag<User> Users { get; set; }
-        public ConcurrentDictionary<string, string> Messages { get; set; }   
+        public ConcurrentBag<User> Users { get; set; } = new();
+        public List<string> Messages { get; set; } = new();
     }
 }

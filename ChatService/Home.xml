@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Room xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Home</Name>
+  <Messages>
+    <string>Uncle : Uncle connected</string>
+    <string>Uncle : Hi</string>
+    <string>Dad : Hello</string>
+    <string>Uncle : What are you?</string>
+    <string>Dad : Ok</string>
+  </Messages>
+</Room>

@@ -1,7 +1,9 @@
 ﻿using ChatService.Exceptions;
 using ChatService.Models;
 using Grpc.Core;
+using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -12,7 +14,7 @@ namespace ChatService.Repository
 {
     public class RoomRepository : IRoomRepository
     {
-        private ConcurrentBag<Room> _rooms = new();
+        private readonly ConcurrentBag<Room> _rooms = new();
         private static readonly SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
 
         public void AddRoom(string name)
@@ -31,9 +33,10 @@ namespace ChatService.Repository
         public void Join(string roomName, string userName, IServerStreamWriter<Message> response)
         {
             Room room = FindRoom(roomName);
-            if(room.Users.Where(f => f.Name == userName).First() == null)
+            if (!CheckUser(room, userName))
             {
                 room.Users.Add(new User() { Name = userName, Connect = response });
+                Console.WriteLine("User " + userName + " Is Add");
             }
             else
             {
@@ -41,21 +44,43 @@ namespace ChatService.Repository
             }
         }
 
+        public List<string> GetAllUsers(string roomName)
+        {
+            Room room = FindRoom(roomName);
+            List<string> users = new List<string>();
+            foreach(User user in room.Users)
+            {
+                users.Add(user.Name);
+            }
+            return users;
+        }
+
+        public List<string> GetAllRooms()
+        {
+            List<string> rooms = new List<string>();
+            foreach (Room room in _rooms)
+            {
+                rooms.Add(room.Name);
+            }
+            return rooms;
+        }
+
         public void Disconnect(string roomName, string userName)
         {
             _rooms.Where(f => f.Name == roomName).First().Users.Where(x => x.Name == userName).First().Connect = null;
         }
 
-        public async Task BroadcastMessage(Message message, string roomName, string userName)
+        public async Task BroadcastMessage(Message message, string roomName)
         {
             Room room = FindRoom(roomName);
             foreach (User user in room.Users)
             {
-                if(user.Connect != null)
+                if (user.Connect != null && user.Name != message.UserName)
                 {
                     await user.Connect.WriteAsync(message);
                 }
             }
+            _rooms.First(f => f.Name == roomName).Messages.Add(message.UserName + " : " + message.Text);
         }
 
         public async Task ReadFileAsync(string name)
@@ -85,8 +110,8 @@ namespace ChatService.Repository
             {
                 foreach (Room room in _rooms)
                 {
-                    XmlSerializer formatter = new XmlSerializer(typeof(Room));
-                    await using FileStream fileStream = new FileStream(room.Name, FileMode.Create);
+                    XmlSerializer formatter = new(typeof(Room));
+                    await using FileStream fileStream = new(room.Name + ".xml", FileMode.Create);
                     formatter.Serialize(fileStream, room);
                 }
             }
@@ -96,9 +121,25 @@ namespace ChatService.Repository
             }
         }
 
+        private bool CheckUser(Room room, string userName)
+        {
+            foreach (User user in room.Users)
+            {
+                if (user.Name == userName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public Room FindRoom(string roomName)
         {
-            return _rooms.Where(f => f.Name == roomName).First();
+            if (_rooms.IsEmpty)
+            {
+                return null;
+            }
+            return _rooms.First(f => f.Name == roomName);
         }
     }
 }

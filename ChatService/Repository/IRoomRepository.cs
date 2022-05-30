@@ -9,9 +9,9 @@ namespace ChatService.Repository
         void AddRoom(string name);
         void Join(string roomName, string userName, IServerStreamWriter<Message> response);
         void Disconnect(string roomName, string userName);
-        Task BroadcastMessage(Message message, string roomName, string userName);
+        Task BroadcastMessage(Message message, string roomName);
         Task ReadFileAsync(string name);
         Task WriteFileAsync();
-        public Room FindRoom(string roomName);
+        Room FindRoom(string roomName);
     }
 }
