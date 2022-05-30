@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OrderAccountingSystemClient.Models
+﻿namespace OrderAccountingSystemClient.Models
 {
     ///<summary>Info about product</summary>
     [System.Serializable]

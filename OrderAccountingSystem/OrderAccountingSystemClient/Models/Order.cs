@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace OrderAccountingSystemClient.Models
+﻿namespace OrderAccountingSystemClient.Models
 {
     /// <summary>Info about order</summary>
     [System.Serializable]

@@ -1,8 +1,6 @@
 ﻿using Grpc.Net.Client;
 using OrderAccountingSystemClient.Models;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -17,7 +15,7 @@ namespace OrderAccountingSystemClient.ViewModels
         public Customer SelectedCustomer { get; set; } = new();
         public Order SelectedOrder { get; set; } = new();
         public Product SelectedProduct { get; set; } = new();
-        public ComboBoxItem SelectStatus { get; set; } = new() { DataContext = "0"};
+        public ComboBoxItem SelectStatus { get; set; } = new() { DataContext = "0" };
         public ObservableCollection<Customer> SourceCustomer { get; set; } = new();
         public ObservableCollection<Order> SourceOrder { get; set; } = new();
         public ObservableCollection<Product> SourceProduct { get; set; } = new();
@@ -33,7 +31,7 @@ namespace OrderAccountingSystemClient.ViewModels
         public Interaction<Unit, Unit> CreateCustomer { get; } = new();
         public Interaction<Unit, Unit> CreateProduct { get; } = new();
         public Interaction<Unit, Unit> CreateOrder { get; } = new();
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient _client = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient Сlient = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
 
         public MainWindowViewModel()
         {
@@ -57,7 +55,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void DeleteCustomerImpl()
         {
-            _client.DeleteCustomer(new OrderAccountingSystem.CustomerRequest
+            Сlient.DeleteCustomer(new OrderAccountingSystem.CustomerRequest
             {
                 CustomerId = SelectedCustomer.CustomerId
             });
@@ -70,7 +68,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void DeleteOrderImpl()
         {
-            _client.DeleteOrder(new OrderAccountingSystem.OrderRequest
+            Сlient.DeleteOrder(new OrderAccountingSystem.OrderRequest
             {
                 OrderId = SelectedOrder.OrderId
             });
@@ -84,7 +82,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void DeleteProductImpl()
         {
-            _client.DeleteProduct(new OrderAccountingSystem.ProductRequest
+            Сlient.DeleteProduct(new OrderAccountingSystem.ProductRequest
             {
                 ProductId = SelectedProduct.ProductId
             });
@@ -92,13 +90,13 @@ namespace OrderAccountingSystemClient.ViewModels
         }
         private void GetMonthlySaleImpl()
         {
-            var reply = _client.GetMonthlySale(new OrderAccountingSystem.NullRequest());
+            var reply = Сlient.GetMonthlySale(new OrderAccountingSystem.NullRequest());
             MessageBox.Show("Monthly Sale is " + reply.Price);
         }
 
         private void ChangeStatusImpl()
         {
-            _client.ChangeOrderStatus(new OrderAccountingSystem.OrderRequest
+            Сlient.ChangeOrderStatus(new OrderAccountingSystem.OrderRequest
             {
                 OrderId = SelectedOrder.OrderId,
                 Status = int.Parse((string)SelectStatus.DataContext)
@@ -115,7 +113,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void UpdateCustomerTable()
         {
-            var reply = _client.GetAllCustomers(new OrderAccountingSystem.NullRequest { });
+            var reply = Сlient.GetAllCustomers(new OrderAccountingSystem.NullRequest { });
             SourceCustomer.Clear();
             foreach (var customer in reply.Customers)
             {
@@ -125,7 +123,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void UpdateOrderTable()
         {
-            var reply = _client.GetAllOrders(new OrderAccountingSystem.NullRequest { });
+            var reply = Сlient.GetAllOrders(new OrderAccountingSystem.NullRequest { });
             SourceOrder.Clear();
             foreach (var order in reply.Orders)
             {
@@ -148,7 +146,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void UpdateProductTable()
         {
-            var reply = _client.GetAllProducts(new OrderAccountingSystem.NullRequest { });
+            var reply = Сlient.GetAllProducts(new OrderAccountingSystem.NullRequest { });
             SourceProduct.Clear();
             foreach (var product in reply.Products)
             {

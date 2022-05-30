@@ -18,14 +18,14 @@ namespace OrderAccountingSystemClient.ViewModels
         public ReactiveCommand<Unit, Unit> Add { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }
         public Interaction<Unit?, Unit> Close { get; } = new(RxApp.MainThreadScheduler);
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient _client = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient Сlient = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
 
         public AddOrderViewModel()
         {
             Add = ReactiveCommand.CreateFromObservable(AddImpl);
             Cancel = ReactiveCommand.CreateFromObservable(CancelImpl);
-            Update_Products_Items();
-            Update_Customers_Items();
+            UpdateProductsItems();
+            UpdateCustomersItems();
         }
 
         private IObservable<Unit> AddImpl()
@@ -37,22 +37,17 @@ namespace OrderAccountingSystemClient.ViewModels
             };
             foreach (ComboBoxItem item in SourceProduct)
             {
-                CheckBox? checkBox = item.Content as CheckBox;
-                if(checkBox!=null && checkBox.IsChecked != null)
+                if (item.Content is not CheckBox { IsChecked: true } checkBox) continue;
+
+                orderRequest.Products.Add(new OrderAccountingSystem.ProductRequest
                 {
-                    if ((bool)checkBox.IsChecked)
-                    {
-                        orderRequest.Products.Add(new OrderAccountingSystem.ProductRequest
-                        {
-                            ProductId = checkBox.DataContext.ToString()
-                        });
-                    }
-                }
+                    ProductId = checkBox.DataContext.ToString()
+                });
 
             }
             orderRequest.Status = int.Parse((string)SelectStatus.DataContext);
             orderRequest.Date = SelectedDate.ToString();
-            _ = _client.AddOrder(orderRequest);
+            Сlient.AddOrder(orderRequest);
 
             return Close.Handle(null);
         }
@@ -62,9 +57,9 @@ namespace OrderAccountingSystemClient.ViewModels
             return Close.Handle(null);
         }
 
-        private void Update_Products_Items()
+        private void UpdateProductsItems()
         {
-            var reply = _client.GetAllProducts(new OrderAccountingSystem.NullRequest());
+            var reply = Сlient.GetAllProducts(new OrderAccountingSystem.NullRequest());
             foreach (var item in reply.Products)
             {
                 SourceProduct.Add(new ComboBoxItem()
@@ -78,9 +73,9 @@ namespace OrderAccountingSystemClient.ViewModels
             }
         }
 
-        private void Update_Customers_Items()
+        private void UpdateCustomersItems()
         {
-            var reply = _client.GetAllCustomers(new OrderAccountingSystem.NullRequest());
+            var reply = Сlient.GetAllCustomers(new OrderAccountingSystem.NullRequest());
             foreach (var item in reply.Customers)
             {
                 SourceCustomer.Add(new ComboBoxItem() { DataContext = item.CustomerId, Content = item.Name });

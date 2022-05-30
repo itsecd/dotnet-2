@@ -1,8 +1,8 @@
-﻿using System;
+﻿using OrderAccountingSystemClient.ViewModels;
+using ReactiveUI;
+using System;
 using System.Reactive;
 using System.Windows;
-using OrderAccountingSystemClient.ViewModels;
-using ReactiveUI;
 
 namespace OrderAccountingSystemClient
 {

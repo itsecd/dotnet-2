@@ -1,7 +1,6 @@
 ﻿using OrderAccountingSystemClient.ViewModels;
 using ReactiveUI;
 using System.Reactive.Linq;
-using System.Windows;
 
 namespace OrderAccountingSystemClient
 {

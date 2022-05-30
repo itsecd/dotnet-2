@@ -14,20 +14,20 @@ namespace OrderAccountingSystemClient.ViewModels
         public ReactiveCommand<Unit, Unit> Add { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }
         public Interaction<Unit?, Unit> Close { get; } = new(RxApp.MainThreadScheduler);
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient _client = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient Сlient = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
 
         public AddProductViewModel()
         {
-            
+
             Add = ReactiveCommand.CreateFromObservable(AddImpl);
             Cancel = ReactiveCommand.CreateFromObservable(CancelImpl);
         }
 
         private IObservable<Unit> AddImpl()
         {
-            if (!(new Regex("[^0-9,]+").IsMatch(PriceInput))&&PriceInput!="")
+            if (!(new Regex("[^0-9,]+").IsMatch(PriceInput)) && PriceInput != "")
             {
-                _ = _client.AddProduct(new OrderAccountingSystem.ProductRequest
+                Сlient.AddProduct(new OrderAccountingSystem.ProductRequest
                 {
                     Name = NameInput,
                     Price = double.Parse(PriceInput)

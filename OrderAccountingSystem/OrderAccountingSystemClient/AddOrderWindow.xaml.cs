@@ -1,5 +1,4 @@
-﻿using Grpc.Net.Client;
-using OrderAccountingSystemClient.ViewModels;
+﻿using OrderAccountingSystemClient.ViewModels;
 using ReactiveUI;
 using System.Reactive;
 
