@@ -3,6 +3,15 @@ using System.Text.Json.Serialization;
 
 namespace GeoAppATM.Model
 {
+
+    /// <summary>
+    /// Тип данных для чтения банкоматов из geojson
+    /// </summary>
+    public class GeoJsonATMList
+    {
+        [JsonPropertyName("features")]
+        public List<GeoJsonATM> ATMs { get; set; }
+    }
     /// <summary>
     /// Класс содержащий информацию о банкомате
     /// </summary>
@@ -74,14 +83,5 @@ namespace GeoAppATM.Model
 
         [JsonPropertyName("balance")]
         public int Balance { get; set; }
-    }
-
-    /// <summary>
-    /// Тип данных для чтения банкоматов из geojson
-    /// </summary>
-    public class JsonATMList
-    {
-        [JsonPropertyName("features")]
-        public List<GeoJsonATM> ATMs { get; set; }
     }
 }
