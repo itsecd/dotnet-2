@@ -22,6 +22,7 @@ message UsersInfoResponse {
 message UserInfo {
 	string userName = 1;
 	int32 id = 2;
+	bool isOnline = 3;
 }
 
 message Message{

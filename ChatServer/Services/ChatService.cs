@@ -114,7 +114,12 @@ namespace ChatServer.Services
             
             foreach (var user in room.Users)
             {
-                result.Users.Add(new UserInfo { UserName=user.Name, Id=user.ID });
+                if (room.Online.ContainsKey(user.Name))
+                {
+                  result.Users.Add(new UserInfo { UserName = user.Name, Id = user.ID, IsOnline = true });
+                }
+                else
+                    result.Users.Add(new UserInfo { UserName=user.Name, Id=user.ID, IsOnline = false });
             }
             
             return result;
@@ -128,7 +133,7 @@ namespace ChatServer.Services
 
             foreach (var message in room.History)
             {
-                result.Messages.Add(new Message { User = message.Value.User, Text = message.Value.Text, Command = message.Value.Command}, );
+                result.Messages.Add(new Message { User = message.Value.User, Text = message.Value.Text, Command = message.Value.Command});
                 result.DateOfMessage.Add(message.Key.ToString());
             }
 

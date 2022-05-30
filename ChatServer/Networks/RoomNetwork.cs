@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace ChatServer.Networks
 {
     [Serializable]
@@ -11,20 +12,20 @@ namespace ChatServer.Networks
     {
         public ConcurrentBag<User> Users { get; set; } = new();
 
-        [NonSerialized] public ConcurrentDictionary<string, IServerStreamWriter<Message>> Online = new();
+       [NonSerialized] public ConcurrentDictionary<string, IServerStreamWriter<Message>> Online = new();
 
         public ConcurrentDictionary<DateTime, Message> History { get; set; } = new();
 
         public void AddUser(string name)
         {
-            Users.Add(new User(name, name.GetHashCode()));
+            Users.Add(new User(name, Math.Abs(name.GetHashCode())));
         }
 
         public void Join(string name, IServerStreamWriter<Message> response) => Online.TryAdd(name, response);
 
         public void Disconnect(string name)
         {
-            Online.TryRemove(name, out _);
+           Online.TryRemove(name, out _);
         }
 
 
