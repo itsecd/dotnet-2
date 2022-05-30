@@ -36,27 +36,4 @@
     <Price>100</Price>
     <Date>28.05.2022 9:18:53</Date>
   </Order>
-  <Order>
-    <OrderId>74343fdc-5b8f-47bc-9df5-963b8c4fb6fb</OrderId>
-    <Customer>
-      <CustomerId>3ff5f480-8a50-4e90-af5d-ab205ac70299</CustomerId>
-      <Name>Anton</Name>
-      <Phone>888</Phone>
-    </Customer>
-    <Products>
-      <Product>
-        <ProductId>bbaac972-04ef-44d3-8b5d-64001cbc50b2</ProductId>
-        <Name>;;;</Name>
-        <Price>111</Price>
-      </Product>
-      <Product>
-        <ProductId>c711c666-b835-4002-b6ee-9a443e0a768a</ProductId>
-        <Name>dsadasdas</Name>
-        <Price>111</Price>
-      </Product>
-    </Products>
-    <Status>0</Status>
-    <Price>222</Price>
-    <Date>29.05.2022 14:24:36</Date>
-  </Order>
 </ArrayOfOrder>

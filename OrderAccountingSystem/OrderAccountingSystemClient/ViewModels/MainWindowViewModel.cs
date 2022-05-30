@@ -15,44 +15,25 @@ namespace OrderAccountingSystemClient.ViewModels
     public sealed class MainWindowViewModel
     {
         public Customer SelectedCustomer { get; set; } = new();
-
         public Order SelectedOrder { get; set; } = new();
-
         public Product SelectedProduct { get; set; } = new();
-
         public ComboBoxItem SelectStatus { get; set; } = new() { DataContext = "0"};
-
         public ObservableCollection<Customer> SourceCustomer { get; set; } = new();
-
         public ObservableCollection<Order> SourceOrder { get; set; } = new();
-
         public ObservableCollection<Product> SourceProduct { get; set; } = new();
-
         public ReactiveCommand<Unit, Unit> AddCustomer { get; }
-
         public ReactiveCommand<Unit, Unit> AddProduct { get; }
-
         public ReactiveCommand<Unit, Unit> AddOrder { get; }
-
         public ReactiveCommand<Unit, Unit> DeleteCustomer { get; }
-
         public ReactiveCommand<Unit, Unit> DeleteProduct { get; }
-
         public ReactiveCommand<Unit, Unit> DeleteOrder { get; }
-
         public ReactiveCommand<Unit, Unit> UpdateTable { get; }
-
         public ReactiveCommand<Unit, Unit> ChangeStatus { get; }
-
         public ReactiveCommand<Unit, Unit> GetMonthlySale { get; }
-
         public Interaction<Unit, Unit> CreateCustomer { get; } = new();
-
         public Interaction<Unit, Unit> CreateProduct { get; } = new();
-
         public Interaction<Unit, Unit> CreateOrder { get; } = new();
-
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient client = new(GrpcChannel.ForAddress(App.Default.Host));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient _client = new(GrpcChannel.ForAddress(App.Default.Host));
 
         public MainWindowViewModel()
         {
@@ -63,7 +44,7 @@ namespace OrderAccountingSystemClient.ViewModels
             AddProduct = ReactiveCommand.CreateFromTask(AddProductImpl);
             DeleteProduct = ReactiveCommand.Create(DeleteProductImpl);
             UpdateTable = ReactiveCommand.Create(UpdateTableImpl);
-            ChangeStatus = ReactiveCommand.Create(ChangeStatuImpl);
+            ChangeStatus = ReactiveCommand.Create(ChangeStatusImpl);
             GetMonthlySale = ReactiveCommand.Create(GetMonthlySaleImpl);
 
             UpdateTableImpl();
@@ -76,14 +57,10 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void DeleteCustomerImpl()
         {
-            if (SelectedCustomer != null)
+            _client.DeleteCustomer(new OrderAccountingSystem.CustomerRequest
             {
-                client.DeleteCustomer(new OrderAccountingSystem.CustomerRequest
-                {
-                    CustomerId = SelectedCustomer.CustomerId
-                });
-            }
-            Update_Customer_Table();
+                CustomerId = SelectedCustomer.CustomerId
+            });
         }
 
         private async Task AddOrderImpl()
@@ -93,14 +70,11 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void DeleteOrderImpl()
         {
-            if (SelectedOrder != null)
+            _client.DeleteOrder(new OrderAccountingSystem.OrderRequest
             {
-                client.DeleteOrder(new OrderAccountingSystem.OrderRequest
-                {
-                    OrderId = SelectedOrder.OrderId
-                });
-                Update_Order_Table();
-            }
+                OrderId = SelectedOrder.OrderId
+            });
+            UpdateOrderTable();
         }
 
         private async Task AddProductImpl()
@@ -110,44 +84,38 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void DeleteProductImpl()
         {
-            if (SelectedProduct != null)
+            _client.DeleteProduct(new OrderAccountingSystem.ProductRequest
             {
-                client.DeleteProduct(new OrderAccountingSystem.ProductRequest
-                {
-                    ProductId = SelectedProduct.ProductId
-                });
-            }
-            Update_Product_Table();
+                ProductId = SelectedProduct.ProductId
+            });
+            UpdateProductTable();
         }
         private void GetMonthlySaleImpl()
         {
-            var reply = client.GetMonthlySale(new OrderAccountingSystem.NullRequest { });
-            MessageBox.Show("Monthly Sale is " + reply.Price.ToString());
+            var reply = _client.GetMonthlySale(new OrderAccountingSystem.NullRequest());
+            MessageBox.Show("Monthly Sale is " + reply.Price);
         }
 
-        private void ChangeStatuImpl()
+        private void ChangeStatusImpl()
         {
-            if (SelectedOrder != null)
+            _client.ChangeOrderStatus(new OrderAccountingSystem.OrderRequest
             {
-                client.ChangeOrderStatus(new OrderAccountingSystem.OrderRequest
-                {
-                    OrderId = SelectedOrder.OrderId,
-                    Status = int.Parse((string)SelectStatus.DataContext)
-                });
-                Update_Order_Table();
-            }
+                OrderId = SelectedOrder.OrderId,
+                Status = int.Parse((string)SelectStatus.DataContext)
+            });
+            UpdateOrderTable();
         }
 
         private void UpdateTableImpl()
         {
-            Update_Customer_Table();
-            Update_Order_Table();
-            Update_Product_Table();
+            UpdateCustomerTable();
+            UpdateOrderTable();
+            UpdateProductTable();
         }
 
-        private void Update_Customer_Table()
+        private void UpdateCustomerTable()
         {
-            var reply = client.GetAllCustomers(new OrderAccountingSystem.NullRequest { });
+            var reply = _client.GetAllCustomers(new OrderAccountingSystem.NullRequest { });
             SourceCustomer.Clear();
             foreach (var customer in reply.Customers)
             {
@@ -155,13 +123,13 @@ namespace OrderAccountingSystemClient.ViewModels
             }
         }
 
-        private void Update_Order_Table()
+        private void UpdateOrderTable()
         {
-            var reply = client.GetAllOrders(new OrderAccountingSystem.NullRequest { });
+            var reply = _client.GetAllOrders(new OrderAccountingSystem.NullRequest { });
             SourceOrder.Clear();
             foreach (var order in reply.Orders)
             {
-                String products = string.Empty;
+                var products = string.Empty;
                 foreach (var product in order.Products)
                 {
                     products += product.Name + "\n";
@@ -178,9 +146,9 @@ namespace OrderAccountingSystemClient.ViewModels
             }
         }
 
-        private void Update_Product_Table()
+        private void UpdateProductTable()
         {
-            var reply = client.GetAllProducts(new OrderAccountingSystem.NullRequest { });
+            var reply = _client.GetAllProducts(new OrderAccountingSystem.NullRequest { });
             SourceProduct.Clear();
             foreach (var product in reply.Products)
             {

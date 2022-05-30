@@ -8,20 +8,13 @@ namespace OrderAccountingSystemClient.ViewModels
 {
     public sealed class AddProductViewModel
     {
-
         public string NameInput { get; set; } = string.Empty;
-
         public string PriceInput { get; set; } = string.Empty;
-
         public string ErrorTextBlock { get; set; } = string.Empty;
-
         public ReactiveCommand<Unit, Unit> Add { get; }
-
         public ReactiveCommand<Unit, Unit> Cancel { get; }
-
         public Interaction<Unit?, Unit> Close { get; } = new(RxApp.MainThreadScheduler);
-
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient client = new(GrpcChannel.ForAddress(App.Default.Host));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient _client = new(GrpcChannel.ForAddress(App.Default.Host));
 
         public AddProductViewModel()
         {
@@ -34,7 +27,7 @@ namespace OrderAccountingSystemClient.ViewModels
         {
             if (!(new Regex("[^0-9,]+").IsMatch(PriceInput))&&PriceInput!="")
             {
-                var reply = client.AddProduct(new OrderAccountingSystem.ProductRequest
+                _ = _client.AddProduct(new OrderAccountingSystem.ProductRequest
                 {
                     Name = NameInput,
                     Price = double.Parse(PriceInput)
