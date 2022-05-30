@@ -113,7 +113,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void UpdateCustomerTable()
         {
-            var reply = Client.GetAllCustomers(new OrderAccountingSystem.NullRequest { });
+            var reply = Client.GetAllCustomers(new OrderAccountingSystem.NullRequest());
             SourceCustomer.Clear();
             foreach (var customer in reply.Customers)
             {
@@ -123,7 +123,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void UpdateOrderTable()
         {
-            var reply = Client.GetAllOrders(new OrderAccountingSystem.NullRequest { });
+            var reply = Client.GetAllOrders(new OrderAccountingSystem.NullRequest());
             SourceOrder.Clear();
             foreach (var order in reply.Orders)
             {
@@ -138,7 +138,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void UpdateProductTable()
         {
-            var reply = Client.GetAllProducts(new OrderAccountingSystem.NullRequest { });
+            var reply = Client.GetAllProducts(new OrderAccountingSystem.NullRequest());
             SourceProduct.Clear();
             foreach (var product in reply.Products)
             {
