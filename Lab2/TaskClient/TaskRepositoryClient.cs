@@ -137,6 +137,7 @@ namespace TaskClient
         /// <summary>
         /// Добавление тэга к определенной задаче
         /// </summary>
+        /// /// <param name="id">Идентификатор задачи</param>
         /// <param name="tag">Новый тэг</param>
         public System.Threading.Tasks.Task<int> AddTag(int id, Tags tag)
         {
@@ -153,7 +154,7 @@ namespace TaskClient
         }
 
         /// <summary>
-        /// Получение опреденного  тэга,относящегося к определенной задаче
+        /// Получение определенного  тэга, относящегося к определенной задаче
         /// </summary>
         /// <param name="id">Идентификатор задачи</param>
         /// <param name="num">Номер тэга</param>
@@ -163,7 +164,7 @@ namespace TaskClient
         }
 
         /// <summary>
-        /// Удаление опреденного  тэга,относящегося к определенной задаче
+        /// Удаление определенного  тэга, относящегося к определенной задаче
         /// </summary>
         /// <param name="id">Идентификатор задачи</param>
         ///<param name="num">Номер тэга</param>
@@ -173,7 +174,7 @@ namespace TaskClient
         }
 
         /// <summary>
-        /// Изменение опреденного  тэга,относящегося к определенной задаче
+        /// Изменение определенного  тэга, относящегося к определенной задаче
         /// </summary>
         /// <param name="id">Идентификатор задачи</param>
         /// <param name="num">Номер тэга</param>

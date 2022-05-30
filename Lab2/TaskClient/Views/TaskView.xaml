@@ -13,9 +13,6 @@
         <Style TargetType="{x:Type ListView}">
             <Setter Property="Margin" Value="8"/>
         </Style>
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
         <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="DarkGray" Offset="0" />
             <GradientStop Color="#CCCCFF" Offset="0.5" />
@@ -26,9 +23,6 @@
             <Setter Property="Width" Value="10" />
             <Setter Property="Margin" Value="10" />
         </Style>
-        <Style TargetType="{x:Type Control}">
-            <Setter Property="FontSize" Value="100" />
-        </Style>
     </Window.Resources>
     <Window.DataContext>
         <viewModels:TaskViewModel/>
@@ -38,21 +32,21 @@
             <CheckBox Content="Статус задачи" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue" IsChecked="{Binding State}"/>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock x:Name="TextBlock3" Text="Имя задачи" Height="30" Width="300" HorizontalAlignment="Left" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
+            <TextBlock Text="Имя задачи" Height="30" Width="300" HorizontalAlignment="Left" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
                        Margin="0,0,5,0" Padding="16,4,16,4"/>
-            <TextBox x:Name="TextBlock4" Text="{Binding Name}" Height="30" Width="220" HorizontalAlignment="Right"  FontFamily="Cordia New" Foreground="DarkSlateBlue"
+            <TextBox Text="{Binding Name}" Height="30" Width="220" HorizontalAlignment="Right"  FontFamily="Cordia New" Foreground="DarkSlateBlue"
                         Margin="5,0,5,0" Padding="16,4,16,4" />
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock x:Name="TextBlock5" Text="Описание задачи" Height="30" Width="300" HorizontalAlignment="Left"  FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
+            <TextBlock Text="Описание задачи" Height="30" Width="300" HorizontalAlignment="Left"  FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
                        Margin="0,0,5,0" Padding="16,4,16,4"/>
-            <TextBox x:Name="TextBlock6" Text="{Binding Description}" Height="30" Width="220" FontFamily="Cordia New" Foreground="DarkSlateBlue"
+            <TextBox Text="{Binding Description}" Height="30" Width="220" FontFamily="Cordia New" Foreground="DarkSlateBlue"
                         Margin="5,0,5,0" Padding="16,4,16,4"/>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock x:Name="TextBlock7" Text="Имя исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
+            <TextBlock Text="Имя исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
                        Margin="0,0,5,0" Padding="16,4,16,4"/>
-            <TextBlock x:Name="TextBlock8" Text="{Binding ExecutorName}" Height="30" Width="220" HorizontalAlignment="Right" FontFamily="Cordia New" Foreground="DarkSlateBlue"
+            <TextBlock Text="{Binding ExecutorName}" Height="30" Width="220" HorizontalAlignment="Right" FontFamily="Cordia New" Foreground="DarkSlateBlue"
                         Margin="5,0,5,0" Padding="16,4,16,4" />
             <Button Content="Выбрать исполнителя" Width="200" 
                     FontFamily="Verdana"
@@ -61,9 +55,9 @@
                     Command="{Binding OpenExecutorsViewCommand}"/>
         </StackPanel>
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-            <TextBlock x:Name="TextBlock9" Text="Фамилия исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
+            <TextBlock Text="Фамилия исполнителя задачи" Height="30" Width="300" HorizontalAlignment="Left" FontSize="15" FontFamily="Tahoma" Foreground="DarkBlue"
                        Margin="0,0,5,0" Padding="16,4,16,4"/>
-            <TextBlock x:Name="TextBlock10" Text="{Binding ExecutorSurname}" Height="30" Width="250" HorizontalAlignment="Right" FontFamily="Cordia New" Foreground="DarkSlateBlue"
+            <TextBlock Text="{Binding ExecutorSurname}" Height="30" Width="250" HorizontalAlignment="Right" FontFamily="Cordia New" Foreground="DarkSlateBlue"
                         Margin="5,0,5,0" Padding="16,4,16,4" />
         </StackPanel>
         <ListView ItemsSource="{Binding Tags}" Width="150" HorizontalAlignment="Left">

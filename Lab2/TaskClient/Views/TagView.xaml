@@ -13,9 +13,6 @@
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Margin" Value="10"/>
         </Style>
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
         <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="DarkGray" Offset="0" />
             <GradientStop Color="#CCCCFF" Offset="0.5" />
@@ -25,9 +22,6 @@
             <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
             <Setter Property="Width" Value="10" />
             <Setter Property="Margin" Value="10" />
-        </Style>
-        <Style TargetType="{x:Type Control}">
-            <Setter Property="FontSize" Value="100" />
         </Style>
     </Window.Resources>
     <Window.DataContext>
