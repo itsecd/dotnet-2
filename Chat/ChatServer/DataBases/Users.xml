@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ArrayOfUser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <User>
+    <Name>postman1</Name>
+  </User>
+  <User>
+    <Name>postman23456</Name>
+  </User>
+  <User>
+    <Name>Kirill</Name>
+  </User>
+  <User>
+    <Name>adada</Name>
+  </User>
+  <User>
+    <Name>us 1</Name>
+  </User>
+  <User>
+    <Name>us2</Name>
+  </User>
+  <User>
+    <Name>Nikita!</Name>
+  </User>
+  <User>
+    <Name>Lera</Name>
+  </User>
+</ArrayOfUser>

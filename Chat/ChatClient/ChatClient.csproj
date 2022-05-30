@@ -12,4 +12,8 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ChatServer\ChatServer.csproj" />
+  </ItemGroup>
+
 </Project>

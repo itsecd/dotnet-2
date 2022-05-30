@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ namespace ChatServer
     public class ChatHub : Hub
     {
         private static Dictionary<string, string> Connections = new();
+
         public Task SendMessage(string user, string message)
         {
             return Clients.Others.SendAsync("ReceiveMessage", user, message);
@@ -14,7 +16,12 @@ namespace ChatServer
 
         public Task Enter(string user)
         {
-            Connections[user] = Context.ConnectionId;
+            User _user = new User(user);
+            Connections[_user.Name] = Context.ConnectionId;
+            Serializers.UserSerializer.SerializeUser(_user);
+
+            Console.WriteLine($"{user} is connected");
+
             return Clients.Others.SendAsync("ReceiveMessage", user, $"{user} is connected");
         }
 
