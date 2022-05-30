@@ -22,5 +22,18 @@
         /// <summary>Order Date</summary>
         public string Date { get; set; } = string.Empty;
 
+        public Order()
+        {
+        }
+
+        public Order(string orderId, string customer, string products, string date, double price, int status)
+        {
+            OrderId = orderId;
+            Customer = customer;
+            Products = products;
+            Date = date;
+            Price = price;
+            Status = status;
+        }
     }
 }

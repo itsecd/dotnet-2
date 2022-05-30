@@ -13,3 +13,19 @@
   - выполнение CRUD-операций с перечисленными выше сущностями
   - управление статусами заказов
   - вывод отчета за месяц - самые продающиеся продукты и их суммарная стоимость
+
+Стартовое окно:
+
+![image](https://user-images.githubusercontent.com/92379489/171015663-56e343b9-6484-4fd3-b839-c68f6d50a4b0.png)
+
+Окно добавления клиента:
+
+![image](https://user-images.githubusercontent.com/92379489/171015841-0003546c-5a7d-4db5-a86a-e01359600720.png)
+
+Окно добавления продукта:
+
+![image](https://user-images.githubusercontent.com/92379489/171015936-22bb6f23-2b8a-4e8f-b0e4-b51b5033de22.png)
+
+Окно формирования заказа:
+
+![image](https://user-images.githubusercontent.com/92379489/171016126-73911a3c-672b-40d3-9249-5d03bece7f14.png)

@@ -18,7 +18,7 @@ namespace OrderAccountingSystemClient.ViewModels
         public ReactiveCommand<Unit, Unit> Add { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }
         public Interaction<Unit?, Unit> Close { get; } = new(RxApp.MainThreadScheduler);
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient Сlient = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient Client = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
 
         public AddOrderViewModel()
         {
@@ -47,7 +47,7 @@ namespace OrderAccountingSystemClient.ViewModels
             }
             orderRequest.Status = int.Parse((string)SelectStatus.DataContext);
             orderRequest.Date = SelectedDate.ToString();
-            Сlient.AddOrder(orderRequest);
+            Client.AddOrder(orderRequest);
 
             return Close.Handle(null);
         }
@@ -59,7 +59,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void UpdateProductsItems()
         {
-            var reply = Сlient.GetAllProducts(new OrderAccountingSystem.NullRequest());
+            var reply = Client.GetAllProducts(new OrderAccountingSystem.NullRequest());
             foreach (var item in reply.Products)
             {
                 SourceProduct.Add(new ComboBoxItem()
@@ -75,7 +75,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void UpdateCustomersItems()
         {
-            var reply = Сlient.GetAllCustomers(new OrderAccountingSystem.NullRequest());
+            var reply = Client.GetAllCustomers(new OrderAccountingSystem.NullRequest());
             foreach (var item in reply.Customers)
             {
                 SourceCustomer.Add(new ComboBoxItem() { DataContext = item.CustomerId, Content = item.Name });

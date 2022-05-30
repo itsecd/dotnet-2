@@ -13,5 +13,15 @@
         /// <summary>Customer Phone Number</summary>
         public string Phone { get; set; } = string.Empty;
 
+        public Customer()
+        {
+        }
+
+        public Customer(string customerId, string name, string phone)
+        {
+            CustomerId = customerId;
+            Name = name;
+            Phone = phone;
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace OrderAccountingSystemClient.ViewModels
         public Interaction<Unit, Unit> CreateCustomer { get; } = new();
         public Interaction<Unit, Unit> CreateProduct { get; } = new();
         public Interaction<Unit, Unit> CreateOrder { get; } = new();
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient Сlient = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient Client = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
 
         public MainWindowViewModel()
         {
@@ -55,7 +55,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void DeleteCustomerImpl()
         {
-            Сlient.DeleteCustomer(new OrderAccountingSystem.CustomerRequest
+            Client.DeleteCustomer(new OrderAccountingSystem.CustomerRequest
             {
                 CustomerId = SelectedCustomer.CustomerId
             });
@@ -68,7 +68,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void DeleteOrderImpl()
         {
-            Сlient.DeleteOrder(new OrderAccountingSystem.OrderRequest
+            Client.DeleteOrder(new OrderAccountingSystem.OrderRequest
             {
                 OrderId = SelectedOrder.OrderId
             });
@@ -82,7 +82,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void DeleteProductImpl()
         {
-            Сlient.DeleteProduct(new OrderAccountingSystem.ProductRequest
+            Client.DeleteProduct(new OrderAccountingSystem.ProductRequest
             {
                 ProductId = SelectedProduct.ProductId
             });
@@ -90,13 +90,13 @@ namespace OrderAccountingSystemClient.ViewModels
         }
         private void GetMonthlySaleImpl()
         {
-            var reply = Сlient.GetMonthlySale(new OrderAccountingSystem.NullRequest());
+            var reply = Client.GetMonthlySale(new OrderAccountingSystem.NullRequest());
             MessageBox.Show("Monthly Sale is " + reply.Price);
         }
 
         private void ChangeStatusImpl()
         {
-            Сlient.ChangeOrderStatus(new OrderAccountingSystem.OrderRequest
+            Client.ChangeOrderStatus(new OrderAccountingSystem.OrderRequest
             {
                 OrderId = SelectedOrder.OrderId,
                 Status = int.Parse((string)SelectStatus.DataContext)
@@ -113,17 +113,17 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private void UpdateCustomerTable()
         {
-            var reply = Сlient.GetAllCustomers(new OrderAccountingSystem.NullRequest { });
+            var reply = Client.GetAllCustomers(new OrderAccountingSystem.NullRequest { });
             SourceCustomer.Clear();
             foreach (var customer in reply.Customers)
             {
-                SourceCustomer.Add(new Customer() { CustomerId = customer.CustomerId, Name = customer.Name, Phone = customer.Phone });
+                SourceCustomer.Add(new Customer(customer.CustomerId, customer.Name, customer.Phone));
             }
         }
 
         private void UpdateOrderTable()
         {
-            var reply = Сlient.GetAllOrders(new OrderAccountingSystem.NullRequest { });
+            var reply = Client.GetAllOrders(new OrderAccountingSystem.NullRequest { });
             SourceOrder.Clear();
             foreach (var order in reply.Orders)
             {
@@ -132,25 +132,17 @@ namespace OrderAccountingSystemClient.ViewModels
                 {
                     products += product.Name + "\n";
                 }
-                SourceOrder.Add(new Order()
-                {
-                    OrderId = order.OrderId,
-                    Customer = order.Customer.Name,
-                    Products = products,
-                    Date = order.Date,
-                    Price = order.Price,
-                    Status = order.Status
-                });
+                SourceOrder.Add(new Order(order.OrderId, order.Customer.Name, products, order.Date, order.Price, order.Status));
             }
         }
 
         private void UpdateProductTable()
         {
-            var reply = Сlient.GetAllProducts(new OrderAccountingSystem.NullRequest { });
+            var reply = Client.GetAllProducts(new OrderAccountingSystem.NullRequest { });
             SourceProduct.Clear();
             foreach (var product in reply.Products)
             {
-                SourceProduct.Add(new Product() { ProductId = product.ProductId, Name = product.Name, Price = product.Price });
+                SourceProduct.Add(new Product(product.ProductId, product.Name, product.Price));
             }
         }
     }

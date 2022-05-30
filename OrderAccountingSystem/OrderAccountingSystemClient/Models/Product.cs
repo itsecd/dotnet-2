@@ -11,5 +11,16 @@
 
         /// <summary>Product Price</summary>
         public double Price { get; set; }
+
+        public Product()
+        {
+        }
+
+        public Product(string productId, string name, double price)
+        {
+            ProductId = productId;
+            Name = name;
+            Price = price;
+        }
     }
 }

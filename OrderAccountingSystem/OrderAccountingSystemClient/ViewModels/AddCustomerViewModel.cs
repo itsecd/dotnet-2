@@ -12,7 +12,7 @@ namespace OrderAccountingSystemClient.ViewModels
         public ReactiveCommand<Unit, Unit> Add { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }
         public Interaction<Unit?, Unit> Close { get; } = new(RxApp.MainThreadScheduler);
-        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient Сlient = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
+        private static readonly OrderAccountingSystem.AccountingSystemGreeter.AccountingSystemGreeterClient Client = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
 
         public AddCustomerViewModel()
         {
@@ -22,7 +22,7 @@ namespace OrderAccountingSystemClient.ViewModels
 
         private IObservable<Unit> AddImpl()
         {
-            Сlient.AddCustomer(new OrderAccountingSystem.CustomerRequest
+            Client.AddCustomer(new OrderAccountingSystem.CustomerRequest
             {
                 Name = NameInput,
                 Phone = PhoneInput
