@@ -2,7 +2,7 @@
 <Room xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Name>Home</Name>
   <Messages>
-    <string>Brother : Brother connected</string>
-    <string>Brother : I'm alive!</string>
+    <string>Dad : Dad connected</string>
+    <string>Dad : I'm going sleep</string>
   </Messages>
 </Room>
