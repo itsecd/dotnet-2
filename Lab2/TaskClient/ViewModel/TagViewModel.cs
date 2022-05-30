@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 using TaskClient.Commands;
 
@@ -21,7 +16,11 @@ namespace TaskClient.ViewModel
             get => _tag?.Name;
             set
             {
-                if (value == _tag.Name) return;
+                if (value == _tag.Name)
+                {
+                    return;
+                }
+
                 _tag.Name = value;
                 OnPropertyChanged(nameof(NameTag));
             }
@@ -32,7 +31,7 @@ namespace TaskClient.ViewModel
         {
             _tag = new Tags()
             {
-                Name= string.Empty,
+                Name = string.Empty,
             };
             OkTagCommand = new Command(commandParameter =>
             {

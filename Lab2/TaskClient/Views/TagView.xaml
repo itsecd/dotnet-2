@@ -27,7 +27,7 @@
             <Button Content="OK" Width="80" Padding="16,4,16,4"
                     Command="{Binding OkTagCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
-            <Button Content="Cancel" Width="80" 
+            <Button Content="Назад" Width="80" 
                     Margin="5,0,5,0" Padding="16,4,16,4" 
                     Command="{Binding CancelTagCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>

@@ -53,14 +53,14 @@ namespace Lab2.Repositories
         /// </summary>
         public void WriteToFile()
         {
-            lock (locer)
+            lock (locker)
             {
                 var xmlSerializer = new XmlSerializer(typeof(List<Task>));
                 using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
                 xmlSerializer.Serialize(fileWriter, _tasks);
             }
         }
-        object locer = new object();
+        object locker = new object();
 
         /// <summary>
         /// Мeтод получения задачи по ее идентификатору
@@ -139,8 +139,7 @@ namespace Lab2.Repositories
         public int UpdateTask(int id, Task newTask)
         {
             var taskIndex = _tasks.FindIndex(p => p.TaskId == id);
-            Task task = _tasks[taskIndex];
-            task.Tags = newTask.Tags;         
+            _tasks[taskIndex] = newTask;
             return id;
         }
 
@@ -163,7 +162,7 @@ namespace Lab2.Repositories
             return task.Tags[count - 1];
         }
 
-        public int ReplaceTag(int id, int count, Tags newTag)
+        public int UpdateTag(int id, int count, Tags newTag)
         {
             Task task = Get(id);
             Tags tag = GetTag(id, count);

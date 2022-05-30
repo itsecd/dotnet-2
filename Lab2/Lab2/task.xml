@@ -17,8 +17,8 @@
   <Task>
     <TaskId>2</TaskId>
     <Name>продать</Name>
-    <Description>продать акционный товар</Description>
-    <TaskState>false</TaskState>
+    <Description>продать акционные товары</Description>
+    <TaskState>true</TaskState>
     <ExecutorId>4</ExecutorId>
     <Tags>
       <Tags>
@@ -29,29 +29,58 @@
     </Tags>
   </Task>
   <Task>
-    <TaskId>3</TaskId>
-    <Name>y</Name>
-    <Description>ppp</Description>
+    <TaskId>4</TaskId>
+    <Name>gggggggggggg</Name>
+    <Description>rrrrrrrrrrrrrrrrr</Description>
     <TaskState>true</TaskState>
-    <ExecutorId>3</ExecutorId>
+    <ExecutorId>1</ExecutorId>
     <Tags>
       <Tags>
         <TagId>0</TagId>
-        <Name>ура</Name>
+        <Name>vvvv</Name>
+        <Color>0</Color>
+      </Tags>
+      <Tags>
+        <TagId>0</TagId>
+        <Name>tttt</Name>
+        <Color>0</Color>
+      </Tags>
+      <Tags>
+        <TagId>0</TagId>
+        <Name>gggg</Name>
         <Color>0</Color>
       </Tags>
     </Tags>
   </Task>
   <Task>
-    <TaskId>4</TaskId>
-    <Name>сдать лабу</Name>
-    <Description>пожалуйста зачтите лабу</Description>
+    <TaskId>5</TaskId>
+    <Name>t</Name>
+    <Description>g</Description>
+    <TaskState>true</TaskState>
+    <ExecutorId>4</ExecutorId>
+    <Tags>
+      <Tags>
+        <TagId>0</TagId>
+        <Name>g</Name>
+        <Color>0</Color>
+      </Tags>
+    </Tags>
+  </Task>
+  <Task>
+    <TaskId>6</TaskId>
+    <Name>y</Name>
+    <Description>h</Description>
     <TaskState>false</TaskState>
     <ExecutorId>4</ExecutorId>
     <Tags>
       <Tags>
         <TagId>0</TagId>
-        <Name>срочно</Name>
+        <Name>g</Name>
+        <Color>0</Color>
+      </Tags>
+      <Tags>
+        <TagId>0</TagId>
+        <Name>t</Name>
         <Color>0</Color>
       </Tags>
     </Tags>

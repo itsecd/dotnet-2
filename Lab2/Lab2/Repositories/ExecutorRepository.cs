@@ -61,14 +61,14 @@ namespace Lab2.Repositories
         /// </summary>
         public void WriteToFile()
         {
-            lock (locer)
+            lock (locker)
             {
                 var xmlSerializer = new XmlSerializer(typeof(List<Executor>));
                 using var fileWriter = new FileStream(_storageFileName, FileMode.Create);
                 xmlSerializer.Serialize(fileWriter, _executors);
             }
         }
-        object locer = new object();
+        object locker = new object();
         /// <summary>
         /// Мeтод добавления исполнителя 
         /// </summary>

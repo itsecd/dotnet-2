@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using TaskClient.Commands;
-using System.Collections.ObjectModel;
 using TaskClient.Views;
 
 namespace TaskClient.ViewModel
@@ -53,7 +52,8 @@ namespace TaskClient.ViewModel
         public ObservableCollection<TagViewModel> TagCollection { get; } = new ObservableCollection<TagViewModel>();
         public TaskViewModel()
         {
-            _task = new Task() { 
+            _task = new Task()
+            {
                 Tags = new List<Tags>()
             };
             AddTask = new Command(async commandParameter =>
@@ -115,7 +115,7 @@ namespace TaskClient.ViewModel
         {
             _taskRepository = taskRepository;
 
-            if(Mode == "Add")
+            if (Mode == "Add")
             {
                 ExecutorName = string.Empty;
                 ExecutorSurname = string.Empty;
@@ -123,7 +123,7 @@ namespace TaskClient.ViewModel
             }
             _task = await _taskRepository.GetTaskAsync(taskId);
             Executor executor = await _taskRepository.GetExecutorAsync(_task.ExecutorId);
-            ExecutorName = executor.Name;   
+            ExecutorName = executor.Name;
             ExecutorSurname = executor.Surname;
             int i = 1;
             foreach (var prod in _task.Tags)
@@ -133,11 +133,6 @@ namespace TaskClient.ViewModel
                 tagViewModel.Num = i++;
                 TagCollection.Add(tagViewModel);
             }
-            // var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
-            //_task = task;
-            //Executor executor = await _taskRepository.GetExecutorAsync(_task.ExecutorId);
-            //ExecutorName = executor.Name;   
-            //ExecutorSurname = executor.Surname;
         }
 
 
@@ -161,7 +156,11 @@ namespace TaskClient.ViewModel
             get => (List<Tags>)_task?.Tags;
             set
             {
-                if (value == _task.Tags) return;
+                if (value == _task.Tags)
+                {
+                    return;
+                }
+
                 _task.Tags = value;
                 OnPropertyChanged(nameof(Tags));
             }

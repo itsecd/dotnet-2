@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:TaskClient.ViewModel"
-        xmlns:local="clr-namespace:TaskClient"
         mc:Ignorable="d"
         Loaded="MainWindow_OnLoaded"
         Title="Список задач" Height="450" Width="800">
@@ -50,7 +49,7 @@
                                    Width="100"
                     Command="{Binding RemoveAllTasksCommand}"/>
         </StackPanel>
-        <ListView Name="taskList" ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedTask}" SelectionMode="Single">
+        <ListView ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedTask}" SelectionMode="Single">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="50" Header ="Статус">

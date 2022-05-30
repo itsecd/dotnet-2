@@ -23,11 +23,14 @@
             <Setter Property="Width" Value="10" />
             <Setter Property="Margin" Value="10" />
         </Style>
+        <Style TargetType="{x:Type Control}" x:Key="baseStyle">
+            <Setter Property="FontSize" Value="100" />
+        </Style>
     </Window.Resources>
     <Window.DataContext>
         <viewModels:TaskViewModel/>
     </Window.DataContext>
-    <StackPanel  Margin="5,10,5,5" Orientation="Vertical">
+    <StackPanel  Margin="5,0,5,5" Orientation="Vertical">
        
         <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
             <CheckBox Content="Статус задачи" IsChecked="{Binding State}"/>
@@ -49,7 +52,7 @@
                        Margin="0,0,5,0" Padding="16,4,16,4"/>
             <TextBlock x:Name="TextBlock8" Text="{Binding ExecutorName}" Height="30" Width="220" HorizontalAlignment="Right"
                         Margin="5,0,5,0" Padding="16,4,16,4" />
-            <Button Content="Выбрать исполнителя" Width="150" 
+            <Button Content="Выбрать исполнителя" Width="160" 
                     Padding="16,4,16,4"
                     Command="{Binding OpenExecutorsViewCommand}"/>
         </StackPanel>
@@ -68,18 +71,18 @@
         </ListView>
         <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center"
                     Orientation="Horizontal"
-                    Margin="5,10,0,5">
+                    Margin="5,0,0,5">
             <Button Content="Добавить тэг"  Width="120" Padding="16,4,16,4"       
                     Command="{Binding AddTagCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="29"/>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right"
+        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Right"
                     Orientation="Horizontal"
-                    Margin="5,10,0,5">
+                    Margin="5,0,0,5">
             <Button Content="OK"  Width="80" Padding="16,4,16,4"       
                     Command="{Binding AddTask}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="29"/>
-            <Button Content="Cancel" Width="80"
+            <Button Content="Назад" Width="80"
                     Margin="5,0,5,0" Padding="16,4,16,4"
                     IsCancel="True" Height="29"/>
         </StackPanel>

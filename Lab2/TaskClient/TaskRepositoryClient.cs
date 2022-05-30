@@ -70,7 +70,7 @@ namespace TaskClient
         {
             return _openApiClient.Executor2Async();
         }
-      
+
         /// <summary>
         /// Метод получения задач
         /// </summary>

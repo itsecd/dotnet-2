@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Linq;
-using System.Windows;
-using TaskClient.Commands;
 
 namespace TaskClient.ViewModel
 {
@@ -10,26 +8,22 @@ namespace TaskClient.ViewModel
         private TaskRepositoryClient _taskRepository;
         private Executor _executor;
 
-        public int Id => _executor.ExecutorId; 
+        public int Id => _executor.ExecutorId;
 
         public ExecutorViewModel()
         {
             _executor = new Executor();
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public string Name
         {
-            get => _executor.Name;
+            get => _executor?.Name;
             set
             {
                 if (value == _executor.Name)
                 {
                     return;
                 }
-
                 _executor.Name = value;
                 OnPropertyChanged(nameof(Name));
             }
@@ -37,7 +31,7 @@ namespace TaskClient.ViewModel
 
         public string Surname
         {
-            get => _executor.Surname;
+            get => _executor?.Surname;
             set
             {
                 if (value == _executor.Surname)
@@ -49,6 +43,7 @@ namespace TaskClient.ViewModel
                 OnPropertyChanged(nameof(Surname));
             }
         }
+        public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

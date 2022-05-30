@@ -1,5 +1,4 @@
-﻿using Lab2.Dto;
-using Lab2.Models;
+﻿using Lab2.Models;
 using Lab2.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -69,7 +68,7 @@ namespace Lab2.Controllers
             try
             {
 
-                return _executorRepository.AddExecutor(executor);             
+                return _executorRepository.AddExecutor(executor);
             }
             catch
             {
@@ -87,7 +86,7 @@ namespace Lab2.Controllers
         {
             try
             {
-               return _executorRepository.UpdateExecutor(id, executor);
+                return _executorRepository.UpdateExecutor(id, executor);
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -104,8 +103,8 @@ namespace Lab2.Controllers
         /// </summary>
         [HttpDelete]
         public void Delete()
-        {        
-           _executorRepository.RemoveAllExecutors();
+        {
+            _executorRepository.RemoveAllExecutors();
         }
 
         /// <summary>

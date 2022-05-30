@@ -1,5 +1,4 @@
-﻿using Lab2.Dto;
-using Lab2.Models;
+﻿using Lab2.Models;
 using Lab2.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -69,7 +68,7 @@ namespace Lab2.Controllers
 
             try
             {
-               return _taskListRepository.AddTask(task);
+                return _taskListRepository.AddTask(task);
             }
             catch
             {
@@ -88,7 +87,7 @@ namespace Lab2.Controllers
 
             try
             {
-               return _taskListRepository.UpdateTask(id,task);
+                return _taskListRepository.UpdateTask(id, task);
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -106,7 +105,7 @@ namespace Lab2.Controllers
         [HttpDelete]
         public void Delete()
         {
-            _taskListRepository.RemoveAllTasks();         
+            _taskListRepository.RemoveAllTasks();
         }
 
         /// <summary>
@@ -236,7 +235,7 @@ namespace Lab2.Controllers
         {
             try
             {
-                return _taskListRepository.ReplaceTag(id, num, tag);
+                return _taskListRepository.UpdateTag(id, num, tag);
             }
             catch (ArgumentOutOfRangeException)
             {

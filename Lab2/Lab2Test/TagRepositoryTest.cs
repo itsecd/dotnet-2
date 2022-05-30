@@ -1,5 +1,4 @@
 ﻿using Lab2.Models;
-using Lab2.Repositories;
 using Xunit;
 
 namespace Lab2Test

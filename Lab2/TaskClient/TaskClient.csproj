@@ -124,8 +124,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="..\..\..\..\..\OneDrive\Рабочий стол\server.json">
-      <Link>OpenAPIs\server.json</Link>
+    <None Include="..\..\..\..\..\OneDrive\Рабочий стол\new.json">
+      <Link>OpenAPIs\new.json</Link>
       <Namespace>TaskClient</Namespace>
       <CodeGenerator>NSwagCSharp</CodeGenerator>
     </None>

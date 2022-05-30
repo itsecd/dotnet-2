@@ -55,7 +55,7 @@ namespace Lab2.Repositories
         int AddTag(int id, Tags tag);
         Tags GetTag(int id, int num);
         int RemoveTag(int id, int num);
-        int ReplaceTag(int id, int num, Tags newTag);
+        int UpdateTag(int id, int num, Tags newTag);
         int RemoveAllTags(int id);
     }
 }

@@ -43,7 +43,6 @@ namespace TaskClient.ViewModel
                 TaskViewModel taskViewModel = new TaskViewModel();
                 taskViewModel.Mode = "Add";
                 await taskViewModel.InitializeAsync(_taskRepository, id);
-           
                 var taskView = new TaskView(taskViewModel);
                 if (taskView.ShowDialog() == true)
                 {
@@ -74,8 +73,8 @@ namespace TaskClient.ViewModel
 
             RemoveAllTasksCommand = new Command(async _ =>
             {
-                 await _taskRepository.DeleteAllTaskAsync();
-                 Tasks.Clear();
+                await _taskRepository.DeleteAllTaskAsync();
+                Tasks.Clear();
             }, null);
 
             OpenExecutorsViewCommand = new Command(async commandParameter =>
@@ -92,9 +91,8 @@ namespace TaskClient.ViewModel
 
         }
 
-      
-
         public event PropertyChangedEventHandler PropertyChanged;
+
         public async System.Threading.Tasks.Task InitializeAsync()
         {
             _taskRepository = new TaskRepositoryClient();
@@ -103,8 +101,8 @@ namespace TaskClient.ViewModel
             foreach (var task in tasks)
             {
                 var taskViewModel = new TaskViewModel();
-                await taskViewModel.InitializeAsync(_taskRepository, task.TaskId);
                 taskViewModel.Mode = "Update";
+                await taskViewModel.InitializeAsync(_taskRepository, task.TaskId);           
                 Tasks.Add(taskViewModel);
             }
         }
