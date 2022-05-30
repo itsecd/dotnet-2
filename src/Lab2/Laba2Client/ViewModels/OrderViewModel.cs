@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Laba2Client.Commands;
 using System.Windows;
+using Laba2Client.Commands;
 using Laba2Client.Views;
-using System.Collections.ObjectModel;
 
 namespace Laba2Client.ViewModels
 {
@@ -21,7 +21,11 @@ namespace Laba2Client.ViewModels
             get => _customerName;
             set
             {
-                if (value == _customerName) return;
+                if (value == _customerName)
+                {
+                    return;
+                }
+
                 _customerName = value;
                 OnPropertyChanged(nameof(CustomerName));
             }
@@ -32,7 +36,11 @@ namespace Laba2Client.ViewModels
             get => _customerPhone;
             set
             {
-                if (value == _customerPhone) return;
+                if (value == _customerPhone)
+                {
+                    return;
+                }
+
                 _customerPhone = value;
                 OnPropertyChanged(nameof(CustomerPhone));
             }
@@ -42,7 +50,11 @@ namespace Laba2Client.ViewModels
             get => _order.AmountOrder;
             set
             {
-                if (value == _order.AmountOrder) return;
+                if (value == _order.AmountOrder)
+                {
+                    return;
+                }
+
                 _order.AmountOrder = value;
                 OnPropertyChanged(nameof(AmountOrder));
             }
@@ -52,7 +64,11 @@ namespace Laba2Client.ViewModels
             get => _order.Dt.DateTime;
             set
             {
-                if (value == _order.Dt) return;
+                if (value == _order.Dt)
+                {
+                    return;
+                }
+
                 _order.Dt = value;
                 OnPropertyChanged(nameof(Dt));
             }
@@ -62,7 +78,11 @@ namespace Laba2Client.ViewModels
             get => _order.Status;
             set
             {
-                if (value == _order.Status) return;
+                if (value == _order.Status)
+                {
+                    return;
+                }
+
                 _order.Status = value;
                 OnPropertyChanged(nameof(Status));
             }
@@ -72,7 +92,11 @@ namespace Laba2Client.ViewModels
             get => (List<Product>)_order.Products;
             set
             {
-                if (value == _order.Products) return;
+                if (value == _order.Products)
+                {
+                    return;
+                }
+
                 _order.Products = value;
                 OnPropertyChanged(nameof(Products));
             }
@@ -84,7 +108,11 @@ namespace Laba2Client.ViewModels
             get => _selectedProduct;
             set
             {
-                if (value == _selectedProduct) return;
+                if (value == _selectedProduct)
+                {
+                    return;
+                }
+
                 _selectedProduct = value;
                 OnPropertyChanged(nameof(SelectedProduct));
             }
@@ -105,6 +133,11 @@ namespace Laba2Client.ViewModels
             };
             AddOrder = new Command(async commandParameter =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 if (Mode == "Add")
                 {
                     await _orderSystemRepository.AddOrder(_order);
@@ -119,20 +152,33 @@ namespace Laba2Client.ViewModels
             }, null);
             OpenCustomerViewCommand = new Command(async _ =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 var customersViewModel = new CustomersViewModel();
                 await customersViewModel.InitializeAsync(_orderSystemRepository);
                 customersViewModel.ModeCustomer = "Select";
                 var customersView = new CustomersView(customersViewModel);
-                if ((bool)customersView.ShowDialog())
+                var dialogResult = customersView.ShowDialog();
+                if (!dialogResult.HasValue || !dialogResult.Value)
                 {
-                    _order.CustomerId = customersViewModel.SelectedCustomer.Id;
-                    var customer = await _orderSystemRepository.GetCustomer(_order.CustomerId);
-                    CustomerName = customer.FullName;
-                    CustomerPhone = customer.PhoneNumber;
+                    return;
                 }
+
+                _order.CustomerId = customersViewModel.SelectedCustomer.Id;
+                var customer = await _orderSystemRepository.GetCustomer(_order.CustomerId);
+                CustomerName = customer.FullName;
+                CustomerPhone = customer.PhoneNumber;
             }, (obj) => Mode == "Add");
             AddProductCommand = new Command(async _ =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 var product = new Product();
                 ProductViewModel productViewModel = new();
                 productViewModel.Initialize(product);
@@ -159,6 +205,11 @@ namespace Laba2Client.ViewModels
             }, null);
             UpdateProductCommand = new Command(async _ =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 if (SelectedProduct is not null)
                 {
                     ProductViewModel productViewModel = ProductsCollection.Single(prodView => prodView.Num == SelectedProduct.Num);
@@ -176,17 +227,22 @@ namespace Laba2Client.ViewModels
                             };
                             await _orderSystemRepository.ReplaceProduct(_order.OrderId, SelectedProduct.Num, product);
                         }
-                    } 
+                    }
                     GetAllCostOrder();
                 }
             }, null);
             RemoveProductCommand = new Command(async _ =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 if (SelectedProduct is not null)
                 {
                     if (Mode == "Add")
                     {
-                        Products.RemoveAt(SelectedProduct.Num-1);
+                        Products.RemoveAt(SelectedProduct.Num - 1);
                         ProductsCollection.Remove(SelectedProduct);
                     }
                     else
@@ -205,7 +261,12 @@ namespace Laba2Client.ViewModels
             }, null);
             RemoveAllProductsCommand = new Command(async _ =>
             {
-                if(Mode == "Add")
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
+                if (Mode == "Add")
                 {
                     Products.Clear();
                     ProductsCollection.Clear();
@@ -230,7 +291,7 @@ namespace Laba2Client.ViewModels
             }
             _order = order;
             int i = 1;
-            foreach(var prod in _order.Products)
+            foreach (var prod in _order.Products)
             {
                 var productViewModel = new ProductViewModel();
                 productViewModel.Initialize(prod);
@@ -241,7 +302,7 @@ namespace Laba2Client.ViewModels
             CustomerName = customer.FullName;
             CustomerPhone = customer.PhoneNumber;
         }
-        public void GetAllCostOrder()
+        private void GetAllCostOrder()
         {
             AmountOrder = Products.Sum(product => product.CostProduct);
         }

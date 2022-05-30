@@ -64,7 +64,7 @@ namespace Lab2.Repository
                 throw new ArgumentOutOfRangeException();
             }
             var customerIndex = _customers.FindIndex(customer => customer.Id == id);
-            
+
             if (customerIndex == -1)
             {
                 throw new NotFoundException();
@@ -80,7 +80,7 @@ namespace Lab2.Repository
         }
         public Customer GetCustomer(int id)
         {
-            if( id < 0)
+            if (id < 0)
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -98,7 +98,7 @@ namespace Lab2.Repository
                 throw new ArgumentOutOfRangeException();
             }
             Customer customer = GetCustomer(id);
-            if(customer == null)
+            if (customer == null)
             {
                 throw new NotFoundException();
             }

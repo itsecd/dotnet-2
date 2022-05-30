@@ -13,7 +13,11 @@ namespace Laba2Client.ViewModels
             get => _product.NameProduct;
             set
             {
-                if (value == _product.NameProduct) return;
+                if (value == _product.NameProduct)
+                {
+                    return;
+                }
+
                 _product.NameProduct = value;
                 OnPropertyChanged(nameof(NameProduct));
             }
@@ -23,7 +27,11 @@ namespace Laba2Client.ViewModels
             get => _product.CostProduct;
             set
             {
-                if (value == _product.CostProduct) return;
+                if (value == _product.CostProduct)
+                {
+                    return;
+                }
+
                 _product.CostProduct = value;
                 OnPropertyChanged(nameof(CostProduct));
             }

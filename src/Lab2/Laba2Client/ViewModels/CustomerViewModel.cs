@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Laba2Client.Commands;
 using System.Windows;
+using Laba2Client.Commands;
 
 namespace Laba2Client.ViewModels
 {
@@ -16,7 +16,11 @@ namespace Laba2Client.ViewModels
             get => _customer.FullName;
             set
             {
-                if (value == _customer.FullName) return;
+                if (value == _customer.FullName)
+                {
+                    return;
+                }
+
                 _customer.FullName = value;
                 OnPropertyChanged(nameof(FullName));
             }
@@ -26,7 +30,11 @@ namespace Laba2Client.ViewModels
             get => _customer.PhoneNumber;
             set
             {
-                if (value == _customer.PhoneNumber) return;
+                if (value == _customer.PhoneNumber)
+                {
+                    return;
+                }
+
                 _customer.PhoneNumber = value;
                 OnPropertyChanged(nameof(PhoneNumber));
             }
@@ -43,16 +51,18 @@ namespace Laba2Client.ViewModels
                     FullName = _customer.FullName,
                     PhoneNumber = _customer.PhoneNumber
                 };
-                if (_orderSystemRepository != null)
+                if (_orderSystemRepository == null)
                 {
-                    if (Mode == "Adding")
-                    {
-                        await _orderSystemRepository.AddCustomer(newCustomer);
-                    }
-                    else
-                    {
-                        await _orderSystemRepository.ReplaceCustomer(_customer.Id, newCustomer);
-                    }
+                    return;
+                }
+
+                if (Mode == "Adding")
+                {
+                    await _orderSystemRepository.AddCustomer(newCustomer);
+                }
+                else
+                {
+                    await _orderSystemRepository.ReplaceCustomer(_customer.Id, newCustomer);
                 }
                 var window = (Window)commandParameter;
                 window.DialogResult = true;

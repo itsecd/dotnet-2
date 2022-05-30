@@ -66,7 +66,7 @@ namespace ServerTests
             var order = CreateOrder(data);
             OrderRepository orderRepository = new();
             orderRepository.AddOrder(order);
-            Assert.Equal(order.OrderId, orderRepository.ReplaceOrder(1,order));
+            Assert.Equal(order.OrderId, orderRepository.ReplaceOrder(1, order));
             orderRepository.DeleteOrder(order.OrderId);
         }
         [Fact]
@@ -97,7 +97,7 @@ namespace ServerTests
             var order = CreateOrder(data);
             orderRepository.AddOrder(order);
             orderRepository.AddProduct(order.OrderId, product);
-            Assert.Equal(1, orderRepository.RemoveProduct(order.OrderId,1));
+            Assert.Equal(1, orderRepository.RemoveProduct(order.OrderId, 1));
             orderRepository.DeleteOrder(order.OrderId);
         }
         [Fact]

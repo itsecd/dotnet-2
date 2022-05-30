@@ -19,7 +19,11 @@ namespace Laba2Client.ViewModels
             get => _selectedOrder;
             set
             {
-                if (value == _selectedOrder) return;
+                if (value == _selectedOrder)
+                {
+                    return;
+                }
+
                 _selectedOrder = value;
                 OnPropertyChanged(nameof(SelectedOrder));
             }
@@ -34,7 +38,11 @@ namespace Laba2Client.ViewModels
         {
             AddOrderCommand = new Command(async _ =>
             {
-                var orders = await _orderSystemRepository.GetAllOrders();
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 OrderViewModel orderViewModel = new();
                 await orderViewModel.InitializeAsync(_orderSystemRepository, 0);
                 orderViewModel.Mode = "Add";
@@ -57,6 +65,11 @@ namespace Laba2Client.ViewModels
             }, null);
             OpenCustomerViewCommand = new Command(async commandParameter =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 var window = (Window)commandParameter;
                 var customersViewModel = new CustomersViewModel();
                 await customersViewModel.InitializeAsync(_orderSystemRepository);
@@ -69,6 +82,11 @@ namespace Laba2Client.ViewModels
             }, null);
             RemoveOrderCommand = new Command(async _ =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 if (SelectedOrder is not null)
                 {
                     await _orderSystemRepository.DeleteOrder(SelectedOrder.Id);
@@ -77,11 +95,21 @@ namespace Laba2Client.ViewModels
             }, null);
             RemoveAllOrdersCommand = new Command(async _ =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 await _orderSystemRepository.DeleteAllOrder();
                 Orders.Clear();
             }, null);
             OpenMonthlyReportCommand = new Command(async _ =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 var products = await _orderSystemRepository.MonthlyReport();
                 var totalCost = await _orderSystemRepository.MonthlyTotalCost();
                 var monthlyReportViewModel = new MonthlyReportViewModel();

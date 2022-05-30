@@ -46,6 +46,11 @@ namespace Laba2Client.ViewModels
             }, (obj) => ModeCustomer == "Another");
             RemoveCustomerCommand = new Command(async _ =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 if (SelectedCustomer is not null)
                 {
                     await _orderSystemRepository.DeleteCustomer(SelectedCustomer.Id);
@@ -54,11 +59,21 @@ namespace Laba2Client.ViewModels
             }, (obj) => ModeCustomer == "Another");
             RemoveAllCustomersCommand = new Command(async _ =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 await _orderSystemRepository.DeleteAllCustomer();
                 Customers.Clear();
             }, (obj) => ModeCustomer == "Another");
             AddCustomerCommand = new Command(async _ =>
             {
+                if (_orderSystemRepository == null)
+                {
+                    return;
+                }
+
                 var customers = await _orderSystemRepository.GetAllCustomers();
                 var id = customers.Max(customer => customer.Id) + 1;
                 CustomerViewModel customerViewModel = new();

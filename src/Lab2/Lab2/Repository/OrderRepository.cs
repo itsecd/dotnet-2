@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Lab2.Repository
 {
-    public class OrderRepository: IOrderRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly string _storageFileName;
         private List<Order> _orders;
@@ -73,7 +73,7 @@ namespace Lab2.Repository
             order.AmountOrder = GetAllCostOrder(newOrder);
             order.Status = newOrder.Status;
             order.CustomerId = newOrder.CustomerId;
-            
+
             return id;
         }
         public List<Order> GetAllOrders()
@@ -107,11 +107,11 @@ namespace Lab2.Repository
         {
             _orders.Clear();
         }
-        
+
         public List<Product> GetProducts(int id)
         {
             Order order = GetOrder(id);
-            if(order == null)
+            if (order == null)
             {
                 throw new NotFoundException();
             }
@@ -156,15 +156,15 @@ namespace Lab2.Repository
             order.AmountOrder = GetAllCostOrder(order);
             return id;
         }
-        public Dictionary<string,int> GetProductsMonth()
+        public Dictionary<string, int> GetProductsMonth()
         {
             return (from order in _orders
-                         from product in order.Products
-                         where (DateTime.Now - order.Dt).Days < 30
-                         group product by product.NameProduct
+                    from product in order.Products
+                    where (DateTime.Now - order.Dt).Days < 30
+                    group product by product.NameProduct
                          into productGroup
-                         orderby productGroup.Count() descending
-                         select new KeyValuePair<string, int>(productGroup.Key, productGroup.Count()))
+                    orderby productGroup.Count() descending
+                    select new KeyValuePair<string, int>(productGroup.Key, productGroup.Count()))
                          .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
         public float GetAllCostOrder(Order order)

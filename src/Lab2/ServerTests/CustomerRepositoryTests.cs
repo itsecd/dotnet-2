@@ -33,7 +33,7 @@ namespace ServerTests
             CustomerRepository customerRepository = new();
             customerRepository.AddCustomer(customer);
             Assert.Equal(customer.Id, customerRepository.DeleteCustomer(1));
-            
+
         }
 
         [Fact]

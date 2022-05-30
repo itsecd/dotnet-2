@@ -24,7 +24,7 @@ namespace Lab2.Controllers
         /// </summary>
         /// <returns>All customers</returns>
         [HttpGet]
-        public IEnumerable<Customer> GetAll() 
+        public IEnumerable<Customer> GetAll()
         {
             return _repository.GetAllCustomers();
         }
@@ -34,7 +34,7 @@ namespace Lab2.Controllers
         /// <param name="id">Customer ID</param>
         /// <returns>Customer</returns>
         [HttpGet("{id}")]
-        public ActionResult<Customer> Get(int id) 
+        public ActionResult<Customer> Get(int id)
         {
             try
             {
@@ -52,13 +52,13 @@ namespace Lab2.Controllers
             {
                 return Problem();
             }
-           
+
         }
-       /// <summary>
-       /// Adding customer
-       /// </summary>
-       /// <param name="customer">Added customer</param>
-       /// <returns>Customer ID</returns>
+        /// <summary>
+        /// Adding customer
+        /// </summary>
+        /// <param name="customer">Added customer</param>
+        /// <returns>Customer ID</returns>
         [HttpPost]
         public ActionResult<int> Post([FromBody] Customer customer)
         {
@@ -66,7 +66,7 @@ namespace Lab2.Controllers
             {
                 return _repository.AddCustomer(customer);
             }
-            catch(ArgumentException)
+            catch (ArgumentException)
             {
                 return BadRequest();
             }
@@ -82,7 +82,7 @@ namespace Lab2.Controllers
         {
             try
             {
-               return _repository.ReplaceCustomer(id, customer);
+                return _repository.ReplaceCustomer(id, customer);
             }
             catch (NotFoundException)
             {
@@ -103,13 +103,13 @@ namespace Lab2.Controllers
         /// <param name="id">ID of the customer being deleted</param>
         /// <returns>Customer ID</returns>
         [HttpDelete("{id}")]
-        public ActionResult<int> Delete(int id) 
+        public ActionResult<int> Delete(int id)
         {
             try
             {
                 return _repository.DeleteCustomer(id);
             }
-            catch(NotFoundException)
+            catch (NotFoundException)
             {
                 return NotFound();
             }

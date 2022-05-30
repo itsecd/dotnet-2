@@ -32,7 +32,7 @@ namespace Lab2.Model
         /// Status order
         /// </summary>
         public string Status { get; set; }
-        
+
 
     }
 }

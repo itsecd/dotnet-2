@@ -52,7 +52,7 @@ namespace Lab2.Controllers
             {
                 return Problem();
             }
-            
+
         }
         /// <summary>
         /// Adding order
@@ -66,11 +66,11 @@ namespace Lab2.Controllers
             {
                 return _repository.AddOrder(order);
             }
-            catch(ArgumentException)
+            catch (ArgumentException)
             {
                 return BadRequest();
             }
-            
+
         }
         /// <summary>
         /// Changing the order by ID
@@ -83,7 +83,7 @@ namespace Lab2.Controllers
         {
             try
             {
-               return _repository.ReplaceOrder(id, order);
+                return _repository.ReplaceOrder(id, order);
             }
             catch (NotFoundException)
             {
@@ -278,7 +278,7 @@ namespace Lab2.Controllers
             {
                 return _repository.RemoveAllProducts(id);
             }
-            
+
             catch (NotFoundException)
             {
                 return NotFound();

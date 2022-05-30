@@ -9,7 +9,7 @@ namespace Lab2.Model
         /// <summary>
         /// Name of product
         /// </summary>
-        public string NameProduct {get; set; }
+        public string NameProduct { get; set; }
         /// <summary>
         /// Cost of product
         /// </summary>

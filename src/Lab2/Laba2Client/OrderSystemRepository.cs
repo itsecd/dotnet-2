@@ -82,7 +82,7 @@ namespace Laba2Client
         {
             return _openApiClient.Products4Async(id, num);
         }
-        public Task<int> ReplaceProduct(int id,int num, Product newProduct)
+        public Task<int> ReplaceProduct(int id, int num, Product newProduct)
         {
             return _openApiClient.Products5Async(id, num, newProduct);
         }
