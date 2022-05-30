@@ -1,6 +1,7 @@
 ﻿using SnakeServer;
 using SnakeServer.Database;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -10,44 +11,45 @@ namespace Server.Services
     {
         private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(1000);
 
-        public Player FirstPlayer { get; }
+        public Player _firstPlayer { get; }
 
-        public Player SecondPlayer { get; }
+        public Player _secondPlayer { get; }
 
         private readonly Timer _timer = new(_timeout.TotalMilliseconds) { AutoReset = false };
 
         private bool _isTimerActive;
 
-        private bool _isFirstTurn;
-
         public GamingSession(Player firstPlayer, Player secondPlayer)
         {
-            FirstPlayer = firstPlayer;
-            FirstPlayer.Session = this;
+            _firstPlayer = firstPlayer;
+            _firstPlayer.Session = this;
 
-            SecondPlayer = secondPlayer;
-            SecondPlayer.Session = this;
+            _secondPlayer = secondPlayer;
+            _secondPlayer.Session = this;
 
-            //_timer.Elapsed += OnTimeout;
         }
         public void Start()
         {
-            _isFirstTurn = true;
 
             Task.Run(() =>
             {
-                SendFindOpponentReply(FirstPlayer, SecondPlayer.Login);
-                SendActivePlayerReply(FirstPlayer, true);
+                SendFindOpponentReply(_firstPlayer, _secondPlayer.Login);
+                SendActivePlayerReply(_firstPlayer, true);
             });
 
             Task.Run(() =>
             {
-                SendFindOpponentReply(SecondPlayer, FirstPlayer.Login);
-                SendActivePlayerReply(SecondPlayer, false);
+                SendFindOpponentReply(_secondPlayer, _firstPlayer.Login);
+                SendActivePlayerReply(_secondPlayer, false);
             });
 
             _isTimerActive = true;
             _timer.Start();
+        }
+
+        public void SendResultForFirstPlayer(Player player,String numberOfPoints)
+        {
+           
         }
         private static void SendFindOpponentReply(Player player, string login)
         {
@@ -62,5 +64,7 @@ namespace Server.Services
             var reply = new ServerMessage { ActivePlayerReply = activePlayerReply };
             player.WriteAsync(reply);
         }
+
+        
     }
 }

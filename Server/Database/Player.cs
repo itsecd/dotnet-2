@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 namespace SnakeServer.Database
 {
     /// <summary>Класс для хранения информации об игроке.</summary>
+    [System.Serializable]
     public class Player
     {
         public string Login { get; }

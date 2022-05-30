@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Server.Services;
 using SnakeServer;
@@ -14,7 +15,11 @@ namespace Server
         private readonly ConcurrentDictionary<string, Player> _players = new();
         private readonly object _waitingPlayerLock = new();
         private Player? _waitingPlayer;
-
+/*        private readonly string _filePath;
+        public GameService(IConfiguration config)
+        {
+            _filePath = config.GetValue<string>("PathPlayers");
+        }*/
         public async Task Join(IAsyncStreamReader<PlayerMessage> requestStream, IServerStreamWriter<ServerMessage> responseStream)
         {
 
@@ -38,9 +43,8 @@ namespace Server
                         case PlayerMessage.PlayerMessageOneofCase.LoginRequest:
                             throw new ApplicationException();
                         case PlayerMessage.PlayerMessageOneofCase.FindOpponentRequest:
-                            FindOpponent(player, requestStream.Current.FindOpponentRequest);
+                            FindOpponent(player);
                             break;
-
                         default: throw new ApplicationException();
                     }
 
@@ -59,7 +63,7 @@ namespace Server
             return _players.TryAdd(player.Login, player) ? player : null;
         }
 
-        private void FindOpponent(Player player, FindOpponentRequest findOpponentRequest)
+        private void FindOpponent(Player player)
         {
             GamingSession session;
             lock (_waitingPlayerLock)

@@ -14,7 +14,6 @@ namespace Server
         {
             services.AddGrpc();
             services.AddSingleton<GameService>();
-            //services.AddScoped<IGameNetwork, GameNetwork>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
