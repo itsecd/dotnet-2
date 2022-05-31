@@ -5,92 +5,98 @@ option csharp_namespace = "TaskListKhvatskova";
 package tasksList;
 
 service TasksList {  
-  rpc GetTasks (TasksRequest) returns (TasksResponse);
-  rpc GetTask (TaskRequest) returns (Task);
-  rpc AddTask (TaskRequest) returns (Task);
-  rpc UpdateTask (TaskRequest) returns (Task);
-  rpc UpdateTaskState (TaskRequest) returns (Task);
-  rpc RemoveTask (TaskRequest) returns (Task);
+    rpc SayHello (HelloRequest) returns (HelloReply);
 
-  rpc GetExecutors (NullRequest) returns (ExecutorResponse);
-  rpc GetExecutor (ExecutorRequest) returns (Executor);
-  rpc AddExecutor (ExecutorRequest) returns (Executor);
-  rpc UpdateExecutor (ExecutorRequest) returns (Executor);
-  rpc RemoveExecutor (ExecutorRequest) returns (Executor);
 
-  rpc GetAllTags (NullRequest) returns (TagResponce);
-  rpc GetTag (TagRequest) returns (Tag);
-  rpc AddTag (TagRequest) returns (Tag);
-  rpc UpdateTag (TagRequest) returns (Tag);
-  rpc RemoveTag (TagRequest) returns (Tag);
+  rpc GetAllTasks (NullRequest) returns (AllTaskReply);
+  rpc GetTask (TaskRequest) returns (TaskReply);
+  rpc AddTask (TaskRequest) returns (TaskReply);
+  rpc UpdateTask (TaskRequest) returns (TaskReply);
+  rpc UpdateTaskState (TaskRequest) returns (TaskReply);
+  rpc RemoveTask (TaskRequest) returns (TaskReply);
 
+  rpc GetAllExecutors (NullRequest) returns (AllExecutorReply);
+  rpc GetExecutor (ExecutorRequest) returns (ExecutorReply);
+  rpc AddExecutor (ExecutorRequest) returns (ExecutorReply);
+  rpc UpdateExecutor (ExecutorRequest) returns (ExecutorReply);
+  rpc RemoveExecutor (ExecutorRequest) returns (ExecutorReply);
+
+  rpc GetAllTags (NullRequest) returns (AllTagReply);
+  rpc GetTag (TagRequest) returns (TagReply);
+  rpc AddTag (TagRequest) returns (TagReply);
+  rpc UpdateTag (TagRequest) returns (TagReply);
+  rpc RemoveTag (TagRequest) returns (TagReply);
   rpc RemoveAllTags (NullRequest) returns (NullRequest);
 }
 
-message TasksRequest {}
-
-message TasksResponse 
-{  
-  repeated Task Tasks = 1;
+message NullRequest {
+ExaminationReply examination_reply = 1;
 }
 
-message TaskRequest 
-{
+message TaskRequest {
   int32 TaskId = 1;
   string Name = 2;
   string Description = 3;
   string TaskState = 4;
   int32 ExecutorId = 5;
   string TagsId = 6;
+  ExaminationReply examination_reply = 7;
 }
-
-
-message Task 
-{
+message TaskReply {
   int32 TaskId = 1;
   string Name = 2;
   string Description = 3;
-  bool TaskState = 4;
+  string TaskState = 4;
   int32 ExecutorId = 5;
-  repeated Tag TagsId = 6;
+  string TagsId = 6;
+  ExaminationReply examination_reply = 7;
+
 }
 
-message ExecutorResponse 
-{
-  repeated Executor Executors = 1;
+message AllTaskReply {
+  repeated TaskReply Tasks = 1;
 }
 
-message ExecutorRequest 
-{
+message ExecutorReply {
+  ExaminationReply examination_reply = 1;
+  int32 ExecutorId = 2;
+  string Name = 3;
+  string Surname = 4;
+}
+
+message ExecutorRequest {
   int32 ExecutorId = 1;
   string Name = 2;
   string Surname = 3;
 }
 
-message Executor 
-{
-  int32 ExecutorId = 1;
-  string Name = 2;
-  string Surname = 3;
+message AllExecutorReply {
+  repeated ExecutorReply Executors = 1;
 }
 
-message TagResponce 
-{
-  repeated Tag Tags = 1;
-}
-
-message TagRequest 
-{
+message TagRequest {
   int32 TagId = 1;
   string Name = 2;
   int32 Color = 3;
 }
 
-message Tag 
-{
+message TagReply {
   int32 TagId = 1;
   string Name = 2;
   int32 Color = 3;
+  ExaminationReply examination_reply = 4;
 }
+
+message AllTagReply {
+  repeated TagReply Tags = 1;
+}
+
+
+message ExaminationReply {
+  bool argument_exception = 1;
+  bool not_found_exception = 2;
+  bool problem = 3;
+}
+
 
 
