@@ -37,7 +37,7 @@
 2. Запустить сервер в Visual Studio из папки `Kanban-board`
 3. Открыть папку `Kanban-board-client`
 4. В этой папке открыть терминал и установить зависимости
-4.1 При необходимости поменять адрес сервера в `src/app/services/data.service.ts`
+5. При необходимости поменять адрес сервера в `src/app/services/data.service.ts`
 ```sh
 npm i
 ng serve
