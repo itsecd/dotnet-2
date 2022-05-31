@@ -28,7 +28,7 @@ namespace GeoAppATM
     
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeoAppATM", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeoAppAtm", Version = "v1" });
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });

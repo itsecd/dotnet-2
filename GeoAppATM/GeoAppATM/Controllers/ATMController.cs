@@ -8,10 +8,10 @@ namespace GeoAppATM.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class ATMController : ControllerBase
+    public class AtmController : ControllerBase
     {
         private readonly IAtmRepository _atmRepository;
-        public ATMController(IAtmRepository atmRepository)
+        public AtmController(IAtmRepository atmRepository)
         {
             _atmRepository = atmRepository;
         }
@@ -21,9 +21,9 @@ namespace GeoAppATM.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<GeoJsonATM> Get()
+        public List<Atm> Get()
         {
-            return _atmRepository.GetAllATM();
+            return _atmRepository.GetAtms();
         }
 
         /// <summary>
@@ -32,9 +32,9 @@ namespace GeoAppATM.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public ActionResult<GeoJsonATM> Get(string id)
+        public ActionResult<Atm> Get(string id)
         {
-            var atm = _atmRepository.GetATMByID(id);
+            var atm = _atmRepository.GetAtmByID(id);
             if (atm != null)
             {
                 return atm;
@@ -49,7 +49,7 @@ namespace GeoAppATM.Controllers
         /// <param name="balance"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public ActionResult<GeoJsonATM> Put(string id, [FromBody] int balance)
+        public ActionResult<Atm> Put(string id, [FromBody] int balance)
         {
             var atm = _atmRepository.ChangeBalanceByID(id, balance);
             if (atm != null)
