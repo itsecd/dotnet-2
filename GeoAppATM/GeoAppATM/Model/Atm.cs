@@ -6,6 +6,7 @@
 
 	public class Atm
     {
+
 		/// <summary>
 		/// ID
 		/// </summary>
