@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ArrayOfGroupMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> hi gr!</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us2</Name>
+    <Message> hi from us2!</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> where is my messsages?</Message>
+  </GroupMessage>
+</ArrayOfGroupMessage>

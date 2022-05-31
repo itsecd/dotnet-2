@@ -33,6 +33,12 @@ namespace ChatServer
 
         public async Task JoinGroup(string user, string groupName)
         {
+            var deserializedGroupMessages = Serializers.GroupMessageSerializer.DeserializeMessage(groupName);
+            foreach (var groupMessage in deserializedGroupMessages)
+            {
+                await Clients.Client(Connections[user]).SendAsync("ReceiveMessageFromGroup", groupMessage.GroupName, groupMessage.Name, groupMessage.Message);
+            }
+
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, "has joined the group");
         }
@@ -45,6 +51,7 @@ namespace ChatServer
 
         public Task SendMessageToGroup(string groupName, string user, string message)
         {
+            Serializers.GroupMessageSerializer.SerializeMessage(new Serializers.GroupMessage(groupName, user, message));
             return Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, message);
         }
 

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="DataBases\DirectDataBases\" />
+    <Folder Include="DataBases\GroupDataBases\" />
   </ItemGroup>
 
 </Project>
