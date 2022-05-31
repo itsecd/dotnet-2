@@ -1,5 +1,4 @@
 ﻿using GeoAppATM.Model;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -8,19 +7,12 @@ namespace GeoAppATM.Repository
 {
     public class ATMRepository : IATMRepository
     {
-        private readonly string GeoJsonStorageFileName;
-        private readonly string JsonStorageFileName;
+        private readonly string GeoJsonStorageFileName = "atm.geojson";
+        private readonly string JsonStorageFileName = "ATM.json";
         private static readonly object _locker = new();
 
         private List<JsonATM> _jsonATM;
         private List<GeoJsonATM> _geojsonATM;
-
-        public ATMRepository(IConfiguration configuration)
-        {
-            GeoJsonStorageFileName = configuration.GetValue<string>("atmgeo");
-            JsonStorageFileName = configuration.GetValue<string>("atm");
-        }
-
         private void ReadFromFile()
         {
             if (_geojsonATM != null)
