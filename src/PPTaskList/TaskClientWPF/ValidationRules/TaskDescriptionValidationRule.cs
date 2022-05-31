@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Controls;
 
 namespace TaskClientWPF.ValidationRules
@@ -8,7 +7,7 @@ namespace TaskClientWPF.ValidationRules
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            return String.IsNullOrEmpty((string)value) ?
+            return string.IsNullOrEmpty((string)value) ?
                 new ValidationResult(false, "Заполните поле") : ValidationResult.ValidResult;
         }
     }

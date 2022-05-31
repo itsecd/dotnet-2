@@ -1,4 +1,4 @@
-﻿using Lab2TaskClient;
+﻿using TaskClientWPF;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -35,8 +35,12 @@ namespace TaskClientWPF.ViewModels
         {
             AddTaskCommand = new Command(async _ =>
             {
-                var tasks = await _taskRepository.GetTasksAsync();
-                var id = tasks.Max(t => t.TaskId) + 1;
+                var id = 0;
+                if (_taskRepository != null)
+                {
+                    var tasks = await _taskRepository.GetTasksAsync();
+                    id = tasks.Max(t => t.TaskId) + 1;
+                }
                 var taskViewModel = new TaskViewModel();
                 await taskViewModel.InitializeAsync(_taskRepository, id);
                 var taskView = new TaskView(taskViewModel);
@@ -56,17 +60,17 @@ namespace TaskClientWPF.ViewModels
 
             RemoveTaskCommand = new Command(async _ =>
             {
-                if (SelectedTask != null)
+                if (SelectedTask != null && _taskRepository != null)
                 {
                     await _taskRepository.RemoveTaskAsync(SelectedTask.IdTask);
                     Tasks.Remove(SelectedTask);
                 }
             }, null);
 
-            InputNameCommand = new Command(async _ =>
+            InputNameCommand = new Command( _ =>
             {
                 var inputViewModel = new InputViewModel();
-                await inputViewModel.InitializeAsync(_taskRepository);
+                inputViewModel.Initialize(_taskRepository);
                 var inputView = new InputExecutorNameView(inputViewModel);
                 inputView.ShowDialog();
 

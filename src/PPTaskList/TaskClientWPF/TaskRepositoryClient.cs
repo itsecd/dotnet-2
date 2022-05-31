@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using TaskClientWPF.Properties;
 
-namespace Lab2TaskClient
+namespace TaskClientWPF
 {
     public class TaskRepositoryClient
     {
@@ -48,7 +48,7 @@ namespace Lab2TaskClient
         /// <summary>
         /// Метод добавления исполнителя 
         /// </summary>
-        /// <param name="value">Новый исполнитель</param>
+        /// <param name="executor">Новый исполнитель</param>
         public System.Threading.Tasks.Task PostExecutorAsync(ExecutorDto executor)
         {
             return _client.ExecutorAsync(executor);
@@ -57,8 +57,8 @@ namespace Lab2TaskClient
         /// <summary>
         /// Метод замены исполнителя 
         /// </summary>
-        /// <param name="value">Новый исполнитель</param>
-        /// /// <param name="id">Идентификатор заменяемого исполнителя</param>
+        /// <param name="executor">Новый исполнитель</param>
+        /// <param name="id">Идентификатор заменяемого исполнителя</param>
         public System.Threading.Tasks.Task UpdateExecutorAsync(int id, ExecutorDto executor)
         {
             return _client.Executor3Async(id, executor);
@@ -95,7 +95,7 @@ namespace Lab2TaskClient
         /// <summary>
         /// Метод добавления тега 
         /// </summary>
-        /// <param name="value">Новый тег</param>
+        /// <param name="tag">Новый тег</param>
         public System.Threading.Tasks.Task PostTagAsync(TagDto tag)
         {
             return _client.TagAsync(tag);
@@ -104,8 +104,8 @@ namespace Lab2TaskClient
         /// <summary>
         /// Метод замены тега 
         /// </summary>
-        /// <param name="value">Новый тег</param>
-        /// /// <param name="id">Идентификатор заменяемого тега</param>
+        /// <param name="tag">Новый тег</param>
+        /// <param name="id">Идентификатор заменяемого тега</param>
         public System.Threading.Tasks.Task UpdateTagAsync(int id, TagDto tag)
         {
             return _client.Tag3Async(id, tag);
@@ -142,7 +142,7 @@ namespace Lab2TaskClient
         /// <summary>
         /// Метод добавления задачи 
         /// </summary>
-        /// <param name="value">Новая задача</param>
+        /// <param name="task">Новая задача</param>
         public System.Threading.Tasks.Task PostTaskAsync(TaskDto task)
         {
             return _client.TaskAsync(task);

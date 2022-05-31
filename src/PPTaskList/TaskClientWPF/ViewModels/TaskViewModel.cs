@@ -1,4 +1,4 @@
-﻿using Lab2TaskClient;
+﻿using TaskClientWPF;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,11 +10,11 @@ namespace TaskClientWPF.ViewModels
     public class TaskViewModel : INotifyPropertyChanged
     {
         private TaskRepositoryClient _taskRepository;
-        private Lab2TaskClient.Task _task;
+        private TaskClientWPF.Task _task;
         private string _executorName;
-        private List<string> _tagsStatuses = new List<string>();
-        private List<string> _tagsColors = new List<string>();
-        private bool _addTag = false;
+        private readonly List<string> _tagsStatuses = new List<string>();
+        private readonly List<string> _tagsColors = new List<string>();
+        private bool _addTag;
         public Command ModifiedTaskCommand { get; private set; }
 
         public int IdTask
@@ -82,7 +82,7 @@ namespace TaskClientWPF.ViewModels
         {
             get
             {
-                if (_addTag == true)
+                if (_addTag)
                 {
                     return _tagsStatuses[0];
                 }
@@ -119,7 +119,7 @@ namespace TaskClientWPF.ViewModels
         {
             get
             {
-                if (_addTag == true)
+                if (_addTag)
                 {
                     return _tagsColors[0];
                 }
@@ -154,7 +154,7 @@ namespace TaskClientWPF.ViewModels
 
         public TaskViewModel()
         {
-            _task = new Lab2TaskClient.Task()
+            _task = new TaskClientWPF.Task()
             {
                 TagsId = new List<int>()
             };
@@ -164,17 +164,26 @@ namespace TaskClientWPF.ViewModels
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
         {
             _taskRepository = taskRepository;
+     
+            Task task = null;
+            ICollection<Tag> tags = null;
+            ICollection<Executor> executors = null;
 
-            var tasks = await _taskRepository.GetTasksAsync();
-            var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
-            var tags = await _taskRepository.GetTagsAsync();
-            var executors = await _taskRepository.GetExecutorsAsync();
-
-            if (task != null)
+            if (_taskRepository != null)
+            {
+                var tasks = await _taskRepository.GetTasksAsync();
+                task = tasks.FirstOrDefault(t => t.TaskId == taskId);
+                tags = await _taskRepository.GetTagsAsync();
+                executors = await _taskRepository.GetExecutorsAsync();
+            }
+            if(task!= null) 
             {
                 _task = task;
                 var executor = executors.FirstOrDefault(e => e.ExecutorId == task.ExecutorId);
-                _executorName = executor.Name;
+                if (executor != null)
+                    _executorName = executor.Name;
+                else  
+                    _executorName = string.Empty;
             }
 
             if (task == null)

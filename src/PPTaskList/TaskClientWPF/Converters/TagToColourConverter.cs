@@ -9,7 +9,7 @@ namespace TaskClientWPF.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null && value is String)
+            if (value is string)
             {
                 switch (value)
                 {
