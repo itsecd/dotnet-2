@@ -16,7 +16,6 @@
             <Setter Property="MinWidth" Value="100"/>
             <Setter Property="MinHeight" Value="24"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
-
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False"> 
                     <Setter Property="Opacity" Value="0.5" />
@@ -81,9 +80,6 @@
                   ScrollViewer.CanContentScroll="True"
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <DataGrid.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowTaskCommand}"/>
-            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Задача" Binding="{Binding TaskHeader}" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="Описание" Binding="{Binding TaskDescription}" Width="*" IsReadOnly="True"></DataGridTextColumn>

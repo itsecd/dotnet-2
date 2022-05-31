@@ -83,13 +83,15 @@
     <Compile Include="Converters\TagToColourConverter.cs" />
     <Compile Include="TaskClient.cs" />
     <Compile Include="TaskRepositoryClient.cs" />
+    <Compile Include="ValidationRules\ExecutorNameValidationRule.cs" />
     <Compile Include="ValidationRules\TaskDescriptionValidationRule.cs" />
     <Compile Include="ValidationRules\TaskHeaderValidationRule.cs" />
     <Compile Include="ViewModels\ExecutorViewModel.cs" />
+    <Compile Include="ViewModels\InputViewModel.cs" />
     <Compile Include="ViewModels\TasksViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
-    <Compile Include="Views\ExecutorView.xaml.cs">
-      <DependentUpon>ExecutorView.xaml</DependentUpon>
+    <Compile Include="Views\InputExecutorNameView.xaml.cs">
+      <DependentUpon>InputExecutorNameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TaskView.xaml.cs">
       <DependentUpon>TaskView.xaml</DependentUpon>
@@ -106,7 +108,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ExecutorView.xaml">
+    <Page Include="Views\InputExecutorNameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

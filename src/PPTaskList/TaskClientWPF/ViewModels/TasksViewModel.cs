@@ -13,7 +13,6 @@ namespace TaskClientWPF.ViewModels
         public ObservableCollection<TaskViewModel> Tasks { get; } = new ObservableCollection<TaskViewModel>();
 
         private TaskViewModel _selectedTask;
-        public Command ShowTaskCommand { get; }
         public Command AddTaskCommand { get; }
         public Command UpdateTaskCommand { get; }
         public Command RemoveTaskCommand { get; }
@@ -30,12 +29,6 @@ namespace TaskClientWPF.ViewModels
         }
         public TasksViewModel()
         {
-            ShowTaskCommand = new Command(commandParameter =>
-            {
-                var taskInfoView = new TaskView(SelectedTask);
-                taskInfoView.ShowDialog();
-            }, null);
-
             AddTaskCommand = new Command(async _ =>
             {
                 var tasks = await _taskRepository.GetTasksAsync();
@@ -68,8 +61,10 @@ namespace TaskClientWPF.ViewModels
 
             FindTasksCommand = new Command(async _ =>
             {
-                var tasks = await _taskRepository.GetTasksAsync();
-                
+                var inputViewModel = new InputViewModel();
+                await inputViewModel.InitializeAsync(_taskRepository);
+                var inputView = new ExecutorView(inputViewModel);
+                inputView.ShowDialog();
 
             }, null);
         }

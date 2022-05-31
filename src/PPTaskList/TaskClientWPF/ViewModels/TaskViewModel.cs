@@ -12,7 +12,6 @@ namespace TaskClientWPF.ViewModels
     {
         private TaskRepositoryClient _taskRepository;
         private Lab2TaskClient.Task _task;
-        //private ExecutorViewModel _executor;
         private string _executorName;
         private List<string> _tagsStatuses = new List<string>();
         private List<string> _tagsColors = new List<string>();
@@ -50,18 +49,6 @@ namespace TaskClientWPF.ViewModels
                 OnPropertyChanged(nameof(TaskDescription));
             }
         }
-
-        //public ExecutorViewModel Executor
-        //{
-        //    get => _executor;
-        //    set
-        //    {
-        //        if (value == _executor) return;
-        //        _executor = value;
-        //        _task.ExecutorId = _executor.ExecutorId;
-        //        OnPropertyChanged(nameof(Executor));
-        //    }
-        //}
 
         public string ExecutorName
         {
@@ -110,7 +97,6 @@ namespace TaskClientWPF.ViewModels
                 OnPropertyChanged(nameof(TagsStatuses));
             }
         }
-
         public string TagsColors
         {
             get
@@ -148,7 +134,6 @@ namespace TaskClientWPF.ViewModels
                 TagsId = new List<int>()
             };
             _executorName = string.Empty;
-            //_executor = new ExecutorViewModel();
         }
 
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
@@ -163,20 +148,9 @@ namespace TaskClientWPF.ViewModels
             if (task != null)
             {
                 _task = task;
-                //var executors = await _taskRepository.GetExecutorsAsync();
                 var executor = executors.FirstOrDefault(e => e.ExecutorId == task.ExecutorId);
                 _executorName = executor.Name;
-
-                
-
-                //if (executor != null)
-                //{
-                //    var executorViewModel = new ExecutorViewModel(executor);
-                //    _executor = executorViewModel;
-                //}
             }
-
-            //var taskExecutor = new Executor();
 
             if (task == null)
             {
@@ -186,7 +160,6 @@ namespace TaskClientWPF.ViewModels
 
                     _addTag = true;
                     
-                    //var tags = await _taskRepository.GetTagsAsync();
                     foreach (var tag in tags)
                     {
                         if (tag.TagColour == TagsColors && tag.TagStatus == TagsStatuses)
@@ -224,7 +197,6 @@ namespace TaskClientWPF.ViewModels
                 var window = (Window)commandParameter;
 
                 _task.TagsId.Clear();
-               // var tags = await _taskRepository.GetTagsAsync();
                 foreach (var tag in tags)
                 {
                     if (tag.TagColour == TagsColors && tag.TagStatus == TagsStatuses)

@@ -5,18 +5,14 @@ namespace TaskClientWPF.ViewModels
 {
     public class ExecutorViewModel : INotifyPropertyChanged
     {
+        private TaskRepositoryClient _taskRepository;
         public Executor Executor { get; set; }
+        public string InputName { get; set; }
 
         public ExecutorViewModel()
         {
             Executor = new Executor();
         }
-
-        public ExecutorViewModel(Executor executor)
-        {
-            Executor = executor;
-        }
-
 
         public string ExecutorName
         {
@@ -38,7 +34,6 @@ namespace TaskClientWPF.ViewModels
                 OnPropertyChanged(nameof(ExecutorId));
             }
         }
-
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
