@@ -16,10 +16,10 @@ namespace GeoAppTests
         [Fact]
         public async Task GetAtms()
         {
-            WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
-            HttpClient httpClient = webHost.CreateClient();
+            var webHost = new WebApplicationFactory<Startup>();
+            var httpClient = webHost.CreateClient();
 
-            HttpResponseMessage response = await httpClient.GetAsync("api/Atm");
+            var response = await httpClient.GetAsync("api/Atm");
             var responseString = await response.Content.ReadAsStringAsync();
 
             Assert.NotEmpty(JsonConvert.DeserializeObject<List<Atm>>(responseString));
@@ -36,10 +36,10 @@ namespace GeoAppTests
                 Balance = 753713
             };
 
-            WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
-            HttpClient httpClient = webHost.CreateClient();
+            var webHost = new WebApplicationFactory<Startup>();
+            var httpClient = webHost.CreateClient();
 
-            HttpResponseMessage response = await httpClient.GetAsync("api/Atm/879851245");
+            var response = await httpClient.GetAsync("api/Atm/879851245");
             var responseString = await response.Content.ReadAsStringAsync();
             var returnedAtm = JsonConvert.DeserializeObject<Atm>(responseString);
             Assert.Equal(atm.Name, returnedAtm.Name);
@@ -63,10 +63,10 @@ namespace GeoAppTests
                 Balance = 0
             };
 
-            WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
-            HttpClient httpClient = webHost.CreateClient();
+            var webHost = new WebApplicationFactory<Startup>();
+            var httpClient = webHost.CreateClient();
 
-            HttpResponseMessage response = await httpClient.PutAsync("api/Atm/646586471", new StringContent(@"777", Encoding.UTF8, "application/json"));
+            var response = await httpClient.PutAsync("api/Atm/646586471", new StringContent(@"777", Encoding.UTF8, "application/json"));
             var responseString = await response.Content.ReadAsStringAsync();
             var returnedAtm = JsonConvert.DeserializeObject<Atm>(responseString);
             Assert.Equal(atm.Name, returnedAtm.Name);

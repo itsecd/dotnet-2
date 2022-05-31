@@ -13,7 +13,7 @@ namespace GeoAppATM.Repository
     {
         private static readonly object Locker = new();
         private List<AtmBalance> _atmBalances = new();
-        private List<Atm> _atms = new();
+        private readonly List<Atm> _atms = new();
         private readonly string _atmBalanceStorageFileName;
         public AtmRepository(IConfiguration configuration)
         {
@@ -37,13 +37,13 @@ namespace GeoAppATM.Repository
                     atmName = feature.Attributes["operator"].ToString();
                 }
                 _atms.Add(new Atm
-                {
-                    Id = feature.Attributes["id"].ToString(),
-                    Name = atmName,
-                    Latitude = point.X,
-                    Longitude = point.Y,
-                    Balance = 0
-                }
+                    {
+                        Id = feature.Attributes["id"].ToString(),
+                        Name = atmName,
+                        Latitude = point.X,
+                        Longitude = point.Y,
+                        Balance = 0
+                    }
                 );
             }
         }
@@ -57,35 +57,47 @@ namespace GeoAppATM.Repository
             else
             {
                 using var fileReader = new StreamReader(_atmBalanceStorageFileName);
-                string jsonString = fileReader.ReadToEnd();
+                var jsonString = fileReader.ReadToEnd();
                 _atmBalances = System.Text.Json.JsonSerializer.Deserialize<List<AtmBalance>>(jsonString);
+            }
+            if (_atmBalances == null)
+            {
+                return;
             }
             if (_atmBalances.Count == 0)
             {
-                foreach (Atm atms in _atms)
+                foreach (var atms in _atms)
                     _atmBalances.Add(new AtmBalance { Id = atms.Id, Balance = atms.Balance });
                 return;
             }
-            foreach (AtmBalance atmBalance in _atmBalances)
+            foreach (var atmBalance in _atmBalances)
             {
+                if(_atms.Find(atm => atm.Id == atmBalance.Id) == null)
+                {
+                    return;
+                }
                 _atms.Find(atm => atm.Id == atmBalance.Id).Balance = atmBalance.Balance;
             }
         }
         private void WriteToFile()
         {
-            string jsonString = System.Text.Json.JsonSerializer.Serialize(_atmBalances);
+            var jsonString = System.Text.Json.JsonSerializer.Serialize(_atmBalances);
             using var fileWriter = new StreamWriter(_atmBalanceStorageFileName);
             fileWriter.Write(jsonString);
         }
-        public Atm ChangeBalanceByID(string id, int balance)
+        public Atm ChangeBalanceById(string id, int balance)
         {
             lock (Locker)
             {
                 ReadFromFile();
-                var atm = GetAtmByID(id);
+                var atm = GetAtmById(id);
                 if (atm != null)
                 {
                     atm.Balance = balance;
+                    if(_atmBalances.Find(atmBalance => atmBalance.Id == atm.Id) == null)
+                    {
+                        return null;
+                    }
                     _atmBalances.Find(atmBalance => atmBalance.Id == atm.Id).Balance = balance;
                     WriteToFile();
                     return atm;
@@ -93,7 +105,7 @@ namespace GeoAppATM.Repository
                 return null;
             }
         }
-        public Atm GetAtmByID(string id)
+        public Atm GetAtmById(string id)
         {
             ReadFromFile();
             return _atms.Find(atm => atm.Id == id);

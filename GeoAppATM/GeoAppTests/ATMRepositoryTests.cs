@@ -10,7 +10,7 @@ namespace GeoAppTests
     public class AtmRepositoryTests
     {
         [Fact]
-        public void GetAtmByID()
+        public void GetAtmById()
         {
             var atm = new Atm
             {
@@ -23,17 +23,17 @@ namespace GeoAppTests
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json").Build();
             AtmRepository repository = new(config);
-            var returnedAtm = repository.GetAtmByID("525794080");
+            var returnedAtm = repository.GetAtmById("525794080");
             Assert.Equal(atm.Name, returnedAtm.Name);
             Assert.Equal(atm.Latitude, returnedAtm.Latitude);
             Assert.Equal(atm.Longitude, returnedAtm.Longitude);
             Assert.Equal(atm.Id, returnedAtm.Id);
             Assert.Equal(atm.Balance, returnedAtm.Balance);
-            Assert.Null(repository.GetAtmByID("randomId"));
+            Assert.Null(repository.GetAtmById("randomId"));
         }
 
         [Fact]
-        public void ChangeBalanceByID()
+        public void ChangeBalanceById()
         {
             var atm = new Atm
             {
@@ -46,14 +46,14 @@ namespace GeoAppTests
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json").Build();
             AtmRepository repository = new(config);
-            var returnedAtm = repository.ChangeBalanceByID("646586471", 12345);
+            var returnedAtm = repository.ChangeBalanceById("646586471", 12345);
             Assert.Equal(atm.Name, returnedAtm.Name);
             Assert.Equal(atm.Latitude, returnedAtm.Latitude);
             Assert.Equal(atm.Longitude, returnedAtm.Longitude);
             Assert.Equal(atm.Id, returnedAtm.Id);
             Assert.Equal(12345, returnedAtm.Balance);
-            Assert.Null(repository.ChangeBalanceByID("randomId", 0));
-            repository.ChangeBalanceByID("646586471", 0);
+            Assert.Null(repository.ChangeBalanceById("randomId", 0));
+            repository.ChangeBalanceById("646586471", 0);
         }
 
         [Fact]
@@ -102,13 +102,13 @@ namespace GeoAppTests
 
             var tasks = atms.Select(atm => Task.Run(() =>
             {
-                repository.ChangeBalanceByID(atm.Id, 100);
+                repository.ChangeBalanceById(atm.Id, 100);
             })).ToArray();
             Task.WaitAll(tasks);
 
             tasks = atms.Select(atm => Task.Run(() =>
             {
-                repository.ChangeBalanceByID(atm.Id, 0);
+                repository.ChangeBalanceById(atm.Id, 0);
             })).ToArray();
             Task.WaitAll(tasks);
         }

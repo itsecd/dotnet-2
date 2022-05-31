@@ -5,9 +5,9 @@ namespace GeoAppATM.Repository
 {
     public interface IAtmRepository
     {
-        Atm GetAtmByID(string id);
+        Atm GetAtmById(string id);
 
-        Atm ChangeBalanceByID(string id, int balance);
+        Atm ChangeBalanceById(string id, int balance);
 
         List<Atm> GetAtms();
     }

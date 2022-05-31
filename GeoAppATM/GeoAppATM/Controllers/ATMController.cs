@@ -34,7 +34,7 @@ namespace GeoAppATM.Controllers
         [HttpGet("{id}")]
         public ActionResult<Atm> Get(string id)
         {
-            var atm = _atmRepository.GetAtmByID(id);
+            var atm = _atmRepository.GetAtmById(id);
             if (atm != null)
             {
                 return atm;
@@ -51,7 +51,7 @@ namespace GeoAppATM.Controllers
         [HttpPut("{id}")]
         public ActionResult<Atm> Put(string id, [FromBody] int balance)
         {
-            var atm = _atmRepository.ChangeBalanceByID(id, balance);
+            var atm = _atmRepository.ChangeBalanceById(id, balance);
             if (atm != null)
             {
                 return atm;
