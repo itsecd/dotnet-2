@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+option csharp_namespace = "TaskListKhvatskova";
+
+package tasksList;
+
+service TasksList {  
+  rpc GetTasks (TasksRequest) returns (TasksResponse);
+  rpc GetTask (TaskRequest) returns (Task);
+  rpc AddTask (TaskRequest) returns (Task);
+  rpc UpdateTask (TaskRequest) returns (Task);
+  rpc UpdateTaskState (TaskRequest) returns (Task);
+  rpc RemoveTask (TaskRequest) returns (Task);
+
+  rpc GetExecutors (NullRequest) returns (ExecutorResponse);
+  rpc GetExecutor (ExecutorRequest) returns (Executor);
+  rpc AddExecutor (ExecutorRequest) returns (Executor);
+  rpc UpdateExecutor (ExecutorRequest) returns (Executor);
+  rpc RemoveExecutor (ExecutorRequest) returns (Executor);
+
+  rpc GetAllTags (NullRequest) returns (TagResponce);
+  rpc GetTag (TagRequest) returns (Tag);
+  rpc AddTag (TagRequest) returns (Tag);
+  rpc UpdateTag (TagRequest) returns (Tag);
+  rpc RemoveTag (TagRequest) returns (Tag);
+
+  rpc RemoveAllTags (NullRequest) returns (NullRequest);
+}
+
+message TasksRequest {}
+
+message TasksResponse 
+{  
+  repeated Task Tasks = 1;
+}
+
+message TaskRequest 
+{
+  int32 TaskId = 1;
+  string Name = 2;
+  string Description = 3;
+  string TaskState = 4;
+  int32 ExecutorId = 5;
+  string TagsId = 6;
+}
+
+
+message Task 
+{
+  int32 TaskId = 1;
+  string Name = 2;
+  string Description = 3;
+  bool TaskState = 4;
+  int32 ExecutorId = 5;
+  repeated Tag TagsId = 6;
+}
+
+message ExecutorResponse 
+{
+  repeated Executor Executors = 1;
+}
+
+message ExecutorRequest 
+{
+  int32 ExecutorId = 1;
+  string Name = 2;
+  string Surname = 3;
+}
+
+message Executor 
+{
+  int32 ExecutorId = 1;
+  string Name = 2;
+  string Surname = 3;
+}
+
+message TagResponce 
+{
+  repeated Tag Tags = 1;
+}
+
+message TagRequest 
+{
+  int32 TagId = 1;
+  string Name = 2;
+  int32 Color = 3;
+}
+
+message Tag 
+{
+  int32 TagId = 1;
+  string Name = 2;
+  int32 Color = 3;
+}
+
+

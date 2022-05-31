@@ -32,7 +32,7 @@ namespace TaskListKhvatskova
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<TaskService>();
 
                 endpoints.MapGet("/", async context =>
                 {
