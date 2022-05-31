@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace ChatServer.Serializers
+﻿namespace ChatServer.Serializers
 {
     public class GroupMessage
     {
         public string GroupName { get; set; }
+
         public string Name { get; set; }
+
         public string Message { get; set; }
 
         public GroupMessage() { }

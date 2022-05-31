@@ -16,6 +16,7 @@ namespace ChatServer.Serializers
             {
                 if (user.Name == us.Name) return;
             }
+
             users.Add(user);
             
             var xmlSerializer = new XmlSerializer(typeof(List<User>));

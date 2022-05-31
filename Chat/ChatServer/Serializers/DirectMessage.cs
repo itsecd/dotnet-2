@@ -3,7 +3,9 @@
     public class DirectMessage
     {
         public string Receiver { get; set; }
+
         public string Name { get; set; }
+
         public string Message { get; set; }
     
         public DirectMessage() { }

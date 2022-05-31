@@ -10,4 +10,9 @@
     <Name>us2</Name>
     <Message> really Russian language</Message>
   </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>user4</Name>
+    <Message> hello from user4!</Message>
+  </DirectMessage>
 </ArrayOfDirectMessage>

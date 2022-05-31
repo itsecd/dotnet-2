@@ -15,4 +15,24 @@
     <Name>us1</Name>
     <Message> where is my messsages?</Message>
   </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> else hello!</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us3</Name>
+    <Message> I too connect to this room!</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>user4</Name>
+    <Message> i too here!</Message>
+  </GroupMessage>
 </ArrayOfGroupMessage>

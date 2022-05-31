@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using ChatServer.Serializers;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,17 +17,16 @@ namespace ChatServer
 
         public Task Enter(string user)
         {
+            Connections[user] = Context.ConnectionId;
+
             User _user = new User(user);
-            Connections[_user.Name] = Context.ConnectionId;
-            Serializers.UserSerializer.SerializeUser(_user);
+            UserSerializer.SerializeUser(_user);
 
             var deserializedDirectMessages = Serializers.DirectMessageSerializer.DeserializeMessage(user);
             foreach(var directMessage in deserializedDirectMessages)
             {
                 Clients.Client(Connections[user]).SendAsync("ReceiveDirectMessage", directMessage.Name, directMessage.Message);
             }
-
-            Console.WriteLine($"{user} is connected");
 
             return Clients.Others.SendAsync("ReceiveMessage", user, $"{user} is connected");
         }
@@ -38,6 +38,9 @@ namespace ChatServer
             {
                 await Clients.Client(Connections[user]).SendAsync("ReceiveMessageFromGroup", groupMessage.GroupName, groupMessage.Name, groupMessage.Message);
             }
+
+            GroupList GroupMember = new GroupList(user, groupName);
+            GroupListSerializer.SerializeGroup(GroupMember);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, "has joined the group");
@@ -51,13 +54,13 @@ namespace ChatServer
 
         public Task SendMessageToGroup(string groupName, string user, string message)
         {
-            Serializers.GroupMessageSerializer.SerializeMessage(new Serializers.GroupMessage(groupName, user, message));
+            GroupMessageSerializer.SerializeMessage(new Serializers.GroupMessage(groupName, user, message));
             return Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, message);
         }
 
         public Task SendMessageToUser(string user, string message, string receiver)
         {
-            Serializers.DirectMessageSerializer.SerializeMessage(new Serializers.DirectMessage(receiver, user, message));
+            DirectMessageSerializer.SerializeMessage(new Serializers.DirectMessage(receiver, user, message));
             return Clients.Client(Connections[receiver]).SendAsync("ReceiveDirectMessage", user, message);
         }
 
