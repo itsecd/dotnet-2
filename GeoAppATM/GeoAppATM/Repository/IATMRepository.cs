@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace GeoAppATM.Repository
 {
-    public interface IATMRepository
+    public interface IAtmRepository
     {
-        GeoJsonATM GetATMByID(string id);
+        Atm GetAtmByID(string id);
 
-        GeoJsonATM ChangeBalanceByID(string id, int balance);
+        Atm ChangeBalanceByID(string id, int balance);
 
-        List<GeoJsonATM> GetAllATM();
+        List<Atm> GetAtms();
     }
 }

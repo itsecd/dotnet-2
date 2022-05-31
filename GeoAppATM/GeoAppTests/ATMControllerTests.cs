@@ -23,7 +23,7 @@ namespace GeoAppTests
             HttpResponseMessage response = await httpClient.GetAsync("api/ATM");
             var responseString = await response.Content.ReadAsStringAsync();
 
-            ATMRepository repository = new();
+            AtmRepository repository = new();
             Assert.Equal(repository.GetAllATM(), JsonSerializer.Deserialize<List<GeoJsonATM>>(responseString));
         }
         [Fact]

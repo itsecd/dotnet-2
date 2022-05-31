@@ -1,83 +1,107 @@
 ﻿using GeoAppATM.Model;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+
 namespace GeoAppATM.Repository
 {
-    public class ATMRepository : IATMRepository
+    public class AtmRepository : IAtmRepository
     {
-        private readonly string GeoJsonStorageFileName = "atm.geojson";
-        private readonly string JsonStorageFileName = "ATM.json";
-        private static readonly object _locker = new();
+        private static readonly object Locker = new();
+        private List<AtmBalance> _atmBalances = new();
+        private List<Atm> _atms = new();
+        private readonly string _atmBalanceStorageFileName;
+        public AtmRepository(IConfiguration configuration)
+        {
+            var atmStorageFileName = configuration.GetSection("AtmFile").Value;
+            _atmBalanceStorageFileName = configuration.GetSection("AtmBalanceFile").Value;
 
-        private List<AtmBalance> _jsonATM;
-        private List<GeoJsonATM> _geojsonATM;
+            var serializer = GeoJsonSerializer.Create();
+            using var reader = File.OpenText(atmStorageFileName);
+            using var jsonReader = new JsonTextReader(reader);
+            var geoJsonFeatures = serializer.Deserialize<FeatureCollection>(jsonReader);
+            foreach (var feature in geoJsonFeatures)
+            {
+                var point = (Point)feature.Geometry;
+                string atmName = null;
+                if (feature.Attributes.Exists("name"))
+                {
+                    atmName = feature.Attributes["name"].ToString();
+                }
+                else if (feature.Attributes.Exists("operator"))
+                {
+                    atmName = feature.Attributes["operator"].ToString();
+                }
+                _atms.Add(new Atm
+                {
+                    Id = feature.Attributes["id"].ToString(),
+                    Name = atmName,
+                    Latitude = point.X,
+                    Longitude = point.Y,
+                    Balance = 0
+                }
+                );
+            }
+        }
         private void ReadFromFile()
         {
-            if (_geojsonATM != null)
-                return;
-            if(!File.Exists(JsonStorageFileName))
-                _jsonATM = new List<AtmBalance>();
+            //if (_atms != null)
+            //    return;
+            if (!File.Exists(_atmBalanceStorageFileName))
+                _atmBalances = new List<AtmBalance>();
             else
             {
-                using var fileReader = new StreamReader(JsonStorageFileName);
+                using var fileReader = new StreamReader(_atmBalanceStorageFileName);
                 string jsonString = fileReader.ReadToEnd();
-                _jsonATM = JsonSerializer.Deserialize<List<AtmBalance>>(jsonString);
+                _atmBalances = System.Text.Json.JsonSerializer.Deserialize<List<AtmBalance>>(jsonString);
             }
-
-            var stringGeoJsonATM = File.ReadAllText(GeoJsonStorageFileName);
-            _geojsonATM = JsonSerializer.Deserialize<GeoJsonATMList>(stringGeoJsonATM).ATMs;
-
-            if(_jsonATM.Count == 0)
+            if (_atmBalances.Count == 0)
             {
-                foreach (GeoJsonATM geoJsonATM in _geojsonATM)
-                    _jsonATM.Add(new AtmBalance { Id = geoJsonATM.Properties.Id, Balance = geoJsonATM.Properties.Balance });
+                foreach (Atm atms in _atms)
+                    _atmBalances.Add(new AtmBalance { Id = atms.Id, Balance = atms.Balance });
                 return;
             }
-            foreach (AtmBalance jsonATM in _jsonATM)
+            foreach (AtmBalance atmBalance in _atmBalances)
             {
-                _geojsonATM.Find(geojsonATM => geojsonATM.Properties.Id == jsonATM.Id).Properties.Balance = jsonATM.Balance;
+                _atms.Find(atm => atm.Id == atmBalance.Id).Balance = atmBalance.Balance;
             }
         }
         private void WriteToFile()
         {
-            string jsonString = JsonSerializer.Serialize(_jsonATM);
-            using var fileWriter = new StreamWriter(JsonStorageFileName);
+            string jsonString = System.Text.Json.JsonSerializer.Serialize(_atmBalances);
+            using var fileWriter = new StreamWriter(_atmBalanceStorageFileName);
             fileWriter.Write(jsonString);
         }
-        public GeoJsonATM ChangeBalanceByID(string id, int balance)
+        public Atm ChangeBalanceByID(string id, int balance)
         {
-            lock (_locker)
+            lock (Locker)
             {
                 ReadFromFile();
-                var atm = GetATMByID(id);
+                var atm = GetAtmByID(id);
                 if (atm != null)
                 {
-                    atm.Properties.Balance = balance;
-                    _jsonATM.Find(jsonATM => jsonATM.Id == atm.Properties.Id).Balance = balance;
+                    atm.Balance = balance;
+                    _atmBalances.Find(atmBalance => atmBalance.Id == atm.Id).Balance = balance;
                     WriteToFile();
                     return atm;
                 }
                 return null;
             }
         }
-
-        public List<GeoJsonATM> GetAllATM()
+        public Atm GetAtmByID(string id)
         {
             ReadFromFile();
-            return _geojsonATM;
+            return _atms.Find(atm => atm.Id == id);
         }
 
-        public GeoJsonATM GetATMByID(string id)
+        public List<Atm> GetAtms()
         {
             ReadFromFile();
-            return _geojsonATM.Find(atm => atm.Properties.Id == id);
+            return _atms;
         }
     }
 }

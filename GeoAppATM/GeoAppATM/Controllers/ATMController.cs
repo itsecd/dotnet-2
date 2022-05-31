@@ -10,8 +10,8 @@ namespace GeoAppATM.Controllers
     [ApiController]
     public class ATMController : ControllerBase
     {
-        private readonly IATMRepository _atmRepository;
-        public ATMController(IATMRepository atmRepository)
+        private readonly IAtmRepository _atmRepository;
+        public ATMController(IAtmRepository atmRepository)
         {
             _atmRepository = atmRepository;
         }

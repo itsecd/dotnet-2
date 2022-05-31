@@ -25,7 +25,7 @@ namespace GeoAppTests
                     Balance = 0
                 }
             };
-            ATMRepository repository = new();
+            AtmRepository repository = new();
             var returnedATM = repository.GetATMByID("1901330894");
             Assert.Equal(atm, returnedATM);
             Assert.Null(repository.GetATMByID("randomId"));
@@ -47,7 +47,7 @@ namespace GeoAppTests
                     Balance = 250000,
                 }
             };
-            ATMRepository repository = new();
+            AtmRepository repository = new();
             var returnedATM = repository.ChangeBalanceByID("904585003", 250000);
             Assert.Equal(atm, returnedATM);
             Assert.Null(repository.ChangeBalanceByID("randomId", 0));
@@ -84,7 +84,7 @@ namespace GeoAppTests
                     Balance = 0,
                 }
             };
-            ATMRepository repository = new();
+            AtmRepository repository = new();
 
             Assert.True(repository.GetAllATM()[7].Equals(atm1));
             Assert.True(repository.GetAllATM()[8].Equals(atm2));
@@ -95,7 +95,7 @@ namespace GeoAppTests
         [Fact]
         public void ChangeBalance()
         {
-            ATMRepository repository = new();
+            AtmRepository repository = new();
             var atms = repository.GetAllATM();
 
             var tasks = atms.Select(atm => Task.Run(() =>
