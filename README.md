@@ -15,7 +15,7 @@
 > Демонстрация работы канбан-доски
 ![Alt text](https://psv4.vkuseraudio.net/s/v1/d/uNlF6390yc2tlwSiKylpmj71gltwlEijn9-wttYw9mXSRbGl_V34OH0vZSE9FULjDpZO-Bn7r6eB8TexMO96l4CQdj-qU1f5me4fFx9QrOLkbW5hpEgODw/wer1.gif)
 
-> Демонстрация работы CRUD операция с категориями / задачами
+> Демонстрация работы CRUD операций с категориями / задачами
 ![Alt text](https://sun7-14.userapi.com/s/v1/d/DkM7SmqCLDuCwRs9uXsCjEfVSB22glM7XhkQjU_mP5aXg83iL6z-s2YlRtq6h-A1PX1KXa-rWnHtthQpwrrK3hKN8u6v_N6vHAh20yDhR7rDF_68crhvKQ/wer2.gif)
 ## Сервер
 
