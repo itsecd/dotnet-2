@@ -7,7 +7,7 @@
         xmlns:validationRules="clr-namespace:TaskClientWPF.ValidationRules"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Информация о задаче" Height="200" Width="300">
+        Title="Информация о задаче" Height="220" Width="300">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Margin" Value="8"/>
@@ -103,6 +103,15 @@
             <ComboBoxItem Content="Green"/>
             <ComboBoxItem Content="Red"/>
             <ComboBoxItem Content="Yellow"/>
+        </ComboBox>
+        <Label Grid.Row="4" Grid.Column="0" Content="Цвет:"/>
+        <ComboBox Name="comboBoxExecutor" Grid.Row="4" Grid.Column="1"  SelectedIndex="0" SelectedItem="{Binding ExecutorName}" >
+            <ComboBoxItem Visibility="Collapsed">Выберите исполнителя</ComboBoxItem>
+            <ComboBoxItem Content="Dasha"/>
+            <ComboBoxItem Content="Паша"/>
+            <ComboBoxItem Content="Лера"/>
+            <ComboBoxItem Content="Рома"/>
+            <ComboBoxItem Content="Никита"/>
         </ComboBox>
         <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Command="{Binding ModifiedTaskCommand}" 

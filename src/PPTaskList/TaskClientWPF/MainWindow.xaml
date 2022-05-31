@@ -94,7 +94,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Исполнитель" Binding="{Binding Executor.ExecutorName}" Width="85" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Исполнитель" Binding="{Binding ExecutorName}" Width="85" IsReadOnly="True"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

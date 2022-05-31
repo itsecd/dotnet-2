@@ -12,7 +12,8 @@ namespace TaskClientWPF.ViewModels
     {
         private TaskRepositoryClient _taskRepository;
         private Lab2TaskClient.Task _task;
-        private ExecutorViewModel _executor;
+        //private ExecutorViewModel _executor;
+        private string _executorName;
         private List<string> _tagsStatuses = new List<string>();
         private List<string> _tagsColors = new List<string>();
         private bool _addTag = false;
@@ -50,15 +51,32 @@ namespace TaskClientWPF.ViewModels
             }
         }
 
-        public ExecutorViewModel Executor
+        //public ExecutorViewModel Executor
+        //{
+        //    get => _executor;
+        //    set
+        //    {
+        //        if (value == _executor) return;
+        //        _executor = value;
+        //        _task.ExecutorId = _executor.ExecutorId;
+        //        OnPropertyChanged(nameof(Executor));
+        //    }
+        //}
+
+        public string ExecutorName
         {
-            get => _executor;
+            get => _executorName;
             set
             {
-                if (value == _executor) return;
-                _executor = value;
-                _task.ExecutorId = _executor.ExecutorId;
-                OnPropertyChanged(nameof(Executor));
+                if (value.StartsWith("System.Windows.Controls.ComboBoxItem: "))
+                {
+                    var name = value.Substring(38);
+                    _executorName = name;
+                    OnPropertyChanged(nameof(ExecutorName));
+                    return;
+                }
+                _executorName = value;
+                OnPropertyChanged(nameof(ExecutorName));
             }
         }
 
@@ -85,6 +103,7 @@ namespace TaskClientWPF.ViewModels
                 {
                     var status = value.Substring(38);
                     _tagsStatuses.Add(status);
+                    OnPropertyChanged(nameof(TagsStatuses));
                     return;
                 }
                 _tagsStatuses.Add(value);
@@ -114,6 +133,7 @@ namespace TaskClientWPF.ViewModels
                 {
                     var color = value.Substring(38);
                     _tagsColors.Add(color);
+                    OnPropertyChanged(nameof(TagsColors));
                     return;
                 }
                 _tagsColors.Add(value);
@@ -127,7 +147,8 @@ namespace TaskClientWPF.ViewModels
             {
                 TagsId = new List<int>()
             };
-            _executor = new ExecutorViewModel();
+            _executorName = string.Empty;
+            //_executor = new ExecutorViewModel();
         }
 
         public async System.Threading.Tasks.Task InitializeAsync(TaskRepositoryClient taskRepository, int taskId)
@@ -136,18 +157,26 @@ namespace TaskClientWPF.ViewModels
 
             var tasks = await _taskRepository.GetTasksAsync();
             var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
+            var tags = await _taskRepository.GetTagsAsync();
+            var executors = await _taskRepository.GetExecutorsAsync();
 
-            if(task != null)
+            if (task != null)
             {
                 _task = task;
-                var executors = await _taskRepository.GetExecutorsAsync();
+                //var executors = await _taskRepository.GetExecutorsAsync();
                 var executor = executors.FirstOrDefault(e => e.ExecutorId == task.ExecutorId);
+                _executorName = executor.Name;
 
-                var executorViewModel = new ExecutorViewModel(executor);
-                _executor = executorViewModel;  
+                
+
+                //if (executor != null)
+                //{
+                //    var executorViewModel = new ExecutorViewModel(executor);
+                //    _executor = executorViewModel;
+                //}
             }
 
-            var taskExecutor = new Executor();
+            //var taskExecutor = new Executor();
 
             if (task == null)
             {
@@ -157,13 +186,22 @@ namespace TaskClientWPF.ViewModels
 
                     _addTag = true;
                     
-                    var tags = await _taskRepository.GetTagsAsync();
+                    //var tags = await _taskRepository.GetTagsAsync();
                     foreach (var tag in tags)
                     {
                         if (tag.TagColour == TagsColors && tag.TagStatus == TagsStatuses)
                             _task.TagsId.Add(tag.TagId);
                     }
-
+                    foreach (var ex in executors)
+                    {
+                        if (ex.Name == ExecutorName)
+                            _task.ExecutorId = ex.ExecutorId;
+                    }
+                    var taskExecutor = new Executor
+                    {
+                        ExecutorId = _task.ExecutorId,
+                        Name = ExecutorName
+                    };
                     var taskDto = new TaskDto
                     {
                         HeaderText = _task.HeaderText,
@@ -186,8 +224,7 @@ namespace TaskClientWPF.ViewModels
                 var window = (Window)commandParameter;
 
                 _task.TagsId.Clear();
-                //_addTag = true;
-                var tags = await _taskRepository.GetTagsAsync();
+               // var tags = await _taskRepository.GetTagsAsync();
                 foreach (var tag in tags)
                 {
                     if (tag.TagColour == TagsColors && tag.TagStatus == TagsStatuses)
@@ -195,6 +232,16 @@ namespace TaskClientWPF.ViewModels
                         _task.TagsId.Add(tag.TagId);
                     }   
                 }
+                foreach (var ex in executors)
+                {
+                    if (ex.Name == ExecutorName)
+                        _task.ExecutorId = ex.ExecutorId;
+                }
+                var taskExecutor = new Executor
+                {
+                    ExecutorId = _task.ExecutorId,
+                    Name = ExecutorName
+                };
                 var taskDto = new TaskDto
                 {
                     HeaderText = _task.HeaderText,
