@@ -1,6 +1,16 @@
 const url = 'https://localhost:44372/'
 
-var map = L.map('map').setView([53.195878, 50.100202], 13);
+let map = L.map('map').setView([53.195878, 50.100202], 13);
+let mapElem = document.querySelector('#map');
+let listElem = document.querySelector('.atm-list');
+
+mapElem.style.height = window.innerHeight * 0.9 + 'px';
+listElem.style.maxHeight = window.innerHeight * 0.9 + 'px';
+
+window.addEventListener("resize", () => {
+	mapElem.style.height = window.innerHeight * 0.9 + 'px';
+	listElem.style.maxHeight = window.innerHeight * 0.9 + 'px';
+})
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: '<a href="https://github.com/vladahaustova">Vlada Khaustova</a>',
@@ -9,7 +19,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     tileSize: 512,
     zoomOffset: -1,
     accessToken: 'pk.eyJ1Ijoidm9sdW1lY29yZSIsImEiOiJjbDJxN3cwa3QycjRwM2NwOTkwdmUzZGRwIn0.aGbKOtZKHqTyQ2SQKRm6_g'
-}).addTo(map);	
+}).addTo(map);
 
 // var marker = L.marker([53.195878, 50.100202]).addTo(map);
 
