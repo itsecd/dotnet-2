@@ -3,7 +3,7 @@
     /// <summary>
     /// Class for storing ID and balance
     /// </summary>
-    public class JsonATM
+    public class AtmBalance
     {
         /// <summary>
         /// ID
