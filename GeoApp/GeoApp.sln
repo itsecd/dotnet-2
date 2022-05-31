@@ -5,7 +5,9 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoApp", "GeoApp.csproj", "{9D7B1C0C-8ED7-4301-9716-376CDF1BC1F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoApp.Tests", "..\GeoApp.Tests\GeoApp.Tests.csproj", "{ABD76341-E288-446F-B850-7E5019D0F43F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoApp.Tests", "..\GeoApp.Tests\GeoApp.Tests.csproj", "{ABD76341-E288-446F-B850-7E5019D0F43F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATMClient", "..\ATMClient\ATMClient.csproj", "{53A5D3DF-91DB-4557-865B-D51947B29207}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{ABD76341-E288-446F-B850-7E5019D0F43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABD76341-E288-446F-B850-7E5019D0F43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABD76341-E288-446F-B850-7E5019D0F43F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53A5D3DF-91DB-4557-865B-D51947B29207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53A5D3DF-91DB-4557-865B-D51947B29207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53A5D3DF-91DB-4557-865B-D51947B29207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53A5D3DF-91DB-4557-865B-D51947B29207}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
