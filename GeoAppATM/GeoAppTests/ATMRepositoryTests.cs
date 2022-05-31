@@ -1,112 +1,90 @@
-using GeoAppATM.Repository;
 using GeoAppATM.Model;
-using System.Collections.Generic;
+using GeoAppATM.Repository;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace GeoAppTests
 {
-    public class ATMRepositoryTests
+    public class AtmRepositoryTests
     {
         [Fact]
-        public void GetATMByID()
+        public void GetAtmByID()
         {
-            var atm = new GeoJsonATM
+            var atm = new Atm
             {
-                Geometry = new Geometry()
-                {
-                    Coordinates = new List<double> { 50.2310375, 53.2394015 }
-                },
-                Properties = new Properties()
-                {
-                    Id = "1901330894",
-                    Operator = "Сбербанк",
-                    Balance = 0
-                }
+                Id = "525794080",
+                Name = "Сбербанк",
+                Latitude = 50.1680796,
+                Longitude = 53.1996886,
+                Balance = 250000
             };
             AtmRepository repository = new();
-            var returnedATM = repository.GetATMByID("1901330894");
+            var returnedATM = repository.GetAtmByID("525794080");
             Assert.Equal(atm, returnedATM);
-            Assert.Null(repository.GetATMByID("randomId"));
+            Assert.Null(repository.GetAtmByID("randomId"));
         }
 
         [Fact]
         public void ChangeBalanceByID()
         {
-            var atm = new GeoJsonATM
+            var atm = new Atm
             {
-                Geometry = new Geometry()
-                {
-                    Coordinates = new List<double> { 50.1179917, 53.1866776 }
-                },
-                Properties = new Properties()
-                {
-                    Id = "904585003",
-                    Operator = "Связь-банк",
-                    Balance = 250000,
-                }
+                Id = "646586471",
+                Name = "Сбербанк",
+                Latitude = 50.1214707,
+                Longitude = 53.1862179,
+                Balance = 0
             };
             AtmRepository repository = new();
-            var returnedATM = repository.ChangeBalanceByID("904585003", 250000);
+            var returnedATM = repository.ChangeBalanceByID("646586471", 12345);
             Assert.Equal(atm, returnedATM);
             Assert.Null(repository.ChangeBalanceByID("randomId", 0));
-
             repository.ChangeBalanceByID("646586471", 0);
         }
 
         [Fact]
-        public void GetAllATMs()
+        public void GetAtms()
         {
-            var atm1 = new GeoJsonATM
+            var atm1 = new Atm
             {
-                Geometry = new Geometry()
-                {
-                    Coordinates = new List<double> { 50.141252, 53.201402 }
-                },
-                Properties = new Properties()
-                {
-                    Id = "1133505644",
-                    Operator = "Юниаструм",
-                    Balance = 0,
-                }
+                Id = "879851245",
+                Name = "Сбербанк",
+                Latitude = 50.1565708,
+                Longitude = 53.1977097,
+                Balance = 753713
             };
-            var atm2 = new GeoJsonATM
+            var atm2 = new Atm
             {
-                Geometry = new Geometry()
-                {
-                    Coordinates = new List<double> { 50.2310375, 53.2394015 }
-                },
-                Properties = new Properties()
-                {
-                    Id = "1901330894",
-                    Operator = "Сбербанк",
-                    Balance = 0,
-                }
+                Id = "904585000",
+                Name = "ТрансКредитБанк",
+                Latitude = 50.1178883,
+                Longitude = 53.1874092,
+                Balance = 18750
             };
             AtmRepository repository = new();
-
-            Assert.True(repository.GetAllATM()[7].Equals(atm1));
-            Assert.True(repository.GetAllATM()[8].Equals(atm2));
-
-            Assert.Equal(91, repository.GetAllATM().Count);
+            var returnedAtm1 = repository.GetAtms()[2];
+            Assert.Equal(atm1, returnedAtm1);
+            var returnedAtm2 = repository.GetAtms()[4];
+            Assert.Equal(atm2, returnedAtm2);
+            Assert.Equal(91, repository.GetAtms().Count);
         }
 
         [Fact]
         public void ChangeBalance()
         {
             AtmRepository repository = new();
-            var atms = repository.GetAllATM();
+            var atms = repository.GetAtms();
 
             var tasks = atms.Select(atm => Task.Run(() =>
             {
-                repository.ChangeBalanceByID(atm.Properties.Id, 100);
+                repository.ChangeBalanceByID(atm.Id, 100);
             })).ToArray();
             Task.WaitAll(tasks);
 
             tasks = atms.Select(atm => Task.Run(() =>
             {
-                repository.ChangeBalanceByID(atm.Properties.Id, 0);
+                repository.ChangeBalanceByID(atm.Id, 0);
             })).ToArray();
             Task.WaitAll(tasks);
         }

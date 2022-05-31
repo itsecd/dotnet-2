@@ -2,85 +2,76 @@
 using GeoAppATM.Model;
 using GeoAppATM.Repository;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace GeoAppTests
 {
-    public class ATMControllerTests
+    public class AtmControllerTests
     {
         [Fact]
-        public async Task GetATMs()
+        public async Task GetAtms()
         {
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
 
-            HttpResponseMessage response = await httpClient.GetAsync("api/ATM");
+            HttpResponseMessage response = await httpClient.GetAsync("api/Atm");
             var responseString = await response.Content.ReadAsStringAsync();
 
             AtmRepository repository = new();
-            Assert.Equal(repository.GetAllATM(), JsonSerializer.Deserialize<List<GeoJsonATM>>(responseString));
+            Assert.Equal(JsonConvert.DeserializeObject<List<Atm>>(responseString), repository.GetAtms());
         }
         [Fact]
-        public async Task GetATMById()
+        public async Task GetAtmById()
         {
-            var atm = new GeoJsonATM
+            var atm = new Atm
             {
-                Geometry = new Geometry()
-                {
-                    Coordinates = new List<double> { 50.1487157, 53.2169159 }
-                },
-                Properties = new Properties()
-                {
-                    Id = "2213571183",
-                    Operator = "Тинькофф Банк",
-                    Balance = 0,
-                }
+                Id = "879851245",
+                Name = "Сбербанк",
+                Latitude = 50.1565708,
+                Longitude = 53.1977097,
+                Balance = 753713
             };
 
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
 
-            HttpResponseMessage response = await httpClient.GetAsync("api/ATM/2213571183");
+            HttpResponseMessage response = await httpClient.GetAsync("api/Atm/879851245");
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.True(JsonSerializer.Deserialize<GeoJsonATM>(responseString).Equals(atm));
-            response = await httpClient.GetAsync("api/ATM/randomId");
+            var returnedAtm = JsonConvert.DeserializeObject<Atm>(responseString);
+            Assert.Equal(atm, returnedAtm);
+            response = await httpClient.GetAsync("api/Atm/randomId");
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact]
-        public async Task ChangeATMBalance()
+        public async Task ChangeAtmBalance()
         {
-            var atm = new GeoJsonATM
+            var atm = new Atm
             {
-                Geometry = new Geometry()
-                {
-                    Coordinates = new List<double> { 50.1680796, 53.1996886 }
-                },
-                Properties = new Properties()
-                {
-                    Id = "525794080",
-                    Operator = "Сбербанк",
-                    Balance = 123456,
-                }
+                Id = "646586471",
+                Name = "Сбербанк",
+                Latitude = 50.1214707,
+                Longitude = 53.1862179,
+                Balance = 0
             };
 
             WebApplicationFactory<Startup> webHost = new WebApplicationFactory<Startup>();
             HttpClient httpClient = webHost.CreateClient();
 
-            HttpResponseMessage response = await httpClient.PutAsync("api/ATM/525794080", new StringContent(@"123456", Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await httpClient.PutAsync("api/Atm/646586471", new StringContent(@"777", Encoding.UTF8, "application/json"));
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.True(JsonSerializer.Deserialize<GeoJsonATM>(responseString).Equals(atm));
-
-            response = await httpClient.PutAsync("api/ATM/randomId", new StringContent(@"123456", Encoding.UTF8, "application/json"));
+            var returnedAtm = JsonConvert.DeserializeObject<Atm>(responseString);
+            Assert.Equal(atm, returnedAtm);
+            response = await httpClient.PutAsync("api/Atm/randomId", new StringContent(@"123456", Encoding.UTF8, "application/json"));
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
-            await httpClient.PutAsync("api/ATM/525794080", new StringContent(@"0", Encoding.UTF8, "application/json"));
+            await httpClient.PutAsync("api/ATM/646586471", new StringContent(@"0", Encoding.UTF8, "application/json"));
         }
     }
 }

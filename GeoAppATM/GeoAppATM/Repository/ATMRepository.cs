@@ -47,10 +47,14 @@ namespace GeoAppATM.Repository
                 );
             }
         }
+
+        public AtmRepository()
+        {
+            _atms = new List<Atm>();
+        }
+
         private void ReadFromFile()
         {
-            //if (_atms != null)
-            //    return;
             if (!File.Exists(_atmBalanceStorageFileName))
                 _atmBalances = new List<AtmBalance>();
             else
