@@ -1,6 +1,5 @@
 ﻿using GeoAppATM;
 using GeoAppATM.Model;
-using GeoAppATM.Repository;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -23,8 +22,7 @@ namespace GeoAppTests
             HttpResponseMessage response = await httpClient.GetAsync("api/Atm");
             var responseString = await response.Content.ReadAsStringAsync();
 
-            AtmRepository repository = new();
-            Assert.Equal(JsonConvert.DeserializeObject<List<Atm>>(responseString), repository.GetAtms());
+            Assert.NotEmpty(JsonConvert.DeserializeObject<List<Atm>>(responseString));
         }
         [Fact]
         public async Task GetAtmById()
@@ -44,7 +42,11 @@ namespace GeoAppTests
             HttpResponseMessage response = await httpClient.GetAsync("api/Atm/879851245");
             var responseString = await response.Content.ReadAsStringAsync();
             var returnedAtm = JsonConvert.DeserializeObject<Atm>(responseString);
-            Assert.Equal(atm, returnedAtm);
+            Assert.Equal(atm.Name, returnedAtm.Name);
+            Assert.Equal(atm.Latitude, returnedAtm.Latitude);
+            Assert.Equal(atm.Longitude, returnedAtm.Longitude);
+            Assert.Equal(atm.Id, returnedAtm.Id);
+            Assert.Equal(atm.Balance, returnedAtm.Balance);
             response = await httpClient.GetAsync("api/Atm/randomId");
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -67,10 +69,11 @@ namespace GeoAppTests
             HttpResponseMessage response = await httpClient.PutAsync("api/Atm/646586471", new StringContent(@"777", Encoding.UTF8, "application/json"));
             var responseString = await response.Content.ReadAsStringAsync();
             var returnedAtm = JsonConvert.DeserializeObject<Atm>(responseString);
-            Assert.Equal(atm, returnedAtm);
-            response = await httpClient.PutAsync("api/Atm/randomId", new StringContent(@"123456", Encoding.UTF8, "application/json"));
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-
+            Assert.Equal(atm.Name, returnedAtm.Name);
+            Assert.Equal(atm.Latitude, returnedAtm.Latitude);
+            Assert.Equal(atm.Longitude, returnedAtm.Longitude);
+            Assert.Equal(atm.Id, returnedAtm.Id);
+            Assert.Equal(777, returnedAtm.Balance);
             await httpClient.PutAsync("api/ATM/646586471", new StringContent(@"0", Encoding.UTF8, "application/json"));
         }
     }

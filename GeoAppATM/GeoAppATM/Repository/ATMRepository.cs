@@ -48,10 +48,7 @@ namespace GeoAppATM.Repository
             }
         }
 
-        public AtmRepository()
-        {
-            _atms = new List<Atm>();
-        }
+        public AtmRepository(){}
 
         private void ReadFromFile()
         {
