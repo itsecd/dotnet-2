@@ -72,12 +72,11 @@ namespace GeoAppATM.Repository
             }
             foreach (var atmBalance in _atmBalances)
             {
-                var foundAtm = _atms.Find(atm => atm.Id == atmBalance.Id);
-                if (foundAtm == null)
+                var atm = _atms.Find(atm => atm.Id == atmBalance.Id);
+                if (atm != null)
                 {
-                    return;
+                    atm.Balance = atmBalance.Balance;
                 }
-                _atms.Find(atm => atm.Id == atmBalance.Id).Balance = atmBalance.Balance;
             }
         }
         private void WriteToFile()
@@ -95,12 +94,11 @@ namespace GeoAppATM.Repository
                 if (atm != null)
                 {
                     atm.Balance = balance;
-                    var foundAtm = _atmBalances.Find(atmBalance => atmBalance.Id == atm.Id);
-                    if (foundAtm == null)
+                    var tmpAtm = _atmBalances.Find(atmBalance => atmBalance.Id == atm.Id);
+                    if (tmpAtm != null)
                     {
-                        return null;
+                        tmpAtm.Balance = balance;
                     }
-                    _atmBalances.Find(atmBalance => atmBalance.Id == atm.Id).Balance = balance;
                     WriteToFile();
                     return atm;
                 }
