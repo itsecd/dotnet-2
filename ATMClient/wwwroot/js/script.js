@@ -34,11 +34,26 @@ fetch(url + 'api/ATM', {})
 		console.log(result);
 		for (let atm of result) {
 			let marker = L.marker([atm.geometry.coordinates[1], atm.geometry.coordinates[0]]).addTo(map)
-				.bindPopup("<b>" + atm.properties.operator + "</b><br>Balance: " + atm.properties.balance + "<br><br><input class='input-new-balance' type='text'><br><button onclick='changeBalance()'>Поменять баланс</button><br><br>" + atm.properties.id)
+				.bindPopup("<b>" + atm.properties.operator + "</b><br>Баланс: " + atm.properties.balance + "<br><input class='input-new-balance' type='text'><span class=\"focus-border\"></span><br><button class='change-balance-button' onclick='changeBalance()'>Поменять баланс</button>")
 				.addEventListener("click", () => {
 					selectedATMId = atm.properties.id;
 				});
 			markers[atm.properties.id] = marker;
+
+			let newItem = document.createElement('div');
+			newItem.innerHTML = `
+			<div class="atm-list__item">
+     			<b class="atm-list__item_title">${atm.properties.operator}</b>
+     			<p class="atm-list__item_balance">Баланс: ${atm.properties.balance} $</p>
+    		</div>
+			`;
+			newItem.addEventListener("click", () => {
+				markers[atm.properties.id].openPopup();
+				map.setView([atm.geometry.coordinates[1], atm.geometry.coordinates[0]], 13);
+				selectedATMId = atm.properties.id;
+			})
+
+			listElem.appendChild(newItem);
 		}
 	})
 	
@@ -53,7 +68,22 @@ async function changeBalance() {
 	});
 	const json = await response.json();
 	console.log('Успех:', json);
-	markers[json.properties.id].bindPopup("<b>" + json.properties.operator + "</b><br>Balance: " + json.properties.balance + "<br><br><input class='input-new-balance' type='text'><br><button onclick='changeBalance()'>Поменять баланс</button><br><br>" + json.properties.id)
+	markers[json.properties.id].bindPopup("<b>" + json.properties.operator + "</b><br>Баланс: " + json.properties.balance + "<br><input class='input-new-balance' type='text'><span class=\"focus-border\"></span><br><button class='change-balance-button' onclick='changeBalance()'>Поменять баланс</button>");
+
+	let editedATMIndex = 0;
+	for (let key in markers) {
+		editedATMIndex++;
+		if (key === json.properties.id)
+			break;
+	}
+
+	listElem.childNodes[editedATMIndex].innerHTML = `
+		<div class="atm-list__item">
+     		<b class="atm-list__item_title">${json.properties.operator}</b>
+     		<p class="atm-list__item_balance">Баланс: ${json.properties.balance} $</p>
+    	</div>
+		`;
+
 	} catch (error) {
 		console.error('Ошибка:', error);
 	}
