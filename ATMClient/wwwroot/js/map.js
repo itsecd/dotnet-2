@@ -14,11 +14,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: 'pk.eyJ1Ijoidm9sdW1lY29yZSIsImEiOiJjbDJxN3cwa3QycjRwM2NwOTkwdmUzZGRwIn0.aGbKOtZKHqTyQ2SQKRm6_g'
 }).addTo(map);
 
-// var marker = L.marker([53.195878, 50.100202]).addTo(map);
-
-// marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-
-let selectedATMId = "";
+let selectedATMId = '';
 let markers = {};
 
 fetch(url + 'api/ATM', {})
@@ -26,25 +22,26 @@ fetch(url + 'api/ATM', {})
 	.then(result => { 
 		console.log(result);
 		for (let atm of result) {
-			let marker = L.marker([atm.geometry.coordinates[1], atm.geometry.coordinates[0]]).addTo(map)
-				.bindPopup("<b>" + atm.properties.operator + "</b><br>Баланс: " + atm.properties.balance + "<br><input class='input-new-balance' type='text'><span class=\"focus-border\"></span><br><button class='change-balance-button' onclick='changeBalance()'>Поменять баланс</button>")
-				.addEventListener("click", () => {
+			const marker = L.marker([atm.geometry.coordinates[1], atm.geometry.coordinates[0]]).addTo(map)
+				.bindPopup("<b>" + atm.properties.operator + "</b><br>Баланс: " + atm.properties.balance +
+					"<br><input class='input-new-balance' type='text'><span class='focus-border'></span><br><button class='change-balance-button' onclick='changeBalance()'>Поменять баланс</button>")
+				.addEventListener('click', () => {
 					selectedATMId = atm.properties.id;
 				});
 			markers[atm.properties.id] = marker;
 
-			let newItem = document.createElement('div');
+			const newItem = document.createElement('div');
 			newItem.innerHTML = `
 			<div class="atm-list__item">
      			<b class="atm-list__item_title">${atm.properties.operator}</b>
      			<p class="atm-list__item_balance">Баланс: ${atm.properties.balance} $</p>
     		</div>
 			`;
-			newItem.addEventListener("click", () => {
+			newItem.addEventListener('click', () => {
 				markers[atm.properties.id].openPopup();
 				map.setView([atm.geometry.coordinates[1], atm.geometry.coordinates[0]], 13);
 				selectedATMId = atm.properties.id;
-			})
+			});
 
 			listElem.appendChild(newItem);
 		}
@@ -61,7 +58,9 @@ async function changeBalance() {
 	});
 	const json = await response.json();
 	console.log('Успех:', json);
-	markers[json.properties.id].bindPopup("<b>" + json.properties.operator + "</b><br>Баланс: " + json.properties.balance + "<br><input class='input-new-balance' type='text'><span class=\"focus-border\"></span><br><button class='change-balance-button' onclick='changeBalance()'>Поменять баланс</button>");
+		markers[json.properties.id].bindPopup("<b>" +
+			json.properties.operator + "</b><br>Баланс: " + json.properties.balance +
+			"<br><input class='input-new-balance' type='text'><span class='focus-border'></span><br><button class='change-balance-button' onclick='changeBalance()'>Поменять баланс</button>");
 
 	let editedATMIndex = 0;
 	for (let key in markers) {
