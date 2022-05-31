@@ -1,0 +1,31 @@
+<div cdkDropListGroup class="container">
+  <div class="tasks-list"
+       [ngClass]="{
+       'bg-blue': status.priority === 'blue',
+       'bg-green': status.priority === 'green',
+       'bg-red': status.priority === 'red',
+       'bg-yellow': status.priority === 'yellow'
+       }"
+       *ngFor="let status of statuses">
+    <div class="tasks-list__status">
+      <h2>{{status.name}}</h2>
+      <h3>{{status.description}}</h3>
+    </div>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="getTicketsByStatusId(status.id)"
+      class="tasks-list__items"
+      (cdkDropListDropped)="drop($event, status.id)">
+      <div class="tasks-list__items_ticket" *ngFor="let ticket of getTicketsByStatusId(status.id)" cdkDrag>
+        <div class="tasks-list__items_ticket__title">{{ticket.title}}</div>
+        <div class="tasks-list__items_ticket__actions">
+          <button mat-stroked-button color="accent" (click)="editTicketButton(ticket)"><span class="material-icons">edit</span></button>
+          <button mat-stroked-button color="accent" (click)="showTicketInfo(ticket)"><span class="material-icons">info</span></button>
+          <button mat-stroked-button color="warn" (click)="deleteTicket(ticket)"><span class="material-icons">delete</span></button>
+        </div>
+      </div>
+    </div>
+    <button class="tasks-list__delete-btn" mat-stroked-button color="accent" (click)="deleteStatusButton(status)"><span class="material-icons">close</span></button>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<form action="" #ticketForm="ngForm" class="ticket-form" novalidate="">
+  <mat-form-field appearance="fill">
+    <mat-label>Заголовок</mat-label>
+    <input matInput [(ngModel)]="title" #ticketTitle="ngModel" name="name" minlength="3" maxlength="15" required>
+    <mat-error *ngIf="ticketTitle.invalid">Введите от 3 до 15 знаков</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Статус задачи</mat-label>
+    <mat-select [(ngModel)]="statusId" #ticketStatus="ngModel" name="priority" required>
+      <mat-option *ngFor="let status of selectStatusOptions" [value]="status.value">{{status.viewValue}}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="ticketStatus.invalid">Выберите категорию</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Описание</mat-label>
+    <textarea matInput [(ngModel)]="description" #ticketDesc="ngModel" name="desc" minlength="20" maxlength="100" required></textarea>
+    <mat-error *ngIf="ticketDesc.invalid">Введите от 20 до 100 знаков</mat-error>
+  </mat-form-field>
+  <div class="actions">
+    <button [disabled]="ticketForm.invalid" mat-raised-button (click)="submit(ticketForm)">Сохранить</button>
+    <button mat-raised-button (click)="matDialogRef.close('')">Отмена</button>
+  </div>
+</form>

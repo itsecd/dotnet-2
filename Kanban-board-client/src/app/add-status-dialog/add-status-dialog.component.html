@@ -1,0 +1,26 @@
+<form action="" #statusForm="ngForm" class="status-form" novalidate="">
+  <mat-form-field appearance="fill">
+    <mat-label>Заголовок</mat-label>
+    <input matInput [(ngModel)]="name" #statusName="ngModel" name="name" minlength="3" maxlength="15" required>
+    <mat-error *ngIf="statusName.invalid">Введите от 3 до 15 знаков</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Цвет</mat-label>
+    <mat-select [(ngModel)]="priority" #statusPriority="ngModel" name="priority" required>
+      <mat-option value="green">Зелёный</mat-option>
+      <mat-option value="yellow">Жёлтый</mat-option>
+      <mat-option value="red">Красный</mat-option>
+      <mat-option value="blue">Синий</mat-option>
+    </mat-select>
+    <mat-error *ngIf="statusPriority.invalid">Выберите цвет</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Описание</mat-label>
+    <textarea matInput [(ngModel)]="description" #statusDesc="ngModel" name="desc" minlength="20" maxlength="100" required></textarea>
+    <mat-error *ngIf="statusDesc.invalid">Введите от 20 до 100 знаков</mat-error>
+  </mat-form-field>
+  <div class="actions">
+    <button [disabled]="statusForm.invalid" mat-raised-button (click)="submit(statusForm)">Добавить</button>
+    <button mat-raised-button (click)="matDialogRef.close('')">Отмена</button>
+  </div>
+</form>
