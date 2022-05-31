@@ -16,5 +16,10 @@
             Name = name;
             Message = message;
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is not DirectMessage directMessage) return false;
+            return directMessage.Receiver == Receiver && directMessage.Name == Name && directMessage.Message == Message;
+        }
     }
 }
