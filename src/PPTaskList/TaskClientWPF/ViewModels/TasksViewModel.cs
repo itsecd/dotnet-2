@@ -52,8 +52,7 @@ namespace TaskClientWPF.ViewModels
                 if (SelectedTask != null)
                 {
                     var taskViewModel = Tasks.FirstOrDefault(t => t.IdTask == SelectedTask.IdTask);
-                    var taskView = new TaskView(taskViewModel);
-                    
+                    var taskView = new TaskView(taskViewModel); 
                     taskView.ShowDialog();
                 }
             }, null);

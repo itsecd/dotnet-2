@@ -1,5 +1,4 @@
-﻿using Lab2TaskClient;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -19,7 +18,7 @@ namespace TaskClientWPF.Converters
                     case "Red":
                         return Brushes.Tomato;
                     case "Yellow":
-                        return Brushes.LightGoldenrodYellow;
+                        return Brushes.Yellow;
                     default:
                         return Brushes.Transparent;
                 }

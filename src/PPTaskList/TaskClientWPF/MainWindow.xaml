@@ -7,7 +7,7 @@
         xmlns:converters="clr-namespace:TaskClientWPF.Converters"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Список задач" Height="450" Width="600"
+        Title="Список задач" Height="350" Width="600"
         Loaded="MainWindow_OnLoaded">
     <Window.Resources>
         <converters:TagToColourConverter x:Key="TagToColourConverter"/>
@@ -77,7 +77,10 @@
                 Content="Поиск"
                 Command="{Binding FindTasksCommand}"/>
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Tasks}" SelectionMode="Single" SelectedItem="{Binding SelectedTask}" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding Tasks}" SelectionMode="Single" SelectedItem="{Binding SelectedTask}" AutoGenerateColumns="False"
+                  ScrollViewer.CanContentScroll="True"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowTaskCommand}"/>
             </DataGrid.InputBindings>
@@ -91,7 +94,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Исполнитель" Binding="{Binding Executor.ExecutorName}" Width="70" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Исполнитель" Binding="{Binding Executor.ExecutorName}" Width="85" IsReadOnly="True"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

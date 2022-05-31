@@ -182,10 +182,11 @@ namespace TaskClientWPF.ViewModels
 
             ModifiedTaskCommand = new Command(async commandParameter =>
             {
+                _addTag = true;
                 var window = (Window)commandParameter;
 
                 _task.TagsId.Clear();
-                _addTag = true;
+                //_addTag = true;
                 var tags = await _taskRepository.GetTagsAsync();
                 foreach (var tag in tags)
                 {
