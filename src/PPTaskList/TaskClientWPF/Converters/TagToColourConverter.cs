@@ -19,7 +19,7 @@ namespace TaskClientWPF.Converters
                     case "Red":
                         return Brushes.Tomato;
                     case "Yellow":
-                        return Brushes.PeachPuff;
+                        return Brushes.LightGoldenrodYellow;
                     default:
                         return Brushes.Transparent;
                 }

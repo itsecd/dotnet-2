@@ -81,6 +81,12 @@ namespace TaskClientWPF.ViewModels
             set
             {
                 if (_tagsStatuses.Contains(value)) return;
+                if(value.StartsWith("System.Windows.Controls.ComboBoxItem: "))
+                {
+                    var status = value.Substring(38);
+                    _tagsStatuses.Add(status);
+                    return;
+                }
                 _tagsStatuses.Add(value);
                 OnPropertyChanged(nameof(TagsStatuses));
             }
@@ -104,6 +110,12 @@ namespace TaskClientWPF.ViewModels
             set
             {
                 if ( _tagsColors.Contains(value)) return;
+                if (value.StartsWith("System.Windows.Controls.ComboBoxItem: "))
+                {
+                    var color = value.Substring(38);
+                    _tagsColors.Add(color);
+                    return;
+                }
                 _tagsColors.Add(value);
                 OnPropertyChanged(nameof(TagsColors));
             }
@@ -124,6 +136,17 @@ namespace TaskClientWPF.ViewModels
 
             var tasks = await _taskRepository.GetTasksAsync();
             var task = tasks.FirstOrDefault(t => t.TaskId == taskId);
+
+            if(task != null)
+            {
+                _task = task;
+                var executors = await _taskRepository.GetExecutorsAsync();
+                var executor = executors.FirstOrDefault(e => e.ExecutorId == task.ExecutorId);
+
+                var executorViewModel = new ExecutorViewModel(executor);
+                _executor = executorViewModel;  
+            }
+
             var taskExecutor = new Executor();
 
             if (task == null)
@@ -157,7 +180,6 @@ namespace TaskClientWPF.ViewModels
                 return;
             }
 
-            _task = task;
             ModifiedTaskCommand = new Command(async commandParameter =>
             {
                 var window = (Window)commandParameter;

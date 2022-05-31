@@ -53,6 +53,7 @@ namespace TaskClientWPF.ViewModels
                 {
                     var taskViewModel = Tasks.FirstOrDefault(t => t.IdTask == SelectedTask.IdTask);
                     var taskView = new TaskView(taskViewModel);
+                    
                     taskView.ShowDialog();
                 }
             }, null);
@@ -66,12 +67,12 @@ namespace TaskClientWPF.ViewModels
                 }
             }, null);
 
-            //FindTasksCommand = new Command(async _ =>
-            //{
-            //    var tasks = await _taskRepository.GetTasksAsync();
-            //    List<Task>
+            FindTasksCommand = new Command(async _ =>
+            {
+                var tasks = await _taskRepository.GetTasksAsync();
+                
 
-            //}, null);
+            }, null);
         }
 
         public async System.Threading.Tasks.Task InitializeAsync()

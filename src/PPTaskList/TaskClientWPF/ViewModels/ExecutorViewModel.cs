@@ -1,11 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using TaskClientWPF.Commands;
-using System.Threading.Tasks;
-using TaskClientWPF.Views;
+﻿using System.ComponentModel;
 using Lab2TaskClient;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace TaskClientWPF.ViewModels
 {

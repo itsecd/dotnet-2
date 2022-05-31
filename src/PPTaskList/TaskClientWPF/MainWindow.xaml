@@ -7,11 +7,10 @@
         xmlns:converters="clr-namespace:TaskClientWPF.Converters"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Список задач" Height="450" Width="500"
+        Title="Список задач" Height="450" Width="600"
         Loaded="MainWindow_OnLoaded">
     <Window.Resources>
         <converters:TagToColourConverter x:Key="TagToColourConverter"/>
-        <!--<viewmodels:TaskViewModel x:Key="Statuses"/>-->
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="8"/>
             <Setter Property="MinWidth" Value="100"/>
@@ -29,15 +28,6 @@
         <viewmodels:TasksViewModel/>
     </Window.DataContext>
     <Grid Margin="8">
-        <!--
-        <Grid.Resources>
-            <DataTemplate x:Key="DataTemplate">
-                <Border>
-                    <TextBlock Text="{Binding ElementName= TagsStatuses}"/>
-                </Border>
-            </DataTemplate>
-        </Grid.Resources>
-        -->
         <Grid.RowDefinitions>
             <RowDefinition Height = "*"/>
             <RowDefinition Height = "Auto"/>
@@ -94,16 +84,14 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Задача" Binding="{Binding TaskHeader}" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="Описание" Binding="{Binding TaskDescription}" Width="*" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Header="Статус" Binding="{Binding TagsStatuses}" Width="70" IsReadOnly="True">
+                <DataGridTextColumn Header="Статус" Binding="{Binding TagsStatuses}" Width="80" IsReadOnly="True">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Background" Value="{Binding TagsColors, Converter={StaticResource TagToColourConverter}}"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <!--
-                <DataGridTemplateColumn Header="Статус" CellTemplate="{StaticResource DataTemplate}" Width="70" IsReadOnly="True"></DataGridTemplateColumn>
-                -->
+                <DataGridTextColumn Header="Исполнитель" Binding="{Binding Executor.ExecutorName}" Width="70" IsReadOnly="True"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

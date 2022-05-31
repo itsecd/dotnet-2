@@ -6,10 +6,12 @@
         xmlns:viewModels="clr-namespace:TaskClientWPF.ViewModels"
         xmlns:validationRules="clr-namespace:TaskClientWPF.ValidationRules"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Информация о задаче" Height="200" Width="300">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Margin" Value="8"/>
+            <Setter Property="TextBox.VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style TargetType="{x:Type Label}">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -55,9 +57,6 @@
             </TextBox.Text>
             <TextBox.Style>
                 <Style>
-                    <Style.Setters>
-                        <Setter Property="TextBox.VerticalContentAlignment" Value="Center"/>
-                    </Style.Setters>
                     <Style.Triggers>
                         <Trigger Property="Validation.HasError" Value="true">
                             <Setter Property="TextBox.ToolTip"
@@ -79,9 +78,6 @@
             </TextBox.Text>
             <TextBox.Style>
                 <Style>
-                    <Style.Setters>
-                        <Setter Property="TextBox.VerticalContentAlignment" Value="Center"/>
-                    </Style.Setters>
                     <Style.Triggers>
                         <Trigger Property="Validation.HasError" Value="true">
                             <Setter Property="TextBox.ToolTip"
