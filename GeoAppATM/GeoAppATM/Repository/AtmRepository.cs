@@ -72,7 +72,8 @@ namespace GeoAppATM.Repository
             }
             foreach (var atmBalance in _atmBalances)
             {
-                if(_atms.Find(atm => atm.Id == atmBalance.Id) == null)
+                var foundAtm = _atms.Find(atm => atm.Id == atmBalance.Id);
+                if (foundAtm == null)
                 {
                     return;
                 }
@@ -94,7 +95,8 @@ namespace GeoAppATM.Repository
                 if (atm != null)
                 {
                     atm.Balance = balance;
-                    if(_atmBalances.Find(atmBalance => atmBalance.Id == atm.Id) == null)
+                    var foundAtm = _atmBalances.Find(atmBalance => atmBalance.Id == atm.Id);
+                    if (foundAtm == null)
                     {
                         return null;
                     }

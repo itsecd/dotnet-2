@@ -42,8 +42,8 @@
 
   Функционал для клиентской части:
 
-  - GetAllATM() - получение всех банкоматов
-  - GetATMByID(string id) - получение конкретного банкомата по ID
-  - ChangeBalanceByID(string id, int balance) - изменение количества денежных средств в конкретном банкомат по ID
+  - GetAtms() - получение всех банкоматов
+  - GetAtmById(string id) - получение конкретного банкомата по ID
+  - ChangeBalanceById(string id, int balance) - изменение количества денежных средств в конкретном банкомат по ID
 
   Сведения о банкоматах: https://github.com/itsec-labs/dotnet-2/blob/main/atm.geojson
