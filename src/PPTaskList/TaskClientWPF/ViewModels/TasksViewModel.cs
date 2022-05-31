@@ -1,13 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using Lab2TaskClient;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using TaskClientWPF.Commands;
 using TaskClientWPF.Views;
-using Lab2TaskClient;
-using System.Linq;
 
 namespace TaskClientWPF.ViewModels
 {
-    public class TasksViewModel: INotifyPropertyChanged
+    public class TasksViewModel : INotifyPropertyChanged
     {
         private TaskRepositoryClient _taskRepository;
         public ObservableCollection<TaskViewModel> Tasks { get; } = new ObservableCollection<TaskViewModel>();
@@ -16,13 +16,17 @@ namespace TaskClientWPF.ViewModels
         public Command AddTaskCommand { get; }
         public Command UpdateTaskCommand { get; }
         public Command RemoveTaskCommand { get; }
-        public Command FindTasksCommand { get; }
+        public Command InputNameCommand { get; }
         public TaskViewModel SelectedTask
         {
             get => _selectedTask;
             set
             {
-                if (value == _selectedTask) return;
+                if (value == _selectedTask)
+                {
+                    return;
+                }
+
                 _selectedTask = value;
                 OnPropertyChanged(nameof(SelectedTask));
             }
@@ -45,7 +49,7 @@ namespace TaskClientWPF.ViewModels
                 if (SelectedTask != null)
                 {
                     var taskViewModel = Tasks.FirstOrDefault(t => t.IdTask == SelectedTask.IdTask);
-                    var taskView = new TaskView(taskViewModel); 
+                    var taskView = new TaskView(taskViewModel);
                     taskView.ShowDialog();
                 }
             }, null);
@@ -59,11 +63,11 @@ namespace TaskClientWPF.ViewModels
                 }
             }, null);
 
-            FindTasksCommand = new Command(async _ =>
+            InputNameCommand = new Command(async _ =>
             {
                 var inputViewModel = new InputViewModel();
                 await inputViewModel.InitializeAsync(_taskRepository);
-                var inputView = new ExecutorView(inputViewModel);
+                var inputView = new InputExecutorNameView(inputViewModel);
                 inputView.ShowDialog();
 
             }, null);
@@ -74,7 +78,7 @@ namespace TaskClientWPF.ViewModels
             _taskRepository = new TaskRepositoryClient();
 
             var tasks = await _taskRepository.GetTasksAsync();
-            foreach(var task in tasks)
+            foreach (var task in tasks)
             {
                 var taskViewModel = new TaskViewModel();
                 await taskViewModel.InitializeAsync(_taskRepository, task.TaskId);

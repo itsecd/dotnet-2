@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.Extensions.Hosting;
+using PPTask.Repositories;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
-using PPTask.Repositories;
 
 namespace PPTask
 {
-    public class TimedHostedService: IHostedService, IDisposable
+    public class TimedHostedService : IHostedService, IDisposable
     {
         private Timer _timer;
 

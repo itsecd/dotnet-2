@@ -11,7 +11,7 @@ namespace ServerTest
         {
             var tag1 = new Tag
             {
-                TagStatus = "Done", 
+                TagStatus = "Done",
                 TagColour = "Green"
             };
             var repository = new JsonTagRepository();
@@ -58,7 +58,7 @@ namespace ServerTest
         public void RemoveAllTagsTest()
         {
             var tag1 = new Tag(1, "Done", "Green");
-            var tag2 = new Tag(2, "Immediately","Red");
+            var tag2 = new Tag(2, "Immediately", "Red");
             var repository = new JsonTagRepository();
 
             repository.AddTag(tag1);

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PPTask.Dto;
 using PPTask.Model;
 using PPTask.Repositories;
-using PPTask.Dto;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,11 +50,15 @@ namespace PPTask.Controllers
         /// <param name="id">Идентификатор тега</param>
         /// <returns>Тег</returns>
         [HttpGet("{id:int}")]
-        public ActionResult <Tag> Get(int id)
+        public ActionResult<Tag> Get(int id)
         {
             try
             {
-                if(id < -1) return NotFound();
+                if (id < -1)
+                {
+                    return NotFound();
+                }
+
                 return _tagRepository.GetTags().Single(tag => tag.TagId == id);
             }
             catch
@@ -70,15 +74,15 @@ namespace PPTask.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] TagDto value)
         {
-           try
-           {
-                _tagRepository.AddTag(new Tag {TagColour = value.TagColour, TagStatus = value.TagStatus});
+            try
+            {
+                _tagRepository.AddTag(new Tag { TagColour = value.TagColour, TagStatus = value.TagStatus });
                 return Ok();
-           }
-           catch
-           {
+            }
+            catch
+            {
                 return Problem();
-           }
+            }
         }
 
         /// <summary>
@@ -92,9 +96,12 @@ namespace PPTask.Controllers
             try
             {
                 var tagIndex = _tagRepository.GetTags().FindIndex(tag => tag.TagId == id);
-                if(tagIndex < -1 || id < -1 ) return NotFound();
+                if (tagIndex < -1 || id < -1)
+                {
+                    return NotFound();
+                }
 
-                _tagRepository.GetTags()[tagIndex] = new Tag {TagColour = value.TagColour, TagStatus = value.TagStatus};
+                _tagRepository.GetTags()[tagIndex] = new Tag { TagColour = value.TagColour, TagStatus = value.TagStatus };
                 return Ok();
 
             }
@@ -114,7 +121,10 @@ namespace PPTask.Controllers
             try
             {
                 var tagIndex = _tagRepository.GetTags().FindIndex(tag => tag.TagId == id);
-                if(tagIndex < -1) return NotFound();
+                if (tagIndex < -1)
+                {
+                    return NotFound();
+                }
 
                 _tagRepository.RemoveTag(id);
                 return Ok();

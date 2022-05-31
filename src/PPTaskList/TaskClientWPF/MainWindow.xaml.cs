@@ -16,7 +16,7 @@ namespace TaskClientWPF
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(async()
+            Application.Current.Dispatcher.Invoke(async ()
                 => await ((TasksViewModel)DataContext).InitializeAsync());
         }
     }

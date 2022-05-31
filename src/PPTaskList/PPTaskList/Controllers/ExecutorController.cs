@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PPTask.Dto;
 using PPTask.Model;
 using PPTask.Repositories;
 using System.Collections.Generic;
 using System.Linq;
-using PPTask.Dto;
 
 namespace PPTask.Controllers
 {
@@ -60,7 +60,11 @@ namespace PPTask.Controllers
         {
             try
             {
-                if(id < -1) return NotFound();
+                if (id < -1)
+                {
+                    return NotFound();
+                }
+
                 return _executorRepository.GetExecutors().Single(executor => executor.ExecutorId == id);
             }
             catch
@@ -79,7 +83,10 @@ namespace PPTask.Controllers
         {
             try
             {
-                if(id < -1) return NotFound();
+                if (id < -1)
+                {
+                    return NotFound();
+                }
 
                 var tasks = new List<TaskDto>();
                 foreach (Task task in _taskRepository.GetTasks().
@@ -110,10 +117,10 @@ namespace PPTask.Controllers
         {
             try
             {
-                _executorRepository.AddExecutor(new Executor {Name = value.Name});
+                _executorRepository.AddExecutor(new Executor { Name = value.Name });
                 return Ok();
             }
-            catch 
+            catch
             {
                 return Problem();
             }
@@ -130,9 +137,12 @@ namespace PPTask.Controllers
             try
             {
                 var executorIndex = _executorRepository.GetExecutors().FindIndex(executor => executor.ExecutorId == id);
-                if(executorIndex < -1 || id < -1 ) return NotFound();
+                if (executorIndex < -1 || id < -1)
+                {
+                    return NotFound();
+                }
 
-                _executorRepository.GetExecutors()[executorIndex] = new Executor {Name = value.Name};
+                _executorRepository.GetExecutors()[executorIndex] = new Executor { Name = value.Name };
                 return Ok();
 
             }
@@ -152,7 +162,10 @@ namespace PPTask.Controllers
             try
             {
                 var executorIndex = _executorRepository.GetExecutors().FindIndex(executor => executor.ExecutorId == id);
-                if(executorIndex < -1) return NotFound();
+                if (executorIndex < -1)
+                {
+                    return NotFound();
+                }
 
                 _executorRepository.RemoveExecutor(id);
                 return Ok();

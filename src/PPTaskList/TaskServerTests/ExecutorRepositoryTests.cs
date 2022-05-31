@@ -9,9 +9,9 @@ namespace ServerTest
         [Fact]
         public void AddExecutorTest()
         {
-            var executor1 = new Executor 
+            var executor1 = new Executor
             {
-                Name = "test1" 
+                Name = "test1"
             };
             var repository = new JsonExecutorRepository();
 

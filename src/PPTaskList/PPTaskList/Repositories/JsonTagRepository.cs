@@ -2,8 +2,8 @@
 using PPTask.Model;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using System.Linq;
+using System.Text.Json;
 
 namespace PPTask.Repositories
 {
@@ -39,7 +39,7 @@ namespace PPTask.Repositories
             }
 
             var repositoryJson = File.ReadAllText(_storageFileName);
-            _tags =  JsonSerializer.Deserialize<List<Tag>>(repositoryJson);
+            _tags = JsonSerializer.Deserialize<List<Tag>>(repositoryJson);
         }
 
         /// <summary>

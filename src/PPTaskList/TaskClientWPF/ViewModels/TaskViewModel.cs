@@ -1,10 +1,9 @@
-﻿using System.ComponentModel;
-using TaskClientWPF.Commands;
-using Lab2TaskClient;
+﻿using Lab2TaskClient;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Collections.Generic;
-using System.Windows.Controls;
+using TaskClientWPF.Commands;
 
 namespace TaskClientWPF.ViewModels
 {
@@ -23,7 +22,11 @@ namespace TaskClientWPF.ViewModels
             get => _task.TaskId;
             set
             {
-                if (value == _task.TaskId) return;
+                if (value == _task.TaskId)
+                {
+                    return;
+                }
+
                 _task.TaskId = value;
                 OnPropertyChanged(nameof(IdTask));
             }
@@ -33,7 +36,11 @@ namespace TaskClientWPF.ViewModels
             get => _task?.HeaderText;
             set
             {
-                if (value == _task.HeaderText) return;
+                if (value == _task.HeaderText)
+                {
+                    return;
+                }
+
                 _task.HeaderText = value;
                 OnPropertyChanged(nameof(TaskHeader));
             }
@@ -44,7 +51,11 @@ namespace TaskClientWPF.ViewModels
             get => _task?.TextDescription;
             set
             {
-                if (value == _task.TextDescription) return;
+                if (value == _task.TextDescription)
+                {
+                    return;
+                }
+
                 _task.TextDescription = value;
                 OnPropertyChanged(nameof(TaskDescription));
             }
@@ -76,8 +87,11 @@ namespace TaskClientWPF.ViewModels
                     return _tagsStatuses[0];
                 }
                 var ids = _task.TagsId;
-                if (ids == null|| ids.Count == 0 || _taskRepository == null)
+                if (ids == null || ids.Count == 0 || _taskRepository == null)
+                {
                     return string.Empty;
+                }
+
                 var id = ids.FirstOrDefault();
                 var tag = _taskRepository.GetTagAsync(id).Result;
                 return tag.TagStatus;
@@ -85,8 +99,12 @@ namespace TaskClientWPF.ViewModels
             }
             set
             {
-                if (_tagsStatuses.Contains(value)) return;
-                if(value.StartsWith("System.Windows.Controls.ComboBoxItem: "))
+                if (_tagsStatuses.Contains(value))
+                {
+                    return;
+                }
+
+                if (value.StartsWith("System.Windows.Controls.ComboBoxItem: "))
                 {
                     var status = value.Substring(38);
                     _tagsStatuses.Add(status);
@@ -101,20 +119,27 @@ namespace TaskClientWPF.ViewModels
         {
             get
             {
-                if(_addTag == true)
+                if (_addTag == true)
                 {
                     return _tagsColors[0];
                 }
                 var ids = _task.TagsId;
                 if (ids == null || ids.Count == 0 || _taskRepository == null)
+                {
                     return string.Empty;
+                }
+
                 var id = ids.FirstOrDefault();
                 var tag = _taskRepository.GetTagAsync(id).Result;
                 return tag.TagColour;
             }
             set
             {
-                if ( _tagsColors.Contains(value)) return;
+                if (_tagsColors.Contains(value))
+                {
+                    return;
+                }
+
                 if (value.StartsWith("System.Windows.Controls.ComboBoxItem: "))
                 {
                     var color = value.Substring(38);
@@ -159,16 +184,20 @@ namespace TaskClientWPF.ViewModels
                     var window = (Window)commandParameter;
 
                     _addTag = true;
-                    
+
                     foreach (var tag in tags)
                     {
                         if (tag.TagColour == TagsColors && tag.TagStatus == TagsStatuses)
+                        {
                             _task.TagsId.Add(tag.TagId);
+                        }
                     }
                     foreach (var ex in executors)
                     {
                         if (ex.Name == ExecutorName)
+                        {
                             _task.ExecutorId = ex.ExecutorId;
+                        }
                     }
                     var taskExecutor = new Executor
                     {
@@ -202,12 +231,14 @@ namespace TaskClientWPF.ViewModels
                     if (tag.TagColour == TagsColors && tag.TagStatus == TagsStatuses)
                     {
                         _task.TagsId.Add(tag.TagId);
-                    }   
+                    }
                 }
                 foreach (var ex in executors)
                 {
                     if (ex.Name == ExecutorName)
+                    {
                         _task.ExecutorId = ex.ExecutorId;
+                    }
                 }
                 var taskExecutor = new Executor
                 {

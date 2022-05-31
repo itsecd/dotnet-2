@@ -10,12 +10,12 @@ namespace ServerTest
         [Fact]
         public void AddTaskTest()
         {
-            var task1 = new Task 
+            var task1 = new Task
             {
-                HeaderText = "test1", 
+                HeaderText = "test1",
                 TextDescription = "test11",
-                ExecutorId = 1, 
-                TagsId = new List<int>{ 1, 2 } 
+                ExecutorId = 1,
+                TagsId = new List<int> { 1, 2 }
             };
             var repository = new JsonTaskRepository();
 

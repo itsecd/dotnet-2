@@ -36,27 +36,33 @@ namespace PPTask.Model
         /// <summary>
         /// Название тега
         /// </summary>
-        public string TagStatus 
+        public string TagStatus
         {
-            get =>_tagStatus; 
+            get => _tagStatus;
             set
             {
                 if (!_statuses.Contains(value))
+                {
                     throw new ArgumentException("Tag status is not supported");
+                }
+
                 _tagStatus = value;
-            } 
+            }
         }
 
         /// <summary>
         /// Цвет тега
         /// </summary>
-        public string TagColour 
+        public string TagColour
         {
             get => _tagColour;
             set
             {
                 if (!_colours.Contains(value))
+                {
                     throw new ArgumentException("Tag colour is not supported");
+                }
+
                 _tagColour = value;
             }
         }
@@ -69,7 +75,7 @@ namespace PPTask.Model
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
-        public Tag(int tagId, string tagStatus, string tagColour )
+        public Tag(int tagId, string tagStatus, string tagColour)
         {
             TagId = tagId;
             TagStatus = tagStatus;

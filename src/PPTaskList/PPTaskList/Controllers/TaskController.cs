@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PPTask.Dto;
 using PPTask.Model;
 using PPTask.Repositories;
-using PPTask.Dto;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -57,13 +57,18 @@ namespace PPTask.Controllers
         /// <param name="id">Идентификатор задачи</param>
         /// <returns>Задача</returns>
         [HttpGet("{id:int}")]
-        public ActionResult <TaskDto> Get(int id)
+        public ActionResult<TaskDto> Get(int id)
         {
             try
             {
-                if(id < -1) return NotFound();
+                if (id < -1)
+                {
+                    return NotFound();
+                }
+
                 var task = _taskRepository.GetTasks().Single(task => task.TaskId == id);
-                var taskDto = new TaskDto { 
+                var taskDto = new TaskDto
+                {
                     HeaderText = task.HeaderText,
                     TextDescription = task.TextDescription,
                     TagsId = task.TagsId,
@@ -87,11 +92,12 @@ namespace PPTask.Controllers
         {
             try
             {
-                _taskRepository.AddTask(new Task {
+                _taskRepository.AddTask(new Task
+                {
                     HeaderText = value.HeaderText,
                     TextDescription = value.TextDescription,
                     ExecutorId = value.Executor.ExecutorId,
-                    TagsId = value.TagsId 
+                    TagsId = value.TagsId
                 });
                 return Ok();
             }
@@ -112,13 +118,18 @@ namespace PPTask.Controllers
             try
             {
                 var taskIndex = _taskRepository.GetTasks().FindIndex(task => task.TaskId == id);
-                if(taskIndex < -1 || id < -1 ) return NotFound();
+                if (taskIndex < -1 || id < -1)
+                {
+                    return NotFound();
+                }
 
-                _taskRepository.GetTasks()[taskIndex] = new Task {
+                _taskRepository.GetTasks()[taskIndex] = new Task
+                {
                     HeaderText = value.HeaderText,
                     TextDescription = value.TextDescription,
                     ExecutorId = value.Executor.ExecutorId,
-                    TagsId = value.TagsId };
+                    TagsId = value.TagsId
+                };
                 return Ok();
             }
             catch
@@ -137,7 +148,10 @@ namespace PPTask.Controllers
             try
             {
                 var taskIndex = _taskRepository.GetTasks().FindIndex(task => task.TaskId == id);
-                if(taskIndex < -1) return NotFound();
+                if (taskIndex < -1)
+                {
+                    return NotFound();
+                }
 
                 _taskRepository.RemoveTask(id);
                 return Ok();

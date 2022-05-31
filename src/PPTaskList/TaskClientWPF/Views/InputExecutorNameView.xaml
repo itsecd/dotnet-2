@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:TaskClientWPF.ViewModels"
         xmlns:validationRules="clr-namespace:TaskClientWPF.ValidationRules"
+        xmlns:converters="clr-namespace:TaskClientWPF.Converters"
         mc:Ignorable="d"
-        Title="InputExecutorName" Height="100" Width="200">
+        Title="" Height="250" Width="500">
     <Window.Resources>
+        <converters:TagToColourConverter x:Key="TagToColourConverter"/>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Margin" Value="8"/>
             <Setter Property="TextBox.VerticalContentAlignment" Value="Center"/>
@@ -33,7 +35,9 @@
     </Window.DataContext>
     <Grid Margin="8">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -43,7 +47,7 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Введите имя исполнителя:"/>
         <TextBox Grid.Row="0" Grid.Column="1" Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
             <TextBox.Text>
-                <Binding Path="InputName">
+                <Binding Path="InputExecutorName">
                     <Binding.ValidationRules>
                         <validationRules:ExecutorNameValidationRule/>
                     </Binding.ValidationRules>
@@ -61,5 +65,29 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Command="{Binding FindTasksCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    IsDefault="True">OK</Button>
+            <Button IsCancel="True">Отмена</Button>
+        </StackPanel>
+        <DataGrid ItemsSource="{Binding SelectedTasks}" SelectionMode="Single" AutoGenerateColumns="False"
+                  ScrollViewer.CanContentScroll="True"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto"  Grid.Row="3" Grid.ColumnSpan="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Задача" Binding="{Binding TaskHeader}" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Описание" Binding="{Binding TaskDescription}" Width="*" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Статус" Binding="{Binding TagsStatuses}" Width="80" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Background" Value="{Binding TagsColors, Converter={StaticResource TagToColourConverter}}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Исполнитель" Binding="{Binding ExecutorName}" Width="85" IsReadOnly="True"></DataGridTextColumn>
+            </DataGrid.Columns>
+            
+        </DataGrid>
     </Grid>
 </Window>

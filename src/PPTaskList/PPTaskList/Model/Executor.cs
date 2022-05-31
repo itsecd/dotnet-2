@@ -18,7 +18,7 @@
         /// <summary>
         /// Конструкор по умолчанию
         /// </summary>
-        public Executor() {}
+        public Executor() { }
 
         /// <summary>
         /// Конструктор с параметрами

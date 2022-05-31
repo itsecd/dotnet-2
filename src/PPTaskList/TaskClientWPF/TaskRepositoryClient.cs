@@ -1,7 +1,7 @@
-﻿using TaskClientWPF.Properties;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using TaskClientWPF.Properties;
 
 namespace Lab2TaskClient
 {
@@ -13,7 +13,7 @@ namespace Lab2TaskClient
         {
             var httpClient = new HttpClient();
             var baseUrl = Settings.Default.OpenApiClient;
-            _client = new Client(baseUrl,httpClient);
+            _client = new Client(baseUrl, httpClient);
         }
 
         /// <summary>

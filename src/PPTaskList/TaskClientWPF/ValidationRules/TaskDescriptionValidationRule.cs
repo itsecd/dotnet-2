@@ -8,7 +8,7 @@ namespace TaskClientWPF.ValidationRules
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            return String.IsNullOrEmpty((string)value) ? 
+            return String.IsNullOrEmpty((string)value) ?
                 new ValidationResult(false, "Заполните поле") : ValidationResult.ValidResult;
         }
     }

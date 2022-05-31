@@ -37,7 +37,7 @@ namespace PPTask.Repositories
                 _tasks = new List<Task>();
                 return;
             }
-            
+
             var repositoryJson = File.ReadAllText(_storageFileName);
             _tasks = JsonSerializer.Deserialize<List<Task>>(repositoryJson);
         }

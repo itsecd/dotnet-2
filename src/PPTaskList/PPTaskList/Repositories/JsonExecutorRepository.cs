@@ -10,7 +10,7 @@ namespace PPTask.Repositories
     /// <summary>
     /// Класс сериализации и десериализации исполнителей в формате json 
     /// </summary>
-    public class JsonExecutorRepository: IExecutorRepository
+    public class JsonExecutorRepository : IExecutorRepository
     {
         /// <summary>
         /// Название файла хранения
@@ -27,7 +27,7 @@ namespace PPTask.Repositories
         /// </summary>
         public JsonExecutorRepository(IConfiguration configuration = null)
         {
-            if (configuration != null )
+            if (configuration != null)
             {
                 _storageFileName = configuration.GetValue<string>("ExecutorsFile");
             }
