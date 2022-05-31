@@ -15,7 +15,7 @@ namespace GeoAppTests
             var atm = new Atm
             {
                 Id = "525794080",
-                Name = "Сбербанк",
+                Name = "Г‘ГЎГҐГ°ГЎГ Г­ГЄ",
                 Latitude = 50.1680796,
                 Longitude = 53.1996886,
                 Balance = 250000
@@ -38,7 +38,7 @@ namespace GeoAppTests
             var atm = new Atm
             {
                 Id = "646586471",
-                Name = "Сбербанк",
+                Name = "Г‘ГЎГҐГ°ГЎГ Г­ГЄ",
                 Latitude = 50.1214707,
                 Longitude = 53.1862179,
                 Balance = 0
@@ -62,7 +62,7 @@ namespace GeoAppTests
             var atm1 = new Atm
             {
                 Id = "879851245",
-                Name = "Сбербанк",
+                Name = "Г‘ГЎГҐГ°ГЎГ Г­ГЄ",
                 Latitude = 50.1565708,
                 Longitude = 53.1977097,
                 Balance = 753713
@@ -70,7 +70,7 @@ namespace GeoAppTests
             var atm2 = new Atm
             {
                 Id = "904585000",
-                Name = "ТрансКредитБанк",
+                Name = "Г’Г°Г Г­Г±ГЉГ°ГҐГ¤ГЁГІГЃГ Г­ГЄ",
                 Latitude = 50.1178883,
                 Longitude = 53.1874092,
                 Balance = 18750
