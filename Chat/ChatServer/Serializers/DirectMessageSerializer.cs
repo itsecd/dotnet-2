@@ -9,7 +9,13 @@ namespace ChatServer.Serializers
         public static void SerializeMessage(DirectMessage directMessage)
         {
             var messages = DeserializeMessage(directMessage.Receiver);
-            string storageFileName = "DataBases/DirectDataBases/" + directMessage.Receiver + ".xml";
+
+            string storageFileName = "DataBases/DirectDataBases/";
+            if(!Directory.Exists(storageFileName))
+            {
+                Directory.CreateDirectory(storageFileName);
+            }
+            storageFileName = "DataBases/DirectDataBases/" + directMessage.Receiver + ".xml";
 
             messages.Add(directMessage);
 

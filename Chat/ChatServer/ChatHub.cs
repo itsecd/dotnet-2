@@ -7,7 +7,7 @@ namespace ChatServer
 {
     public class ChatHub : Hub
     {
-        private static Dictionary<string, string> Connections = new();
+        private static readonly Dictionary<string, string> Connections = new();
 
         public Task SendMessage(string user, string message)
         {
@@ -37,7 +37,7 @@ namespace ChatServer
                 await Clients.Client(Connections[user]).SendAsync("ReceiveMessageFromGroup", groupMessage.GroupName, groupMessage.Name, groupMessage.Message);
             }
 
-            GroupList groupMember = new GroupList(user, groupName);
+            GroupList groupMember = new GroupList(groupName, user);
             GroupListSerializer.SerializeGroup(groupMember);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);

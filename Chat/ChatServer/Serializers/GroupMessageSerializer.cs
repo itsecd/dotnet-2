@@ -9,7 +9,13 @@ namespace ChatServer.Serializers
         public static void SerializeMessage(GroupMessage groupMessage)
         {
             var messages = DeserializeMessage(groupMessage.GroupName);
-            string storageFileName = "DataBases/GroupDataBases/" + groupMessage.GroupName + ".xml";
+
+            string storageFileName = "DataBases/GroupDataBases/";
+            if (!Directory.Exists(storageFileName))
+            {
+                Directory.CreateDirectory(storageFileName);
+            }
+            storageFileName = "DataBases/GroupDataBases/" + groupMessage.GroupName + ".xml";
 
             messages.Add(groupMessage);
 

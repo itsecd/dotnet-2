@@ -9,7 +9,14 @@ namespace ChatServer.Serializers
         public static void SerializeGroup(GroupList groupMember)
         {
             var groupList = DeserializeGroup(groupMember.GroupName);
-            string storageFileName = "DataBases/GroupDataBases/" + groupMember.GroupName + ".List.xml";
+
+            string storageFileName = "DataBases/GroupDataBases/";
+            if (!Directory.Exists(storageFileName))
+            {
+                Directory.CreateDirectory(storageFileName);
+            }
+            storageFileName = "DataBases/GroupDataBases/" + groupMember.GroupName + ".List.xml";
+
             foreach (GroupList user in groupList)
             {
                 if (user.Name == groupMember.GroupName) return;

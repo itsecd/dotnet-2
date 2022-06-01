@@ -20,4 +20,9 @@
     <Name>us1</Name>
     <Message> TEST TEXT</Message>
   </DirectMessage>
+  <DirectMessage>
+    <Receiver>us2</Receiver>
+    <Name>us1</Name>
+    <Message> let's go</Message>
+  </DirectMessage>
 </ArrayOfDirectMessage>
