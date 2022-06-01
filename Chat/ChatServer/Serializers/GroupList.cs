@@ -10,10 +10,16 @@ namespace ChatServer.Serializers
 
         public GroupList() { }
 
-        public GroupList(string name, string groupName)
+        public GroupList(string groupName, string name)
         {
             GroupName = groupName;
             Name = name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not GroupList groupList) return false;
+            return groupList.GroupName == GroupName;
         }
     }
 }
