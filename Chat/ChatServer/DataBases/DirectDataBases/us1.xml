@@ -15,4 +15,9 @@
     <Name>user4</Name>
     <Message> hello from user4!</Message>
   </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us2</Name>
+    <Message> TESTTEXT</Message>
+  </DirectMessage>
 </ArrayOfDirectMessage>

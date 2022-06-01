@@ -16,5 +16,10 @@
             Name = name;
             Message = message;
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is not GroupMessage groupMessage) return false;
+            return groupMessage.GroupName == GroupName && groupMessage.Name == Name && groupMessage.Message == Message;
+        }
     }
 }

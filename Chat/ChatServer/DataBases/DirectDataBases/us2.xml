@@ -15,4 +15,9 @@
     <Name>us1</Name>
     <Message> 123456 русский!</Message>
   </DirectMessage>
+  <DirectMessage>
+    <Receiver>us2</Receiver>
+    <Name>us1</Name>
+    <Message> TEST TEXT</Message>
+  </DirectMessage>
 </ArrayOfDirectMessage>

@@ -9,7 +9,7 @@ namespace ChatServer.Tests
         [Fact]
         public void DirectMessageSerializerTest()
         {
-            string receiver = "test_receiver_new";
+            string receiver = "test_single_receiver_one_message";
 
             var initMessage = new Serializers.DirectMessage(receiver, "test_name", "test_message");
             Serializers.DirectMessageSerializer.SerializeMessage(initMessage);
@@ -22,7 +22,7 @@ namespace ChatServer.Tests
         [Fact]
         public void DirectMessageSerializerCollectionOneReceiverTest()
         {
-            string receiver = "test_receiver_1";
+            string receiver = "test_single_receiver_many_messages";
             var initialCollection = new List<Serializers.DirectMessage>() {
                 new Serializers.DirectMessage(receiver, "test_name", "test_message"),
                 new Serializers.DirectMessage(receiver, "test_name1", "test_message1"),
@@ -49,9 +49,9 @@ namespace ChatServer.Tests
             var initCollection = new List<Serializers.DirectMessage>();
             var deserializedCollection = new List<Serializers.DirectMessage>();
 
-            for (int i = 0; i < 6; ++i)
+            for (int i = 0; i < 3; ++i)
             {
-                receivers.Add($"test_receiver{i}");
+                receivers.Add($"test_many_receiver{i}");
                 initCollection.Add(new Serializers.DirectMessage(receivers[i], "test_name", "test_message"));
 
             }
