@@ -4,8 +4,8 @@ using System;
 public class Song : AudioStreamPlayer
 {
 
-	[Export] public int bpm = 128;
-	[Export] public int measures = 4;
+	[Export] public int _bpm = 128;
+	[Export] public int _measures = 4;
 
 	//Tracking the beat and song position
 	double _songPosition = 0.0;
@@ -22,10 +22,14 @@ public class Song : AudioStreamPlayer
 	[Signal] public delegate void Beat(double position);
 	[Signal] public delegate void Measurer(double position);
 
+
+	private void _on_Player_Ready()
+    {
+		Playing = true;
+    }
 	public override void _Ready()
 	{
-		_secPerBeat = 60.0 / bpm;
-		Playing = true;
+		_secPerBeat = 60.0 / _bpm;
 	}
 
 	public override void _Process(float delta)
@@ -72,7 +76,7 @@ public class Song : AudioStreamPlayer
 		Play();
 		Seek(beat * (float)_secPerBeat);
 		_beatsBeforeStart = offset;
-		_measure = beat % measures;
+		_measure = beat % _measures;
 	}
 
 	public void _on_StartTimer_timeout()
