@@ -1,6 +1,5 @@
 ﻿using ChatServer.Serializers;
 using Microsoft.AspNetCore.SignalR;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,8 +18,7 @@ namespace ChatServer
         {
             Connections[user] = Context.ConnectionId;
 
-            User _user = new User(user);
-            UserSerializer.SerializeUser(_user);
+            UserSerializer.SerializeUser(new User(user));
 
             var deserializedDirectMessages = Serializers.DirectMessageSerializer.DeserializeMessage(user);
             foreach(var directMessage in deserializedDirectMessages)
@@ -39,8 +37,8 @@ namespace ChatServer
                 await Clients.Client(Connections[user]).SendAsync("ReceiveMessageFromGroup", groupMessage.GroupName, groupMessage.Name, groupMessage.Message);
             }
 
-            GroupList GroupMember = new GroupList(user, groupName);
-            GroupListSerializer.SerializeGroup(GroupMember);
+            GroupList groupMember = new GroupList(user, groupName);
+            GroupListSerializer.SerializeGroup(groupMember);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, "has joined the group");

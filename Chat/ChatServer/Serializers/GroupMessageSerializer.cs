@@ -9,24 +9,24 @@ namespace ChatServer.Serializers
         public static void SerializeMessage(GroupMessage groupMessage)
         {
             var messages = DeserializeMessage(groupMessage.GroupName);
-            string StorageFileName = "DataBases/GroupDataBases/" + groupMessage.GroupName + ".xml";
+            string storageFileName = "DataBases/GroupDataBases/" + groupMessage.GroupName + ".xml";
 
             messages.Add(groupMessage);
 
             var xmlSerializer = new XmlSerializer(typeof(List<GroupMessage>));
-            using var fileStream = new FileStream(StorageFileName, FileMode.Create);
+            using var fileStream = new FileStream(storageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileStream, messages);
         }
 
         public static List<GroupMessage> DeserializeMessage(string groupName)
         {
-            var StorageFileName = "DataBases/GroupDataBases/" + groupName + ".xml";
+            var storageFileName = "DataBases/GroupDataBases/" + groupName + ".xml";
             var deserializeMessages = new List<GroupMessage>();
 
-            if (File.Exists(StorageFileName))
+            if (File.Exists(storageFileName))
             {
                 var xmlSerializer = new XmlSerializer(typeof(List<GroupMessage>));
-                using var fileStream = new FileStream(StorageFileName, FileMode.Open);
+                using var fileStream = new FileStream(storageFileName, FileMode.Open);
                 deserializeMessages = (List<GroupMessage>)xmlSerializer.Deserialize(fileStream);
                 return deserializeMessages;
             }

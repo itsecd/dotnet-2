@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ChatServer.Serializers
+﻿namespace ChatServer.Serializers
 {
     public class GroupList
     {

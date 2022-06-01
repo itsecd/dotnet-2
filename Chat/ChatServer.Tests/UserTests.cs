@@ -9,7 +9,7 @@ namespace ChatServer.Tests
         {
             string user = "test_name";
 
-            var initUser = new User(user);
+            var initUser = new Serializers.User(user);
             Serializers.UserSerializer.SerializeUser(initUser);
 
             var deserializeUser = Serializers.UserSerializer.DeserializeUser()[0];

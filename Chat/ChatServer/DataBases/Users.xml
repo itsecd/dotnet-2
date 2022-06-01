@@ -39,4 +39,10 @@
   <User>
     <Name>user4</Name>
   </User>
+  <User>
+    <Name>Nikolay</Name>
+  </User>
+  <User>
+    <Name>Nikolay2</Name>
+  </User>
 </ArrayOfUser>

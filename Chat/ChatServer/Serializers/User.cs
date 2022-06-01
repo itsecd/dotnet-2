@@ -1,4 +1,4 @@
-﻿namespace ChatServer
+﻿namespace ChatServer.Serializers
 {
     public class User
     {

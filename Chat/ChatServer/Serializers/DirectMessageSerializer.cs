@@ -9,24 +9,24 @@ namespace ChatServer.Serializers
         public static void SerializeMessage(DirectMessage directMessage)
         {
             var messages = DeserializeMessage(directMessage.Receiver);
-            string StorageFileName = "DataBases/DirectDataBases/" + directMessage.Receiver + ".xml";
+            string storageFileName = "DataBases/DirectDataBases/" + directMessage.Receiver + ".xml";
 
             messages.Add(directMessage);
 
             var xmlSerializer = new XmlSerializer(typeof(List<DirectMessage>));
-            using var fileStream = new FileStream(StorageFileName, FileMode.Create);
+            using var fileStream = new FileStream(storageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileStream, messages);
         }
 
         public static List<DirectMessage> DeserializeMessage(string receiverName)
         {
-            var StorageFileName = "DataBases/DirectDataBases/" + receiverName + ".xml";
+            var storageFileName = "DataBases/DirectDataBases/" + receiverName + ".xml";
             var deserializeMessages = new List<DirectMessage>();
 
-            if (File.Exists(StorageFileName))
+            if (File.Exists(storageFileName))
             {
                 var xmlSerializer = new XmlSerializer(typeof(List<DirectMessage>));
-                using var fileStream = new FileStream(StorageFileName, FileMode.Open);
+                using var fileStream = new FileStream(storageFileName, FileMode.Open);
                 deserializeMessages = (List<DirectMessage>)xmlSerializer.Deserialize(fileStream);
                 return deserializeMessages;
             }

@@ -14,6 +14,7 @@ namespace ChatServer.Tests
             Serializers.GroupListSerializer.SerializeGroup(initGroupList);
 
             var deserializedGroupList = Serializers.GroupListSerializer.DeserializeGroup(groupName)[0];
+
             Assert.Equal(initGroupList, deserializedGroupList);
 
         }
