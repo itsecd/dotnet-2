@@ -4,14 +4,10 @@ using System.Collections.Generic;
 
 public class Server : Node
 {
-    // Declare member variables here. Examples:
-    // private int a = 2;
-    // private string b = "text";
-    private NetworkedMultiplayerENet _network = new NetworkedMultiplayerENet();
-    private int _port = 4242;
-    private int _maxPlayers = 100;
+    private readonly NetworkedMultiplayerENet _network = new NetworkedMultiplayerENet();
+    private readonly int _port = 4242;
+    private readonly int _maxPlayers = 100;
     private List<Player> _players;
-    // Called when the node enters the scene tree for the first time.
 
     private void StartServer()
     {
@@ -32,6 +28,7 @@ public class Server : Node
         Console.WriteLine("User " + id + "is disconnected");
         _players.Find(p => p._playerId == id).Dispose();
     }
+
     [Remote]
     private void ReceiveAttack(string attack, ulong requester, int target)
     {
@@ -39,6 +36,7 @@ public class Server : Node
         Console.WriteLine("Requester: " + requester);
         RpcId(target, "ReceiveAttack", attack);
     }
+
     [Remote]
     private void ReceiveDefence(string defence, string attack, ulong requester)
     {
@@ -57,16 +55,19 @@ public class Server : Node
         damage = counter * 11;
         RpcId(player._playerId, "ReceiveDefence", damage);
     }
+
     [Remote]
     private void ReceiveData(ulong requester)
     {
         _players.Add(new Player(GetTree().GetRpcSenderId(), false, requester, 100));
     }
+
     [Remote]
     private void ReceiveGameover(ulong requester, int target)
     {
         RpcId(target, "ReceiveGameover");
     }
+
     [Remote]
     private void FindMatchup(ulong requester)
     {
@@ -78,6 +79,7 @@ public class Server : Node
         Console.WriteLine("For " + GetTree().GetRpcSenderId() + " enemy is: " + player._playerId);
         _players.Find(p => p._requester == player._requester)._isPlaying = true;
     }
+
     public override void _Ready()
     {
         StartServer();
@@ -85,9 +87,9 @@ public class Server : Node
     }
 
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
+    //  public override void _Process(float delta)
+    //  {
+    //      
+    //  }
 }
