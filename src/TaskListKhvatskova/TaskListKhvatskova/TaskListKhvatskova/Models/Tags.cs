@@ -31,6 +31,15 @@
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
+        public Tags(string name, int color)
+        {
+            Name = name;
+            Color = color;
+        }
+
+        /// <summary>
+        /// Конструктор с параметрами
+        /// </summary>
         public Tags(int id, string name, int color)
         {
             TagId = id;

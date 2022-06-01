@@ -2,12 +2,9 @@ syntax = "proto3";
 
 option csharp_namespace = "TaskListKhvatskova";
 
-package tasksList;
+package taskList;
 
-service TasksList {  
-    rpc SayHello (HelloRequest) returns (HelloReply);
-
-
+service tasksList {  
   rpc GetAllTasks (NullRequest) returns (AllTaskReply);
   rpc GetTask (TaskRequest) returns (TaskReply);
   rpc AddTask (TaskRequest) returns (TaskReply);
@@ -30,27 +27,26 @@ service TasksList {
 }
 
 message NullRequest {
-ExaminationReply examination_reply = 1;
+	ExaminationReply examination_reply = 1;
 }
 
 message TaskRequest {
   int32 TaskId = 1;
   string Name = 2;
   string Description = 3;
-  string TaskState = 4;
+  bool TaskState = 4;
   int32 ExecutorId = 5;
-  string TagsId = 6;
+  repeated int32 TagsId = 6;
   ExaminationReply examination_reply = 7;
 }
 message TaskReply {
   int32 TaskId = 1;
   string Name = 2;
   string Description = 3;
-  string TaskState = 4;
+  bool TaskState = 4;
   int32 ExecutorId = 5;
-  string TagsId = 6;
+  repeated int32 TagsId = 6;
   ExaminationReply examination_reply = 7;
-
 }
 
 message AllTaskReply {

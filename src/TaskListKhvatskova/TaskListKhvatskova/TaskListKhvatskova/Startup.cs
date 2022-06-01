@@ -3,24 +3,21 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TaskListKhvatskova.Repositories;
 using TaskListKhvatskova.Services;
-
+using TaskListKhvatskova.Repositories;
 
 namespace TaskListKhvatskova
 {
     public class Startup
     {
-        
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ITaskRepository, TaskRepository>();
-            services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IExecutorRepository, ExecutorRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddGrpc();
         }
 
-      
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

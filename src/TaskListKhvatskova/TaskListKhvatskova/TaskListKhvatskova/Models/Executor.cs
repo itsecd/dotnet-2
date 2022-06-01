@@ -33,6 +33,15 @@
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
+        public Executor(string name, string surname)
+        {
+            Name = name;
+            Surname = surname;
+        }
+
+        /// <summary>
+        /// Конструктор с параметрами
+        /// </summary>
         public Executor(int id, string name, string surname)
         {
             ExecutorId = id;
