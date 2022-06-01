@@ -137,7 +137,7 @@ namespace TaskListKhvatskova.Repositories
         /// Мeтод изменения статуса задачи по ее идентификатору
         /// </summary>
         /// <param name="id">Идентификатор задачи</param>
-        /// <param name="newTask">Измененная задача</param>
+        /// <param name="state">Измененная задача</param>
         public int UpdateTaskState(int id, bool state)
         {
             var taskIndex = _tasks.FindIndex(p => p.TaskId == id);

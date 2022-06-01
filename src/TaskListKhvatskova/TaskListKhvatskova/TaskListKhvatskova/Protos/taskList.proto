@@ -26,8 +26,8 @@ service tasksList {
   rpc RemoveAllTags (NullRequest) returns (NullRequest);
 }
 
-message NullRequest {
-	ExaminationReply examination_reply = 1;
+message NullRequest { 
+  ExaminationReply examination_reply = 1;
 }
 
 message TaskRequest {

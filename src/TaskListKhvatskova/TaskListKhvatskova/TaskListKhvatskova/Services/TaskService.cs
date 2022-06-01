@@ -1,8 +1,8 @@
 using Grpc.Core;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TaskListKhvatskova.Models;
 using TaskListKhvatskova.Repositories;
+using System.Linq;
 
 namespace TaskListKhvatskova.Services
 {
@@ -57,12 +57,7 @@ namespace TaskListKhvatskova.Services
 
         public override Task<TaskReply> AddTask(TaskRequest request, ServerCallContext context)
         {
-            List<int> tags = new();
-            foreach(int tag in request.TagsId)
-            {
-                tags.Add(tag);
-            }
-            
+            var tags = request.TagsId.ToList();
             return Task.FromResult(new TaskReply
             {
                 TaskId = _taskRepository.AddTask(new MyTask(request.Name, request.Description, request.ExecutorId, tags))
@@ -71,12 +66,7 @@ namespace TaskListKhvatskova.Services
 
         public override Task<TaskReply> UpdateTask(TaskRequest request, ServerCallContext context)
         {
-            List<int> tags = new();
-            foreach (int tag in request.TagsId)
-            {
-                tags.Add(tag);
-            }
-
+            var tags = request.TagsId.ToList();
             return Task.FromResult(new TaskReply
             {
                 TaskId = _taskRepository.UpdateTask(request.TaskId, new MyTask(request.Name, request.Description, request.ExecutorId, tags))
