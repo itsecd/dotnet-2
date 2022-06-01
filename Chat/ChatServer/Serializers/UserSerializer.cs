@@ -26,11 +26,9 @@ namespace ChatServer.Serializers
 
         public static List<User> DeserializeUser()
         {
-            List<User> deserializeUsers = new List<User>();
-
             var xmlSerializer = new XmlSerializer(typeof(List<User>));
             using var fileStream = new FileStream(StorageFileName, FileMode.Open);
-            deserializeUsers = (List<User>)xmlSerializer.Deserialize(fileStream);
+            var deserializeUsers = (List<User>)xmlSerializer.Deserialize(fileStream);
             return deserializeUsers;
         }
     }

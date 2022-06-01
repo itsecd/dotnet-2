@@ -1,8 +1,5 @@
-﻿using System;
-
-namespace ChatServer
+﻿namespace ChatServer
 {
-    [Serializable]
     public class User
     {
         public string Name { get; set; }
@@ -12,6 +9,12 @@ namespace ChatServer
         public User(string name)
         {
             Name = name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not User user) return false;
+            return user.Name == Name;
         }
     }
 }
