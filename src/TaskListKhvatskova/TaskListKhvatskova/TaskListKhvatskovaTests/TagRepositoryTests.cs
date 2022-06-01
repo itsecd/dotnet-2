@@ -1,6 +1,5 @@
 using TaskListKhvatskova.Models;
 using TaskListKhvatskova.Repositories;
-using System;
 using Xunit;
 
 namespace TaskListKhvatskovaTests
