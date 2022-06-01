@@ -9,7 +9,7 @@ public class Player : Node2D
     [Signal] public delegate void Victory();
 
     private int[] _state;
-    private int[] _puppetState = {0};
+    private int[] _puppetState = { 0 };
     private AnimatedSprite[] _spriteList;
     private AnimatedSprite[] _puppetSpriteList;
     public bool[] _isPressed;
@@ -27,53 +27,58 @@ public class Player : Node2D
         _puppetState = attack.Split(';').Select(int.Parse).ToArray();
         for (int i = 0; i < _state.Length; ++i)
             _puppetSpriteList[i].Frame = _puppetState[i];
-
     }
+
     public void SetGameMode(bool gamemode)
     {
         _attackMod = gamemode;
     }
+
     public void ApplyDamage(int damage)
     {
-        _hp -= damage; 
+        _hp -= damage;
+        GetNode<Label>("Info/Hp").Text = "HP: " + _hp;
     }
 
-    private void MessageFormatter(string mes, int[] state)
+    private string MessageFormatter(int[] state)
     {
+        var mes = "";
         for (int i = 0; i < state.Length; ++i)
         {
             mes += state[i].ToString();
             if (i != 7)
                 mes += ";";
         }
+        return mes;
     }
+
     public void SetEnemy(int enemy)
     {
         _enemy = enemy;
+        GetNode<Label>("Info/Hp").Text = "HP: " + _hp;
     }
+
     public void _on_Base_Hosted()
     {
-        Console.WriteLine("Shit working fine host");
         GetNode<Server>("/root/Server").SendHostData(GetInstanceId());
     }
 
     public void _on_Base_Client()
     {
-        Console.WriteLine("Shit working fine");
         GetNode<Server>("/root/Server").FindMatchup(GetInstanceId());
     }
+
     public void _on_Song_Beat(int beat)
     {
         _collision = beat % 8;
     }
+
     private void StateChanger()
     {
         for (int i = 0; i < _state.Length; ++i)
-        {
             _state[i] = 0;
-            //puppetSpriteList[i].Frame = puppet_state[i];
-        }
     }
+
     private void SpriteChanger()
     {
         for (int i = 1; i <= 8; ++i)
@@ -82,11 +87,12 @@ public class Player : Node2D
             _puppetSpriteList[i - 1] = (AnimatedSprite)GetNode("Player2/HitBox" + i);
         }
     }
+
     public void WinCondition()
     {
         EmitSignal("Victory");
     }
-    
+
     private void Gameplay(int collision)
     {
         if (Input.IsActionJustPressed("UpAttack") && !_isPressed[collision])
@@ -105,40 +111,38 @@ public class Player : Node2D
         {
             if (_attackMod)
             {
-                string mes = "";
-                for (int i = 0; i < _state.Length; ++i)
-                {
-                    mes += _state[i].ToString();
-                    if (i != 7)
-                        mes += ";";
-                }
+                var mes = MessageFormatter(_state);
                 GetNode<Server>("/root/Server").SendAttack(mes, GetInstanceId(), _enemy);
                 GetNode<Timer>("Cooldown").Start();
             }
             else
             {
-                string mesAttack = "";
-                string mesDefence = "";
-                for (int i = 0; i < _state.Length; ++i)
-                {
-                    mesAttack += _state[i].ToString();
-                    if (i != 7)
-                        mesAttack += ";";
-                }
-                for (int i = 0; i < _puppetState.Length; ++i)
-                {
-                    mesDefence += _puppetState[i].ToString();
-                    if (i != 7)
-                        mesDefence += ";";
-                }
-                MessageFormatter(mesDefence, _puppetState);
+                var mesAttack = MessageFormatter(_state);
+                var mesDefence = MessageFormatter(_puppetState);
                 GetNode<Server>("/root/Server").SendDefence(mesDefence, mesAttack, GetInstanceId());
                 GetNode<Timer>("Cooldown").Start();
             }
             StateChanger();
         }
         collision = -1;
+    }
 
+    private void GuiChanger()
+    {
+        if (_attackMod)
+        {
+            GetNode<ColorRect>("Info/DefenceColor").Visible = false;
+            GetNode<Label>("Info/Defence").Visible = false;
+            GetNode<ColorRect>("Info/AttackColor").Visible = true;
+            GetNode<Label>("Info/Attack").Visible = true;
+        }
+        else
+        {
+            GetNode<ColorRect>("Info/AttackColor").Visible = false;
+            GetNode<Label>("Info/Attack").Visible = false;
+            GetNode<ColorRect>("Info/DefenceColor").Visible = true;
+            GetNode<Label>("Info/Defence").Visible = true;
+        }
     }
 
     public override void _Ready()
@@ -151,9 +155,9 @@ public class Player : Node2D
         SpriteChanger();
     }
 
-    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(float delta)
     {
+        GuiChanger();
         if (_hp < 0)
         {
             if (!_gameover)
