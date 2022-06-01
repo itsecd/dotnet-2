@@ -17,73 +17,80 @@ namespace MinesweeperServer
             _players = players;
             _users = users;
             _players.Load();
+            _logger.LogDebug("GameService constructed!");
         }
-        public override async Task Join(IAsyncStreamReader<PlayerMessage> requestStream, IServerStreamWriter<ServerMessage> responseStream, ServerCallContext context)
+        public override async Task Join(IAsyncStreamReader<GameMessage> requestStream, IServerStreamWriter<GameMessage> responseStream, ServerCallContext context)
         {
             if (!await requestStream.MoveNext()) return;
-            var initMessage = requestStream.Current;
-            string playerName = initMessage.Name;
-            _logger.LogTrace("[{username}] присоединился к комнате", playerName);
-            // add player if new
-            if (_players.TryAddPlayer(playerName))
-                await _players.DumpAsync();
-            // join player
-            _users.Join(playerName, responseStream);
-            do
+            string playerName = requestStream.Current.Name;                        // save players name
+            _logger.LogInformation("[{username}] присоединился к комнате!", playerName); // log
+            if (_players.TryAddPlayer(playerName)) await _players.DumpAsync();     // save player, if new
+            _users.Join(playerName, responseStream);                               // join player to the server
+
+
+            GameMessage message = new();
+            do // MAIN CYCLE
             {
-                // lobby
-                PlayerMessage message = new();
-                while (_users.GetPlayerState(playerName) != "ready")
+                while (_users.GetPlayerState(playerName) != "ready") // LOBBY
                 {
                     await requestStream.MoveNext();
                     message = requestStream.Current;
                     switch (message.Text)
                     {
                         case "players":
-                            await _users.SendPlayers(playerName);
+                            foreach (string player_name in _users.GetPlayers)
+                                await _users.SendPlayer(playerName, player_name, _players[player_name]);
+                            await _users[playerName].Channel.WriteAsync(new GameMessage{Text="end"});
                             break;
                         case "ready":
                             _users.SetPlayerState(playerName, "ready");
-                            _logger.LogTrace("[{username}] готов", playerName);
+                            _logger.LogInformation("[{username}] готов", playerName);
                             break;
                         case "leave":
                             _users.Leave(playerName);
-                            _logger.LogTrace("[{username}] покинул комнату", playerName);
+                            _logger.LogInformation("[{username}] покинул комнату", playerName);
                             return;
                         default:
+                            _logger.LogWarning("Unknown command: {command}", message.Text);
                             break;
                     }
                 }
-                while (!_users.AllStates("ready")) ;
-                await responseStream.WriteAsync(new ServerMessage { Text = "start" });
-                // in game
-                _logger.LogTrace("[{username}] приступил к игре", playerName);
-                while (_users.GetPlayerState(playerName) != "lobby")
+
+
+                while (!_users.AllStates("ready"));                                  // wait for all users to be ready
+                await responseStream.WriteAsync(new GameMessage { Text = "start" }); // send starting signal
+                _logger.LogInformation("[{username}] приступил к игре!", playerName);      // log
+
+
+                while (_users.GetPlayerState(playerName) != "lobby") // GAME
                 {
                     await requestStream.MoveNext();
                     message = requestStream.Current;
                     switch (message.Text)
                     {
                         case "players":
-                            await _users.SendPlayers(playerName);
+                            foreach (string player_name in _users.GetPlayers)
+                                await _users.SendPlayer(playerName, player_name, _players[player_name]);
+                            await _users[playerName].Channel.WriteAsync(new GameMessage{Text="end"});
                             break;
                         case "leave":
                             _users.Leave(playerName);
-                            _logger.LogTrace("[{username}] покинул комнату", playerName);
+                            _logger.LogInformation("[{username}] покинул комнату", playerName);
                             return;
                         case "win":
-                            _users.SetPlayerState(playerName, "lobby");
-                            _players.CalcScore(playerName, "win");
-                            await _users.Broadcast(new ServerMessage { Text = playerName, State = "win" }, playerName);
-                            _logger.LogTrace("[{username}] выиграл", playerName);
+                            _users.SetPlayerState(playerName, "lobby");                                               // send player to lobby
+                            _players.CalcScore(playerName, "win");                                                    // calculate score
+                            await _users.Broadcast(new GameMessage { Text = playerName, State = "win" }, playerName); // broadcast winner's name
+                            _logger.LogInformation("[{username}] выиграл", playerName);                                     // log
                             break;
                         case "lose":
-                            _users.SetPlayerState(playerName, "lobby");
-                            _players.CalcScore(playerName, "lose");
-                            await _users.Broadcast(new ServerMessage { Text = playerName, State = "lose" }, playerName);
-                            _logger.LogTrace("[{username}] проиграл", playerName);
+                            _users.SetPlayerState(playerName, "lobby");                                                // send player to lobby
+                            _players.CalcScore(playerName, "lose");                                                    // calculate score
+                            await _users.Broadcast(new GameMessage { Text = playerName, State = "lose" }, playerName); // broadcast loser's name
+                            _logger.LogInformation("[{username}] проиграл", playerName);                                     // log
                             break;
                         default:
+                            _logger.LogWarning("Unknown command: {command}", message.Text);
                             break;
                     }
                 }

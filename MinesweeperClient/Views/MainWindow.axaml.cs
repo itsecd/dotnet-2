@@ -35,6 +35,7 @@ namespace MinesweeperClient.Views
         // game
         GameStatus _gameStatus;
         public Connection? _wire;
+        Button _readyButton;
         public MainWindow()
         {
             InitializeComponent();
@@ -44,27 +45,40 @@ namespace MinesweeperClient.Views
             _bombMarked = new Bitmap("Assets/BombMarked.png");
             // field
             _grid = this.FindControl<Panel>("game_grid");
+            _readyButton = this.FindControl<Button>("ready_button");
             InitGrid();
             // info
             _playerList = this.FindControl<ItemsControl>("player_list");
             _playerList.Items = _players;
+            // _players.Add(new PlayerInfo{Name="Player1", PlayCount=69, WinCount=69, WinStreak=420});
+            // _players.Clear();
+            // _players.Add(new PlayerInfo{Name="Player1", PlayCount=69, WinCount=69, WinStreak=420});
             _flagsLabel = this.FindControl<Label>("flags_label");
             _flagsCounter = 99;
             // connection
-            Task.Run(() => PlayerListUpdate());
+            Task.Run(() => InfoUpdate());
         }
-        void PlayerListUpdate()
+        async void InfoUpdate()
         {
+            int _flags = _flagsCounter;
             while (true)
             {
+                if (_flagsCounter != _flags)
+                {
+                    _flagsLabel.Content = $"Flags left: {_flagsCounter}";
+                    _flags = _flagsCounter;
+                }
                 if (_wire != null && _wire.IsConnected)
                 {
-                    Thread.Sleep(500);
-                    Console.WriteLine("Checking player list...");
-                    Thread.Sleep(500);
+                    PlayerInfo[] playersList = await _wire.GetPlayers();
+                    _players.Clear();
+                    foreach (var pl in playersList)
+                    {
+                        _players.Add(pl);
+                        Console.WriteLine($"players list check {pl}");
+                    }
                 }
-                else
-                    Thread.Sleep(2000);
+                Thread.Sleep(5000);
             }
         }
         private void InitGrid()
@@ -86,7 +100,7 @@ namespace MinesweeperClient.Views
                         Background = new SolidColorBrush { Color = Color.Parse("#c0c0c0") },
                         BorderThickness = new Thickness(1),
                         BorderBrush = new SolidColorBrush { Color = Color.Parse("#808080") },
-                        FontSize = 20,
+                        // FontSize = 20,
                         // FontWeight = FontWeight.Bold,
                         VerticalContentAlignment = VerticalAlignment.Center,
                         HorizontalContentAlignment = HorizontalAlignment.Center,
@@ -97,10 +111,122 @@ namespace MinesweeperClient.Views
                 }
             }
         }
-
+        private void ResetGrid()
+        {
+            for (int y = 0; y < FIELD_HEIGHT; y++)
+            {
+                for (int x = 0; x < FIELD_WIDTH; x++)
+                {
+                    _buttonGrid[y, x].Content = string.Empty;
+                    _buttonGrid[y, x].IsEnabled = true;
+                }
+            }
+        }
+        private void DrawGrid()
+        {
+            for (int y = 0; y < FIELD_HEIGHT; y++)
+            {
+                for (int x = 0; x < FIELD_WIDTH; x++)
+                {
+                    switch (_field.TileState(x, y))
+                    {
+                        case TileStates.Opened:
+                            if (_field[x, y] == -1)
+                                _buttonGrid[y, x].Content = new Image { Source = _bomb };
+                            else if (_field[x, y] == 0)
+                                _buttonGrid[y, x].Content = string.Empty;
+                            else
+                            {
+                                SolidColorBrush? numColor = _field[x, y] switch
+                                {
+                                    1 => new SolidColorBrush(Color.Parse("#0000ff")),
+                                    2 => new SolidColorBrush(Color.Parse("#008000")),
+                                    3 => new SolidColorBrush(Color.Parse("#ff0000")),
+                                    4 => new SolidColorBrush(Color.Parse("#000080")),
+                                    5 => new SolidColorBrush(Color.Parse("#800000")),
+                                    6 => new SolidColorBrush(Color.Parse("#008080")),
+                                    7 => new SolidColorBrush(Color.Parse("#000000")),
+                                    8 => new SolidColorBrush(Color.Parse("#808080")),
+                                    _ => null
+                                };
+                                _buttonGrid[y, x].Content = new Label
+                                {
+                                    Foreground = numColor,
+                                    FontSize = TILE_SIZE - 20,
+                                    Content = _field[x, y].ToString(),
+                                    HorizontalAlignment = HorizontalAlignment.Center,
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    VerticalContentAlignment = VerticalAlignment.Center,
+                                    HorizontalContentAlignment = HorizontalAlignment.Center
+                                };
+                            }
+                            _buttonGrid[y, x].IsEnabled = false;
+                            break;
+                        case TileStates.Flagged:
+                            _buttonGrid[y, x].Content = new Image { Source = _flag };
+                            break;
+                        case TileStates.Marked:
+                            _buttonGrid[y, x].Content = new Image { Source = _bombMarked };
+                            _buttonGrid[y, x].IsEnabled = false;
+                            break;
+                        default:
+                            _buttonGrid[y, x].Content = string.Empty;
+                            _buttonGrid[y, x].Foreground = _buttonGrid[y, x].Background;
+                            break;
+                    }
+                }
+            }
+        }
         private void OnTileClicked(object? sender, PointerPressedEventArgs e)
         {
-            throw new NotImplementedException();
+            // не обрабатываем нажатия, если игра не идет
+            if (_gameStatus != GameStatus.InProgress)
+                return;
+            // получение координат нажатой клетки
+            Button? button = sender as Button;
+            if (button == null || button.Name == null || button.IsEnabled == false)
+                return;
+            int x = int.Parse(button.Name.Split("_")[1]);
+            int y = int.Parse(button.Name.Split("_")[2]);
+            // генерация поля при нажатии на пустую клетку
+            if (_field.GameState() == GameStatus.Ready)
+                _field.Generate(x, y, MINE_COUNT);
+            // обработка кнопок мышки
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+            {
+                Console.WriteLine($"[{x};{y}] L");
+                if (_field.TileState(x, y) != TileStates.Flagged)
+                {
+                    if (_field[x, y] == -1)
+                        _field.RevealMines();
+                    else
+                        _field.Reveal(x, y);
+                }
+            }
+            else if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+            {
+                Console.WriteLine($"[{x};{y}] R");
+                _field.SwitchFlag(x, y);
+                if (_field.TileState(x, y) == TileStates.Flagged)
+                    _flagsCounter--;
+                else
+                    _flagsCounter++;
+            }
+            // отрисовка поля и проверка состояния игры
+            DrawGrid();
+            _gameStatus = _field.GameState();
+            if (_field.GameState() == GameStatus.Win)
+                Console.WriteLine("You won!");
+            if (_field.GameState() == GameStatus.Lose)
+                Console.WriteLine("You lose!");
+        }
+        private async void OnReadyClicked(object sender, RoutedEventArgs e)
+        {
+            if (_wire == null || !_wire.IsConnected)
+                return;
+            if (await _wire.Ready())
+                _gameStatus = GameStatus.InProgress;
+            ResetGrid();
         }
     }
 }

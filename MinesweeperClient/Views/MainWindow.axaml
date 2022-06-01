@@ -41,7 +41,7 @@
             <!-- Игровое поле -->
             <Panel Name="game_grid" Grid.Row="1" Grid.Column="1" Background="#808080" Grid.RowSpan="2" Margin="4" />
             <!-- Кнопка READY -->
-            <Button Grid.Row="2" Grid.Column="0" Content="READY" Background="White" Width="200" HorizontalContentAlignment="Center" Margin="4" />
+            <Button Name="ready_button" Grid.Row="2" Grid.Column="0" Content="READY" Background="White" Width="200" HorizontalContentAlignment="Center" Margin="4" Click="OnReadyClicked" />
         </Grid>
     </DockPanel>
 
