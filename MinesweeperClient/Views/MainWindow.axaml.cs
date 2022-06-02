@@ -56,29 +56,39 @@ namespace MinesweeperClient.Views
             _flagsLabel = this.FindControl<Label>("flags_label");
             _flagsCounter = 99;
             // connection
-            Task.Run(() => InfoUpdate());
+            // Task.Run(() => PlayersUpdate());
+            Task.Run(() => FlagsUpdate());
+            Task.Factory.StartNew(() => PlayersUpdate());
         }
-        async void InfoUpdate()
+        async void PlayersUpdate()
         {
-            int _flags = _flagsCounter;
             while (true)
             {
-                if (_flagsCounter != _flags)
-                {
-                    _flagsLabel.Content = $"Flags left: {_flagsCounter}";
-                    _flags = _flagsCounter;
-                }
+                Thread.Sleep(2000);
                 if (_wire != null && _wire.IsConnected)
                 {
-                    PlayerInfo[] playersList = await _wire.GetPlayers();
+                    await _wire.UpdatePlayers();
                     _players.Clear();
-                    foreach (var pl in playersList)
+                    foreach (PlayerInfo info in _wire.Players)
                     {
-                        _players.Add(pl);
-                        Console.WriteLine($"players list check {pl}");
+                        Console.WriteLine($"got {info.Name}'s stats, {info.PlayCount}/{info.WinCount}/{info.WinStreak}");
+                        _players.Add(info);
                     }
+                    // _playerList.Items = _players;
                 }
-                Thread.Sleep(5000);
+            }
+        }
+        void FlagsUpdate()
+        {
+            int flags_cache = _flagsCounter;
+            while (true)
+            {
+                Thread.Sleep(100);
+                if (_flagsCounter != flags_cache)
+                {
+                    flags_cache = _flagsCounter;
+                    _flagsLabel.Content = $"Flags left: {flags_cache}";
+                }
             }
         }
         private void InitGrid()

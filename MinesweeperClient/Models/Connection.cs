@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -14,6 +15,7 @@ namespace MinesweeperClient.Models
         GrpcChannel? _channel;
         Minesweeper.MinesweeperClient? _client;
         AsyncDuplexStreamingCall<GameMessage, GameMessage>? _call = null;
+        public List<PlayerInfo> Players = new();
         public async Task<bool> TryJoinAsync(string Name, string Address)
         {
             if (Name == null || Address == null)
@@ -49,32 +51,32 @@ namespace MinesweeperClient.Models
             _channel = null;
             return true;
         }
-        public async Task<PlayerInfo[]> GetPlayers()
+        public async Task UpdatePlayers()
         {
-            PlayerInfo[] res = new PlayerInfo[0];
-            if (_call == null)
-                return res;
-            await _call.RequestStream.WriteAsync(new GameMessage { Name = _name, Text = "players" });
+            if (!IsConnected)
+                return;
+            await _call.RequestStream.WriteAsync(new GameMessage{ Text = "players" });
+            GameMessage msg = new();
+            Players.Clear();
             while (true)
             {
                 await _call.ResponseStream.MoveNext();
-                var message = _call.ResponseStream.Current;
-                var stats = message.Text.Split('_');
-                if (message.Text != "end")
+                msg = _call.ResponseStream.Current;
+                if (msg.Text != "end")
                 {
-                    res.Append(new PlayerInfo
-                        {
-                            Name = message.State == "ready" ? $"[{message.Name}]" : message.Name,
-                            WinCount = int.Parse(stats[0]),
-                            PlayCount = int.Parse(stats[0]) + int.Parse(stats[1]),
-                            WinStreak = int.Parse(stats[2])
-                        }
-                    );
+                    PlayerInfo info = new();
+                    info.Name = msg.Name;
+                    int win_count = int.Parse(msg.Text.Split('_')[0]);
+                    int lose_count = int.Parse(msg.Text.Split('_')[1]);
+                    int win_streak = int.Parse(msg.Text.Split('_')[2]);
+                    info.PlayCount = win_count + lose_count;
+                    info.WinCount = win_count;
+                    info.WinStreak = win_streak;
+                    Players.Add(info);
                 }
-                if (message.Text == "end")
+                else
                     break;
             }
-            return res;
         }
         public bool IsConnected => _call != null;
         public async Task<bool> Ready()

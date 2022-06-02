@@ -17,13 +17,12 @@ namespace MinesweeperServer.Database
         public bool AllStates(string state) => _users.Values.All(x => x.State == state);
         public void SetPlayerState(string name, string state) => _users[name].State = state;
         public string GetPlayerState(string name) => _users[name].State;
-        public async Task SendPlayer(string name, string player_name, Player player_stats)
+        public async Task SendPlayer(string name, string username, Player stats)
         {
             await _users[name].Channel.WriteAsync(
                 new GameMessage{
-                    Name=player_name,
-                    State=_users[player_name].State,
-                    Text=$"{player_stats.WinCount}_{player_stats.LoseCount}_{player_stats.WinStreak}"
+                    Name=username,
+                    Text=$"{stats.WinCount}_{stats.LoseCount}_{stats.WinStreak}"
                     }
                 );
         }

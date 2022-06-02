@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
@@ -22,10 +23,10 @@ namespace MinesweeperServer
         public override async Task Join(IAsyncStreamReader<GameMessage> requestStream, IServerStreamWriter<GameMessage> responseStream, ServerCallContext context)
         {
             if (!await requestStream.MoveNext()) return;
-            string playerName = requestStream.Current.Name;                        // save players name
+            string playerName = requestStream.Current.Name;                              // save players name
             _logger.LogInformation("[{username}] присоединился к комнате!", playerName); // log
-            if (_players.TryAddPlayer(playerName)) await _players.DumpAsync();     // save player, if new
-            _users.Join(playerName, responseStream);                               // join player to the server
+            if (_players.TryAddPlayer(playerName)) await _players.DumpAsync();           // save player, if new
+            _users.Join(playerName, responseStream);                                     // join player to the server
 
 
             GameMessage message = new();
@@ -38,9 +39,12 @@ namespace MinesweeperServer
                     switch (message.Text)
                     {
                         case "players":
-                            foreach (string player_name in _users.GetPlayers)
-                                await _users.SendPlayer(playerName, player_name, _players[player_name]);
-                            await _users[playerName].Channel.WriteAsync(new GameMessage{Text="end"});
+                            foreach (string username in _users.GetPlayers)
+                            {
+                                Console.WriteLine($"send {username}'s stats");
+                                await _users.SendPlayer(playerName, username, _players[username]);
+                            }
+                            await _users[playerName].Channel.WriteAsync(new GameMessage{ Text = "end" });
                             break;
                         case "ready":
                             _users.SetPlayerState(playerName, "ready");
