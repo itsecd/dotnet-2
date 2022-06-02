@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+option csharp_namespace = "RaceServer";
+
+package race;
+
+service RaceService {
+  rpc Connect (stream Request) returns (stream Event);
+}
+
+message Point{
+	float x = 1;
+	float y = 2;
+}
+
+message Request {
+  oneof request {
+		LoginRequest login = 1;
+		FindOpponentRequest find_opponent = 2;
+		WinGameRequest win_game = 3;
+		ChangePositionRequest change_position = 4;
+		CloseConnectRequest close_connect = 5;
+	}
+}
+
+message LoginRequest{
+	string login = 1;
+}
+
+message FindOpponentRequest{
+}
+
+message WinGameRequest{
+}
+
+message ChangePositionRequest{
+	Point position = 1;
+	float rotate = 2;
+}
+
+message CloseConnectRequest{
+}
+
+
+message Event {
+  oneof event {
+		LoginEvent login = 1;
+		FindOpponentEvent find_opponent = 2;
+		OpponentPositionEvent opponent_position = 3;
+		ResultGameEvent result_game = 4;
+	}
+}
+
+
+message LoginEvent{
+	bool success = 1;
+}
+
+message FindOpponentEvent{
+	string opponent_login = 1;
+}
+
+message OpponentPositionEvent{
+	Point position = 1;
+	float rotate = 2;
+}
+
+message ResultGameEvent{
+	bool win = 1;
+}
+
