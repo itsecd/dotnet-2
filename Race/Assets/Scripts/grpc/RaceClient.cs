@@ -118,16 +118,6 @@ public class RaceClient : MonoBehaviour
         await _stream.RequestStream.WriteAsync(request);
     }
 
-    private async Task ShutDown(Channel channel)
-    {
-
-        Debug.Log("Enter ShutDown");
-        await channel.ShutdownAsync();
-        Debug.Log("ShutDown complited");
-
-    }
-
-
     public void SetLogin(string login)
     {
         PlayerLogin = login;
