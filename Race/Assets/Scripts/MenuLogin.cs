@@ -11,7 +11,7 @@ public class MenuLogin : MonoBehaviour
         if (Client.SuccessLogin)
             LoadLobby();
     }
-    public void LoadLobby() => SceneManager.LoadSceneAsync("Lobby");
+    public void LoadLobby() => SceneManager.LoadSceneAsync(ScenesName.Lobby);
 
-    public void BackPressed() => SceneManager.LoadScene("Menu");
+    public void BackPressed() => SceneManager.LoadScene(ScenesName.Menu);
 }

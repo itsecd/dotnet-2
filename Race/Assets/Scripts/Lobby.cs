@@ -21,13 +21,13 @@ public class Lobby : MonoBehaviour
     private void Update()
     {
         if (Client.OpponentFound)
-            SceneManager.LoadScene("Game");
+            SceneManager.LoadScene(ScenesName.Game);
     }
 
     public void BackButtonPressed()
     {
         Client.CloseConnection();
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene(ScenesName.Menu);
     }
 
     public void FindOpponent()

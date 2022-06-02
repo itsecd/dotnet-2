@@ -3,7 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class MenuControls : MonoBehaviour
 {
-
     private void Awake()
     {
         GameObject obj = GameObject.FindWithTag("CLIENT_CREATED");
@@ -14,7 +13,7 @@ public class MenuControls : MonoBehaviour
     }
     public void PlayPressed()
     {
-        SceneManager.LoadScene("Login");
+        SceneManager.LoadScene(ScenesName.MenuLogin);
     }
 
     public void ExitPressed()

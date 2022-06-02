@@ -22,13 +22,13 @@ public class GameControl : MonoBehaviour
 
     public void MenuPressed()
     {
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene(ScenesName.Menu);
     }
 
     public void EscPressed()
     {
         Client.CloseConnection();
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene(ScenesName.Menu);
     }
 
     private void Update()
