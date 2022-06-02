@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d4c291d93df7874da9b225ea06c327c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  client: {fileID: 0}
+  Client: {fileID: 0}
   LoadMenu: {fileID: 597800455}
   ResultText: {fileID: 761681050}
 --- !u!4 &100490125
@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 454589352}
   - component: {fileID: 454589351}
   m_Layer: 0
-  m_Name: track
+  m_Name: Track
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1274,7 +1274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1eea1a31a587f4d9b7a11c6a358d93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followTransform: {fileID: 636868716}
+  FollowTransform: {fileID: 636868716}
 --- !u!1 &597800455
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,6 +1367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   car: {fileID: 636868714}
+  Menu: {fileID: 100490124}
 --- !u!50 &636868713
 Rigidbody2D:
   serializedVersion: 4
@@ -1400,15 +1401,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017f15426d84b664d8fe598ec3fe624a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  client: {fileID: 0}
+  Client: {fileID: 0}
   Check1: {fileID: 674337787}
   Check2: {fileID: 1893501028}
   GameControl: {fileID: 100490124}
   rb: {fileID: 636868713}
-  throttleInput: 0
-  brakeInput: 0
-  steerInput: 0
-  kmh: 0
+  ThrottleInput: 0
+  BrakeInput: 0
+  SteerInput: 0
+  Kmh: 0
   accel:
     serializedVersion: 2
     m_Curve:
@@ -1833,8 +1834,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e0dbebb38e26d4b857f0a0292f3860, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  client: {fileID: 0}
-  _transform: {fileID: 1500738102}
+  Client: {fileID: 0}
+  Transform: {fileID: 1500738102}
 --- !u!61 &1500738099
 BoxCollider2D:
   m_ObjectHideFlags: 0
