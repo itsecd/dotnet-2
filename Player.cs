@@ -15,7 +15,7 @@ public class Player : Node2D
     public bool[] _isPressed;
     private int _collision = -1;
     private int _enemy;
-    public int _hp = 0;
+    public int _hp = 100;
     public int _dummyHp;
     public bool _freeze = true;
     private bool _attackMod = true;

@@ -4,9 +4,7 @@
     <RootNamespace>BeatBusters</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Net.Http" />
   </ItemGroup>
 </Project>
