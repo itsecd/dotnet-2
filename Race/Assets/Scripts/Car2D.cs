@@ -36,7 +36,7 @@ public class Car2D : MonoBehaviour
     [SerializeField]
     AnimationCurve accel;
 
-    private bool _check1 = false;
+    private bool _isCheck1Passed = false;
 
     private void Awake()
     {
@@ -82,10 +82,10 @@ public class Car2D : MonoBehaviour
         Client.ChangePosition(this.transform.localPosition.x, this.transform.localPosition.y, this.transform.localRotation.z);
         if (Vector3.Distance(this.transform.localPosition, Check1.GetComponent<Transform>().localPosition) < 0.5f)
         {
-            _check1 = true;
+            _isCheck1Passed = true;
         }
 
-        if (Vector3.Distance(this.transform.localPosition, Check2.GetComponent<Transform>().localPosition) < 0.5f && _check1)
+        if (Vector3.Distance(this.transform.localPosition, Check2.GetComponent<Transform>().localPosition) < 0.5f && _isCheck1Passed)
         {
             Client.Win();
         }
