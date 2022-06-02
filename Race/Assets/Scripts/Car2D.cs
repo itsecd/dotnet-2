@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Car2D : MonoBehaviour
 {
-    public RaceClient client;
+    public RaceClient Client;
 
     public GameObject Check1;
     public GameObject Check2;
@@ -14,16 +14,16 @@ public class Car2D : MonoBehaviour
     Rigidbody2D rb;
 
     [HideInInspector]
-    public float throttleInput = 0f;
+    public float ThrottleInput = 0f;
 
     [HideInInspector]
-    public float brakeInput = 0f;
+    public float BrakeInput = 0f;
 
     [HideInInspector]
-    public float steerInput = 0f;
+    public float SteerInput = 0f;
 
     [HideInInspector]
-    public float kmh = 0f;
+    public float Kmh = 0f;
 
     float ms = 0f;
 
@@ -41,11 +41,11 @@ public class Car2D : MonoBehaviour
     private void Awake()
     {
         var obj = GameObject.FindWithTag("CLIENT_CREATED");
-        client = obj.GetComponent<RaceClient>();
+        Client = obj.GetComponent<RaceClient>();
     }
     void MoveCar()
     {
-        rb.velocity += throttleInput * (Vector2)transform.up * accel.Evaluate(ms / maxVelMS);
+        rb.velocity += ThrottleInput * (Vector2)transform.up * accel.Evaluate(ms / maxVelMS);
     }
 
     void RotateCar()
@@ -54,21 +54,21 @@ public class Car2D : MonoBehaviour
             rotAngle = maxRotAngle;
         else
             rotAngle = maxRotAngle - Mathf.Lerp(0f, deltaRot, (ms - goodSpeed) / (maxVelMS - goodSpeed));
-        transform.Rotate(0f, 0f, rotAngle * 1.5f * steerInput * Time.fixedDeltaTime);
+        transform.Rotate(0f, 0f, rotAngle * 1.5f * SteerInput * Time.fixedDeltaTime);
     }
 
     void Brakes()
     {
-        rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, Time.deltaTime * brakeInput);
+        rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, Time.deltaTime * BrakeInput);
     }
 
     private void FixedUpdate()
     {
         ms = rb.velocity.magnitude;
-        kmh = 3.6f * ms;
-        if (throttleInput != 0f)
+        Kmh = 3.6f * ms;
+        if (ThrottleInput != 0f)
             MoveCar();
-        if (steerInput != 0f)
+        if (SteerInput != 0f)
         {
             RotateCar();
             Vector2 oldDir = rb.velocity / ms;
@@ -76,10 +76,10 @@ public class Car2D : MonoBehaviour
             newDir.Normalize();
             rb.velocity = ms * newDir;
         }
-        if (brakeInput != 0f)
+        if (BrakeInput != 0f)
             Brakes();
 
-        client.ChangePosition(this.transform.localPosition.x, this.transform.localPosition.y, this.transform.localRotation.z);
+        Client.ChangePosition(this.transform.localPosition.x, this.transform.localPosition.y, this.transform.localRotation.z);
         if (Vector3.Distance(this.transform.localPosition, Check1.GetComponent<Transform>().localPosition) < 0.5f)
         {
             _check1 = true;
@@ -87,12 +87,12 @@ public class Car2D : MonoBehaviour
 
         if (Vector3.Distance(this.transform.localPosition, Check2.GetComponent<Transform>().localPosition) < 0.5f && _check1)
         {
-            client.Win();
+            Client.Win();
         }
     }
 
     private void OnGUI()
     {
-        GUI.TextField(new Rect(10, 10, 120, 20), kmh + " km/h");
+        GUI.TextField(new Rect(10, 10, 120, 20), Kmh + " km/h");
     }
 }

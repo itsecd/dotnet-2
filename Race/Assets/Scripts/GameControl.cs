@@ -5,14 +5,14 @@ using UnityEngine.UI;
 public class GameControl : MonoBehaviour
 {
 
-    public RaceClient client;
+    public RaceClient Client;
     public GameObject LoadMenu;
     public GameObject ResultText;
 
     private void Awake()
     {
         var obj = GameObject.FindWithTag("CLIENT_CREATED");
-        client = obj.GetComponent<RaceClient>();
+        Client = obj.GetComponent<RaceClient>();
     }
     private void LoadResultMenu()
     {
@@ -25,13 +25,19 @@ public class GameControl : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
+    public void EscPressed()
+    {
+        Client.CloseConnection();
+        SceneManager.LoadScene("Menu");
+    }
+
     private void Update()
     {
-        if (client.ResultMatch == RaceClient.Result.Win)
+        if (Client.ResultMatch == RaceClient.Result.Win)
             ResultText.GetComponent<Text>().text = "You win, congratulation";
-        if (client.ResultMatch == RaceClient.Result.Lose)
+        if (Client.ResultMatch == RaceClient.Result.Lose)
             ResultText.GetComponent<Text>().text = "You lose :c";
-        if (client.ResultMatch != RaceClient.Result.None)
+        if (Client.ResultMatch != RaceClient.Result.None)
             LoadResultMenu();
     }
 }

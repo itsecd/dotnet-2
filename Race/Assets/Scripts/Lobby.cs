@@ -4,28 +4,34 @@ using UnityEngine.UI;
 
 public class Lobby : MonoBehaviour
 {
-    public RaceClient client;
+    public RaceClient Client;
 
     public GameObject PlayerText;
 
     private void Awake()
     {
         var obj = GameObject.FindWithTag("CLIENT_CREATED");
-        client = obj.GetComponent<RaceClient>();
+        Client = obj.GetComponent<RaceClient>();
     }
     void Start()
     {
-        PlayerText.GetComponent<Text>().text = client.PlayerLogin;
+        PlayerText.GetComponent<Text>().text = Client.PlayerLogin;
     }
 
     private void Update()
     {
-        if (client.OpponentFound)
+        if (Client.OpponentFound)
             SceneManager.LoadScene("Game");
+    }
+
+    public void BackButtonPressed()
+    {
+        Client.CloseConnection();
+        SceneManager.LoadScene("Menu");
     }
 
     public void FindOpponent()
     {
-        client.FindOpponent();
+        Client.FindOpponent();
     }
 }

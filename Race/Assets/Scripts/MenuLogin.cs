@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 public class MenuLogin : MonoBehaviour
 {
 
-    public RaceClient client;
+    public RaceClient Client;
 
     private void Update()
     {
-        if (client.SuccessLogin)
+        if (Client.SuccessLogin)
             LoadLobby();
     }
     public void LoadLobby() => SceneManager.LoadSceneAsync("Lobby");

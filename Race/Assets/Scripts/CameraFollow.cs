@@ -3,10 +3,10 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
 
-    public Transform followTransform;
+    public Transform FollowTransform;
 
     void FixedUpdate()
     {
-        this.transform.position = new Vector3(followTransform.position.x, followTransform.position.y, this.transform.position.z);
+        transform.position = new Vector3(FollowTransform.position.x, FollowTransform.position.y, transform.position.z);
     }
 }

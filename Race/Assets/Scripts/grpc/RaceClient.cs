@@ -10,7 +10,7 @@ public class RaceClient : MonoBehaviour
 {
     public List<RaceServer.Event> Events { get; } = new();
     public string PlayerLogin { get; private set; } = "login";
-    public bool SuccessLogin { get; private set; }
+    public bool SuccessLogin { get; private set; } = false;
     public bool OpponentFound { get; private set; }
     public string OpponentLogin { get; private set; }
     public Point Position { get; private set; } = new() { X = 0.5f, Y = -0.5f };

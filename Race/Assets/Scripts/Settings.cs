@@ -7,11 +7,11 @@ public class Settings : MonoBehaviour
 {
     bool isFullScreen = false;
 
-    public AudioMixer am;
+    public AudioMixer Am;
 
     Resolution[] rsl;
     List<string> resolutions;
-    public Dropdown dropdown;
+    public Dropdown Dropdown;
     public void FullSceenToggle()
     {
         isFullScreen = !isFullScreen;
@@ -20,7 +20,7 @@ public class Settings : MonoBehaviour
 
     public void AudioVolume(float sliderValue)
     {
-        am.SetFloat("MasterVolume", sliderValue);
+        Am.SetFloat("MasterVolume", sliderValue);
     }
 
     public void Quality(int q)
@@ -36,8 +36,8 @@ public class Settings : MonoBehaviour
         foreach (var i in rsl)
             resolutions.Add(i.width + "x" + i.height);
 
-        dropdown.ClearOptions();
-        dropdown.AddOptions(resolutions);
+        Dropdown.ClearOptions();
+        Dropdown.AddOptions(resolutions);
     }
 
     public void Resolution(int r)
