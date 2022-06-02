@@ -42,7 +42,7 @@ namespace RaceServer.Services
                     return;
 
                 bool run = true;
-                while (await requestStream.MoveNext() && run)
+                while (run && await requestStream.MoveNext())
                 {
                     var request = requestStream.Current;
                     switch (request.RequestCase)
@@ -73,8 +73,14 @@ namespace RaceServer.Services
             {
                 if (player is not null)
                 {
-                    SavePlayerToFile(player);
-                    _players.TryRemove(player.Login, out _);
+                    try
+                    {
+                        SavePlayerToFile(player);
+                    }
+                    finally
+                    {
+                        _players.TryRemove(player.Login, out _);
+                    }
                 }
             }
         }
@@ -138,7 +144,6 @@ namespace RaceServer.Services
                     var currentPlayer = players.Find(x => x.Login == player.Login);
                     if (players.Find(x => x.Login == player.Login) is null)
                     {
-                        //player.CountGames++;
                         players.Add(player);
                     }
                     else
