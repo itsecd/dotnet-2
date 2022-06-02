@@ -1,6 +1,5 @@
 using Grpc.Core;
 using RaceServer;
-//using Grpc.Net.Client;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
