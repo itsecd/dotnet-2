@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option csharp_namespace = "SudokuServer";
+
+package sudoku;
+
+service SudokuService {
+  rpc Connect (stream Request) returns (stream Event);
+}
+
+// --------
+// Requests
+// --------
+
+message Request {
+  oneof request {
+    LoginRequest login = 1;
+    PlayRequest play = 2;
+  }
+}
+
+message LoginRequest {
+  string login = 1;
+}
+
+message PlayRequest {
+}
+
+// ------
+// Events
+// ------
+
+message Event {
+  oneof event {
+    LoginEvent login = 1;
+    PlayEvent play = 2;
+  }
+}
+
+message LoginEvent {
+  bool success = 1;
+}
+
+message PlayEvent {
+}
