@@ -1,0 +1,15 @@
+﻿<v:ChatWindowBase x:Class="ChatServiceClient.ChatWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:v="clr-namespace:ChatServiceClient"
+        DataContext="{Binding RelativeSource={RelativeSource Self}, Path=ViewModel}"
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="450" Width="800">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Bottom" Height="80">
+            <Button DockPanel.Dock="Right" Content="Send" HorizontalAlignment="Right" Margin="5" Width="120" FontSize="20"/>
+            <TextBox  Margin="5" Background="White" Width="435" />
+        </DockPanel>
+        <ItemsControl  Background="White" ItemsSource="{Binding Messages}" Width="800"/>
+    </DockPanel>
+</v:ChatWindowBase>
