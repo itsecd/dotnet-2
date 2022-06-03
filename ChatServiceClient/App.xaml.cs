@@ -20,7 +20,7 @@ namespace ChatServiceClient
         {
             base.OnStartup(e);
             var authWindow = new AuthWindow();
-            var authViewModel = new AuthWindowViewModel();
+            var authViewModel = new AuthWindowViewModel(authWindow);
             authWindow.ViewModel = authViewModel;
             Current.MainWindow = authWindow;
             authWindow.Show();

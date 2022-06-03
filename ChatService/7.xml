@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Room xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>7</Name>
+  <Messages>
+    <string>1 : 1 connected</string>
+    <string>1 : 321321</string>
+  </Messages>
+</Room>

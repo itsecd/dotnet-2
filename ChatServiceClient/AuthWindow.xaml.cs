@@ -1,6 +1,7 @@
 ﻿using ChatServiceClient.ViewModel;
 using ReactiveUI;
 using System.Reactive;
+using System.Reactive.Linq;
 
 namespace ChatServiceClient
 {
@@ -19,13 +20,20 @@ namespace ChatServiceClient
                 if (ViewModel is null)
                     return;
 
-                cd.Add(ViewModel.Close.RegisterHandler(interaction =>
+                ViewModel.AuthWindow = this;
+                cd.Add(ViewModel.OpenChatWindow.RegisterHandler(interaction =>
                 {
-                    Tag = interaction.Input;
-                    interaction.SetOutput(Unit.Default);
-                    Close();
+                    var chatWindow = new ChatWindow();
+                    var chatWindowViewModel = new ChatWindowViewModel(interaction.Input, chatWindow);
+                    chatWindow.ViewModel = chatWindowViewModel;
+                    Observable.Start(() =>
+                    {
+                        _ = chatWindow.ShowDialog();
+                    }, RxApp.MainThreadScheduler);
                 }));
             });
+
+
         }
     }
 }

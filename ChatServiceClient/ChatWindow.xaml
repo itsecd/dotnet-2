@@ -7,9 +7,10 @@
         Title="MainWindow" Height="450" Width="800">
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Height="80">
-            <Button DockPanel.Dock="Right" Content="Send" HorizontalAlignment="Right" Margin="5" Width="120" FontSize="20"/>
-            <TextBox  Margin="5" Background="White" Width="435" />
+            <Button Command="{Binding Send}" DockPanel.Dock="Right" Content="Send" HorizontalAlignment="Right" Margin="5" Width="120" FontSize="20"/>
+            <Button Command="{Binding Close}" DockPanel.Dock="Left" Content="Close" HorizontalAlignment="Left" Margin="5" Width="120" FontSize="20"/>
+            <TextBox Text="{Binding Text}"  Margin="5" Width="435" />
         </DockPanel>
-        <ItemsControl  Background="White" ItemsSource="{Binding Messages}" Width="800"/>
+        <ListView ItemsSource="{Binding Messages}" Width="800"/>
     </DockPanel>
 </v:ChatWindowBase>
