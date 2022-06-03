@@ -22,6 +22,9 @@ namespace GomokuClient
     {
         Button[,] _playground = new Button[15, 15];
 
+        private Player _player = new("login",false);
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,11 +36,8 @@ namespace GomokuClient
                     Grid.SetColumn(_playground[i, j], i);
                     Grid.SetRow(_playground[i, j], j);
                     PlaygroundGrid.Children.Add(_playground[i, j]);
-                    
                 }
             PlaygroundGrid.AddHandler(Button.ClickEvent, new RoutedEventHandler(PlaygroudClick));
-
-
 
             
 
@@ -46,7 +46,29 @@ namespace GomokuClient
         private void PlaygroudClick(object sender, RoutedEventArgs e)
         {
             Button button = ((Button)e.OriginalSource);
-            button.Content = "X";
+            if(_player.IsFirstTurn)
+                button.Content = "X";
+            else
+                button.Content = "O";
+            LockPlayground();
+        }
+
+        private void LockPlayground()
+        {
+            for (int i = 0; i < _playground.GetLength(0); ++i)
+                for (int j = 0; j < _playground.GetLength(1); ++j)
+                {
+                    _playground[i, j].IsEnabled = false;
+                }
+        }
+
+        private void UnlockPlayground()
+        {
+            for (int i = 0; i < _playground.GetLength(0); ++i)
+                for (int j = 0; j < _playground.GetLength(1); ++j)
+                {
+                    _playground[i, j].IsEnabled = true;
+                }
         }
     }
 }
