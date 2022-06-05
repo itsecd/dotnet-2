@@ -45,8 +45,9 @@ message Event {
   oneof event {
     LoginEvent login = 1;
     PlayEvent play = 2;
-    TurnEvent turn = 3;
-    WinEvent win = 4;
+    ErrorEvent error = 3;
+    TurnEvent turn = 4;
+    WinEvent win = 5;
   }
 }
 
@@ -56,6 +57,10 @@ message LoginEvent {
 
 message PlayEvent {
     repeated Point points = 1;
+}
+
+message ErrorEvent {
+    string error = 1;
 }
 
 message TurnEvent {
