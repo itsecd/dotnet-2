@@ -10,22 +10,25 @@ namespace GeoAppAtmClient.ViewModels
     {
         private AtmRepository _atmRepository;
         private Atm _atm;
-        private AtmBalanceViewModel _atmBalance;
+        private int _atmBalance;
 
         public async Task InitializeAsync(AtmRepository atmRepository, string atmId)
         {
             _atmRepository = atmRepository;
-
             var atms = await _atmRepository.GetAtmsAsync();
             var atm = atms.FirstOrDefault(atm => atm.Id == atmId);
-            var atmStatus = await _atmRepository.GetAtmBalanceAsync(atmId);
+            if (atm == null)
+            {
+                return;
+            }
+            var atmBalance = atm.Balance;
 
             _atm = atm;
-            _atmBalance = new AtmBalanceViewModel(atmStatus);
+            _atmBalance = atmBalance;
             UpdateBalanceCommand = new Command(commandParameter =>
             {
                 var window = (Window)commandParameter;
-                _atmRepository.UpdateAtmAsync(atmId, _atmBalance.AtmBalance);
+                _atmRepository.ChangeAtmBalanceAsync(atmId, _atmBalance);
                 window.DialogResult = true;
                 window.Close();
             }, null);
@@ -33,7 +36,7 @@ namespace GeoAppAtmClient.ViewModels
 
         public string Name
         {
-            get => _atm?.Name;
+            get => _atm.Name;
             set
             {
                 if (value == _atm.Name) return;
@@ -44,7 +47,7 @@ namespace GeoAppAtmClient.ViewModels
 
         public Command UpdateBalanceCommand { get; private set; }
 
-        public AtmBalanceViewModel AtmStatus
+        public int AtmBalance
         {
             get => _atmBalance;
             set

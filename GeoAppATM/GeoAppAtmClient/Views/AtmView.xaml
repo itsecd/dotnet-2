@@ -28,9 +28,9 @@
             </DockPanel>
         </ControlTemplate>
     </Window.Resources>
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <viewModels:AtmViewModel/>
-    </Window.DataContext>
+    </Window.DataContext>-->
     <Grid Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -47,10 +47,10 @@
         <Label Grid.Row="1" Grid.Column="0" Content="Баланс:"/>
         <TextBox Grid.Row="1" Grid.Column="1" Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
             <TextBox.Text>
-                <Binding Path="AtmBalance.Balance">
-                    <Binding.ValidationRules>
+                <Binding Path="Atm">
+                    <!--<Binding.ValidationRules>
                         <validationRules:AtmBalanceValidationRule/>
-                    </Binding.ValidationRules>
+                    </Binding.ValidationRules>-->
                 </Binding>
             </TextBox.Text>
             <TextBox.Style>
