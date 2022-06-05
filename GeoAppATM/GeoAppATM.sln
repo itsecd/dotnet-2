@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoAppATM", "GeoAppATM\GeoA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoAppTests", "GeoAppTests\GeoAppTests.csproj", "{ED8E933C-6E57-498B-BD05-E4FADBE43128}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAppAtmClient", "GeoAppAtmClient\GeoAppAtmClient.csproj", "{1BDAA1A6-B976-42F7-AD0C-7613BB6840DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoAppAtmClient", "GeoAppAtmClient\GeoAppAtmClient.csproj", "{1BDAA1A6-B976-42F7-AD0C-7613BB6840DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{480A4BC4-117A-4023-81AF-0341826D61C4}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using GeoAppATM.Repository;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace GeoAppAtmClient
 {
-    internal class AtmRepository
+    public class AtmRepository
     {
+       
     }
 }
