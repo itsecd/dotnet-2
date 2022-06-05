@@ -1,0 +1,40 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+option csharp_namespace = "TelegramBot.Proto";
+
+package telegramEvents;
+
+service TelegramEventService {
+	rpc AddEvent (Event) returns (EventOperationResponse);
+
+	rpc RemoveEvent (Event) returns (EventOperationResponse);
+
+	rpc ChangeEvent (Event) returns (EventOperationResponse);
+
+	rpc GetEvents (UserRequest) returns (UserResponse);
+}
+
+message Event {
+	int64 id = 1;
+	int64 userId = 2;
+	string name = 3;
+	string description = 4;
+	google.protobuf.Timestamp dateTime = 5;
+	google.protobuf.Duration repeatPeriod = 6; 
+}
+
+message EventOperationResponse {
+	int64 userId = 1;
+	bool result = 2;
+}
+
+message UserRequest {
+	int64 userId = 1;
+}
+
+message UserResponse {
+	repeated Event reminders = 1;
+} 
