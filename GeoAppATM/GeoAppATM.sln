@@ -5,7 +5,9 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoAppATM", "GeoAppATM\GeoAppATM.csproj", "{D70B7938-C82D-4C1D-A7DE-270A56E175E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAppTests", "GeoAppTests\GeoAppTests.csproj", "{ED8E933C-6E57-498B-BD05-E4FADBE43128}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoAppTests", "GeoAppTests\GeoAppTests.csproj", "{ED8E933C-6E57-498B-BD05-E4FADBE43128}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAppAtmClient", "GeoAppAtmClient\GeoAppAtmClient.csproj", "{1BDAA1A6-B976-42F7-AD0C-7613BB6840DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{ED8E933C-6E57-498B-BD05-E4FADBE43128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED8E933C-6E57-498B-BD05-E4FADBE43128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED8E933C-6E57-498B-BD05-E4FADBE43128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BDAA1A6-B976-42F7-AD0C-7613BB6840DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BDAA1A6-B976-42F7-AD0C-7613BB6840DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BDAA1A6-B976-42F7-AD0C-7613BB6840DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BDAA1A6-B976-42F7-AD0C-7613BB6840DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
