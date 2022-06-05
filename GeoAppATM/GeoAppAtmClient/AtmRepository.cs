@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using GeoAppATM.Model;
+using GeoAppAtmClient.Properties;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -17,17 +19,17 @@ namespace GeoAppAtmClient
 
         public Task<ICollection<Atm>> GetAtmsAsync()
         {
-            return _openApiClient.AtmAsync();
+            return _openApiClient.AtmAllAsync();
         }
 
-        public Task<AtmBalance> GetAtmBalanceAsync(string atmId)
+        public Task<Atm> GetAtmAsync(string atmId)
         {
-            return _openApiClient.AtmStatusAsync(atmId);
+            return _openApiClient.AtmAsync(atmId);
         }
 
-        public Task UpdateAtmAsync(string atmId, AtmStatus atmStatus)
+        public Task<Atm> ChangeAtmBalanceAsync(string atmId, int atmBalance)
         {
-            return _openApiClient.AtmStatus2Async(atmId, atmStatus);
+            return _openApiClient.Atm2Async(atmId, atmBalance);
         }
     }
 }
