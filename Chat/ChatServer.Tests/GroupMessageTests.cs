@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace ChatServer.Tests
@@ -25,7 +24,7 @@ namespace ChatServer.Tests
         public void GroupMessageSerializerCollectionOneGroupTest()
         {
             string group = "test_single_group_many_messages";
-            var initCollection = new List<Serializers.GroupMessage>() { 
+            var initCollection = new List<Serializers.GroupMessage>() {
                 new Serializers.GroupMessage(group, "test_name", "test_message"),
                 new Serializers.GroupMessage(group, "test_name1", "test_message1"),
                 new Serializers.GroupMessage(group, "test_name2", "test_message2"),

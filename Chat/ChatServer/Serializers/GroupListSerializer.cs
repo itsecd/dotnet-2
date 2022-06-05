@@ -19,7 +19,10 @@ namespace ChatServer.Serializers
 
             foreach (GroupList user in groupList)
             {
-                if (user.Name == groupMember.GroupName) return;
+                if (user.Name == groupMember.GroupName)
+                {
+                    return;
+                }
             }
 
             groupList.Add(groupMember);

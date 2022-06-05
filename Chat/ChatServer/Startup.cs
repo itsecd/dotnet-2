@@ -15,15 +15,14 @@ namespace ChatServer
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // ConfigureServices - предназначен для добавления и создания модификации нашего DI контейнера
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
+            services.AddControllers(); // not used
             services.AddSignalR();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // Configure - задаёт что вообще приложение может делать
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -31,9 +30,9 @@ namespace ChatServer
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
+            app.UseRouting(); // not used
 
-            app.UseAuthorization();
+            app.UseAuthorization(); // not used
 
             app.UseEndpoints(endpoints =>
             {

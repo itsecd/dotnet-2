@@ -7,7 +7,7 @@
         public string Name { get; set; }
 
         public string Message { get; set; }
-    
+
         public DirectMessage() { }
 
         public DirectMessage(string receiver, string name, string message)
@@ -18,7 +18,11 @@
         }
         public override bool Equals(object obj)
         {
-            if (obj is not DirectMessage directMessage) return false;
+            if (obj is not DirectMessage directMessage)
+            {
+                return false;
+            }
+
             return directMessage.Receiver == Receiver && directMessage.Name == Name && directMessage.Message == Message;
         }
     }

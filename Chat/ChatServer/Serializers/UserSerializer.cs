@@ -10,7 +10,7 @@ namespace ChatServer.Serializers
         public static void SerializeUser(User user)
         {
             var users = DeserializeUser();
-            
+
             var storageFileName = "DataBases/";
             if (Directory.Exists(storageFileName))
             {
@@ -18,10 +18,13 @@ namespace ChatServer.Serializers
             }
             storageFileName = "DataBases/Users.xml";
 
-            if (users.Any(us => user.Name == us.Name)) return;
+            if (users.Any(us => user.Name == us.Name))
+            {
+                return;
+            }
 
             users.Add(user);
-            
+
             var xmlSerializer = new XmlSerializer(typeof(List<User>));
             using var fileStream = new FileStream(storageFileName, FileMode.Create);
             xmlSerializer.Serialize(fileStream, users);

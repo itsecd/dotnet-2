@@ -13,7 +13,11 @@
 
         public override bool Equals(object obj)
         {
-            if (obj is not User user) return false;
+            if (obj is not User user)
+            {
+                return false;
+            }
+
             return user.Name == Name;
         }
     }

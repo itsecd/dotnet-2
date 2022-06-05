@@ -16,4 +16,8 @@
     <GroupName>g</GroupName>
     <Name>user4</Name>
   </GroupList>
+  <GroupList>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+  </GroupList>
 </ArrayOfGroupList>

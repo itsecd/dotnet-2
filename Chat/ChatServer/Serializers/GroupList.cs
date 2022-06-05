@@ -16,7 +16,11 @@
 
         public override bool Equals(object obj)
         {
-            if (obj is not GroupList groupList) return false;
+            if (obj is not GroupList groupList)
+            {
+                return false;
+            }
+
             return groupList.GroupName == GroupName;
         }
     }

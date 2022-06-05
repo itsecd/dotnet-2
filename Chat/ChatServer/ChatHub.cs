@@ -20,8 +20,8 @@ namespace ChatServer
 
             UserSerializer.SerializeUser(new User(user));
 
-            var deserializedDirectMessages = Serializers.DirectMessageSerializer.DeserializeMessage(user);
-            foreach(var directMessage in deserializedDirectMessages)
+            var deserializedDirectMessages = DirectMessageSerializer.DeserializeMessage(user);
+            foreach (var directMessage in deserializedDirectMessages)
             {
                 Clients.Client(Connections[user]).SendAsync("ReceiveDirectMessage", directMessage.Name, directMessage.Message);
             }
@@ -31,7 +31,7 @@ namespace ChatServer
 
         public async Task JoinGroup(string user, string groupName)
         {
-            var deserializedGroupMessages = Serializers.GroupMessageSerializer.DeserializeMessage(groupName);
+            var deserializedGroupMessages = GroupMessageSerializer.DeserializeMessage(groupName);
             foreach (var groupMessage in deserializedGroupMessages)
             {
                 await Clients.Client(Connections[user]).SendAsync("ReceiveMessageFromGroup", groupMessage.GroupName, groupMessage.Name, groupMessage.Message);
@@ -52,13 +52,13 @@ namespace ChatServer
 
         public Task SendMessageToGroup(string groupName, string user, string message)
         {
-            GroupMessageSerializer.SerializeMessage(new Serializers.GroupMessage(groupName, user, message));
+            GroupMessageSerializer.SerializeMessage(new GroupMessage(groupName, user, message));
             return Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, message);
         }
 
         public Task SendMessageToUser(string user, string message, string receiver)
         {
-            DirectMessageSerializer.SerializeMessage(new Serializers.DirectMessage(receiver, user, message));
+            DirectMessageSerializer.SerializeMessage(new DirectMessage(receiver, user, message));
             return Clients.Client(Connections[receiver]).SendAsync("ReceiveDirectMessage", user, message);
         }
 

@@ -11,7 +11,7 @@ namespace ChatServer.Serializers
             var messages = DeserializeMessage(directMessage.Receiver);
 
             string storageFileName = "DataBases/DirectDataBases/";
-            if(!Directory.Exists(storageFileName))
+            if (!Directory.Exists(storageFileName))
             {
                 Directory.CreateDirectory(storageFileName);
             }

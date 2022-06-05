@@ -37,7 +37,10 @@ namespace Chat
             {
                 var message = AnsiConsole.Ask<string>($"{userName}: ");
 
-                if (message == "exit") break;
+                if (message == "exit")
+                {
+                    break;
+                }
 
                 if (message.StartsWith("+"))
                 {
