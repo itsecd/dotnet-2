@@ -34,7 +34,7 @@ namespace ChatClient.ViewModel
 
 
         public MainViewModel()
-        {
+    {
             var channel = GrpcChannel.ForAddress(Settings.Default.Address);
             _client = new ChatRoom.ChatRoomClient(channel);
             CreateCommand = ReactiveCommand.Create(CreateImpl);
@@ -43,7 +43,7 @@ namespace ChatClient.ViewModel
             DisconnectCommand = ReactiveCommand.Create(DisconnectImpl);
         }
 
-        private void CreateImpl()
+        private async void CreateImpl()
         {
             DialogWindow dialogWindow = new DialogWindow();
             var dialogResult = dialogWindow.ShowDialog();
@@ -51,8 +51,10 @@ namespace ChatClient.ViewModel
             {
                 _userName = dialogWindow.UserName;
                 _roomName = dialogWindow.RoomName;
-                var streamingCall = _client.Create();
-                streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Text = _roomName, Command = "create" });
+                _streamingCall = _client.Create();
+                await _streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Text = _roomName, Command = "create" });
+                await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken());
+
             }
             else
             {
@@ -69,6 +71,21 @@ namespace ChatClient.ViewModel
                 _userName = dialogWindow.UserName;
                 _roomName = dialogWindow.RoomName;
 
+                _streamingCall = _client.Join();
+                await _streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Text = _roomName, Command = "" });
+                await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken());
+                var LastMessage = new MyHistoryOfMessagesModel
+                {
+                    User = _streamingCall.ResponseStream.Current.User,
+                    data = DateTime.Now,
+                    Message = _streamingCall.ResponseStream.Current.Text
+                };
+                Messages.Add(new MyHistoryOfMessagesModel
+                {
+                    User = _streamingCall.ResponseStream.Current.User,
+                    data = DateTime.Now,
+                    Message = _streamingCall.ResponseStream.Current.Text
+                });
                 RoomInfo roomInfo = new RoomInfo { RoomName = _roomName };
                 UsersInfoResponse usersResponse = await _client.GetUsersAsync(roomInfo);
 
@@ -102,18 +119,7 @@ namespace ChatClient.ViewModel
                     messages.Messages.RemoveAt(index);
 
                 }
-
-                _streamingCall = _client.Join();
-                await _streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Text = _roomName, Command = "" });
-                await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken());
-                Messages.Add(new MyHistoryOfMessagesModel
-                {
-                    User = _streamingCall.ResponseStream.Current.User,
-                    data = DateTime.Now,
-                    Message = _streamingCall.ResponseStream.Current.Text
-                });
-
-
+                Messages.Add(LastMessage);
                 var readTask = Task.Run(async () =>
                 {
                     while (await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken()))
@@ -142,7 +148,11 @@ namespace ChatClient.ViewModel
                             }
                             if (!isUserExist)
                             {
-                                Users.Add(new MyUserInfo { Name = _streamingCall.ResponseStream.Current.User, Status = true });
+                                Application.Current.Dispatcher.Invoke(() => Users.Add(new MyUserInfo
+                                {
+                                    Name = connectedUser,
+                                    Status = true
+                                }));
                                 this.RaisePropertyChanged(nameof(Users));
                             }
                         }

@@ -1,0 +1,20 @@
+{
+  "Users": [
+    {
+      "Name": "Golovin",
+      "ID": 1586695921
+    }
+  ],
+  "History": {
+    "2022-06-06T00:29:31.4369165+04:00": {
+      "User": "",
+      "Text": "Golovin connected",
+      "Command": ""
+    },
+    "2022-06-06T00:30:10.514241+04:00": {
+      "User": "",
+      "Text": "Golovin disconnected",
+      "Command": "disconnect"
+    }
+  }
+}

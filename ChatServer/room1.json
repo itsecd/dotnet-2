@@ -1,6 +1,10 @@
 {
   "Users": [
     {
+      "Name": "Berk",
+      "ID": 1822749101
+    },
+    {
       "Name": "Pashka",
       "ID": 1646631187
     },
@@ -103,16 +107,57 @@
     {
       "Name": "Hp",
       "ID": 1795695019
+    },
+    {
+      "Name": "Uill",
+      "ID": 1606971727
+    },
+    {
+      "Name": "Arnold",
+      "ID": 1235704309
+    },
+    {
+      "Name": "Gleb",
+      "ID": 973535167
+    },
+    {
+      "Name": "Sanek",
+      "ID": 1939504504
     }
   ],
   "History": {
-    "2022-06-05T17:15:24.7232727+04:00": {
-      "User": "",
-      "Text": "Henry disconnected",
-      "Command": "disconnect"
+    "2022-06-01T14:46:19.8281561+04:00": {
+      "User": "Roman",
+      "Text": "fdsfds",
+      "Command": "message"
     },
-    "2022-06-05T16:42:10.1615748+04:00": {
+    "2022-06-05T16:33:27.3846007+04:00": {
+      "User": "",
+      "Text": "Erzhan disconnected!",
+      "Command": ""
+    },
+    "2022-06-05T22:34:09.6883923+04:00": {
       "User": "Henry",
+      "Text": "Hello",
+      "Command": "message"
+    },
+    "2022-06-05T16:42:35.8157779+04:00": {
+      "User": "",
+      "Text": "Henry disconnected!",
+      "Command": ""
+    },
+    "2022-06-01T14:29:11.4923505+04:00": {
+      "User": "Roman",
+      "Text": "dddddas",
+      "Command": "message"
+    },
+    "2022-06-05T17:10:26.0789357+04:00": {
+      "User": "Roman",
+      "Text": "i",
+      "Command": "message"
+    },
+    "2022-06-01T14:24:00.235447+04:00": {
+      "User": "Roman",
       "Text": "Hello",
       "Command": "message"
     },
@@ -121,9 +166,29 @@
       "Text": "\u0026",
       "Command": "message"
     },
-    "2022-06-05T17:05:26.031728+04:00": {
+    "2022-06-05T19:41:45.505021+04:00": {
+      "User": "Roman",
+      "Text": "ee",
+      "Command": "message"
+    },
+    "2022-06-05T19:42:20.1236505+04:00": {
       "User": "",
-      "Text": "Roman disconnected!",
+      "Text": "Arnold disconnected",
+      "Command": "disconnect"
+    },
+    "2022-05-30T15:59:01.9066268+04:00": {
+      "User": "",
+      "Text": "Henry connected",
+      "Command": ""
+    },
+    "2022-06-05T16:02:32.9661293+04:00": {
+      "User": "Roman",
+      "Text": "Hello, Henry",
+      "Command": "message"
+    },
+    "2022-06-05T19:42:26.2944373+04:00": {
+      "User": "",
+      "Text": "Roman disconnected",
       "Command": "disconnect"
     },
     "2022-05-30T16:00:11.710848+04:00": {
@@ -131,34 +196,39 @@
       "Text": "Hi, Henry",
       "Command": "message"
     },
-    "2022-06-05T17:10:35.3772839+04:00": {
+    "2022-06-05T17:05:26.031728+04:00": {
       "User": "",
       "Text": "Roman disconnected!",
       "Command": "disconnect"
     },
-    "2022-06-05T16:43:44.6966781+04:00": {
+    "2022-06-05T23:12:09.2225788+04:00": {
       "User": "",
-      "Text": "Henry disconnected!",
+      "Text": "Sanek disconnected",
+      "Command": "disconnect"
+    },
+    "2022-06-05T16:42:10.1615748+04:00": {
+      "User": "Henry",
+      "Text": "Hello",
+      "Command": "message"
+    },
+    "2022-06-05T16:29:01.3363357+04:00": {
+      "User": "",
+      "Text": "Roman disconnected!",
       "Command": ""
     },
-    "2022-06-01T14:46:19.8281561+04:00": {
-      "User": "Roman",
-      "Text": "fdsfds",
-      "Command": "message"
+    "2022-06-05T22:24:36.3411626+04:00": {
+      "User": "",
+      "Text": "Roman disconnected",
+      "Command": "disconnect"
     },
-    "2022-06-01T14:27:58.9931885+04:00": {
-      "User": "Roman",
-      "Text": "dddd",
-      "Command": "message"
-    },
-    "2022-05-30T16:00:39.9904078+04:00": {
-      "User": "Henry",
-      "Text": "Hi? bro",
-      "Command": "message"
-    },
-    "2022-06-01T14:29:11.4923505+04:00": {
+    "2022-06-01T14:28:21.4834911+04:00": {
       "User": "Roman",
       "Text": "dddddas",
+      "Command": "message"
+    },
+    "2022-06-05T16:02:20.8525612+04:00": {
+      "User": "Henry",
+      "Text": "Hello, Roman",
       "Command": "message"
     },
     "2022-06-01T14:21:09.186787+04:00": {
@@ -166,54 +236,59 @@
       "Text": "Hello!",
       "Command": "message"
     },
-    "2022-06-01T14:15:21.2772933+04:00": {
-      "User": "Henry",
-      "Text": "Hello, friends",
-      "Command": "message"
-    },
-    "2022-06-05T16:33:27.3846007+04:00": {
+    "2022-06-05T19:41:34.1997562+04:00": {
       "User": "",
-      "Text": "Erzhan disconnected!",
+      "Text": "Arnold connected",
       "Command": ""
     },
-    "2022-06-01T14:28:21.4834911+04:00": {
-      "User": "Roman",
-      "Text": "dddddas",
-      "Command": "message"
+    "2022-06-05T17:10:35.3772839+04:00": {
+      "User": "",
+      "Text": "Roman disconnected!",
+      "Command": "disconnect"
     },
-    "2022-06-01T13:58:09.851398+04:00": {
+    "2022-05-30T16:00:39.9904078+04:00": {
       "User": "Henry",
-      "Text": "Hello, slavyane",
+      "Text": "Hi? bro",
       "Command": "message"
     },
-    "2022-06-05T16:02:32.9661293+04:00": {
-      "User": "Roman",
-      "Text": "Hello, Henry",
-      "Command": "message"
-    },
-    "2022-06-01T14:24:00.235447+04:00": {
-      "User": "Roman",
-      "Text": "Hello",
-      "Command": "message"
+    "2022-06-05T18:31:33.8176002+04:00": {
+      "User": "",
+      "Text": "York disconnected",
+      "Command": "disconnect"
     },
     "2022-06-05T18:30:28.7121088+04:00": {
       "User": "",
       "Text": "Henry connected",
       "Command": ""
     },
-    "2022-06-05T16:02:20.8525612+04:00": {
-      "User": "Henry",
-      "Text": "Hello, Roman",
+    "2022-06-01T14:27:58.9931885+04:00": {
+      "User": "Roman",
+      "Text": "dddd",
       "Command": "message"
     },
-    "2022-05-30T15:59:01.9066268+04:00": {
+    "2022-06-05T17:15:24.7232727+04:00": {
       "User": "",
-      "Text": "Henry connected",
+      "Text": "Henry disconnected",
+      "Command": "disconnect"
+    },
+    "2022-06-05T19:37:00.0232358+04:00": {
+      "User": "",
+      "Text": "Roman connected",
       "Command": ""
     },
-    "2022-06-05T16:29:01.3363357+04:00": {
+    "2022-06-01T14:15:21.2772933+04:00": {
+      "User": "Henry",
+      "Text": "Hello, friends",
+      "Command": "message"
+    },
+    "2022-06-05T19:37:20.0349562+04:00": {
       "User": "",
-      "Text": "Roman disconnected!",
+      "Text": "Roman disconnected",
+      "Command": "disconnect"
+    },
+    "2022-06-05T16:43:44.6966781+04:00": {
+      "User": "",
+      "Text": "Henry disconnected!",
       "Command": ""
     },
     "2022-06-01T13:58:04.5825977+04:00": {
@@ -221,24 +296,14 @@
       "Text": "Hello, slavyane",
       "Command": "message"
     },
+    "2022-06-01T13:58:09.851398+04:00": {
+      "User": "Henry",
+      "Text": "Hello, slavyane",
+      "Command": "message"
+    },
     "2022-06-05T17:12:05.1534872+04:00": {
       "User": "",
       "Text": "Roman disconnected!",
-      "Command": "disconnect"
-    },
-    "2022-06-05T17:10:26.0789357+04:00": {
-      "User": "Roman",
-      "Text": "i",
-      "Command": "message"
-    },
-    "2022-06-05T16:42:35.8157779+04:00": {
-      "User": "",
-      "Text": "Henry disconnected!",
-      "Command": ""
-    },
-    "2022-06-05T18:31:33.8176002+04:00": {
-      "User": "",
-      "Text": "York disconnected",
       "Command": "disconnect"
     }
   }
