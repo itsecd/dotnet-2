@@ -14,14 +14,20 @@ namespace ChatServer.Serializers
             messages.Add(groupMessage);
 
             await using var fs = new FileStream(fileName, FileMode.OpenOrCreate);
+            //await JsonSerializer.SerializeAsync(fs, messages, typeof(List<GroupMessage>));
             await JsonSerializer.SerializeAsync(fs, messages);
         }
 
         public static async Task<List<GroupMessage>> DeserializeMessage(string groupName)
         {
             var fileName = "RoomDataBases/" + groupName + ".json";
-            await using var fs = new FileStream(fileName, FileMode.OpenOrCreate);
-            var deserializedMessages = await JsonSerializer.DeserializeAsync<List<GroupMessage>>(fs);
+            var deserializedMessages = new List<GroupMessage>();
+            FileInfo fileInf = new FileInfo(fileName);
+            if (fileInf.Exists)
+            {
+                await using var fs = new FileStream(fileName, FileMode.Open);
+                deserializedMessages = await JsonSerializer.DeserializeAsync<List<GroupMessage>>(fs);
+            }
 
             return deserializedMessages;
         }

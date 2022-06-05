@@ -1,0 +1,28 @@
+﻿<Window x:Class="Chat.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Chat"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid x:Name="grid1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="0.25*" />
+            <RowDefinition Height="0.25*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="0.25*" />
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="0">
+            <StackPanel x:Name="scroll1">
+                
+            </StackPanel>
+        </ScrollViewer>
+        <TextBox Grid.Row="2" Grid.Column="0" MaxLength="250" TextChanged="TextBox_TextChanged"></TextBox>
+        <Button x:Name="enterButton" Grid.Row="2" Grid.Column="1" Width="120" Height="60" Content="Отправить" IsDefault ="True"  Click="Button_Message_Send" />
+        <Button x:Name="escapeButton" Grid.Row="0" Grid.Column="1" Visibility="Hidden" Content="Панель Hidden" IsCancel="True" Click="Button_Message_Escape"/>
+    </Grid>
+</Window>
