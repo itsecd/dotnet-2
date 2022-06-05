@@ -20,4 +20,12 @@
     <GroupName>g</GroupName>
     <Name>us1</Name>
   </GroupList>
+  <GroupList>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+  </GroupList>
+  <GroupList>
+    <GroupName>g</GroupName>
+    <Name>us2</Name>
+  </GroupList>
 </ArrayOfGroupList>

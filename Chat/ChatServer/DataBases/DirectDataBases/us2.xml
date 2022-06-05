@@ -25,4 +25,19 @@
     <Name>us1</Name>
     <Message> let's go</Message>
   </DirectMessage>
+  <DirectMessage>
+    <Receiver>us2</Receiver>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us2</Receiver>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us2</Receiver>
+    <Name>us1</Name>
+    <Message> hi</Message>
+  </DirectMessage>
 </ArrayOfDirectMessage>

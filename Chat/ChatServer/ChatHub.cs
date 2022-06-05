@@ -26,6 +26,8 @@ namespace ChatServer
                 Clients.Client(Connections[user]).SendAsync("ReceiveDirectMessage", directMessage.Name, directMessage.Message);
             }
 
+            List<RoomList> roomList = RoomListSerializer.DeserializeRoomList(user);
+
             return Clients.Others.SendAsync("ReceiveMessage", user, $"{user} is connected");
         }
 
@@ -39,6 +41,9 @@ namespace ChatServer
 
             GroupList groupMember = new GroupList(groupName, user);
             GroupListSerializer.SerializeGroup(groupMember);
+
+            RoomList roomMember = new RoomList(user, groupName);
+            RoomListSerializer.SerializeRoomList(roomMember);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, "has joined the group");
@@ -59,6 +64,7 @@ namespace ChatServer
         public Task SendMessageToUser(string user, string message, string receiver)
         {
             DirectMessageSerializer.SerializeMessage(new DirectMessage(receiver, user, message));
+            RoomListSerializer.SerializeRoomList(new RoomList(user, receiver));
             return Clients.Client(Connections[receiver]).SendAsync("ReceiveDirectMessage", user, message);
         }
 
