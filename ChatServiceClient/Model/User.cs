@@ -1,6 +1,4 @@
-﻿using Grpc.Core;
-
-namespace ChatService.Model
+﻿namespace ChatServiceClient.Model
 {
     public class User
     {

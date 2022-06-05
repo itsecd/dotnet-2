@@ -1,5 +1,5 @@
 ﻿using ChatService;
-using ChatService.Model;
+using ChatServiceClient.Model;
 using Grpc.Net.Client;
 using ReactiveUI;
 using System;
@@ -54,11 +54,10 @@ namespace ChatServiceClient.ViewModel
             {
                 using (var chat = Client.Create())
                 {
-                    await chat.RequestStream.WriteAsync(new Message { RoomName = this.RoomName, UserName = this.UserName, Text = "0" });
+                    await chat.RequestStream.WriteAsync(new Message { RoomName = RoomName, UserName = UserName, Text = "0" });
                     AuthWindow.Hide();
                     _ = await OpenChatWindow.Handle(new User(UserName, RoomName));
                     AuthWindow.Close();
-                    App.Current.Shutdown();
                 }
             }            
         }
