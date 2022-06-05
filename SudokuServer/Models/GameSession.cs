@@ -19,7 +19,15 @@ namespace SudokuServer.Models
             _player = player;
             _requestStream = requestStream;
             _responseStream = responseStream;
-            _field = new FieldGeneratorService().GenerateField();
+            var fieldGenerator = new FieldGeneratorService();
+            var field = fieldGenerator.GenerateField();
+            while (field is not null && player.Solved.Contains(field.Id))
+            {
+                field = fieldGenerator.GenerateField();
+            }
+            if (field is null)
+                throw new System.Exception("There are no fields left for this player");
+            _field = field;
         }
 
         public async Task Start()
@@ -31,62 +39,37 @@ namespace SudokuServer.Models
                 if (_requestStream.Current.RequestCase == Request.RequestOneofCase.Turn)
                 {
                     var point = _requestStream.Current.Turn.Point;
-                    if (!Check(point))
+                    if (!_field.ChangePoint(point))
                     {
                         await SendTurnEvent(false);
                     }
                     else
                     {
-                        _field[point.X, point.Y] = point.Value;
                         await SendTurnEvent(true);
-                        if (_field.Points.Count == _field.Size)
+                        if (_field.Count == _field.Size)
+                        {
+                            _player.Solved.Add(_field.Id);
                             await SendWinEvent();
+                        }
                     }
                 }
             }
-
-        }
-
-
-
-        private bool Check(Point point)
-        {
-            for (int i=0; i < 9; ++i)
-            {
-                if (i == point.X)
-                    continue;
-                if (_field[i, point.Y] == point.Value)
-                    return false;
-            }
-
-            for (int i = 0; i < 9; ++i)
-            {
-                if (i == point.Y)
-                    continue;
-                if (_field[point.X, i] == point.Value)
-                    return false;
-            }
-
-            return true;
         }
 
         private async Task SendPlayEvent()
         {
             var playEvent = new PlayEvent();
-            playEvent.Points.Add(_field.Points.ToArray());
+            playEvent.Points.Add(_field.FixedPoints.ToArray());
             await _responseStream.WriteAsync(new Event() { Play = playEvent });
         }
         private async Task SendTurnEvent(bool success)
         {
-            var turnEvent = new TurnEvent() { Success = success};
+            var turnEvent = new TurnEvent() { Success = success };
             await _responseStream.WriteAsync(new Event() { Turn = turnEvent });
         }
         private async Task SendWinEvent()
         {
             await _responseStream.WriteAsync(new Event() { Win = new WinEvent() });
         }
-
-        
-
     }
 }
