@@ -29,7 +29,7 @@ namespace SudokuServer.Services
             {
                 await SendLoginEvent(responseStream, false);
                 return;
-            }          
+            }
             await SendLoginEvent(responseStream, true);
 
             var player = await _playersRepository.GetPlayer(loginRequest.Login);
@@ -66,7 +66,7 @@ namespace SudokuServer.Services
 
         private static async Task SendLoginEvent(IServerStreamWriter<Event> responseStream, bool success)
         {
-            var loginEvent = new LoginEvent() { Success = success};
+            var loginEvent = new LoginEvent() { Success = success };
             await responseStream.WriteAsync(new Event() { Login = loginEvent });
         }
 

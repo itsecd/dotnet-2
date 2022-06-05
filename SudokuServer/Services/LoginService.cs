@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 
 using Grpc.Core;
 
-using SudokuServer.Repositories;
 using SudokuServer.Services;
 
 namespace SudokuServer
