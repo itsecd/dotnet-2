@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using SudokuServer.Repositories;
 using SudokuServer.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SudokuServer
 {
@@ -20,6 +17,7 @@ namespace SudokuServer
         {
             services.AddSingleton<IPlayersRepository, JsonPlayersRepository>();
             services.AddSingleton<GameService>();
+            services.AddSingleton<FieldGeneratorService>();
             services.AddGrpc();
         }
 

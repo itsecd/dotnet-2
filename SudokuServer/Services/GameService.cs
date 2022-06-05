@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
@@ -24,41 +25,55 @@ namespace SudokuServer.Services
             IAsyncStreamReader<Request> requestStream,
             IServerStreamWriter<Event> responseStream)
         {
-            var loginEvent = new LoginEvent();
-            loginEvent.Success = !_players.TryGetValue(loginRequest.Login, out _);
-            await responseStream.WriteAsync(new Event() { Login = loginEvent });
-            if (!loginEvent.Success)
+            if (_players.TryGetValue(loginRequest.Login, out _))
+            {
+                await SendLoginEvent(responseStream, false);
                 return;
+            }          
+            await SendLoginEvent(responseStream, true);
 
             var player = await _playersRepository.GetPlayer(loginRequest.Login);
-            Task<bool>? addPlayerTask = null;
             if (player is null)
             {
                 player = new Player() { Login = loginRequest.Login };
-                addPlayerTask = _playersRepository.AddPlayer(player);
+                await _playersRepository.AddPlayer(player);
             }
-
-
-
+            if (!_players.TryAdd(loginRequest.Login, player))
+                return;
             try
             {
-                if (!_players.TryAdd(loginRequest.Login, player))
-                    return;
-
-                if (await requestStream.MoveNext() && requestStream.Current.RequestCase == Request.RequestOneofCase.Play)
+                if (await requestStream.MoveNext())
                 {
-                    var gameSession = new GameSession(player, requestStream, responseStream);
-                    gameSession.Start().Wait();
-                    if (addPlayerTask is not null)
-                        await addPlayerTask;
+                    if (requestStream.Current.RequestCase != Request.RequestOneofCase.Play)
+                        await SendErrorEvent(responseStream, "Play Request expected. Re Login please.");
+                    else
+                    {
+                        var gameSession = new GameSession(player, requestStream, responseStream);
+                        gameSession.Start().Wait();
+                    }
                 }
-
+            }
+            catch (Exception exception)
+            {
+                await SendErrorEvent(responseStream, exception.Message);
             }
             finally
             {
                 _players.TryRemove(loginRequest.Login, out _);
                 await _playersRepository.UpdatePlayer(player);
             }
+        }
+
+        private static async Task SendLoginEvent(IServerStreamWriter<Event> responseStream, bool success)
+        {
+            var loginEvent = new LoginEvent() { Success = success};
+            await responseStream.WriteAsync(new Event() { Login = loginEvent });
+        }
+
+        private static async Task SendErrorEvent(IServerStreamWriter<Event> responseStream, string message)
+        {
+            var errorEvent = new ErrorEvent() { Error = message };
+            await responseStream.WriteAsync(new Event() { Error = errorEvent });
         }
     }
 }
