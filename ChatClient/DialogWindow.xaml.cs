@@ -3,9 +3,6 @@ using System.Windows.Controls;
 
 namespace ChatClient
 {
-    /// <summary>
-    /// Логика взаимодействия для DialogWindow.xaml
-    /// </summary>
     public partial class DialogWindow : Window
     {
         public DialogWindow()

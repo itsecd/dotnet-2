@@ -24,12 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\ChatServer\Protos\chat.proto" GrpcServices="Client">
-      <Link>Protos\chat.proto</Link>
-    </Protobuf>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>

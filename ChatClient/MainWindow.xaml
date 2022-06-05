@@ -13,17 +13,38 @@
         <Menu DockPanel.Dock="Top" Height="30" Background="#cfcfe6">
             <MenuItem Header="Create" Command="{Binding CreateCommand}"/>
             <MenuItem Header="Join" Command="{Binding JoinCommand}"/>
-            <MenuItem Header="Disconnect"/>
+            <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}"/>
         </Menu>
         <DockPanel>
-            <ItemsControl DockPanel.Dock="Left" Width="300" ItemsSource="{Binding Users}"/>
+            <ScrollViewer>
+                <ItemsControl DockPanel.Dock="Left" Width="265" ItemsSource="{Binding Users}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                        
+                                <Label Content="{Binding FormatName}" FontSize="18"/>
+                        
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
             <DockPanel Width="980">
 
                 <DockPanel Background="#c5cee8" DockPanel.Dock="Bottom" Height="80">
-                    <Button DockPanel.Dock="Right" Content="Send" HorizontalAlignment="Right" Margin="5" Width="120" Background="#9f9fc6" Foreground="White" FontSize="20"/>
-                    <TextBox  Margin="5" Background="White" />
+                    <Button DockPanel.Dock="Right" Content="Send" HorizontalAlignment="Right" Margin="5" Width="120" Background="#9f9fc6" Foreground="White" FontSize="20" Command="{Binding SendCommand}"/>
+                    <TextBox Name="textMessage"  Margin="5" Background="White" Text="{Binding TextMessage}" />
                 </DockPanel>
-                <ItemsControl  Background="White" ItemsSource="{Binding Messages}"/>
+                <ScrollViewer>    
+                    <ItemsControl  Background="White" ItemsSource="{Binding Messages}">
+                    
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                            
+                                    <Label Content="{Binding FormatNameMessage}" FontSize="18"/>
+                            
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </DockPanel>
 
         </DockPanel>

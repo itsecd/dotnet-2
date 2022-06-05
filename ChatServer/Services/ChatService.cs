@@ -71,8 +71,8 @@ namespace ChatServer.Services
                 if (_users.IsUserExist(userName))
                     _users.AddUser(userName);
                 await _users.WriteAsyncToFile();
+                
                 await _chatRooms.WriteAsyncToFile();
-                await responseStream.WriteAsync(new Message { Text = "Connection success" });
                 await room.BroadcastMessage(new Message { Text = $"{userName} connected" });
             }
             else
@@ -90,9 +90,12 @@ namespace ChatServer.Services
                         await room.BroadcastMessage(currentMessage, userName);
                         break;
                     case "disconnect":
-                        _chatRooms.FindRoom(nameRoom).Disconnect(requestStream.Current.User);
-                        await responseStream.WriteAsync(new Message { Text = $"Пользователь {requestStream.Current.User} отключился!" });
-                        break;
+                        var currentRoom = _chatRooms.FindRoom(nameRoom);
+                        currentRoom.Disconnect(requestStream.Current.User);
+                        await currentRoom.BroadcastMessage(new Message { Text = $"{requestStream.Current.User} disconnected", Command="disconnect" });
+                        await _chatRooms.WriteAsyncToFile();
+                        await _users.WriteAsyncToFile();
+                        return;
                     default:
                         _logger.LogInformation(requestStream.Current.Text);
                         break;

@@ -1,0 +1,29 @@
+{
+  "Users": [
+    {
+      "Name": "Roman",
+      "ID": 729886990
+    },
+    {
+      "Name": "Henry",
+      "ID": 770019854
+    }
+  ],
+  "History": {
+    "2022-06-05T17:19:13.5601748+04:00": {
+      "User": "",
+      "Text": "Roman connected",
+      "Command": ""
+    },
+    "2022-06-05T17:20:11.928689+04:00": {
+      "User": "Henry",
+      "Text": "Hi",
+      "Command": "message"
+    },
+    "2022-06-05T17:19:30.2798421+04:00": {
+      "User": "",
+      "Text": "Henry connected",
+      "Command": ""
+    }
+  }
+}
