@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Grpc.Core;
@@ -13,7 +12,7 @@ namespace SudokuServer.Services
     public class GameService
     {
         private readonly IPlayersRepository _playersRepository;
-        private readonly ConcurrentDictionary<string, PlayerSession> _players = new();
+        private readonly ConcurrentDictionary<string, Player> _players = new();
 
         public GameService(IPlayersRepository playersRepository)
         {
@@ -39,21 +38,26 @@ namespace SudokuServer.Services
                 addPlayerTask = _playersRepository.AddPlayer(player);
             }
 
-            var playerSession = new PlayerSession(player, requestStream, responseStream);
+
 
             try
             {
-                if (!_players.TryAdd(loginRequest.Login, playerSession))
+                if (!_players.TryAdd(loginRequest.Login, player))
                     return;
 
-                playerSession.StartGame().Wait();
-                if (addPlayerTask is not null)
-                    await addPlayerTask;
+                if (await requestStream.MoveNext() && requestStream.Current.RequestCase == Request.RequestOneofCase.Play)
+                {
+                    var gameSession = new GameSession(player, requestStream, responseStream);
+                    gameSession.Start().Wait();
+                    if (addPlayerTask is not null)
+                        await addPlayerTask;
+                }
+
             }
             finally
             {
-                await _playersRepository.UpdatePlayer(player);
                 _players.TryRemove(loginRequest.Login, out _);
+                await _playersRepository.UpdatePlayer(player);
             }
         }
     }
