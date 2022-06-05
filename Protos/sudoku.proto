@@ -8,6 +8,12 @@ service SudokuService {
   rpc Connect (stream Request) returns (stream Event);
 }
 
+message Point {
+  int32 x = 1;
+  int32 y = 2;
+  int32 value = 3;
+}
+
 // --------
 // Requests
 // --------
@@ -16,6 +22,7 @@ message Request {
   oneof request {
     LoginRequest login = 1;
     PlayRequest play = 2;
+    TurnRequset turn = 3;
   }
 }
 
@@ -26,6 +33,10 @@ message LoginRequest {
 message PlayRequest {
 }
 
+message TurnRequset {
+    Point point = 1;
+}
+
 // ------
 // Events
 // ------
@@ -34,6 +45,8 @@ message Event {
   oneof event {
     LoginEvent login = 1;
     PlayEvent play = 2;
+    TurnEvent turn = 3;
+    WinEvent win = 4;
   }
 }
 
@@ -42,4 +55,12 @@ message LoginEvent {
 }
 
 message PlayEvent {
+    repeated Point points = 1;
+}
+
+message TurnEvent {
+    bool success = 1;
+}
+
+message WinEvent {
 }
