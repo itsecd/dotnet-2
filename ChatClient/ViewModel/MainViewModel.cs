@@ -23,7 +23,7 @@ namespace ChatClient.ViewModel
 
         private ChatRoom.ChatRoomClient _client;
 
-        private Grpc.Core.AsyncDuplexStreamingCall<Message, Message> _streamingCall ;
+        private Grpc.Core.AsyncDuplexStreamingCall<Message, Message> _streamingCall;
 
         public ReactiveCommand<Unit, Unit> CreateCommand { get; }
         public ReactiveCommand<Unit, Task> JoinCommand { get; }
@@ -32,7 +32,7 @@ namespace ChatClient.ViewModel
         public ReactiveCommand<Unit, Task> DisconnectCommand { get; }
 
 
-        
+
         public MainViewModel()
         {
             var channel = GrpcChannel.ForAddress(Settings.Default.Address);
@@ -106,10 +106,14 @@ namespace ChatClient.ViewModel
                 _streamingCall = _client.Join();
                 await _streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Text = _roomName, Command = "" });
                 await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken());
-                Messages.Add(new MyHistoryOfMessagesModel {User = _streamingCall.ResponseStream.Current.User,
-                    data = DateTime.Now, Message = _streamingCall.ResponseStream.Current.Text });
-                
-               
+                Messages.Add(new MyHistoryOfMessagesModel
+                {
+                    User = _streamingCall.ResponseStream.Current.User,
+                    data = DateTime.Now,
+                    Message = _streamingCall.ResponseStream.Current.Text
+                });
+
+
                 var readTask = Task.Run(async () =>
                 {
                     while (await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken()))
@@ -178,14 +182,14 @@ namespace ChatClient.ViewModel
             this.RaisePropertyChanged(nameof(TextMessage));
         }
 
-        private async Task DisconnectImpl() 
+        private async Task DisconnectImpl()
         {
             await _streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Command = "disconnect" });
             Users.Clear();
             Messages.Clear();
             this.RaisePropertyChanged(nameof(Users));
             this.RaisePropertyChanged(nameof(Messages));
-            
+
         }
     }
 }
