@@ -53,7 +53,7 @@
                                     </Border>
                                     
                                     <Border Grid.Column="1">
-                                        <Button Name="SendButton" Content="→" FontSize="15" Command="{Binding SendMessage}" Grid.ColumnSpan="2" Margin="0,3,10,15" IsDefault="True" Click="enterButton_Click"/>
+                                        <Button Name="SendButton" Content="→" FontSize="15" Command="{Binding SendMessage}" Grid.ColumnSpan="2" Margin="0,3,10,15" IsDefault="True" Click="EnterButton_Click"/>
                                     </Border>
                                 </Grid>
                             </Border>

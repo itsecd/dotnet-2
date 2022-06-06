@@ -15,7 +15,7 @@ namespace TestWPF.View
         {
             InitializeComponent();
         }
-        private async void enterButton_Click(object sender, RoutedEventArgs e)
+        private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Clear();
         }

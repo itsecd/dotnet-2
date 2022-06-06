@@ -39,7 +39,7 @@ namespace ChatServer
                 await Clients.Client(Connections[user]).SendAsync("ReceiveMessageFromGroup", groupMessage.GroupName, groupMessage.Name, groupMessage.Message);
             }
 
-            GroupList groupMember = new GroupList(groupName, user);
+            GroupList groupMember = new(groupName, user);
             GroupListSerializer.SerializeGroup(groupMember);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
