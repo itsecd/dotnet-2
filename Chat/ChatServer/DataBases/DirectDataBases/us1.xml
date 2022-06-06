@@ -30,4 +30,44 @@
     <Name>us2</Name>
     <Message> yeessss</Message>
   </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us1</Name>
+    <Message> hello!</Message>
+  </DirectMessage>
 </ArrayOfDirectMessage>

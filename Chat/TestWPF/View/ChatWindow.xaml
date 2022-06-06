@@ -7,19 +7,20 @@
         xmlns:v="clr-namespace:TestWPF.View"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="ChatWindow" Height="450" Width="800">
+        Title="ChatWindow" Height="450" Width="600">
+    
     <Grid>
         <Border Name="LoginScreen" Visibility="Visible">
             <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="Enter your name" HorizontalAlignment="Center" Margin="0,0,0,30"/>
-                <TextBox Name="NameBox" materialDesign:HintAssist.Hint="Введите имя" Text="{Binding User, UpdateSourceTrigger=PropertyChanged}" />
-                <Button Content="Enter" Name="LoginButton" IsDefault="True" Margin="0,30,0,0" Click="enterButton_Click" Command="{Binding EnterName}"/>
+                <TextBlock Text="Enter your name" HorizontalAlignment="Center" Margin="0,0,0,30" FontSize="20"/>
+                <TextBox materialDesign:HintAssist.Hint="Введите имя" Text="{Binding User, UpdateSourceTrigger=PropertyChanged}" Height="25" Width="480" BorderThickness="1"/>
+                <Button Content="Enter" IsDefault="True" Margin="0,30,0,0" Command="{Binding EnterName}" Width="314"/>
             </StackPanel>
         </Border>
 
         <Border Name="ChatScreen" Visibility="Hidden">
             <Grid>
-                
+
                 <Grid>
                     <Border Name="Chat">
                         <Grid>
@@ -31,12 +32,12 @@
 
                             <Border Grid.Row="0">
                                 <Grid>
-                                    <TextBlock Grid.Column="1" Text="Chat" VerticalAlignment="Center" Name="ChatName" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Chat" FontSize="20" VerticalAlignment="Center" Name="ChatName" HorizontalAlignment="Center"/>
                                 </Grid>
                             </Border>
 
                             <Border Grid.Row="1">
-                                <ListView ItemsSource="{Binding Messages}" Width="800"/>
+                                <ListView ItemsSource="{Binding Messages}"/>
 
                             </Border>
 
@@ -46,19 +47,19 @@
                                         <ColumnDefinition Width="6*"/>
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
-
-                                    <TextBox Grid.Column="0" Name="MessageBox" materialDesign:HintAssist.Hint="Введите сообщение" Text="{Binding Message}"/>
-
-                                    <Button Grid.Column="1" Name="SendButton" Content="→" FontSize="15" Command="{Binding SendMessage}"/>
-
+                                    
+                                    <Border Grid.Column="0">
+                                        <TextBox Name="MessageBox" materialDesign:HintAssist.Hint=" Введите сообщение" Text="{Binding Message}" Margin="10,0,10,10" BorderThickness="1"/>
+                                    </Border>
+                                    
+                                    <Border Grid.Column="1">
+                                        <Button Name="SendButton" Content="→" FontSize="15" Command="{Binding SendMessage}" Grid.ColumnSpan="2" Margin="0,3,10,15" IsDefault="True" Click="enterButton_Click"/>
+                                    </Border>
                                 </Grid>
                             </Border>
                         </Grid>
                     </Border>
                 </Grid>
-
-
-
             </Grid>
         </Border>
     </Grid>

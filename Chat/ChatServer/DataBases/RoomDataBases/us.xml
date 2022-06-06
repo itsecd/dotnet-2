@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<ArrayOfRoomList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <RoomList>
-    <Name>us1</Name>
-    <Room>us2</Room>
-  </RoomList>
-</ArrayOfRoomList>

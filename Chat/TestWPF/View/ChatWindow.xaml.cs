@@ -14,23 +14,10 @@ namespace TestWPF.View
         public ChatWindow()
         {
             InitializeComponent();
-
-
-
-            _ = this.WhenActivated(cd =>
-            {
-                if (ViewModel is null)
-                {
-                    return;
-                }
-            });
-
         }
-
         private async void enterButton_Click(object sender, RoutedEventArgs e)
         {
-            LoginScreen.Visibility = Visibility.Hidden;
-            ChatScreen.Visibility = Visibility.Visible;
+            MessageBox.Clear();
         }
     }
 }

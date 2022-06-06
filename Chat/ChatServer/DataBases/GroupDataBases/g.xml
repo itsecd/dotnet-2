@@ -80,4 +80,39 @@
     <Name>us1</Name>
     <Message> into group into WPF</Message>
   </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us2</Name>
+    <Message> oiakda;dl</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> opdsf;lad</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us3</Name>
+    <Message> dap[flaspda;</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message />
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message />
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message />
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> </Message>
+  </GroupMessage>
 </ArrayOfGroupMessage>

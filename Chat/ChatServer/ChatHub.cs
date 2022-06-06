@@ -43,7 +43,6 @@ namespace ChatServer
             GroupListSerializer.SerializeGroup(groupMember);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            //await Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, "has joined the group");
             await Clients.Group(groupName).SendAsync("ReceiveServiceMessage", groupName, message);
         }
 
