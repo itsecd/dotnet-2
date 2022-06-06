@@ -54,10 +54,10 @@ namespace GeoAppAtmClient.Views
         {
             if (e.MapInfo?.Feature == null) return;
             var viewModel = (MapViewModel)DataContext;
-            var tmp = (string)e.MapInfo.Feature["id"];
-            if (tmp != null)
+            var featureId = e.MapInfo.Feature["id"];
+            if (featureId != null)
             {
-                await viewModel.ShowAtmInfo(tmp);
+                await viewModel.ShowAtmInfo((string)featureId);
             }
         }
 
