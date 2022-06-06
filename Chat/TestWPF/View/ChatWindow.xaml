@@ -1,0 +1,107 @@
+﻿<v:ChatWindowBase x:Class="TestWPF.View.ChatWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        DataContext="{Binding RelativeSource={RelativeSource Self}, Path=ViewModel}"          
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:v="clr-namespace:TestWPF.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="ChatWindow" Height="450" Width="800">
+    <Grid>
+        <Border Name="LoginScreen" Visibility="Visible">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Enter your name" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+                <TextBox Name="NameBox" materialDesign:HintAssist.Hint="Введите имя" Text="{Binding User}" />
+                <Button Content="Enter" Name="LoginButton" IsDefault="True" Margin="0,30,0,0" Click="enterButton_Click" Command="{Binding EnterName}"/>
+                <TextBlock Text="" Name="LoginMessageBlock" Visibility="Hidden"/>
+            </StackPanel>
+        </Border>
+
+        <Border Name="ChatScreen" Visibility="Hidden">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" BorderBrush="Gainsboro" BorderThickness="2">
+                        <TextBlock Text="Contacts" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <Border Grid.Row="1">
+                        <ListBox Name ="ContactList" ItemsSource="{Binding RoomList}"
+                            SelectedItem="{Binding SelectedRoom}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="5">
+                                        <TextBlock FontSize="18" Text="{Binding Path=Room}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Border Name="Chat">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                                <RowDefinition />
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0">
+                                <Grid>
+                                    <TextBlock Grid.Column="1" Text="User" VerticalAlignment="Center" Name="ChatName" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="1">
+                                <ListBox ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
+                                         Name="MessagesList" Focusable="False" HorizontalContentAlignment="Stretch">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <ListBoxItem>
+                                                <Border>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock Text="{Binding Text}"/>
+                                                        <TextBlock Text="{Binding Date}"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </ListBoxItem>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Border>
+
+                            <Border Grid.Row="2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="6*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Grid.Column="0" Name="MessageBox"/>
+
+                                    <Button Grid.Column="1" Name="SendButton" Content="→" FontSize="30"/>
+
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+
+
+            </Grid>
+        </Border>
+    </Grid>
+</v:ChatWindowBase>

@@ -1,6 +1,7 @@
 ﻿using ChatServer.Serializers;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace ChatServer
@@ -26,7 +27,7 @@ namespace ChatServer
                 Clients.Client(Connections[user]).SendAsync("ReceiveDirectMessage", directMessage.Name, directMessage.Message);
             }
 
-            List<RoomList> roomList = RoomListSerializer.DeserializeRoomList(user);
+            ObservableCollection <RoomList> roomList = RoomListSerializer.DeserializeRoomList(user);
 
             return Clients.Others.SendAsync("ReceiveMessage", user, $"{user} is connected");
         }
