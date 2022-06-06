@@ -11,8 +11,6 @@ namespace SnakeServer
     {
         public string Login { get; set; }
         public int Score { get; set; }
-        [XmlIgnore]
-        public GamingSession? Session { get; set; }
         
         private readonly IServerStreamWriter<Reply>? _responseStream;
        
