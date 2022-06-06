@@ -13,7 +13,7 @@ namespace Lab2
     {
         private readonly ILogger<PongGameHub> _logger;
 
-        public static ConcurrentDictionary<string, Player> UsersInLobby = new ConcurrentDictionary<string, Player>();
+        private readonly ConcurrentDictionary<string, Player> UsersInLobby = new ConcurrentDictionary<string, Player>();
 
         public PongGameHub(ILogger<PongGameHub> logger)
         {
@@ -51,7 +51,7 @@ namespace Lab2
         {
             _logger.LogInformation($"GetConnectedPlayers {UsersInLobby.Count}");
             await Clients.All.SendAsync("GetConnectedPlayers",
-                UsersInLobby.Select(x => new Player(x.Key, x.Value.UserName, x.Value.PlayerPosition)).ToList());
+                UsersInLobby.Select(x => new Player(x.Key, x.Value.UserName!, x.Value.PlayerPosition!)).ToList());
         }
 
         public async Task GetTakenGameSide()
@@ -91,7 +91,7 @@ namespace Lab2
         {
             UsersInLobby.Remove(Context.ConnectionId, out _);
             Clients.All.SendAsync("GetConnectedUsers", UsersInLobby.Select(x =>
-                    new Player(x.Key, x.Value.UserName, x.Value.PlayerPosition)).ToList());
+                    new Player(x.Key, x.Value.UserName!, x.Value.PlayerPosition!)).ToList());
             Clients.Others.SendAsync("GameLeft");
             return base.OnDisconnectedAsync(exception);
         }

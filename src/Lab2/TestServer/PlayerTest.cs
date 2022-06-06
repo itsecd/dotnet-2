@@ -1,8 +1,6 @@
-using System;
 using Xunit;
-using Lab2;
 using Lab2.Model;
-using Lab2.Repositories;
+using Lab2.Service;
 
 namespace TestServer
 {
@@ -15,56 +13,16 @@ namespace TestServer
         }
 
         [Fact]
-        public void AddPlayer()
+        public void PlayerSerializerTest()
         {
             // arrange
             var testPlayer = Creat("1", "Harry", "Left");
-            PlayerRepository repository = new();
+            PlayerSerializer serializer = new(); 
             // act
-            repository.Add(testPlayer);
-            // assert
-            Assert.Equal(testPlayer.ConnectionId, repository.GetPlayer("Harry").ConnectionId);
-            Assert.Equal(testPlayer.PlayerPosition, repository.GetPlayer("Harry").PlayerPosition);
-            repository.Remove(testPlayer.UserName);
-        }
-
-        [Fact]
-        public void Delete()
-        {
-            // arrange
-            var testPlayer = Creat("1", "Harry", "Left");
-            PlayerRepository repository = new();
-            repository.Add(testPlayer);
-            // act
-            string name = repository.Remove("Harry");
-            // assert
-            Assert.Equal(testPlayer.UserName, name);
-        }
-
-        [Fact]
-        public void Clear()
-        {
-            // arrange
-            var testPlayer = Creat("1", "Harry", "Left");
-            PlayerRepository repository = new();
-            repository.Add(testPlayer);
-            // act
-            repository.Clear();
+            serializer.SerializerPlayer(testPlayer);
+            var listPlayer = serializer.DeserializerPlayer()[0];
             //assert
-            Assert.True(!repository.ListPlayers().Contains(testPlayer));
-        }
-
-        [Fact]
-        public void GetPlayer()
-        {
-            //arrange
-            var testPlayer = Creat("1", "Harry", "Left");
-            PlayerRepository repository = new();
-            repository.Add(testPlayer);
-            //act
-            Player player = repository.GetPlayer("Harry");
-            //assert
-            Assert.Equal(testPlayer, player);
+            Assert.Equal(testPlayer, listPlayer);
         }
     }
 }
