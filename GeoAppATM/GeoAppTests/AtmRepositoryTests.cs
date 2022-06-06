@@ -18,7 +18,7 @@ namespace GeoAppTests
                 Name = "Сбербанк",
                 Latitude = 50.1680796,
                 Longitude = 53.1996886,
-                Balance = 250000
+                Balance = 9999999
             };
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json").Build();
@@ -73,7 +73,7 @@ namespace GeoAppTests
                 Name = "ТрансКредитБанк",
                 Latitude = 50.1178883,
                 Longitude = 53.1874092,
-                Balance = 18750
+                Balance = 23000
             };
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json").Build();
