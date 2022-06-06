@@ -59,10 +59,22 @@
 *Для отключения от чата нажать на Disconnect.
 
 
+Диалоговое окно что войти/создать комнату
 ![диалоговое окно](https://user-images.githubusercontent.com/73229151/172196584-18c975a4-0ad5-406e-88fb-cc5b1acf89fc.png)
-                                  Диалоговое окно что войти/создать комнату
+
+
+
+
+
+Основное окно приложения
+
+
+
+                                
+                                
+                                
+           ![окно](https://user-images.githubusercontent.com/73229151/172197011-694fd6ca-8ab3-4563-8e8d-9fe81b041bd3.png)
+                     
                                   
-                  ![окно](https://user-images.githubusercontent.com/73229151/172196711-7623fb96-c0a8-4b68-8658-e41866b3e89c.png)
-                                 Основное окно приложения
-                                  
+                
 
