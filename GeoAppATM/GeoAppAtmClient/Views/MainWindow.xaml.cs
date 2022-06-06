@@ -10,7 +10,7 @@ using System.Linq;
 using System.Windows;
 using IFeature = Mapsui.IFeature;
 
-namespace GeoAppAtmClient
+namespace GeoAppAtmClient.Views
 {
     public partial class MainWindow : Window
     {

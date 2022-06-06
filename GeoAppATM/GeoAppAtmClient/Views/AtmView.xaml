@@ -23,7 +23,7 @@
         </Style>
         <ControlTemplate x:Key="ValidationTemplate">
             <DockPanel>
-                <TextBlock Foreground="Red" FontSize="20">!</TextBlock>
+                <TextBlock Foreground="Red" FontSize="20" FontWeight="Black">!</TextBlock>
                 <AdornedElementPlaceholder/>
             </DockPanel>
         </ControlTemplate>
@@ -43,11 +43,11 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="Банк:"/>
-        <Label Grid.Row="0" Grid.Column="1" Content="{Binding Name}"/>
+        <Label Grid.Row="0" Grid.Column="1" Content="{Binding Name}" Margin="5,0,0,0"/>
         <Label Grid.Row="1" Grid.Column="0" Content="Баланс:"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+        <TextBox Grid.Row="1" Grid.Column="1" Validation.ErrorTemplate="{StaticResource ValidationTemplate}" Margin="5,0,0,0">
             <TextBox.Text>
-                <Binding Path="AtmBalance.Balance">
+                <Binding Path="AtmBalance.Balance" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <validationRules:AtmBalanceValidationRule/>
                     </Binding.ValidationRules>
