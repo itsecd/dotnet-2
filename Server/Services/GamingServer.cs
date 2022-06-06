@@ -107,7 +107,7 @@ namespace SnakeServer.Services
 
         }
 
-        private async void WriteToFile()
+        public async void WriteToFile()
         {
             await _databaseLock.WaitAsync();
             try
