@@ -24,78 +24,72 @@
         </xctk:BusyIndicator.ProgressBarStyle>
 
         <Grid Background="#feffba" >
-        <Grid.ColumnDefinitions >
-            <ColumnDefinition Width="80">
-            </ColumnDefinition>
-            <ColumnDefinition >
-            </ColumnDefinition>
-            <ColumnDefinition Width="80">
-            </ColumnDefinition>
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="80">
+                </ColumnDefinition>
+                <ColumnDefinition >
+                </ColumnDefinition>
+                <ColumnDefinition Width="80">
+                </ColumnDefinition>
 
-        </Grid.ColumnDefinitions >
+            </Grid.ColumnDefinitions >
 
-        <Label Grid.Column="0" x:Name="Player1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0">
-            Player1
-            </Label>
+            <Label Grid.Column="0" x:Name="Player1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0"/>
 
-        <Label Grid.Column="2" x:Name="Player2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0">
-            Player2
-        </Label>
+            <Label Grid.Column="2" x:Name="Player2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0"/>
 
-        <Button x:Name="NewGameButton" Grid.Column="2" Margin="0,0,5,5" VerticalAlignment="Bottom" Height="30" Click="NewGameClick" Visibility="Hidden">
+            <Button x:Name="NewGameButton" Grid.Column="2" Margin="0,0,5,5" VerticalAlignment="Bottom" Height="30" Click="NewGameClick" Visibility="Hidden">
                 Новая игра
-        </Button>
+            </Button>
 
-        <Grid Grid.Column="1" >
-            <Grid.RowDefinitions >
-                    <RowDefinition Height="50"/>
-                    <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <Label Grid.Row="0" x:Name="ActivePlayer" HorizontalAlignment="Center" VerticalAlignment="Center">
-                Active player is player2
-            </Label>
-
-            <Grid Grid.Row="1" Margin="0,0,0,40" x:Name="PlaygroundGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1" >
                 <Grid.RowDefinitions >
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-            </Grid>
+                <Label Grid.Row="0" x:Name="ActivePlayer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                <Grid Grid.Row="1" Margin="0,0,0,40" x:Name="PlaygroundGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions >
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                </Grid>
 
             </Grid>
 
-    </Grid>
+        </Grid>
     </xctk:BusyIndicator>
 </Window>

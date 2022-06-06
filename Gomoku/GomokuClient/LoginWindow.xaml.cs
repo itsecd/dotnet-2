@@ -1,22 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
+using Gomoku;
 
 namespace GomokuClient
 {
     public partial class LoginWindow : Window
     {
-        public string Login { get; set; } = "Player";
+        private Client _client = new();
+        public string Login { get; set; } = string.Empty;
 
         public LoginWindow()
         {
@@ -25,8 +18,35 @@ namespace GomokuClient
 
         private void PlayClick(object sender, RoutedEventArgs e)
         {
-            Login = LoginTextBox.Text;
             BusyIndicator.IsBusy = true;
+            Login = LoginTextBox.Text;
+            _client.LoginSubject.Subscribe(FindOpponent);
+            Task sumTask = new Task(async () =>
+            {
+                await _client.LoginRequest(Login);
+            });
+            sumTask.Start();
+        }
+
+        public void FindOpponent(LoginReply loginReply)
+        {
+            _client.FindOpponentSubject.Subscribe(StartGame);
+            Task sumTask = new Task(async () =>
+            {
+                await _client.FindOpponentRequest();
+            });
+            sumTask.Start();
+        }
+
+        public void StartGame(FindOpponentReply findOpponentReply)
+        {
+            Dispatcher.InvokeAsync(() =>
+            {
+                Application.Current.MainWindow = new MainWindow(_client) { Owner = this };
+                Application.Current.MainWindow.Show();
+                Application.Current.MainWindow.Owner = null;
+                Close();
+            });
         }
     }
 }

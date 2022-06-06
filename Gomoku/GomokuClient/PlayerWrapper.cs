@@ -14,24 +14,17 @@ namespace GomokuConsoleClient
 {
     sealed class PlayerWrapper : IAsyncDisposable
     {
-        
-        public List<Reply> Replies { get; } = new();
-
         private readonly AsyncDuplexStreamingCall<Request, Reply> _stream;
         private readonly Task _responseTask;
 
         public PlayerWrapper(GrpcChannel channel)
         {
-            var client = new GomokuClient(channel);
+            var client = new Gomoku.Gomoku.GomokuClient(channel);
             _stream = client.Play();
 
             _responseTask = Task.Run(async () =>
             {
-                while (await _stream.ResponseStream.MoveNext(CancellationToken.None))
-                {
-                    var reply = _stream.ResponseStream.Current;
-                    Replies.Add(reply);
-                }
+                while (await _stream.ResponseStream.MoveNext(CancellationToken.None)) ;
             });
         }
 
