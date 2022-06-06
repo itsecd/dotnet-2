@@ -11,11 +11,11 @@ namespace SudokuServer.Repositories
     public class JsonPlayersRepository : IPlayersRepository
     {
         private const string _filePath = "players.json";
-        private readonly Mutex _mutex = new();
+        private readonly SemaphoreSlim _semaphore = new(1, 1);
 
         public async Task<bool> AddPlayer(Player player)
         {
-            _mutex.WaitOne();
+            await _semaphore.WaitAsync();
             try
             {
                 var players = await ReadFile();
@@ -27,13 +27,13 @@ namespace SudokuServer.Repositories
             }
             finally
             {
-                _mutex.ReleaseMutex();
+                _semaphore.Release();
             }
         }
 
         public async Task<Player?> GetPlayer(string login)
         {
-            _mutex.WaitOne();
+            await _semaphore.WaitAsync();
             try
             {
                 var players = await ReadFile();
@@ -41,12 +41,12 @@ namespace SudokuServer.Repositories
             }
             finally
             {
-                _mutex.ReleaseMutex();
+                _semaphore.Release();
             }
         }
         public async Task<bool> UpdatePlayer(Player updatedPlayer)
         {
-            _mutex.WaitOne();
+            await _semaphore.WaitAsync();
             try
             {
                 var players = await ReadFile();
@@ -60,12 +60,12 @@ namespace SudokuServer.Repositories
             }
             finally
             {
-                _mutex.ReleaseMutex();
+                _semaphore.Release();
             }
         }
         public async Task RemovePlayer(string login)
         {
-            _mutex.WaitOne();
+            await _semaphore.WaitAsync();
             try
             {
                 var players = await ReadFile();
@@ -77,7 +77,7 @@ namespace SudokuServer.Repositories
             }
             finally
             {
-                _mutex.ReleaseMutex();
+                _semaphore.Release();
             }
         }
 

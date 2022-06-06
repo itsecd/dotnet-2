@@ -36,7 +36,11 @@ namespace SudokuServer.Services
             if (player is null)
             {
                 player = new Player() { Login = loginRequest.Login };
-                await _playersRepository.AddPlayer(player);
+                if (!await _playersRepository.AddPlayer(player))
+                {
+                    await SendErrorEvent(responseStream, "Internal error. Re Login please.");
+                    return;
+                }
             }
             if (!_players.TryAdd(loginRequest.Login, player))
                 return;
