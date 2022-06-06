@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{319C51F3-D170-4CCB-AF65-13D08666A579}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeServer", "Server\SnakeServer.csproj", "{319C51F3-D170-4CCB-AF65-13D08666A579}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeConsoleClient", "SnakeConsoleClient\SnakeConsoleClient.csproj", "{E6A210D0-9107-40E9-913A-189C1A9A266E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeConsoleClient", "SnakeConsoleClient\SnakeConsoleClient.csproj", "{E6A210D0-9107-40E9-913A-189C1A9A266E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

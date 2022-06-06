@@ -14,8 +14,8 @@ namespace SnakeServer.Services
     {
         private const string XmlStorageFileName = "players.xml";
         private readonly SemaphoreSlim _databaseLock = new(1, 1);
-        private readonly ConcurrentDictionary<string, Player> _DictionaryForPlayers = new();
-        private List<Player> _ListForPlayers = new List<Player>();
+        private readonly ConcurrentDictionary<string, Player> _dictionaryForPlayers = new();
+        private List<Player> _listForPlayers = new List<Player>();
 
         public async Task Play(IAsyncStreamReader<Request> requestStream, IServerStreamWriter<Reply> responseStream)
         {
@@ -55,21 +55,22 @@ namespace SnakeServer.Services
                 if (player is not null)
                 {
                     SavePlayerToFile(player);
-                    _DictionaryForPlayers.TryRemove(player.Login, out _);
+                    _dictionaryForPlayers.TryRemove(player.Login, out _);
                 }
             }
         }
 
-        private Player? Login(LoginRequest loginRequest, IServerStreamWriter<Reply> responseStream)
+
+        private Player Login(LoginRequest loginRequest, IServerStreamWriter<Reply> responseStream)
         {
             var player = GetPlayerFromFile(loginRequest.Login, responseStream).Result;
-            return _DictionaryForPlayers.TryAdd(player.Login, player) ? player : null;
+            return _dictionaryForPlayers.TryAdd(player.Login, player) ? player : null;
         }
 
         private void SendResult(Player player, SendResultGame sendResultGame)
         {
             player.Score = sendResultGame.Score;
-            _DictionaryForPlayers.TryAdd(player.Login, player);
+            _dictionaryForPlayers.TryAdd(player.Login, player);
             WriteToFile();
         }
         
@@ -78,12 +79,12 @@ namespace SnakeServer.Services
         {
 
             if (!File.Exists(XmlStorageFileName))
-                _ListForPlayers = new List<Player>();
+                _listForPlayers = new List<Player>();
             else
             {
                 var xmlSerializer = new XmlSerializer(typeof(List<Player>));
                 using var fileStream = new FileStream(XmlStorageFileName, FileMode.Open);
-                _ListForPlayers = (List<Player>)xmlSerializer.Deserialize(fileStream);
+                _listForPlayers = (List<Player>)xmlSerializer.Deserialize(fileStream);
             }
 
         }
@@ -102,7 +103,7 @@ namespace SnakeServer.Services
             }
             finally { _databaseLock.Release(); }
            
-            return _ListForPlayers.Find(x => x.Login == login);
+            return _listForPlayers.Find(x => x.Login == login);
 
         }
 
@@ -113,7 +114,7 @@ namespace SnakeServer.Services
             {
                 var xmlSerializer = new XmlSerializer(typeof(List<Player>));
                 using var fileStream = new FileStream(XmlStorageFileName, FileMode.Create);
-                xmlSerializer.Serialize(fileStream, _ListForPlayers);
+                xmlSerializer.Serialize(fileStream, _listForPlayers);
             }
             finally
             {
@@ -129,12 +130,12 @@ namespace SnakeServer.Services
                 if (File.Exists(XmlStorageFileName))
                 {
                     ReadFromFile();
-                    _ListForPlayers.Add(player);
+                    _listForPlayers.Add(player);
                     
                 }
                 else
                 {
-                    _ListForPlayers.Add(player);
+                    _listForPlayers.Add(player);
                 }
                 }
                 finally
