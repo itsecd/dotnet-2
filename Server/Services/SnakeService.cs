@@ -1,11 +1,6 @@
-using System.Threading.Tasks;
-
-
-
 using Grpc.Core;
-
-using Microsoft.Extensions.Logging;
 using Snake;
+using System.Threading.Tasks;
 
 namespace SnakeServer.Services
 {

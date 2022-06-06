@@ -3,8 +3,6 @@ using Grpc.Net.Client;
 using Snake;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static Snake.Snake;
@@ -41,21 +39,6 @@ namespace SnakeConsoleClient
             var request = new Request { LoginRequest = loginRequest };
             await _stream.RequestStream.WriteAsync(request);
         }
-        /*
-                public async Task FindOpponent()
-                {
-                    var findOpponentRequest = new FindOpponentRequest();
-                    var request = new Request { FindOpponentRequest = findOpponentRequest };
-                    await _stream.RequestStream.WriteAsync(request);
-                }
-
-                public async Task MakeTurn(Point point)
-                {
-                    var makeTurnRequest = new MakeTurnRequest { Point = point };
-                    var request = new Request { MakeTurnRequest = makeTurnRequest };
-                    await _stream.RequestStream.WriteAsync(request);
-                }
-        */
         public async Task SendResult(int score)
         {
             var sendResultRequest = new SendResultGame { Score = score };

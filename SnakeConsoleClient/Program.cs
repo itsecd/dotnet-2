@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Grpc.Net.Client;
+using System;
 using System.Threading.Tasks;
-
-
-
-using Grpc.Net.Client;
 
 namespace SnakeConsoleClient
 {
@@ -21,9 +18,9 @@ namespace SnakeConsoleClient
 
                 try
                 {
-                    await session.SecondPlayer.Login("Danila");
+                    await session.SecondPlayer.Login("аввв");
                     await Task.Delay(1000);
-                    await session.FirstPlayer.Login("Valera");
+                    await session.FirstPlayer.Login("3213");
                     await Task.Delay(1000);
 
                     await session.FirstPlayer.SendResult(10);

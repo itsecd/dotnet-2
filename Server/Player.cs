@@ -1,8 +1,8 @@
+using Grpc.Core;
+using Snake;
 using System;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Grpc.Core;
-using Snake;
 
 namespace SnakeServer
 {
