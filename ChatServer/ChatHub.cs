@@ -11,10 +11,12 @@ namespace ChatServer
         private readonly object _lock = new();
 
         private readonly IChatService _chatService;
+
         public ChatHub(IChatService chatService)
         {
             _chatService = chatService;
         }
+        
         public async Task<bool> Login(string login)
         {
             string[] logins;
