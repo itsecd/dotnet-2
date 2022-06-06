@@ -4,10 +4,6 @@ using TestWPF.ViewModel;
 
 namespace TestWPF.View
 {
-    /// <summary>
-    /// Interaction logic for ChatWindow.xaml
-    /// </summary>
-
     public class ChatWindowBase : ReactiveWindow<AppViewModel> { }
     public partial class ChatWindow : ChatWindowBase
     {
