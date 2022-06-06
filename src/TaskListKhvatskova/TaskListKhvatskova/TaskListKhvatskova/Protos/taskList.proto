@@ -73,13 +73,13 @@ message AllExecutorReply {
 message TagRequest {
   int32 TagId = 1;
   string Name = 2;
-  int32 Color = 3;
+  string Color = 3;
 }
 
 message TagReply {
   int32 TagId = 1;
   string Name = 2;
-  int32 Color = 3;
+  string Color = 3;
   ExaminationReply examination_reply = 4;
 }
 

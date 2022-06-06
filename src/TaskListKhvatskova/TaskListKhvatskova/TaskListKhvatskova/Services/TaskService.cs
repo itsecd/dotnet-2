@@ -115,8 +115,8 @@ namespace TaskListKhvatskova.Services
             return Task.FromResult(new ExecutorReply
             {
                 ExecutorId = executor.ExecutorId,
-                Name = request.Name,
-                Surname = request.Surname
+                Name = executor.Name,
+                Surname = executor.Surname
             });
         }
 
