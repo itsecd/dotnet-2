@@ -33,7 +33,7 @@ namespace ChatClient.ViewModel
         {
             _roomName = "";
             _userName = "";
-            
+
             var channel = GrpcChannel.ForAddress(Settings.Default.Address);
             _client = new ChatRoom.ChatRoomClient(channel);
             CreateCommand = ReactiveCommand.Create(CreateImpl);

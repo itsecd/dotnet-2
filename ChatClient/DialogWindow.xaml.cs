@@ -14,7 +14,7 @@ namespace ChatClient
             DialogResult = true;
         }
 
-        public string UserName => UserNameTextBox.Text; 
+        public string UserName => UserNameTextBox.Text;
 
         public string RoomName => RoomNameTextBox.Text;
     }
