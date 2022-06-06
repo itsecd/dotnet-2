@@ -30,7 +30,6 @@ namespace GeoAppAtmClient.ViewModels
             UpdateBalanceCommand = new Command(commandParameter =>
             {
                 if (commandParameter is not Window window) return;
-                window = (Window)commandParameter;
                 _atmRepository.ChangeAtmBalanceAsync(atmId, _atmBalance.Balance);
                 window.DialogResult = true;
                 window.Close();
