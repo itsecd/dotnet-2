@@ -1,12 +1,15 @@
-﻿using Grpc.Net.Client;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
 
-namespace SnakeClient
+
+
+using Grpc.Net.Client;
+
+namespace SnakeConsoleClient
 {
-    public class Program
+    public static class Program
     {
+
         public static async Task Main()
         {
             SessionWrapper sessionWrapper;
@@ -18,15 +21,17 @@ namespace SnakeClient
 
                 try
                 {
-                    await session.FirstPlayer.Login("valera");
-                    await session.SecondPlayer.Login("Lera");
-/*
-                    await session.FirstPlayer.FindOpponent();
+                    await session.SecondPlayer.Login("Danila");
                     await Task.Delay(1000);
-                    await session.SecondPlayer.FindOpponent();
+                    await session.FirstPlayer.Login("Valera");
+                    await Task.Delay(1000);
 
+                    await session.FirstPlayer.SendResult(10);
                     await Task.Delay(1000);
-*/
+                    await session.SecondPlayer.SendResult(5);
+                    await Task.Delay(1000);
+
+
                 }
                 catch (Exception e)
                 {
@@ -46,5 +51,3 @@ namespace SnakeClient
         }
     }
 }
-
-

@@ -1,6 +1,6 @@
 ﻿using Grpc.Core;
+using Snake;
 using SnakeServer;
-using SnakeServer.Database;
 using System;
 using System.Threading.Tasks;
 
@@ -8,10 +8,9 @@ namespace Server.Repository
 {
     public interface IXmlRepository
     {
-        Task<Player> GetPlayerFromFile(String login, IServerStreamWriter<ServerMessage> responseStream);
+        void ReadFromFile();
+        Task<Player> GetPlayerFromFile(String login, IServerStreamWriter<Reply> responseStream);
+        void WriteToFile();
         void SavePlayerToFile(Player player);
-        bool CompareResult();
-        Task ReadFileWithPlayersAsync();
-
     }
 }

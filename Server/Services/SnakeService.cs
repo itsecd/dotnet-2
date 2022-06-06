@@ -1,22 +1,27 @@
-﻿using Grpc.Core;
-using SnakeServer;
 using System.Threading.Tasks;
 
-namespace Server.Services
+
+
+using Grpc.Core;
+
+using Microsoft.Extensions.Logging;
+using Snake;
+
+namespace SnakeServer.Services
 {
-    public class SnakeService:SnakeServer.Snake.SnakeBase
+    public class SnakeService : Snake.Snake.SnakeBase
     {
-        private readonly GameService _gameService;
 
-        public override Task Play(IAsyncStreamReader<PlayerMessage> requestStream, IServerStreamWriter<ServerMessage> responseStream, ServerCallContext context)
+        private readonly GamingServer _server;
+
+        public SnakeService(GamingServer server)
         {
-
-            return _gameService.Join(requestStream,responseStream);
+            _server = server;
         }
-        
-        public SnakeService(GameService gameService)
+
+        public override async Task Play(IAsyncStreamReader<Request> requestStream, IServerStreamWriter<Reply> responseStream, ServerCallContext context)
         {
-            _gameService = gameService;
-        } 
+            await _server.Play(requestStream, responseStream);
+        }
     }
 }

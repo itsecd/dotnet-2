@@ -1,7 +1,6 @@
 ﻿using Grpc.Core;
-using Microsoft.Extensions.Configuration;
+using Snake;
 using SnakeServer;
-using SnakeServer.Database;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,110 +12,76 @@ namespace Server.Repository
 {
     public class XmlRepository : IXmlRepository
     {
-        private List<Player> _players;
-        private static readonly SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
-        private readonly string _fileName;
-        public XmlRepository()
+        private List<Player> players = new List<Player>();
+        private const string XmlStorageFileName = "test.xml";
+        private readonly SemaphoreSlim _databaseLock = new(1, 1);
+        public void ReadFromFile()
         {
-            _players = new List<Player>();
+            if (!File.Exists(XmlStorageFileName))
+                players = new List<Player>();
+            else
+            {
+                var xmlSerializer = new XmlSerializer(typeof(List<Player>));
+                using var fileStream = new FileStream(XmlStorageFileName, FileMode.Open);
+                players = (List<Player>)xmlSerializer.Deserialize(fileStream);
+            }
         }
 
-        public XmlRepository(IConfiguration configuration)
+        public async Task<Player> GetPlayerFromFile(String login, IServerStreamWriter<Reply> responseStream)
         {
-            _fileName = configuration.GetValue<string>("PathPlayers");
-        }
-
-        public async Task<Player> GetPlayerFromFile(string login, IServerStreamWriter<ServerMessage> responseStream)
-        {
-            if (!File.Exists(_fileName))
+            if (!File.Exists(XmlStorageFileName))
             {
                 return new Player(login, responseStream);
             }
-            Player? player;
-            await SemaphoreSlim.WaitAsync();
+            await _databaseLock.WaitAsync();
             try
             {
-                XmlSerializer formatter = new XmlSerializer(typeof(List<Player>));
-                await using FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
-                player = ((List<Player>)formatter.Deserialize(fileStream) 
-                    ?? throw new InvalidOperationException()).Find(x => x.Login == login);
+                ReadFromFile();
+
             }
-            finally
-            {
-                SemaphoreSlim.Release();
-            }
-            if (player is null)
-            {
-                return new Player(login, responseStream);
-            }
-            return new Player(player.Login, responseStream);
+            finally { _databaseLock.Release(); }
+
+            return players.Find(x => x.Login == login);
 
         }
-        private async Task ReadFileWithPlayersAsync()
+
+        public async void WriteToFile()
         {
-            if (!File.Exists(_fileName))
-            {
-                _players = new List<Player>();
-                return;
-            }
-            await SemaphoreSlim.WaitAsync();
+            await _databaseLock.WaitAsync();
             try
             {
-                XmlSerializer formatter = new XmlSerializer(typeof(List<Player>));
-                await using FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
-                _players = (List<Player>)formatter.Deserialize(fileStream);
+                var xmlSerializer = new XmlSerializer(typeof(List<Player>));
+                using var fileStream = new FileStream(XmlStorageFileName, FileMode.Create);
+                xmlSerializer.Serialize(fileStream, players);
             }
             finally
             {
-                SemaphoreSlim.Release();
+                _databaseLock.Release();
             }
+
         }
+
         public async void SavePlayerToFile(Player player)
         {
-            List<Player> players = new();
-            await SemaphoreSlim.WaitAsync();
+            await _databaseLock.WaitAsync();
             try
             {
-                XmlSerializer formatter = new XmlSerializer(typeof(List<Player>));
-                if (File.Exists(_fileName))
+                if (File.Exists(XmlStorageFileName))
                 {
-                    await using FileStream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate);
-                    players = (List<Player>)formatter.Deserialize(fileStream);
-                    var currentPlayer = players.Find(x => x.Login == player.Login);
-                    if (players.Find(x => x.Login == player.Login) is null)
-                    {
-                        players.Add(player);
-                    }
-                    else
-                    {
-                        //
-                    }
+                    ReadFromFile();
+                    players.Add(player);
                 }
                 else
                 {
                     players.Add(player);
                 }
-                using FileStream createStream = File.Create(_fileName);
-              //  XmlSerializer formatter = new XmlSerializer(typeof(List<Player>));
-                formatter.Serialize(createStream, players);
-                await createStream.DisposeAsync();
             }
             finally
             {
-                SemaphoreSlim.Release();
+                _databaseLock.Release();
             }
-        }
-      
-
-
-        public bool CompareResult()
-        {
-            throw new System.NotImplementedException();
+            WriteToFile();
         }
 
-        Task IXmlRepository.ReadFileWithPlayersAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

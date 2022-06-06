@@ -1,52 +1,71 @@
 syntax = "proto3";
-option csharp_namespace = "SnakeServer";
+
 package snake;
 
-service Snake{
-    rpc Play (stream PlayerMessage) returns (stream ServerMessage);
+service Snake {
+  rpc Play (stream Request) returns (stream Reply);
 }
 
-message PlayerMessage { // обдумать насчет oneof
- oneof playerMessage {
-     LoginRequest login_request = 1;
-     string text = 2;
-     string state = 3;
-     FindOpponentRequest find_opponent_request = 4;
-    }
-
-}
-message FindOpponentRequest {
+message Request {
+  oneof request {
+    LoginRequest login_request = 1;
+    FindOpponentRequest find_opponent_request = 2;
+    MakeTurnRequest make_turn_request = 3;
+    SendResultGame send_result_game = 4;
+  }
 }
 
 message LoginRequest {
-  string name = 1; 
+  string login = 1; 
 }
 
-message ServerMessage {// обдумать насчет oneof
-    oneof serverMessage {
-        LoginReply login_reply = 1;
-        EndGameReply end_game_reply = 2;
-        string text = 3;
-        string state = 4;
-        FindOpponentReply find_opponent_reply = 5;
-           ActivePlayerReply active_player_reply = 6;
-    }
+message FindOpponentRequest {
 }
 
-message FindOpponentReply {
-  string login = 1;
+message MakeTurnRequest {
+  Point point = 1;
+}
+
+message Point {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+message SendResultGame{
+    int32 score = 1; 
+}
+
+
+message Reply {
+  oneof reply {
+    LoginReply login_reply = 1;
+    FindOpponentReply find_opponent_reply = 2;
+    ActivePlayerReply active_player_reply = 3;
+    MakeTurnReply make_turn_reply = 4;
+    EndGameReply end_game_reply = 5;
+  }
 }
 
 message LoginReply {
   bool success = 1;
 }
 
+message FindOpponentReply {
+  string login = 1;
+}
+
 message ActivePlayerReply {
   bool your_turn = 1;
 }
 
+message MakeTurnReply {
+  Point point = 1;
+  bool your_turn = 2;
+}
+
 message EndGameReply {
   OutcomeStatus status = 1;
+  repeated Point points = 2;
 }
 
 enum OutcomeStatus {
@@ -54,4 +73,3 @@ enum OutcomeStatus {
   DRAW = 1;
   DEFEAT = 2;
 }
-
