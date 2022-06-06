@@ -26,8 +26,8 @@ namespace GeoAppAtmClient
 
             if (MapControl.Map == null) return;
 
-            MapControl.Map.Layers.Add(OpenStreetMap.CreateTileLayer());
-            MapControl.Navigator.NavigateTo(SphericalMercator.FromLonLat(new MPoint(51, 53)), 500);
+            MapControl.Map?.Layers.Add(OpenStreetMap.CreateTileLayer());
+            MapControl.Navigator.NavigateTo(SphericalMercator.FromLonLat(new MPoint(50.2, 53.22)), 80);
             MapControl.Info += MapControl_Info;
 
             var atmLayer = new MemoryLayer("Atm")
@@ -44,7 +44,7 @@ namespace GeoAppAtmClient
                     return feature;
                 })),
 
-                //Style = CreateSvgStyle("atm.svg", 0.5)
+                Style = CreateSvgStyle("atm_icon.svg", 0.05)
             };
 
             MapControl.Map.Layers.Add(atmLayer);
@@ -57,10 +57,10 @@ namespace GeoAppAtmClient
             await viewModel.ShowAtmInfo((string)e.MapInfo.Feature["id"]);
         }
 
-        //private static SymbolStyle CreateSvgStyle(string embeddedResourcePath, double scale)
-        //{
-        //    var bitmapId = typeof(MainWindow).LoadSvgId(embeddedResourcePath);
-        //    return new SymbolStyle { BitmapId = bitmapId, SymbolScale = scale, SymbolOffset = new Offset(0.0, 0.5, true) };
-        //}
+        private static SymbolStyle CreateSvgStyle(string embeddedResourcePath, double scale)
+        {
+            var bitmapId = typeof(MainWindow).LoadSvgId(embeddedResourcePath);
+            return new SymbolStyle { BitmapId = bitmapId, SymbolScale = scale, SymbolOffset = new Offset(0.0, 0.5, true) };
+        }
     }
 }

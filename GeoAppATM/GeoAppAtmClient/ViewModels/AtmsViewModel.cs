@@ -44,7 +44,7 @@ namespace GeoAppAtmClient.ViewModels
 
         public Command ShowAtmCommand { get; private set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
         {

@@ -37,18 +37,18 @@ namespace GeoAppATM.Repository
                     atmName = feature.Attributes["operator"].ToString();
                 }
                 _atms.Add(new Atm
-                    {
-                        Id = feature.Attributes["id"].ToString(),
-                        Name = atmName,
-                        Latitude = point.X,
-                        Longitude = point.Y,
-                        Balance = 0
-                    }
+                {
+                    Id = feature.Attributes["id"].ToString(),
+                    Name = atmName,
+                    Latitude = point.X,
+                    Longitude = point.Y,
+                    Balance = 0
+                }
                 );
             }
         }
 
-        public AtmRepository(){}
+        public AtmRepository() { }
 
         private void ReadFromFile()
         {

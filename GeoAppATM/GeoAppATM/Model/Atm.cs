@@ -1,40 +1,40 @@
 ﻿namespace GeoAppATM.Model
 {
-	/// <summary>
-	/// A class containing information about an ATM
-	/// </summary>
+    /// <summary>
+    /// A class containing information about an ATM
+    /// </summary>
 
-	public class Atm
+    public class Atm
     {
 
-		/// <summary>
-		/// ID
-		/// </summary>
-		
-		public string Id { get; set; }
+        /// <summary>
+        /// ID
+        /// </summary>
 
-		/// <summary>
-		/// Operator name
-		/// </summary>
-		
-		public string Name { get; set; }
+        public string Id { get; set; }
 
-		/// <summary>
-		/// Latitude: coordinate X
-		/// </summary>
+        /// <summary>
+        /// Operator name
+        /// </summary>
 
-		public double Latitude { get; set; }
+        public string Name { get; set; }
 
-		/// <summary>
-		/// Longitude: coordinate Y
-		/// </summary>
+        /// <summary>
+        /// Latitude: coordinate X
+        /// </summary>
 
-		public double Longitude { get; set; }
+        public double Latitude { get; set; }
 
-		/// <summary>
-		/// Balance
-		/// </summary>
+        /// <summary>
+        /// Longitude: coordinate Y
+        /// </summary>
 
-		public int Balance { get; set; }
-	}
+        public double Longitude { get; set; }
+
+        /// <summary>
+        /// Balance
+        /// </summary>
+
+        public int Balance { get; set; }
+    }
 }

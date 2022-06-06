@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using GeoAppAtmClient.ViewModels;
+﻿using GeoAppAtmClient.ViewModels;
+using System.Windows;
 
 namespace GeoAppAtmClient.Views
 {

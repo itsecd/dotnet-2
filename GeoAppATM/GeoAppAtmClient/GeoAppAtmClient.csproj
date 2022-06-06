@@ -8,8 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="atm.svg" />
+    <None Remove="atm_icon.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.16.0" />
-    <PackageReference Include="Mapsui.Wpf" Version="4.0.0-beta.4" />
     <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,6 +28,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeoAppATM\GeoAppATM.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="atm_icon.svg" />
   </ItemGroup>
 
   <ItemGroup>

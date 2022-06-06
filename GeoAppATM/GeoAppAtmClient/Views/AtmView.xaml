@@ -6,8 +6,8 @@
         xmlns:viewModels="clr-namespace:GeoAppAtmClient.ViewModels"
         xmlns:validationRules="clr-namespace:GeoAppAtmClient.ValidationRules"
         mc:Ignorable="d"
-        Title="Информация о банкомате" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen">
+        Title="Информация о банкомате" Height="180" Width="450"
+        WindowStartupLocation="CenterScreen" FontSize="14">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Margin" Value="8"/>
@@ -47,7 +47,7 @@
         <Label Grid.Row="1" Grid.Column="0" Content="Баланс:"/>
         <TextBox Grid.Row="1" Grid.Column="1" Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
             <TextBox.Text>
-                <Binding Path="Atm">
+                <Binding Path="AtmBalance.Balance">
                     <Binding.ValidationRules>
                         <validationRules:AtmBalanceValidationRule/>
                     </Binding.ValidationRules>

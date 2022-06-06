@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using GeoAppATM.Model;
+﻿using GeoAppATM.Model;
 using GeoAppATM.Repository;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace GeoAppATM.Controllers

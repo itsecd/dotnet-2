@@ -1,5 +1,4 @@
-﻿using GeoAppATM.Model;
-using GeoAppAtmClient.Properties;
+﻿using GeoAppAtmClient.Properties;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;

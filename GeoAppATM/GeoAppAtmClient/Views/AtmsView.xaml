@@ -18,7 +18,7 @@
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Банк" Binding="{Binding Name}" Width="*" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Header="Баланс" Binding="{Binding AtmStatus.Money}" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Баланс" Binding="{Binding AtmBalance.Balance}" IsReadOnly="True"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

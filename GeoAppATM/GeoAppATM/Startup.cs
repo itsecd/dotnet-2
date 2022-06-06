@@ -1,13 +1,13 @@
+using GeoAppATM.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using GeoAppATM.Repository;
-using System.Reflection;
-using System.IO;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace GeoAppATM
 {
@@ -25,7 +25,7 @@ namespace GeoAppATM
         {
             services.AddSingleton<IAtmRepository, AtmRepository>();
             services.AddControllers();
-    
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeoAppAtm", Version = "v1" });
