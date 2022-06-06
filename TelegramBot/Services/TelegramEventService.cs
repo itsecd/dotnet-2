@@ -1,6 +1,5 @@
 ﻿using Grpc.Core;
 using System.Threading.Tasks;
-using TelegramBot.Proto;
 using TelegramBot.Model;
 using System.Collections.Generic;
 using Google.Protobuf.WellKnownTypes;
@@ -9,12 +8,12 @@ using Microsoft.Extensions.Logging;
 
 namespace TelegramBot.Services
 {
-    public class TelegramEventService: Proto.TelegramEventService.TelegramEventServiceBase
+    public class TgEventService: TelegramEventService.TelegramEventServiceBase
     {
         private readonly IUsersRepository _usersRepository;
-        private readonly ILogger<TelegramEventService> _logger;
+        private readonly ILogger<TgEventService> _logger;
 
-        public TelegramEventService(IUsersRepository usersRepository, ILogger<TelegramEventService> logger)
+        public TgEventService(IUsersRepository usersRepository, ILogger<TgEventService> logger)
         {
             _logger = logger;
             _usersRepository = usersRepository;

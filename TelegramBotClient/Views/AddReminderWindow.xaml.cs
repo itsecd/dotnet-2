@@ -2,7 +2,7 @@
 
 namespace TelegramBotClient.Views
 {
-    public partial class AddReminderWindow : Window
+    public partial class AddReminderWindow: Window
     {
         public AddReminderWindow()
         {
