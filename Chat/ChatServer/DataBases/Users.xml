@@ -27,4 +27,13 @@
   <User>
     <Name>us3</Name>
   </User>
+  <User>
+    <Name>uss1</Name>
+  </User>
+  <User>
+    <Name>uss2</Name>
+  </User>
+  <User>
+    <Name>Lera</Name>
+  </User>
 </ArrayOfUser>

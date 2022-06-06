@@ -116,4 +116,8 @@
     <GroupName>g</GroupName>
     <Name>us1</Name>
   </GroupList>
+  <GroupList>
+    <GroupName>g</GroupName>
+    <Name>uss1</Name>
+  </GroupList>
 </ArrayOfGroupList>

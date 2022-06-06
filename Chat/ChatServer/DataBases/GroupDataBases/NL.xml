@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ArrayOfGroupMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <GroupMessage>
+    <GroupName>NL</GroupName>
+    <Name>Nikita</Name>
+    <Message> and here too hi!</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>NL</GroupName>
+    <Name>Lera</Name>
+    <Message> Yeah!@</Message>
+  </GroupMessage>
+</ArrayOfGroupMessage>

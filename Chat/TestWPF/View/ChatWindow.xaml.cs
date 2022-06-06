@@ -1,5 +1,4 @@
 ﻿using ReactiveUI;
-using System.Windows;
 using TestWPF.ViewModel;
 
 namespace TestWPF.View
@@ -10,10 +9,6 @@ namespace TestWPF.View
         public ChatWindow()
         {
             InitializeComponent();
-        }
-        private void EnterButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Clear();
         }
     }
 }

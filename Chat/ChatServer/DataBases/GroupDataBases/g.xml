@@ -95,24 +95,4 @@
     <Name>us3</Name>
     <Message> dap[flaspda;</Message>
   </GroupMessage>
-  <GroupMessage>
-    <GroupName>g</GroupName>
-    <Name>us1</Name>
-    <Message />
-  </GroupMessage>
-  <GroupMessage>
-    <GroupName>g</GroupName>
-    <Name>us1</Name>
-    <Message />
-  </GroupMessage>
-  <GroupMessage>
-    <GroupName>g</GroupName>
-    <Name>us1</Name>
-    <Message />
-  </GroupMessage>
-  <GroupMessage>
-    <GroupName>g</GroupName>
-    <Name>us1</Name>
-    <Message> </Message>
-  </GroupMessage>
 </ArrayOfGroupMessage>
