@@ -12,7 +12,7 @@ namespace SnakeServer.Services
 {
     public sealed class GamingServer
     {
-        private const string XmlStorageFileName = "ATMs.xml";
+        private const string XmlStorageFileName = "players.xml";
         private readonly SemaphoreSlim _databaseLock = new(1, 1);
         private readonly ConcurrentDictionary<string, Player> _DictionaryForPlayers = new();
         private List<Player> _ListForPlayers = new List<Player>();

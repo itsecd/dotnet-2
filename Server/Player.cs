@@ -2,7 +2,6 @@ using Grpc.Core;
 using Snake;
 using System;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace SnakeServer
 {
@@ -57,11 +56,6 @@ namespace SnakeServer
                     ResponseStream.WriteAsync(reply);
                 });
             }
-        }
-
-        public override string ToString()
-        {
-            return "\nLogin " + Login + "\nCount: " + Score + "\n";
         }
     }
 }
