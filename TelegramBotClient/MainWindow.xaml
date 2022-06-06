@@ -29,17 +29,17 @@
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="Name" Width="175"/>
-                        <GridViewColumn Header="Date and time" Width="200"/>
-                        <GridViewColumn Header="Repeat time" Width="175"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="175"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Time}" Header="Date and time" Width="200"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=RepeatPeriod}" Header="Repeat time" Width="175"/>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>
         </ListView>
         <StackPanel>
-            <Button Content="Add"/>
-            <Button Content="Edit"/>
-            <Button Content="Remove"/>
+            <Button Command="{Binding AddCommand}" Content="Add"/>
+            <Button Command="{Binding EditCommand}" Content="Edit"/>
+            <Button Command="{Binding RemoveCommand}" Content="Remove"/>
         </StackPanel>
     </StackPanel>
 </Window>

@@ -39,13 +39,29 @@
         <Label Grid.Row="1" Grid.Column="0" Content="Description (optional):"/>
         <Label Grid.Row="2" Grid.Column="0" Content="Date and time:"/>
         <Label Grid.Row="3" Grid.Column="0" Content="Repeat period:"/>
-        <TextBox Grid.Row="0" Grid.Column="1"/>
-        <TextBox Grid.Row="1" Grid.Column="1"/>
-        <TextBox Grid.Row="2" Grid.Column="1"/>
-        <TextBox Grid.Row="3" Grid.Column="1"/>
+        <TextBox Grid.Row="0" Grid.Column="1">
+            <TextBox.Text>
+                <Binding Path="Name" UpdateSourceTrigger="PropertyChanged"/>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Row="1" Grid.Column="1">
+            <TextBox.Text>
+                <Binding Path="Description" UpdateSourceTrigger="PropertyChanged"/>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Row="2" Grid.Column="1">
+            <TextBox.Text>
+                <Binding Path="Time" UpdateSourceTrigger="PropertyChanged"/>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Row="3" Grid.Column="1">
+            <TextBox.Text>
+                <Binding Path="RepeatPeriod" UpdateSourceTrigger="PropertyChanged"/>
+            </TextBox.Text>
+        </TextBox>
         <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button>OK</Button>
-            <Button>Cansel</Button>
+            <Button Command="{Binding OkCommand}">OK</Button>
+            <Button Command="{Binding CanselCommand}">Cansel</Button>
         </StackPanel>
     </Grid>
 </Window>
