@@ -13,7 +13,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="18,110,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Height="20" Width="62" FontSize="14"/>
         <ComboBox ItemsSource="{Binding SourceTags}" HorizontalAlignment="Left" Margin="85,50,0,0" VerticalAlignment="Top" Width="125" Height="20"/>
         <ComboBox SelectedItem="{Binding SelectExecutor}" SelectedIndex="0" ItemsSource="{Binding SourceExecutor}" HorizontalAlignment="Left" Margin="85,20,0,0" VerticalAlignment="Top" Width="125" Height="20"/>
-        <CheckBox IsChecked="{Binding SelectStatus}" Content="Complite?" HorizontalAlignment="Left" Margin="85,85,0,0" VerticalAlignment="Top" Width="125" Height="20"/>
+        <CheckBox IsChecked="{Binding SelectStatus}" Content="Complete?" HorizontalAlignment="Left" Margin="85,85,0,0" VerticalAlignment="Top" Width="125" Height="20"/>
         <TextBox Text="{Binding NameInput}" HorizontalAlignment="Left" Margin="85,110,0,0" VerticalAlignment="Top" Width="125" Height="20"/>
         <TextBlock HorizontalAlignment="Left" Margin="18,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="62" Text="Description"/>
         <TextBox Text="{Binding DescriptionInput}" HorizontalAlignment="Left" Margin="85,142,0,0" VerticalAlignment="Top" Width="125" Height="20"/>

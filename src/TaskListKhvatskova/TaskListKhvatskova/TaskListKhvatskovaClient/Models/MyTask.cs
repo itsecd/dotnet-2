@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TaskListKhvatskova.Models
+namespace TaskListKhvatskovaClient.Models
 {
     /// <summary>
     /// Модель запроса задачи

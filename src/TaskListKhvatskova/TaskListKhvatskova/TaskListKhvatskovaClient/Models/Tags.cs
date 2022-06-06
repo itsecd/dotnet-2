@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace TaskListKhvatskova.Models
+namespace TaskListKhvatskovaClient.Models
 {
     /// <summary>
     /// Модель получения метки

@@ -1,4 +1,4 @@
-﻿namespace TaskListKhvatskova.Models
+﻿namespace TaskListKhvatskovaClient.Models
 {
     /// <summary>
     /// Модель исполнителя задачи задачи

@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:v="clr-namespace:TaskListKhvatskovaClient"
         DataContext="{Binding RelativeSource={RelativeSource Self}, Path=ViewModel}"
+        ResizeMode="NoResize"
         Title="AddExecutor" Height="162" Width="242">
     <Grid Margin="0,1,0,-1">
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Height="20" Width="40" FontSize="14"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,50,0,0" TextWrapping="Wrap" Text="Surname" VerticalAlignment="Top" Height="20" Width="40" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,50,0,0" TextWrapping="Wrap" Text="Surname" VerticalAlignment="Top" Height="20" Width="60" FontSize="14"/>
         <TextBox Text="{Binding NameInput}" HorizontalAlignment="Left" Margin="85,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125"/>
         <TextBox Text="{Binding SurnameInput}" HorizontalAlignment="Left" Margin="85,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125"/>
         <Button Command="{Binding Add}" Content="Ok" HorizontalAlignment="Center" Margin="0,86,0,0" VerticalAlignment="Top" Width="35" />
