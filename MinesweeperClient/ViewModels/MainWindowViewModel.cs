@@ -7,6 +7,10 @@ using Avalonia.Layout;
 using ReactiveUI;
 using MinesweeperClient.Views;
 using MinesweeperClient.Models;
+using System.Collections.ObjectModel;
+using System.Threading;
+using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace MinesweeperClient.ViewModels
 {
@@ -17,6 +21,7 @@ namespace MinesweeperClient.ViewModels
         Connection _wire;
         public ReactiveCommand<Unit, Unit> JoinCommand { get; }
         public ReactiveCommand<Unit, Unit> LeaveCommand { get; }
+        public ObservableCollection<PlayerInfo> Players { get; set; } = new();
         public MainWindowViewModel(Window MainWindow, Connection Wire)
         {
             _mainWindow = MainWindow;
@@ -43,13 +48,13 @@ namespace MinesweeperClient.ViewModels
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 Title = "MessageBox"
             };
-            if (vals == null)
-                await msgBox.ShowDialog(_mainWindow);
-            else
+            if (vals != null)
             {
                 Console.WriteLine($"'{vals[0]}' '{vals[1]}'");
                 if (await _wire.TryJoinAsync(vals[0], vals[1]))
+                {
                     Console.WriteLine("Connected to server!");
+                }
                 else
                 {
                     await msgBox.ShowDialog(_mainWindow);

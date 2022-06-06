@@ -85,13 +85,12 @@ namespace MinesweeperServer
                             _users.SetPlayerState(playerName, "lobby");                                               // send player to lobby
                             _players.CalcScore(playerName, "win");                                                    // calculate score
                             await _users.Broadcast(new GameMessage { Text = playerName, State = "win" }, playerName); // broadcast winner's name
-                            _logger.LogInformation("[{username}] выиграл", playerName);                                     // log
+                            _logger.LogInformation("[{username}] выиграл!", playerName);                              // log
                             break;
                         case "lose":
                             _users.SetPlayerState(playerName, "lobby");                                                // send player to lobby
                             _players.CalcScore(playerName, "lose");                                                    // calculate score
-                            await _users.Broadcast(new GameMessage { Text = playerName, State = "lose" }, playerName); // broadcast loser's name
-                            _logger.LogInformation("[{username}] проиграл", playerName);                                     // log
+                            _logger.LogInformation("[{username}] проиграл!", playerName);                              // log
                             break;
                         default:
                             _logger.LogWarning("Unknown command: {command}", message.Text);

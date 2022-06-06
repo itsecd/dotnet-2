@@ -53,29 +53,36 @@ namespace MinesweeperClient.Models
         }
         public async Task UpdatePlayers()
         {
-            if (!IsConnected)
+            if (_call == null || !IsConnected)
                 return;
-            await _call.RequestStream.WriteAsync(new GameMessage{ Text = "players" });
-            GameMessage msg = new();
-            Players.Clear();
-            while (true)
+            try
             {
-                await _call.ResponseStream.MoveNext();
-                msg = _call.ResponseStream.Current;
-                if (msg.Text != "end")
+                await _call.RequestStream.WriteAsync(new GameMessage{ Text = "players" });
+                GameMessage msg = new();
+                Players.Clear();
+                while (true)
                 {
-                    PlayerInfo info = new();
-                    info.Name = msg.Name;
-                    int win_count = int.Parse(msg.Text.Split('_')[0]);
-                    int lose_count = int.Parse(msg.Text.Split('_')[1]);
-                    int win_streak = int.Parse(msg.Text.Split('_')[2]);
-                    info.PlayCount = win_count + lose_count;
-                    info.WinCount = win_count;
-                    info.WinStreak = win_streak;
-                    Players.Add(info);
+                    await _call.ResponseStream.MoveNext();
+                    msg = _call.ResponseStream.Current;
+                    if (msg.Text != "end")
+                    {
+                        PlayerInfo info = new();
+                        info.Name = msg.Name;
+                        int win_count = int.Parse(msg.Text.Split('_')[0]);
+                        int lose_count = int.Parse(msg.Text.Split('_')[1]);
+                        int win_streak = int.Parse(msg.Text.Split('_')[2]);
+                        info.PlayCount = win_count + lose_count;
+                        info.WinCount = win_count;
+                        info.WinStreak = win_streak;
+                        Players.Add(info);
+                    }
+                    else
+                        break;
                 }
-                else
-                    break;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"[{e.Source}]\n{e.Message}");
             }
         }
         public bool IsConnected => _call != null;
@@ -91,6 +98,20 @@ namespace MinesweeperClient.Models
                     break;
             }
             Console.WriteLine("Пора начинать игру!");
+            return true;
+        }
+        public async Task<bool> Win()
+        {
+            if (_call == null)
+                return false;
+            await _call.RequestStream.WriteAsync(new GameMessage { Name = _name, Text = "win" });
+            return true;
+        }
+        public async Task<bool> Lose()
+        {
+            if (_call == null)
+                return false;
+            await _call.RequestStream.WriteAsync(new GameMessage { Name = _name, Text = "lose" });
             return true;
         }
     }

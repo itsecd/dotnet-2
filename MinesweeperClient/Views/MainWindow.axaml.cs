@@ -9,7 +9,9 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using MinesweeperClient.Models;
+using MinesweeperClient.ViewModels;
 
 namespace MinesweeperClient.Views
 {
@@ -27,9 +29,6 @@ namespace MinesweeperClient.Views
         Bitmap _flag;
         Bitmap _bomb;
         Bitmap _bombMarked;
-        // info
-        List<PlayerInfo> _players = new();
-        ItemsControl _playerList;
         Label _flagsLabel;
         int _flagsCounter;
         // game
@@ -47,35 +46,30 @@ namespace MinesweeperClient.Views
             _grid = this.FindControl<Panel>("game_grid");
             _readyButton = this.FindControl<Button>("ready_button");
             InitGrid();
-            // info
-            _playerList = this.FindControl<ItemsControl>("player_list");
-            _playerList.Items = _players;
-            // _players.Add(new PlayerInfo{Name="Player1", PlayCount=69, WinCount=69, WinStreak=420});
-            // _players.Clear();
-            // _players.Add(new PlayerInfo{Name="Player1", PlayCount=69, WinCount=69, WinStreak=420});
             _flagsLabel = this.FindControl<Label>("flags_label");
             _flagsCounter = 99;
             // connection
-            // Task.Run(() => PlayersUpdate());
+            Task.Run(() => PlayersUpdate());
             Task.Run(() => FlagsUpdate());
-            Task.Factory.StartNew(() => PlayersUpdate());
         }
-        async void PlayersUpdate()
+        private async void PlayersUpdate()
         {
             while (true)
             {
                 Thread.Sleep(2000);
-                if (_wire != null && _wire.IsConnected)
+                if (_wire is not { IsConnected: true }) continue;
+
+                await _wire.UpdatePlayers();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    await _wire.UpdatePlayers();
-                    _players.Clear();
-                    foreach (PlayerInfo info in _wire.Players)
+                    if (DataContext is not MainWindowViewModel viewModel) return;
+                    viewModel.Players.Clear();
+                    foreach (var info in _wire.Players)
                     {
                         Console.WriteLine($"got {info.Name}'s stats, {info.PlayCount}/{info.WinCount}/{info.WinStreak}");
-                        _players.Add(info);
+                        viewModel.Players.Add(info);
                     }
-                    // _playerList.Items = _players;
-                }
+                }, DispatcherPriority.Background);
             }
         }
         void FlagsUpdate()
@@ -187,7 +181,7 @@ namespace MinesweeperClient.Views
                 }
             }
         }
-        private void OnTileClicked(object? sender, PointerPressedEventArgs e)
+        private async void OnTileClicked(object? sender, PointerPressedEventArgs e)
         {
             // не обрабатываем нажатия, если игра не идет
             if (_gameStatus != GameStatus.InProgress)
@@ -226,9 +220,19 @@ namespace MinesweeperClient.Views
             DrawGrid();
             _gameStatus = _field.GameState();
             if (_field.GameState() == GameStatus.Win)
+            {
                 Console.WriteLine("You won!");
+                ResetGrid();
+                await _wire.Win();
+                _gameStatus = GameStatus.Ready;
+            }
             if (_field.GameState() == GameStatus.Lose)
+            {
                 Console.WriteLine("You lose!");
+                ResetGrid();
+                await _wire.Lose();
+                _gameStatus = GameStatus.Ready;
+            }
         }
         private async void OnReadyClicked(object sender, RoutedEventArgs e)
         {
