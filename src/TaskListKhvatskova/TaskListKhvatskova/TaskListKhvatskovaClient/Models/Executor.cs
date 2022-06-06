@@ -1,51 +1,52 @@
 ﻿namespace TaskListKhvatskova.Models
 {
     /// <summary>
-    /// Модель получения метки
+    /// Модель исполнителя задачи задачи
     /// </summary>
-    public class Tags
+    public class Executor
     {
         /// <summary>
-        /// Id метки
+        /// id исполнителя
         /// </summary>
-        public int TagId { get; set; }
+        public int ExecutorId { get; set; }
 
         /// <summary>
-        /// Имя метки
+        /// имя исполнителя
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// цвет метки
+        /// фамилия исполнителя
         /// </summary>
-        public string Color { get; set; }
+        public string Surname { get; set; }
+
 
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
-        public Tags()
+        public Executor()
         {
             Name = string.Empty;
+            Surname = string.Empty;
         }
 
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
-        public Tags(string name, string color)
+        public Executor(string name, string surname)
         {
             Name = name;
-            Color = color;
+            Surname = surname;
         }
 
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
-        public Tags(int id, string name, string color)
+        public Executor(int id, string name, string surname)
         {
-            TagId = id;
+            ExecutorId = id;
             Name = name;
-            Color = color;
+            Surname = surname;
         }
     }
 }
-

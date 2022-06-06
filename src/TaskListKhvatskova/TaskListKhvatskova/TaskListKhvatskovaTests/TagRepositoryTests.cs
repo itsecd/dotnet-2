@@ -13,7 +13,7 @@ namespace TaskListKhvatskovaTests
             var tag = new Tags
             {
                 Name = "for Chief",
-                Color = 3
+                Color = "green"
             };
             tagRepository.RemoveAllTags();
             var tagId = tagRepository.AddTag(tag);
@@ -29,7 +29,7 @@ namespace TaskListKhvatskovaTests
             {
                 TagId = 100,
                 Name = "for Chief",
-                Color = 3
+                Color = "green"
             };
             Assert.Equal(100, tagRepository.AddTag(tag));
             tagRepository.RemoveTag(100);
@@ -42,7 +42,7 @@ namespace TaskListKhvatskovaTests
             {
                 TagId = 14,
                 Name = "for Chief",
-                Color = 3
+                Color = "green"
             };
             TagRepository repository = new();
             repository.AddTag(tag);
@@ -56,7 +56,7 @@ namespace TaskListKhvatskovaTests
             {
                 TagId = 200,
                 Name = "next",
-                Color = 3
+                Color = "green"
             };
             TagRepository repository = new();
             repository.AddTag(tag);

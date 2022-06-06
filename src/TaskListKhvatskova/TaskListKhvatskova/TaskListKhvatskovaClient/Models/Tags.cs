@@ -1,4 +1,6 @@
-﻿namespace TaskListKhvatskova.Models
+﻿using System.Drawing;
+
+namespace TaskListKhvatskova.Models
 {
     /// <summary>
     /// Модель получения метки
@@ -18,7 +20,7 @@
         /// <summary>
         /// цвет метки
         /// </summary>
-        public string Color { get; set; }
+        public Color Color { get; set; }
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -31,7 +33,7 @@
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
-        public Tags(string name, string color)
+        public Tags(string name, Color color)
         {
             Name = name;
             Color = color;
@@ -40,7 +42,7 @@
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
-        public Tags(int id, string name, string color)
+        public Tags(int id, string name, Color color)
         {
             TagId = id;
             Name = name;
