@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatServer", "ChatServer\Ch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatServer.Tests", "ChatServer.Tests\ChatServer.Tests.csproj", "{91836439-57E0-406F-8AF7-46F2485E4FC2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestWPF", "TestWPF\TestWPF.csproj", "{72CF187B-931B-4BE4-BBD2-CA27E65BB40A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClient", "TestWPF\ChatClient.csproj", "{72CF187B-931B-4BE4-BBD2-CA27E65BB40A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

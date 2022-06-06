@@ -1,7 +1,7 @@
 ﻿using ReactiveUI;
-using TestWPF.ViewModel;
+using ChatClient.ViewModel;
 
-namespace TestWPF.View
+namespace ChatClient.View
 {
     public class ChatWindowBase : ReactiveWindow<AppViewModel> { }
     public partial class ChatWindow : ChatWindowBase

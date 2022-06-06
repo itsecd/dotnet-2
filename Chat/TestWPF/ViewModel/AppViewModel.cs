@@ -5,16 +5,16 @@ using System.ComponentModel;
 using System.Reactive;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using TestWPF.Properties;
-using TestWPF.View;
+using ChatClient.Properties;
+using ChatClient.View;
 
-namespace TestWPF.ViewModel
+namespace ChatClient.ViewModel
 {
     public partial class AppViewModel : INotifyPropertyChanged
     {
-        static readonly string baseUrl = Settings.Default.baseUrl;
+        private static readonly string BaseUrl = Settings.Default.baseUrl;
         private static readonly HubConnection Connection = new HubConnectionBuilder()
-                .WithUrl(baseUrl)
+                .WithUrl(BaseUrl)
                 .Build();
 
         public ReactiveCommand<Unit, Unit> EnterName { get; }
@@ -97,7 +97,7 @@ namespace TestWPF.ViewModel
         private async void SendImp()
         {
             string message = Message;
-            if (message == "" || message == null)
+            if (string.IsNullOrEmpty(message))
             {
                 return;
             }
@@ -135,10 +135,7 @@ namespace TestWPF.ViewModel
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

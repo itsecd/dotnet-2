@@ -1,10 +1,10 @@
-﻿<v:ChatWindowBase x:Class="TestWPF.View.ChatWindow"
+﻿<v:ChatWindowBase x:Class="ChatClient.View.ChatWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         DataContext="{Binding RelativeSource={RelativeSource Self}, Path=ViewModel}"          
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:v="clr-namespace:TestWPF.View"
+        xmlns:v="clr-namespace:ChatClient.View"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="ChatWindow" Height="450" Width="600">
@@ -22,7 +22,7 @@
             <Grid>
 
                 <Grid>
-                    <Border Name="Chat">
+                    <Border>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50" />
@@ -32,7 +32,7 @@
 
                             <Border Grid.Row="0">
                                 <Grid>
-                                    <TextBlock Text="Chat" FontSize="20" VerticalAlignment="Center" Name="ChatName" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Chat" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Grid>
                             </Border>
 
@@ -49,11 +49,11 @@
                                     </Grid.ColumnDefinitions>
                                     
                                     <Border Grid.Column="0">
-                                        <TextBox Name="MessageBox" materialDesign:HintAssist.Hint=" Введите сообщение" Text="{Binding Message}" Margin="10,0,10,10" BorderThickness="1"/>
+                                        <TextBox materialDesign:HintAssist.Hint=" Введите сообщение" Text="{Binding Message}" Margin="10,0,10,10" BorderThickness="1"/>
                                     </Border>
                                     
                                     <Border Grid.Column="1">
-                                        <Button Name="SendButton" Content="→" FontSize="15" Command="{Binding SendMessage}" Grid.ColumnSpan="2" Margin="0,3,10,15"/>
+                                        <Button Content="→" FontSize="15" Command="{Binding SendMessage}" Grid.ColumnSpan="2" Margin="0,3,10,15"/>
                                     </Border>
                                 </Grid>
                             </Border>

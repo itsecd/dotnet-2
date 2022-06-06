@@ -2,10 +2,10 @@
 using System;
 using System.Reactive;
 using System.Windows;
-using TestWPF.View;
-using TestWPF.ViewModel;
+using ChatClient.View;
+using ChatClient.ViewModel;
 
-namespace TestWPF
+namespace ChatClient
 {
     public partial class App : Application
     {
@@ -22,13 +22,13 @@ namespace TestWPF
             base.OnStartup(e);
             var appViewModel = new AppViewModel();
 
-            var Window = new ChatWindow()
+            var window = new ChatWindow()
             {
                 ViewModel = appViewModel
             };
 
-            Current.MainWindow = Window;
-            Window.Show();
+            Current.MainWindow = window;
+            window.Show();
         }
     }
 }
