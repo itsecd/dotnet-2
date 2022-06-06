@@ -27,8 +27,8 @@ namespace Lab2
             UsersInLobby.AddOrUpdate(Context.ConnectionId, new Player(Context.ConnectionId, player, position), (key, oldPlayer)
                 => new Player(key, player, position));
 
-            await Clients.All.SendAsync("GetConnectedUsers",
-                UsersInLobby.Select(x => new Player(x.Key, x.Value.UserName, x.Value.PlayerPosition)).ToList());
+            await Clients.All.SendAsync("GetConnectedUsers", 
+                  UsersInLobby.Select(x => new Player(x.Key, x.Value.UserName, x.Value.PlayerPosition)).ToList());
 
             if (UsersInLobby.Count > 1 && UsersInLobby.Count(u => u.Value.PlayerPosition != "") == 2)
             {
@@ -52,7 +52,6 @@ namespace Lab2
             _logger.LogInformation($"GetConnectedPlayers {UsersInLobby.Count}");
             await Clients.All.SendAsync("GetConnectedPlayers",
                 UsersInLobby.Select(x => new Player(x.Key, x.Value.UserName, x.Value.PlayerPosition)).ToList());
-
         }
 
         public async Task GetTakenGameSide()
