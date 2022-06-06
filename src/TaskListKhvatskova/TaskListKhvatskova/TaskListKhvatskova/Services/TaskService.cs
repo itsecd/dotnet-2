@@ -43,16 +43,20 @@ namespace TaskListKhvatskova.Services
         {
             TaskReply taskReply = new();
             MyTask task = _taskRepository.Get(request.TaskId);
-            taskReply.TaskId = task.TaskId;
-            taskReply.Name = task.Name;
-            taskReply.Description = task.Description;
-            taskReply.TaskState = task.TaskState;
-            taskReply.ExecutorId = task.ExecutorId;
-            foreach (int tag in task.TagsId)
+            if(task is not null)
             {
-                taskReply.TagsId.Add(tag);
+                taskReply.TaskId = task.TaskId;
+                taskReply.Name = task.Name;
+                taskReply.Description = task.Description;
+                taskReply.TaskState = task.TaskState;
+                taskReply.ExecutorId = task.ExecutorId;
+                foreach (int tag in task.TagsId)
+                {
+                    taskReply.TagsId.Add(tag);
+                }
+                return Task.FromResult(taskReply);
             }
-            return Task.FromResult(taskReply);
+            return Task.FromResult(new TaskReply { ExaminationReply = new ExaminationReply {NotFoundException = true } });
         }
 
         public override Task<TaskReply> AddTask(TaskRequest request, ServerCallContext context)
@@ -60,7 +64,7 @@ namespace TaskListKhvatskova.Services
             var tags = request.TagsId.ToList();
             return Task.FromResult(new TaskReply
             {
-                TaskId = _taskRepository.AddTask(new MyTask(request.Name, request.Description, request.ExecutorId, tags))
+                TaskId = _taskRepository.AddTask(new MyTask(request.TaskId, request.Name, request.Description, request.TaskState, request.ExecutorId, tags))
             });
         }
 
@@ -69,7 +73,7 @@ namespace TaskListKhvatskova.Services
             var tags = request.TagsId.ToList();
             return Task.FromResult(new TaskReply
             {
-                TaskId = _taskRepository.UpdateTask(request.TaskId, new MyTask(request.Name, request.Description, request.ExecutorId, tags))
+                TaskId = _taskRepository.UpdateTask(request.TaskId, new MyTask(request.TaskId, request.Name, request.Description, request.TaskState, request.ExecutorId, tags))
             });
         }
 
@@ -128,7 +132,7 @@ namespace TaskListKhvatskova.Services
         {
             return Task.FromResult(new ExecutorReply
             {
-                ExecutorId = _executorRepository.UpdateExecutor(request.ExecutorId, new Executor(request.Name, request.Surname))
+                ExecutorId = _executorRepository.UpdateExecutor(request.ExecutorId, new Executor(request.ExecutorId, request.Name, request.Surname))
             });
         }
 
@@ -179,7 +183,7 @@ namespace TaskListKhvatskova.Services
         {
             return Task.FromResult(new TagReply
             {
-                TagId = _tagRepository.UpdateTag(request.TagId, new Tags(request.Name, request.Color))
+                TagId = _tagRepository.UpdateTag(request.TagId, new Tags(request.TagId, request.Name, request.Color))
             });
         }
 

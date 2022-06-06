@@ -14,14 +14,19 @@ namespace TaskListKhvatskova.Repositories
     public class TaskRepository : ITaskRepository
     {
         /// <summary>
-        /// Название файла хранения
-        /// </summary>
-        private readonly string _storageFileName = "task.xml";
-
-        /// <summary>
         /// Список тэгов
         /// </summary>
         private readonly List<MyTask> _tasks;
+
+        /// <summary>
+        /// Название файла хранения
+        /// </summary>
+        private readonly string _storageFileName = "task.json";
+
+        public TaskRepository()
+        {
+            _tasks = new List<MyTask>();
+        }
 
         /// <summary>
         /// Файл хранения
@@ -90,7 +95,9 @@ namespace TaskListKhvatskova.Repositories
                     throw new Exception("This ID already exists");
                 }
             }
+            WriteToFile();
             return task.TaskId;
+
         }
 
         /// <summary>
@@ -99,6 +106,7 @@ namespace TaskListKhvatskova.Repositories
         public void RemoveAllTasks()
         {
             _tasks.RemoveRange(0, _tasks.Count);
+            WriteToFile();
         }
 
         /// <summary>
@@ -118,6 +126,7 @@ namespace TaskListKhvatskova.Repositories
         {
             var deletedTask = Get(id);
             _tasks.Remove(deletedTask);
+            WriteToFile();
             return id;
         }
 
@@ -130,6 +139,7 @@ namespace TaskListKhvatskova.Repositories
         {
             var taskIndex = _tasks.FindIndex(p => p.TaskId == id);
             _tasks[taskIndex] = newTask;
+            WriteToFile();
             return id;
         }
 
@@ -140,8 +150,8 @@ namespace TaskListKhvatskova.Repositories
         /// <param name="state">Измененная задача</param>
         public int UpdateTaskState(int id, bool state)
         {
-            var taskIndex = _tasks.FindIndex(p => p.TaskId == id);
-            _tasks[taskIndex].TaskState = state;
+            _tasks.Find(p => p.TaskId == id).TaskState = state;
+            WriteToFile();
             return id;
         }
 

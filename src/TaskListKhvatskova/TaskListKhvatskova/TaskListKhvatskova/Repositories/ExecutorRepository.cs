@@ -24,6 +24,11 @@ namespace TaskListKhvatskova.Repositories
         /// </summary>
         private readonly List<Executor> _executors;
 
+        public ExecutorRepository()
+        {
+            _executors = new();
+        }
+
         /// <summary>
         /// Файл хранения
         /// </summary>
@@ -98,6 +103,7 @@ namespace TaskListKhvatskova.Repositories
                     throw new Exception("This ID already exists");
                 }
             }
+            WriteToFile();
             return executor.ExecutorId;
         }
 
@@ -107,6 +113,7 @@ namespace TaskListKhvatskova.Repositories
         public void RemoveAllExecutors()
         {
             _executors.RemoveRange(0, _executors.Count);
+            WriteToFile();
         }
 
         /// <summary>
@@ -127,6 +134,7 @@ namespace TaskListKhvatskova.Repositories
         {
             var deletedExecutor = Get(id);
             _executors.Remove(deletedExecutor);
+            WriteToFile();
             return id;
         }
 
@@ -139,6 +147,7 @@ namespace TaskListKhvatskova.Repositories
         {
             var executorIndex = _executors.FindIndex(p => p.ExecutorId == id);
             _executors[executorIndex] = newExecutor;
+            WriteToFile();
             return id;
         }
 

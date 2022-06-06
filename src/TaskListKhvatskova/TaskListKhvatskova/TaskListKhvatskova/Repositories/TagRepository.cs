@@ -16,12 +16,17 @@ namespace TaskListKhvatskova.Repositories
         /// <summary>
         /// Название файла хранения
         /// </summary>
-        private readonly string _storageFileName = "tag.xml";
+        private readonly string _storageFileName = "tag.json";
 
         /// <summary>
         /// Список тэгов
         /// </summary>
         private readonly List<Tags> _tags;
+
+        public TagRepository()
+        {
+            _tags = new();
+        }
 
         /// <summary>
         /// Файл хранения
@@ -38,7 +43,6 @@ namespace TaskListKhvatskova.Repositories
                 _tags = new List<Tags>();
                 return;
             }
-
             string jsonString = File.ReadAllText(_storageFileName);
             _tags = JsonSerializer.Deserialize<List<Tags>>(jsonString);
         }
@@ -90,6 +94,7 @@ namespace TaskListKhvatskova.Repositories
                     throw new Exception("This ID already exists");
                 }
             }
+            WriteToFile();
             return tag.TagId;
         }
 
@@ -99,6 +104,7 @@ namespace TaskListKhvatskova.Repositories
         public void RemoveAllTags()
         {
             _tags.RemoveRange(0, _tags.Count);
+            WriteToFile();
         }
 
         /// <summary>
@@ -117,6 +123,7 @@ namespace TaskListKhvatskova.Repositories
         {
             var deletedTag = Get(id);
             _tags.Remove(deletedTag);
+            WriteToFile();
             return id;
         }
 
@@ -129,6 +136,7 @@ namespace TaskListKhvatskova.Repositories
         {
             var tagIndex = _tags.FindIndex(p => p.TagId == id);
             _tags[tagIndex] = newTag;
+            WriteToFile();
             return id;
         }
     }

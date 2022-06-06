@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TaskListKhvatskova.Models
 {
     /// <summary>
     /// Модель запроса задачи
     /// </summary>
+    [Serializable]
     public class MyTask
     {
         /// <summary>
@@ -53,6 +55,16 @@ namespace TaskListKhvatskova.Models
         {
             Name = name;
             Description = description;
+            ExecutorId = executorId;
+            TagsId = tagsId;
+        }
+
+        public MyTask(int taskId, string name, string description, bool state, int executorId, List<int> tagsId)
+        {
+            TaskId = taskId;
+            Name = name;
+            Description = description;
+            TaskState = state;
             ExecutorId = executorId;
             TagsId = tagsId;
         }
