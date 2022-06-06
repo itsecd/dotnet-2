@@ -74,7 +74,6 @@ namespace ChatServiceClient.ViewModel
                 AuthWindow.Hide();
                 _ = await OpenChatWindow.Handle(new User(UserName, RoomName));
                 AuthWindow.Close();
-                Application.Current.Shutdown();
             }
         }
     }

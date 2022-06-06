@@ -54,7 +54,6 @@ namespace ChatServiceClient.ViewModel
             ChatWindow.Hide();
             _ = await CloseChatWindow.Handle(null);
             ChatWindow.Close();
-            App.Current.Shutdown();
         }
 
         private async Task SendImpl()
