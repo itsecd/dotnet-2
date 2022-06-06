@@ -48,7 +48,6 @@ namespace ChatServiceClient.ViewModel
             if (UserName == "" || RoomName == "")
             {
                 MessageBox.Show("Illegal Input Values");
-                return;
             }
             else
             {
@@ -67,7 +66,6 @@ namespace ChatServiceClient.ViewModel
             if (UserName == "" || RoomName == "")
             {
                 MessageBox.Show("Illegal Input Values");
-                return;
             }
             else
             {

@@ -22,16 +22,16 @@ namespace ChatServiceClient.ViewModel
         private User User { get; }
         private ChatWindow ChatWindow { get; set; }
         private static readonly Chat.ChatClient Client = new(GrpcChannel.ForAddress(Properties.Settings.Default.Host));
-        private readonly Grpc.Core.AsyncDuplexStreamingCall<Message, Message> Room;
+        private readonly Grpc.Core.AsyncDuplexStreamingCall<Message, Message> _room;
 
         public ChatWindowViewModel(User user, ChatWindow chatWindow)
         {
             ChatWindow = chatWindow;
             User = user;
-            Room = Client.Join();
+            _room = Client.Join();
             var canExecute = new Subject<bool>();
             Send = ReactiveCommand.CreateFromTask(() => ExclusiveWrapper(SendImpl));
-            _ = ReactiveCommand.CreateFromTask(() => ExclusiveWrapper(Responce));
+            _ = ReactiveCommand.CreateFromTask(() => ExclusiveWrapper(WaitResponse));
             Close = ReactiveCommand.CreateFromTask(() => ExclusiveWrapper(CloseImpl));
 
             async Task ExclusiveWrapper(Func<Task> impl)
@@ -58,15 +58,15 @@ namespace ChatServiceClient.ViewModel
 
         private async Task SendImpl()
         {
-            await Room.RequestStream.WriteAsync(new Message { RoomName = User.RoomName, UserName = User.UserName, Text = Text });
-            _ = Responce();
+            await _room.RequestStream.WriteAsync(new Message { RoomName = User.RoomName, UserName = User.UserName, Text = Text });
+            _ = WaitResponse();
         }
 
-        private async Task<string> Responce()
+        private async Task<string> WaitResponse()
         {
-            while (await Room.ResponseStream.MoveNext(cancellationToken: CancellationToken.None))
+            while (await _room.ResponseStream.MoveNext(cancellationToken: CancellationToken.None))
             {
-                var response = Room.ResponseStream.Current;
+                var response = _room.ResponseStream.Current;
                 Messages.Add($"{response.UserName}: {response.Text}");
             }
             return "Not Wait";
