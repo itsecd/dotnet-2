@@ -29,11 +29,12 @@ namespace GeoAppAtmClient.ViewModels
             _atmBalance = new AtmBalanceViewModel(atmBalance);
             UpdateBalanceCommand = new Command(commandParameter =>
             {
-                var window = (Window)commandParameter;
+                if (commandParameter is not Window window) return;
+                window = (Window)commandParameter;
                 _atmRepository.ChangeAtmBalanceAsync(atmId, _atmBalance.Balance);
                 window.DialogResult = true;
                 window.Close();
-            }, null);
+            }, _ => true);
         }
 
         public string Name

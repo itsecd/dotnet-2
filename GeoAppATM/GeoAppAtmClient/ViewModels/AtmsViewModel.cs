@@ -39,7 +39,7 @@ namespace GeoAppAtmClient.ViewModels
             {
                 var atmInfoView = new AtmView(SelectedAtm);
                 atmInfoView.ShowDialog();
-            }, null);
+            }, _ => true);
         }
 
         public Command ShowAtmCommand { get; private set; }

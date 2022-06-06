@@ -26,7 +26,7 @@ namespace GeoAppAtmClient.Views
 
             if (MapControl.Map == null) return;
 
-            MapControl.Map?.Layers.Add(OpenStreetMap.CreateTileLayer());
+            MapControl.Map.Layers.Add(OpenStreetMap.CreateTileLayer());
             MapControl.Navigator.NavigateTo(SphericalMercator.FromLonLat(new MPoint(50.2, 53.22)), 80);
             MapControl.Info += MapControl_Info;
 
@@ -50,11 +50,14 @@ namespace GeoAppAtmClient.Views
             MapControl.Map.Layers.Add(atmLayer);
         }
 
-        private async void MapControl_Info(object sender, Mapsui.UI.MapInfoEventArgs e)
+        private async void MapControl_Info(object? sender, Mapsui.UI.MapInfoEventArgs e)
         {
             if (e.MapInfo?.Feature == null) return;
             var viewModel = (MapViewModel)DataContext;
-            await viewModel.ShowAtmInfo((string)e.MapInfo.Feature["id"]);
+            if(e.MapInfo.Feature["id"] != null)
+            {
+                await viewModel.ShowAtmInfo((string)e.MapInfo.Feature["id"]);
+            }
         }
 
         private static SymbolStyle CreateSvgStyle(string embeddedResourcePath, double scale)

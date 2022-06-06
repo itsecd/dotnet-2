@@ -2,7 +2,7 @@
 
 namespace GeoAppAtmClient.ViewModels
 {
-    public class AtmBalanceViewModel
+    public class AtmBalanceViewModel: INotifyPropertyChanged
     {
         public Atm AtmBalance { get; set; }
 

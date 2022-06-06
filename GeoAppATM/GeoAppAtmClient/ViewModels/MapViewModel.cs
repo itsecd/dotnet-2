@@ -17,7 +17,7 @@ namespace GeoAppAtmClient.ViewModels
                 await atmsViewModel.InitializeAsync(AtmRepository);
                 var atmsView = new AtmsView(atmsViewModel);
                 atmsView.ShowDialog();
-            }, null);
+            }, _ => true);
         }
 
         public Command ShowAtmsListCommand { get; }
