@@ -1,6 +1,5 @@
 ﻿using ReactiveUI;
 using System.Reactive;
-using System.Windows;
 using TaskListKhvatskovaClient.ViewModels;
 
 namespace TaskListKhvatskovaClient

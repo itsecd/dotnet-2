@@ -1,8 +1,8 @@
 using Grpc.Core;
+using System.Linq;
 using System.Threading.Tasks;
 using TaskListKhvatskova.Models;
 using TaskListKhvatskova.Repositories;
-using System.Linq;
 
 namespace TaskListKhvatskova.Services
 {
@@ -14,7 +14,7 @@ namespace TaskListKhvatskova.Services
 
         public TaskService(ITaskRepository taskRepository, ITagRepository tagRepository, IExecutorRepository executorRepository)
         {
-            _taskRepository = taskRepository;       
+            _taskRepository = taskRepository;
             _tagRepository = tagRepository;
             _executorRepository = executorRepository;
         }
@@ -22,7 +22,7 @@ namespace TaskListKhvatskova.Services
         public override Task<AllTaskReply> GetAllTasks(NullRequest request, ServerCallContext context)
         {
             AllTaskReply allTaskReply = new();
-            foreach(MyTask task in _taskRepository.GetTasks())
+            foreach (MyTask task in _taskRepository.GetTasks())
             {
                 TaskReply taskReply = new();
                 taskReply.TaskId = task.TaskId;
@@ -30,7 +30,7 @@ namespace TaskListKhvatskova.Services
                 taskReply.Description = task.Description;
                 taskReply.TaskState = task.TaskState;
                 taskReply.ExecutorId = task.ExecutorId;
-                foreach(int tag in task.TagsId)
+                foreach (int tag in task.TagsId)
                 {
                     taskReply.TagsId.Add(tag);
                 }
@@ -43,7 +43,7 @@ namespace TaskListKhvatskova.Services
         {
             TaskReply taskReply = new();
             MyTask task = _taskRepository.Get(request.TaskId);
-            if(task is not null)
+            if (task is not null)
             {
                 taskReply.TaskId = task.TaskId;
                 taskReply.Name = task.Name;
@@ -56,7 +56,7 @@ namespace TaskListKhvatskova.Services
                 }
                 return Task.FromResult(taskReply);
             }
-            return Task.FromResult(new TaskReply { ExaminationReply = new ExaminationReply {NotFoundException = true } });
+            return Task.FromResult(new TaskReply { ExaminationReply = new ExaminationReply { NotFoundException = true } });
         }
 
         public override Task<TaskReply> AddTask(TaskRequest request, ServerCallContext context)
@@ -97,7 +97,7 @@ namespace TaskListKhvatskova.Services
         public override Task<AllExecutorReply> GetAllExecutors(NullRequest request, ServerCallContext context)
         {
             AllExecutorReply reply = new();
-            foreach(Executor executor in _executorRepository.GetExecutors())
+            foreach (Executor executor in _executorRepository.GetExecutors())
             {
                 reply.Executors.Add(new ExecutorReply
                 {
@@ -148,7 +148,7 @@ namespace TaskListKhvatskova.Services
         public override Task<AllTagReply> GetAllTags(NullRequest request, ServerCallContext context)
         {
             AllTagReply allTagReply = new();
-            foreach(Tags tag in _tagRepository.GetTags())
+            foreach (Tags tag in _tagRepository.GetTags())
             {
                 allTagReply.Tags.Add(new TagReply
                 {
@@ -198,7 +198,7 @@ namespace TaskListKhvatskova.Services
         public override Task<NullRequest> RemoveAllTags(NullRequest request, ServerCallContext context)
         {
             _tagRepository.RemoveAllTags();
-            return Task.FromResult( new NullRequest() );
+            return Task.FromResult(new NullRequest());
         }
     }
 }

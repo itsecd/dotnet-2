@@ -6,7 +6,7 @@ using System.Reactive;
 namespace TaskListKhvatskovaClient.ViewModels
 {
     public partial class AddExecutorViewModel
-    { 
+    {
         public string NameInput { get; set; } = string.Empty;
         public string SurnameInput { get; set; } = string.Empty;
         public ReactiveCommand<Unit, Unit> Add { get; }

@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using TaskListKhvatskova.Models;
 using TaskListKhvatskova.Repositories;
-using System.Collections.Generic;
 using Xunit;
 
 namespace TaskListKhvatskovaTests

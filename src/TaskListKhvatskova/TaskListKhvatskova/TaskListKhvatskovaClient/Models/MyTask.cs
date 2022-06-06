@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TaskListKhvatskova.Models
 {
@@ -42,7 +41,7 @@ namespace TaskListKhvatskova.Models
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
-        
+
         public MyTask()
         {
             TagsId = string.Empty;

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TaskListKhvatskova.Services;
 using TaskListKhvatskova.Repositories;
+using TaskListKhvatskova.Services;
 
 namespace TaskListKhvatskova
 {

@@ -12,7 +12,7 @@ namespace TaskListKhvatskovaClient.ViewModels
     public partial class MainWindowViewModel
     {
         public Tags SelectedTag { get; set; } = new();
-        public ObservableCollection<Tags> SourceTags{ get; set; } = new();
+        public ObservableCollection<Tags> SourceTags { get; set; } = new();
         public ReactiveCommand<Unit, Unit> AddTag { get; }
         public ReactiveCommand<Unit, Unit> DeleteTag { get; }
         public Interaction<Unit, Unit> CreateTag { get; } = new();

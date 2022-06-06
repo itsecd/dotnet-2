@@ -2,7 +2,6 @@
 using ReactiveUI;
 using System;
 using System.Reactive;
-using Xceed.Wpf.Toolkit;
 
 namespace TaskListKhvatskovaClient.ViewModels
 {
