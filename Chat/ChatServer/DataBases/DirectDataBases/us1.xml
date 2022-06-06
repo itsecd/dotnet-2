@@ -25,4 +25,9 @@
     <Name>us2</Name>
     <Message> fghjkl</Message>
   </DirectMessage>
+  <DirectMessage>
+    <Receiver>us1</Receiver>
+    <Name>us2</Name>
+    <Message> yeessss</Message>
+  </DirectMessage>
 </ArrayOfDirectMessage>

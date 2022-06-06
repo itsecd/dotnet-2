@@ -18,4 +18,10 @@
   <User>
     <Name>testus2</Name>
   </User>
+  <User>
+    <Name />
+  </User>
+  <User>
+    <Name>Nikita</Name>
+  </User>
 </ArrayOfUser>

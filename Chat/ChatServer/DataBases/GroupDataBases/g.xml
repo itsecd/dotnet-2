@@ -35,4 +35,49 @@
     <Name>user4</Name>
     <Message> i too here!</Message>
   </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> HELLO FROM WPF</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> HELLO FROM WPF</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> HELLO FROM WPF</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us2</Name>
+    <Message> HIHIHIHI</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> hi</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> ggggggggggggggg</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> reshetka</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> hahaha</Message>
+  </GroupMessage>
+  <GroupMessage>
+    <GroupName>g</GroupName>
+    <Name>us1</Name>
+    <Message> into group into WPF</Message>
+  </GroupMessage>
 </ArrayOfGroupMessage>

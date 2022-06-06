@@ -1,9 +1,9 @@
-﻿using TestWPF.View;
-using TestWPF.ViewModel;
-using ReactiveUI;
+﻿using ReactiveUI;
 using System;
 using System.Reactive;
 using System.Windows;
+using TestWPF.View;
+using TestWPF.ViewModel;
 
 namespace TestWPF
 {

@@ -40,4 +40,19 @@
     <Name>us1</Name>
     <Message> hi</Message>
   </DirectMessage>
+  <DirectMessage>
+    <Receiver>us2</Receiver>
+    <Name>us1</Name>
+    <Message> Hello into WPF!</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us2</Receiver>
+    <Name>us1</Name>
+    <Message> into WPF...</Message>
+  </DirectMessage>
+  <DirectMessage>
+    <Receiver>us2</Receiver>
+    <Name>us2</Name>
+    <Message> yeessss</Message>
+  </DirectMessage>
 </ArrayOfDirectMessage>

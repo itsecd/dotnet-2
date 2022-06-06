@@ -1,7 +1,6 @@
 ﻿using ChatServer.Serializers;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace ChatServer
@@ -12,7 +11,7 @@ namespace ChatServer
 
         public Task SendMessage(string user, string message)
         {
-            return Clients.Others.SendAsync("ReceiveMessage", user, message);
+            return Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
         public Task Enter(string user)
@@ -27,13 +26,13 @@ namespace ChatServer
                 Clients.Client(Connections[user]).SendAsync("ReceiveDirectMessage", directMessage.Name, directMessage.Message);
             }
 
-            ObservableCollection <RoomList> roomList = RoomListSerializer.DeserializeRoomList(user);
-
-            return Clients.Others.SendAsync("ReceiveMessage", user, $"{user} is connected");
+            return Clients.All.SendAsync("ReceiveServiceMessage", "common", $"{user} has entered chat");
         }
 
         public async Task JoinGroup(string user, string groupName)
         {
+            string message = $"{user} has joined the group";
+
             var deserializedGroupMessages = GroupMessageSerializer.DeserializeMessage(groupName);
             foreach (var groupMessage in deserializedGroupMessages)
             {
@@ -43,17 +42,15 @@ namespace ChatServer
             GroupList groupMember = new GroupList(groupName, user);
             GroupListSerializer.SerializeGroup(groupMember);
 
-            RoomList roomMember = new RoomList(user, groupName);
-            RoomListSerializer.SerializeRoomList(roomMember);
-
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            await Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, "has joined the group");
+            //await Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, "has joined the group");
+            await Clients.Group(groupName).SendAsync("ReceiveServiceMessage", groupName, message);
         }
 
         public async Task LeaveGroup(string user, string groupName)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("ReceiveMessageFromGroup", groupName, user, "has left the group");
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
         }
 
         public Task SendMessageToGroup(string groupName, string user, string message)
@@ -65,7 +62,6 @@ namespace ChatServer
         public Task SendMessageToUser(string user, string message, string receiver)
         {
             DirectMessageSerializer.SerializeMessage(new DirectMessage(receiver, user, message));
-            RoomListSerializer.SerializeRoomList(new RoomList(user, receiver));
             return Clients.Client(Connections[receiver]).SendAsync("ReceiveDirectMessage", user, message);
         }
 

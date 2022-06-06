@@ -1,7 +1,6 @@
-﻿using TestWPF.ViewModel;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using ReactiveUI;
 using System.Windows;
-using ReactiveUI;
+using TestWPF.ViewModel;
 
 namespace TestWPF.View
 {
@@ -16,13 +15,14 @@ namespace TestWPF.View
         {
             InitializeComponent();
 
-            
+
 
             _ = this.WhenActivated(cd =>
             {
                 if (ViewModel is null)
+                {
                     return;
-
+                }
             });
 
         }
