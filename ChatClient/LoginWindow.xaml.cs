@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace ChatClient
 {
@@ -7,6 +8,12 @@ namespace ChatClient
         public LoginWindow()
         {
             InitializeComponent();
+            MouseDown += Window_MouseDown;
+        }
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
         }
 
         private void ButtonMinimize_Click(object sender, RoutedEventArgs e)
@@ -21,7 +28,7 @@ namespace ChatClient
 
         private void WindowStateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (WindowState != WindowState.Minimized)
+            if (WindowState == WindowState.Normal)
             {
                 WindowState = WindowState.Maximized;
             }

@@ -2,34 +2,37 @@
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR;
+using ChatServer.Services;
 
 namespace ChatServer
 {
     public class ChatHub : Hub
     {
         private readonly object _lock = new();
-        private readonly Dictionary<string, string> _loginToId = new();
-        private readonly Dictionary<string, string> _idToLogin = new();
 
+        private readonly IChatService _chatService;
+        public ChatHub(IChatService chatService)
+        {
+            _chatService = chatService;
+        }
         public async Task<bool> Login(string login)
         {
             string[] logins;
 
             lock (_lock)
             {
-                if (_loginToId.ContainsKey(login))
+                if (_chatService.LoginToIdContainsKey(login))
                     return false;
 
-                logins = _loginToId.Keys.ToArray();
+                logins = _chatService.LoginToIdArrayKeys();
 
-                _loginToId.Add(login, Context.ConnectionId);
-                _idToLogin.Add(Context.ConnectionId, login);
+                _chatService.LoginToIdAdd(login, Context.ConnectionId);
+                _chatService.IdToLoginAdd(Context.ConnectionId, login);                
             }
             foreach (var existedLogin in logins)
                 await Clients.Caller.SendAsync("UserJoined", existedLogin);
 
             await Clients.Others.SendAsync("UserJoined", login);
-
             return true;
         }
 
@@ -43,7 +46,7 @@ namespace ChatServer
         {
             lock (_lock)
             {
-                return _idToLogin[Context.ConnectionId];
+                return _chatService.ResolveCallerLogin(Context.ConnectionId);
             }
         }
 
@@ -51,9 +54,8 @@ namespace ChatServer
         {
             lock (_lock)
             {
-                return _loginToId[login];
+                return _chatService.ResolveConnectionId(login);
             }
         }
-
     }
 }

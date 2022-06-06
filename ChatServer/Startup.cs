@@ -1,3 +1,4 @@
+using ChatServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,17 +9,9 @@ namespace ChatServer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ChatHub>();
-            services.AddControllers();
+            services.AddSingleton<IChatService, ChatService>();
             services.AddSignalR();
         }
 
@@ -31,11 +24,8 @@ namespace ChatServer
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chatroom");
             });
         }

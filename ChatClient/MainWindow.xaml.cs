@@ -28,7 +28,7 @@ namespace ChatClient
 
         private void WindowStateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (WindowState != WindowState.Minimized)
+            if (WindowState == WindowState.Normal)
             {
                 WindowState = WindowState.Maximized;
             }

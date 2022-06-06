@@ -71,19 +71,21 @@
 
 
             <StackPanel Grid.Row="1"
-                VerticalAlignment="Center">
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
                 <Image Source="Images/I'am.png" Width ="120"/>
                 <TextBlock Text="Kazantsev Chat"
                            FontWeight="Light"
+                           HorizontalAlignment="Center"
                            FontFamily="helvetica"
                            FontSize="22"
-                           Foreground="White"
-                           HorizontalAlignment="Center"/>
+                           Foreground="White"/>
             </StackPanel>
 
 
             <StackPanel Grid.Row="2" >
-                <StackPanel Orientation="Horizontal">
+                <StackPanel HorizontalAlignment="Center"
+                            Orientation="Horizontal">
                     <TextBox x:Name="login1" FontFamily="Helvetica"
                              x:FieldModifier="public"
                              FontWeight="Light"
@@ -96,8 +98,7 @@
                              Width="240"
                              HorizontalContentAlignment="Left"
                              Opacity="0.5"
-                             Height="25"
-                             Margin="80,0,0,0">
+                             Height="25">
                         <TextBox.InputBindings>
                             <KeyBinding Command="{Binding LoginCommand}" Key="Return"/>
                         </TextBox.InputBindings>
@@ -111,11 +112,17 @@
                             Opacity="0.5"/>
 
 
-                <StackPanel Orientation="Horizontal" Margin="0,50,0,0">
-                    <Button x:Name="login" Width="100" Height="40" Content="LOGIN" Margin="150,0,60,0" Command="{Binding LoginCommand}"/>
+                <StackPanel HorizontalAlignment="Center" 
+                    Orientation="Horizontal" Margin="0,50,0,0">
+                    <Button x:Name="login" 
+                            Width="100" 
+                            Height="40" 
+                            Content="LOGIN"
+                            Command="{Binding LoginCommand}"/>
                 </StackPanel>
             </StackPanel>
 
         </Grid>
     </Grid>
+    
 </Window>
