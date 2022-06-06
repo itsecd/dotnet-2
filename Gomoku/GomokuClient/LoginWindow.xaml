@@ -3,34 +3,53 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:GomokuClient"
         mc:Ignorable="d"
         Title="Gomoku" Height="230" Width="300">
-    <Grid>
-        <Grid.RowDefinitions >
-            <RowDefinition Height="70">
-            </RowDefinition>
-            <RowDefinition >
-            </RowDefinition>
-            <RowDefinition >
-            </RowDefinition>
-        </Grid.RowDefinitions>
+    
+    <xctk:BusyIndicator x:Name="BusyIndicator">
+        <xctk:BusyIndicator.BusyContentTemplate>
+            <DataTemplate>
+                <StackPanel Margin="3">
+                    <TextBlock Text="Поиск оппонента" HorizontalAlignment="Center" Margin="5" />
+                    <ProgressBar Height="15" Width="150" Minimum="0" Maximum="100"  Margin="5" Foreground="DarkCyan"/>
+                </StackPanel>
+            </DataTemplate>
+        </xctk:BusyIndicator.BusyContentTemplate>
+        <xctk:BusyIndicator.ProgressBarStyle>
+            <Style TargetType="ProgressBar">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </Style>
+        </xctk:BusyIndicator.ProgressBarStyle>
+        
+        <Grid>
+            <Grid.RowDefinitions >
+                <RowDefinition Height="70">
+                </RowDefinition>
+                <RowDefinition >
+                </RowDefinition>
+                <RowDefinition >
+                </RowDefinition>
+            </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="18">
-            Введите логин:
-        </Label>
+            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="18">
+                Введите логин:
+            </Label>
 
-        <TextBox Grid.Row="1" x:Name="LoginTextBox" HorizontalAlignment="Center" VerticalAlignment="Center"
+            <TextBox Grid.Row="1" x:Name="LoginTextBox" HorizontalAlignment="Center" VerticalAlignment="Center"
                  Height="35" Width="125" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto">
             </TextBox>
 
-        <Grid Grid.Row ="2" HorizontalAlignment="Right" Margin="20">
-            <Button x:Name="PlayButton" Width="100" Click="PlayClick">
-                <Label FontSize="15">
-                    Играть
+            <Grid Grid.Row ="2" HorizontalAlignment="Right" Margin="20">
+                <Button x:Name="PlayButton" Width="100" Click="PlayClick">
+                    <Label FontSize="15">
+                        Играть
                     </Label>
-            </Button>
+                </Button>
+            </Grid>
+
         </Grid>
-        
-    </Grid>
+    </xctk:BusyIndicator>
+
 </Window>

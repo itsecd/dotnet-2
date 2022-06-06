@@ -16,7 +16,7 @@ namespace GomokuClient
 {
     public partial class LoginWindow : Window
     {
-        public string Login { get; set; }
+        public string Login { get; set; } = "Player";
 
         public LoginWindow()
         {
@@ -26,6 +26,7 @@ namespace GomokuClient
         private void PlayClick(object sender, RoutedEventArgs e)
         {
             Login = LoginTextBox.Text;
+            BusyIndicator.IsBusy = true;
         }
     }
 }
