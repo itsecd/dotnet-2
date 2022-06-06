@@ -18,8 +18,8 @@ namespace ChatClient.ViewModel
 
         public string TextMessage { get; set; }
 
-        public ObservableCollection<MyUserInfo> Users { get; set; } = new ObservableCollection<MyUserInfo>();
-        public ObservableCollection<MyHistoryOfMessagesModel> Messages { get; set; } = new ObservableCollection<MyHistoryOfMessagesModel>();
+        public ObservableCollection<MyUserInfo> Users { get; init; } = new ObservableCollection<MyUserInfo>();
+        public ObservableCollection<HistoryOfMessagesModel> Messages { get; init; } = new ObservableCollection<HistoryOfMessagesModel>();
 
         private ChatRoom.ChatRoomClient _client;
 
@@ -28,13 +28,12 @@ namespace ChatClient.ViewModel
         public ReactiveCommand<Unit, Task> CreateCommand { get; }
         public ReactiveCommand<Unit, Task> JoinCommand { get; }
         public ReactiveCommand<Unit, Task> SendCommand { get; }
-
         public ReactiveCommand<Unit, Task> DisconnectCommand { get; }
-
-
-
         public MainViewModel()
         {
+            _roomName = "";
+            _userName = "";
+            
             var channel = GrpcChannel.ForAddress(Settings.Default.Address);
             _client = new ChatRoom.ChatRoomClient(channel);
             CreateCommand = ReactiveCommand.Create(CreateImpl);
@@ -48,16 +47,16 @@ namespace ChatClient.ViewModel
             _streamingCall = _client.Join();
             await _streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Text = _roomName, Command = "" });
             await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken());
-            var lastMessage = new MyHistoryOfMessagesModel
+            var lastMessage = new HistoryOfMessagesModel
             {
                 User = _streamingCall.ResponseStream.Current.User,
-                data = DateTime.Now,
+                Date = DateTime.Now,
                 Message = _streamingCall.ResponseStream.Current.Text
             };
-            Messages.Add(new MyHistoryOfMessagesModel
+            Messages.Add(new HistoryOfMessagesModel
             {
                 User = _streamingCall.ResponseStream.Current.User,
-                data = DateTime.Now,
+                Date = DateTime.Now,
                 Message = _streamingCall.ResponseStream.Current.Text
             });
             RoomInfo roomInfo = new RoomInfo { RoomName = _roomName };
@@ -81,10 +80,10 @@ namespace ChatClient.ViewModel
                     }
 
                 }
-                Messages.Add(new MyHistoryOfMessagesModel
+                Messages.Add(new HistoryOfMessagesModel
                 {
                     User = messages.Messages[index].User,
-                    data = DateTime.Parse(messages.DateOfMessage[index]),
+                    Date = DateTime.Parse(messages.DateOfMessage[index]),
                     Message = messages.Messages[index].Text
                 });
                 messages.DateOfMessage.RemoveAt(index);
@@ -96,10 +95,10 @@ namespace ChatClient.ViewModel
             {
                 while (await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken()))
                 {
-                    Application.Current.Dispatcher.Invoke(() => Messages.Add(new MyHistoryOfMessagesModel
+                    Application.Current.Dispatcher.Invoke(() => Messages.Add(new HistoryOfMessagesModel
                     {
                         User = _streamingCall.ResponseStream.Current.User,
-                        data = DateTime.Now,
+                        Date = DateTime.Now,
                         Message = _streamingCall.ResponseStream.Current.Text
                     }));
 
@@ -187,10 +186,10 @@ namespace ChatClient.ViewModel
         {
             await _streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Text = TextMessage, Command = "message" });
 
-            Messages.Add(new MyHistoryOfMessagesModel
+            Messages.Add(new HistoryOfMessagesModel
             {
                 User = _userName,
-                data = DateTime.Now,
+                Date = DateTime.Now,
                 Message = TextMessage
             });
             TextMessage = string.Empty;

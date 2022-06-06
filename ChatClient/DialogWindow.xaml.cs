@@ -11,12 +11,11 @@ namespace ChatClient
 
         private void OnOkclicked(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-
+            DialogResult = true;
         }
 
-        public string UserName { get => UserNameTextBox.Text; }
+        public string UserName => UserNameTextBox.Text; 
 
-        public string RoomName { get => RoomNameTextBox.Text; }
+        public string RoomName => RoomNameTextBox.Text;
     }
 }

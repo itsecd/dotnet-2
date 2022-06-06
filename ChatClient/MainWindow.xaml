@@ -31,7 +31,7 @@
 
                 <DockPanel Background="#c5cee8" DockPanel.Dock="Bottom" Height="80">
                     <Button DockPanel.Dock="Right" Content="Send" HorizontalAlignment="Right" Margin="5" Width="120" Background="#9f9fc6" Foreground="White" FontSize="20" Command="{Binding SendCommand}"/>
-                    <TextBox Name="textMessage"  Margin="5" Background="White" Text="{Binding TextMessage}" />
+                    <TextBox Margin="5" Background="White" Text="{Binding TextMessage}" />
                 </DockPanel>
                 <ScrollViewer>    
                     <ItemsControl  Background="White" ItemsSource="{Binding Messages}">
