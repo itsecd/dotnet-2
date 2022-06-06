@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <ArrayOfPlayer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Player>
-    <Login>3213</Login>
+    <Login>Danila</Login>
     <Score>10</Score>
   </Player>
   <Player>
-    <Login>аввв</Login>
+    <Login>Valery</Login>
     <Score>5</Score>
   </Player>
 </ArrayOfPlayer>

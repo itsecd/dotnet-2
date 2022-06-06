@@ -18,9 +18,9 @@ namespace SnakeConsoleClient
 
                 try
                 {
-                    await session.SecondPlayer.Login("аввв");
+                    await session.SecondPlayer.Login("Valery");
                     await Task.Delay(1000);
-                    await session.FirstPlayer.Login("3213");
+                    await session.FirstPlayer.Login("Danila");
                     await Task.Delay(1000);
 
                     await session.FirstPlayer.SendResult(10);
