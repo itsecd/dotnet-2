@@ -113,7 +113,7 @@ namespace SnakeServer.Services
             try
             {
                 var xmlSerializer = new XmlSerializer(typeof(List<Player>));
-                using var fileStream = new FileStream(XmlStorageFileName, FileMode.Create);
+                await using var fileStream = new FileStream(XmlStorageFileName, FileMode.Create);
                 xmlSerializer.Serialize(fileStream, _listForPlayers);
             }
             finally
@@ -137,10 +137,10 @@ namespace SnakeServer.Services
                 {
                     _listForPlayers.Add(player);
                 }
-                }
-                finally
-                {
-                    _databaseLock.Release();
+            }
+            finally
+            {
+                _databaseLock.Release();
             }
             WriteToFile();
         }
