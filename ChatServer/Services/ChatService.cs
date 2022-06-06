@@ -72,10 +72,6 @@ namespace ChatServer.Services
                 await _chatRooms.WriteAsyncToFile();
                 await room.BroadcastMessage(new Message { Text = $"{userName} connected" });
                 //дальше клиент не заходит
-                while (!context.CancellationToken.IsCancellationRequested)
-                {
-                    await Task.Delay(100);
-                }
             }
             else
             {
