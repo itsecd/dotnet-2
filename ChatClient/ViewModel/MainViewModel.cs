@@ -34,7 +34,7 @@ namespace ChatClient.ViewModel
 
 
         public MainViewModel()
-    {
+        {
             var channel = GrpcChannel.ForAddress(Settings.Default.Address);
             _client = new ChatRoom.ChatRoomClient(channel);
             CreateCommand = ReactiveCommand.Create(CreateImpl);
@@ -48,7 +48,7 @@ namespace ChatClient.ViewModel
             _streamingCall = _client.Join();
             await _streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Text = _roomName, Command = "" });
             await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken());
-            var LastMessage = new MyHistoryOfMessagesModel
+            var lastMessage = new MyHistoryOfMessagesModel
             {
                 User = _streamingCall.ResponseStream.Current.User,
                 data = DateTime.Now,
@@ -68,9 +68,7 @@ namespace ChatClient.ViewModel
                 Users.Add(new MyUserInfo { Name = user.UserName, Status = user.IsOnline });
 
             }
-            HistoryOfMessages messages = new();
-            messages = await _client.GetHistoryOfMessagesAsync(roomInfo);
-            var mindata = DateTime.Parse(messages.DateOfMessage[0]);
+            var messages = await _client.GetHistoryOfMessagesAsync(roomInfo);
             var countOfMessages = messages.Messages.Count;
             for (var i = 0; i < countOfMessages; ++i)
             {
@@ -93,7 +91,7 @@ namespace ChatClient.ViewModel
                 messages.Messages.RemoveAt(index);
 
             }
-            Messages.Add(LastMessage);
+            Messages.Add(lastMessage);
             var readTask = Task.Run(async () =>
             {
                 while (await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken()))
@@ -155,9 +153,11 @@ namespace ChatClient.ViewModel
             {
                 _userName = dialogWindow.UserName;
                 _roomName = dialogWindow.RoomName;
-                _streamingCall = _client.Create();
-                await _streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Text = _roomName, Command = "create" });
-                await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken());
+                using (_streamingCall = _client.Create())
+                {
+                    await _streamingCall.RequestStream.WriteAsync(new Message { User = _userName, Text = _roomName, Command = "create" });
+                    await _streamingCall.ResponseStream.MoveNext(new System.Threading.CancellationToken());
+                }
                 await SendAndReceiveMessage();
             }
             else

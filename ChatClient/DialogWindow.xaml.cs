@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 
 namespace ChatClient
 {
@@ -16,8 +15,8 @@ namespace ChatClient
 
         }
 
-        public string UserName { get => userName.Text; }
-        
-        public string RoomName { get => roomName.Text;}
+        public string UserName { get => UserNameTextBox.Text; }
+
+        public string RoomName { get => RoomNameTextBox.Text; }
     }
 }

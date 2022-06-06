@@ -1,7 +1,5 @@
 ﻿using ChatClient.ViewModel;
-using Grpc.Net.Client;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace ChatClient
 {
@@ -13,7 +11,5 @@ namespace ChatClient
             DataContext = new MainViewModel();
         }
 
-        public string currentMessage { get => textMessage.Text; }
-        
     }
 }

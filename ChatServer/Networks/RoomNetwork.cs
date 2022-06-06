@@ -12,7 +12,7 @@ namespace ChatServer.Networks
     {
         public ConcurrentBag<User> Users { get; set; } = new();
 
-       [NonSerialized] public ConcurrentDictionary<string, IServerStreamWriter<Message>> Online = new();
+        [NonSerialized] public ConcurrentDictionary<string, IServerStreamWriter<Message>> Online = new();
 
         public ConcurrentDictionary<DateTime, Message> History { get; set; } = new();
 
@@ -25,17 +25,14 @@ namespace ChatServer.Networks
 
         public void Disconnect(string name)
         {
-           Online.TryRemove(name, out _);
+            Online.TryRemove(name, out _);
         }
 
 
-        public async Task BroadcastMessage(Message message, string name = null)
+        public Task BroadcastMessage(Message message, string name = null)
         {
             History.TryAdd(DateTime.Now, message);
-            foreach (var (username, channel) in Online.Where(x => x.Key != name))
-            {
-                await channel.WriteAsync(message);
-            }
+            return Task.WhenAll(Online.Where(x => x.Key != name).Select(userStream => userStream.Value.WriteAsync(message)));
         }
 
         public bool FindUser(string userName) => Users.Count(x => x.Name == userName) == 0;

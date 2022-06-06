@@ -44,7 +44,7 @@ namespace ChatServer.Services
                     //await requestStream.MoveNext();
                 }
             }
-            
+
 
         }
 
@@ -68,9 +68,10 @@ namespace ChatServer.Services
                 if (_users.IsUserExist(userName))
                     _users.AddUser(userName);
                 await _users.WriteAsyncToFile();
-                
+
                 await _chatRooms.WriteAsyncToFile();
                 await room.BroadcastMessage(new Message { Text = $"{userName} connected" });
+                //дальше клиент не заходит
                 while (!context.CancellationToken.IsCancellationRequested)
                 {
                     await Task.Delay(100);
@@ -93,7 +94,7 @@ namespace ChatServer.Services
                     case "disconnect":
                         var currentRoom = _chatRooms.FindRoom(nameRoom);
                         currentRoom.Disconnect(requestStream.Current.User);
-                        await currentRoom.BroadcastMessage(new Message { Text = $"{requestStream.Current.User} disconnected", Command="disconnect" });
+                        await currentRoom.BroadcastMessage(new Message { Text = $"{requestStream.Current.User} disconnected", Command = "disconnect" });
                         await _chatRooms.WriteAsyncToFile();
                         await _users.WriteAsyncToFile();
                         return;
@@ -115,17 +116,17 @@ namespace ChatServer.Services
             await _chatRooms.ReadFromFileAsync(request.RoomName);
             var room = _chatRooms.FindRoom(request.RoomName);
             var result = new UsersInfoResponse();
-            
+
             foreach (var user in room.Users)
             {
                 if (room.Online.ContainsKey(user.Name))
                 {
-                  result.Users.Add(new UserInfo { UserName = user.Name, Id = user.ID, IsOnline = true });
+                    result.Users.Add(new UserInfo { UserName = user.Name, Id = user.ID, IsOnline = true });
                 }
                 else
-                    result.Users.Add(new UserInfo { UserName=user.Name, Id=user.ID, IsOnline = false });
+                    result.Users.Add(new UserInfo { UserName = user.Name, Id = user.ID, IsOnline = false });
             }
-            
+
             return result;
         }
 
@@ -137,7 +138,7 @@ namespace ChatServer.Services
 
             foreach (var message in room.History)
             {
-                result.Messages.Add(new Message { User = message.Value.User, Text = message.Value.Text, Command = message.Value.Command});
+                result.Messages.Add(new Message { User = message.Value.User, Text = message.Value.Text, Command = message.Value.Command });
                 result.DateOfMessage.Add(message.Key.ToString());
             }
 

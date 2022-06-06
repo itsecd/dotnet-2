@@ -1,38 +1,9 @@
 {
   "Users": [
     {
-      "Name": "\u0421\u0435\u0440\u0433\u0435\u0435\u0432",
-      "ID": 254492461
-    },
-    {
       "Name": "Dzuba",
-      "ID": 1585885601
-    },
-    {
-      "Name": "Ozdoev",
-      "ID": 726911007
+      "ID": 954538569
     }
   ],
-  "History": {
-    "2022-06-06T01:23:44.7097386+04:00": {
-      "User": "",
-      "Text": "Dzuba disconnected",
-      "Command": "disconnect"
-    },
-    "2022-06-06T00:43:34.0683226+04:00": {
-      "User": "Ozdoev",
-      "Text": "Hi",
-      "Command": "message"
-    },
-    "2022-06-06T00:42:35.5063494+04:00": {
-      "User": "\u0421\u0435\u0440\u0433\u0435\u0435\u0432",
-      "Text": "Hi",
-      "Command": "message"
-    },
-    "2022-06-06T00:42:43.1636347+04:00": {
-      "User": "Dzuba",
-      "Text": "Hi",
-      "Command": "message"
-    }
-  }
+  "History": {}
 }
