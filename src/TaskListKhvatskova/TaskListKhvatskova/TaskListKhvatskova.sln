@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListKhvatskova", "TaskListKhvatskova\TaskListKhvatskova.csproj", "{7B2F9EF1-7332-42D2-93CB-39520B2E350C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskListKhvatskova", "TaskListKhvatskova\TaskListKhvatskova.csproj", "{7B2F9EF1-7332-42D2-93CB-39520B2E350C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListKhvatskovaTests", "TaskListKhvatskovaTests\TaskListKhvatskovaTests.csproj", "{C37367D3-2083-43D9-A099-A4E516005514}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskListKhvatskovaTests", "TaskListKhvatskovaTests\TaskListKhvatskovaTests.csproj", "{C37367D3-2083-43D9-A099-A4E516005514}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListKhvatskovaClient", "TaskListKhvatskovaClient\TaskListKhvatskovaClient.csproj", "{9155817D-01D5-4A53-A9C4-0E6B330DE5D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C37367D3-2083-43D9-A099-A4E516005514}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C37367D3-2083-43D9-A099-A4E516005514}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C37367D3-2083-43D9-A099-A4E516005514}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9155817D-01D5-4A53-A9C4-0E6B330DE5D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9155817D-01D5-4A53-A9C4-0E6B330DE5D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9155817D-01D5-4A53-A9C4-0E6B330DE5D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9155817D-01D5-4A53-A9C4-0E6B330DE5D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
