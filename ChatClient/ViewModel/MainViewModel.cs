@@ -18,10 +18,10 @@ namespace ChatClient.ViewModel
 
         public string TextMessage { get; set; } = "";
 
-        public ObservableCollection<MyUserInfo> Users { get; init; } = new ObservableCollection<MyUserInfo>();
+        public ObservableCollection<Models.UserInfo> Users { get; init; } = new ObservableCollection<Models.UserInfo>();
         public ObservableCollection<HistoryOfMessagesModel> Messages { get; init; } = new ObservableCollection<HistoryOfMessagesModel>();
 
-        private ChatRoom.ChatRoomClient _client;
+        private readonly ChatRoom.ChatRoomClient _client;
 
         private Grpc.Core.AsyncDuplexStreamingCall<Message, Message> _streamingCall;
 
@@ -64,7 +64,7 @@ namespace ChatClient.ViewModel
 
             foreach (var user in usersResponse.Users)
             {
-                Users.Add(new MyUserInfo { Name = user.UserName, Status = user.IsOnline });
+                Users.Add(new Models.UserInfo { Name = user.UserName, Status = user.IsOnline });
 
             }
             var messages = await _client.GetHistoryOfMessagesAsync(roomInfo);
@@ -119,7 +119,7 @@ namespace ChatClient.ViewModel
                         }
                         if (!isUserExist)
                         {
-                            Application.Current.Dispatcher.Invoke(() => Users.Add(new MyUserInfo
+                            Application.Current.Dispatcher.Invoke(() => Users.Add(new Models.UserInfo
                             {
                                 Name = connectedUser,
                                 Status = true
