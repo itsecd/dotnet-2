@@ -9,6 +9,7 @@
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal">
                             <Label Content="{Binding Sender}"
+                                   Foreground="LightGreen"
                                    FontWeight="SemiBold"
                                    VerticalAlignment="Center"
                                    Margin="0,0,-5,0"/>
