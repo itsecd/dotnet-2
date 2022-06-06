@@ -16,7 +16,7 @@ namespace ChatClient.ViewModel
         private string _userName;
         private string _roomName;
 
-        public string TextMessage { get; set; }
+        public string TextMessage { get; set; } = "";
 
         public ObservableCollection<MyUserInfo> Users { get; init; } = new ObservableCollection<MyUserInfo>();
         public ObservableCollection<HistoryOfMessagesModel> Messages { get; init; } = new ObservableCollection<HistoryOfMessagesModel>();
