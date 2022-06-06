@@ -63,3 +63,10 @@
 
 
 ![диалоговое окно](https://user-images.githubusercontent.com/73229151/172196584-18c975a4-0ad5-406e-88fb-cc5b1acf89fc.png)
+![окно](https://user-images.githubusercontent.com/73229151/172197370-b7a9af96-ef42-420f-8a39-89afd8d47a44.png)
+
+
+
+Основное окно
+
+
