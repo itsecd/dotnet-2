@@ -180,19 +180,18 @@ namespace MinesweeperClient.Views
         }
         private async void OnTileClicked(object? sender, PointerPressedEventArgs e)
         {
-            // не обрабатываем нажатия, если игра не идет
-            if (_gameStatus != GameStatus.InProgress)
+            if (Wire is not {IsConnected: true} || _gameStatus != GameStatus.InProgress)
                 return;
-            // получение координат нажатой клетки
+            
             Button? button = sender as Button;
             if (button == null || button.Name == null || button.IsEnabled == false)
                 return;
             int x = int.Parse(button.Name.Split("_")[1]);
             int y = int.Parse(button.Name.Split("_")[2]);
-            // генерация поля при нажатии на пустую клетку
+            
             if (_field.GameState() == GameStatus.Ready)
                 _field.Generate(x, y, MineCount);
-            // обработка кнопок мышки
+            
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
             {
                 Console.WriteLine($"[{x};{y}] L");
@@ -214,9 +213,7 @@ namespace MinesweeperClient.Views
                     _flagsCounter++;
                 _flagsLabel.Content = $"Flags left: {_flagsCounter}";
             }
-            // отрисовка поля и проверка состояния игры
             DrawGrid();
-            // _gameStatus = _field.GameState();
             if (_field.GameState() == GameStatus.Win)
             {
                 Console.WriteLine("You won!");
@@ -238,12 +235,10 @@ namespace MinesweeperClient.Views
         }
         private async void OnReadyClicked(object sender, RoutedEventArgs e)
         {
-            if (Wire == null || !Wire.IsConnected)
+            if (Wire is not {IsConnected: true})
                 return;
             if (await Wire.Ready())
-            {
                 _gameStatus = GameStatus.InProgress;
-            }
             ResetGrid();
         }
     }

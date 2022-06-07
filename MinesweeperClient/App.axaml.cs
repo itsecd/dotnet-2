@@ -19,7 +19,7 @@ namespace MinesweeperClient
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow{Wire = _wire};
+                desktop.MainWindow = new MainWindow { Wire = _wire };
                 desktop.MainWindow.DataContext = new MainWindowViewModel(desktop.MainWindow, _wire);
             }
 

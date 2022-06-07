@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
-using MinesweeperClient;
 
 namespace MinesweeperClient.Models
 {
     public class Connection
     {
-        private string? _name;
-        public string? Name => _name;
+        public string? Name;
         private string? _address;
         private GrpcChannel? _channel;
         private Minesweeper.MinesweeperClient? _client;
@@ -19,14 +16,14 @@ namespace MinesweeperClient.Models
         public readonly List<PlayerInfo> Players = new();
         public async Task<bool> TryJoinAsync(string name, string address)
         {
-            _name = name;
+            Name = name;
             _address = address;
             try
             {
                 _channel = GrpcChannel.ForAddress(_address);
                 _client = new Minesweeper.MinesweeperClient(_channel);
                 _call = _client.Join();
-                await _call.RequestStream.WriteAsync(new GameMessage { Name = _name });
+                await _call.RequestStream.WriteAsync(new GameMessage { Name = Name });
             }
             catch (Exception e)
             {
@@ -40,7 +37,7 @@ namespace MinesweeperClient.Models
         {
             if (_call == null || _channel == null)
                 return false;
-            await _call.RequestStream.WriteAsync(new GameMessage { Name = _name, Text = "leave" });
+            await _call.RequestStream.WriteAsync(new GameMessage { Name = Name, Text = "leave" });
             _call.Dispose();
             _channel.Dispose();
             _call = null;
@@ -48,7 +45,7 @@ namespace MinesweeperClient.Models
         }
         public async Task UpdatePlayers()
         {
-            if (_call == null || !IsConnected)
+            if (_call == null)
                 return;
             try
             {
@@ -80,28 +77,27 @@ namespace MinesweeperClient.Models
         {
             if (_call == null)
                 return false;
-            await _call.RequestStream.WriteAsync(new GameMessage { Name = _name, Text = "ready" });
+            await _call.RequestStream.WriteAsync(new GameMessage { Name = Name, Text = "ready" });
             while (true)
             {
                 GameMessage msg = await Peek();
                 if (msg.Text == "start")
                     break;
             }
-            Console.WriteLine("Пора начинать игру!");
             return true;
         }
         public async Task<bool> Win()
         {
             if (_call == null)
                 return false;
-            await _call.RequestStream.WriteAsync(new GameMessage { Name = _name, Text = "win" });
+            await _call.RequestStream.WriteAsync(new GameMessage { Name = Name, Text = "win" });
             return true;
         }
         public async Task<bool> Lose()
         {
             if (_call == null)
                 return false;
-            await _call.RequestStream.WriteAsync(new GameMessage { Name = _name, Text = "lose" });
+            await _call.RequestStream.WriteAsync(new GameMessage { Name = Name, Text = "lose" });
             return true;
         }
         public async Task<GameMessage> Peek()

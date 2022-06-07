@@ -82,16 +82,16 @@ namespace MinesweeperServer
                             _logger.LogInformation("[{username}] покинул комнату", playerName);
                             return;
                         case "win":
-                            _users.SetPlayerState(playerName, "lobby");                                               // send player to lobby
-                            _players.CalcScore(playerName, "win");                                                    // calculate score
-                            await _users.Broadcast(new GameMessage { Text = playerName, State = "win" }); // broadcast winner's name
-                            _logger.LogInformation("[{username}] выиграл!", playerName);                              // log
+                            _users.SetPlayerState(playerName, "lobby");
+                            _players.CalcScore(playerName, "win");
+                            await _users.Broadcast(new GameMessage { Text = playerName, State = "win" });
+                            _logger.LogInformation("[{username}] выиграл!", playerName);
                             break;
                         case "lose":
-                            _users.SetPlayerState(playerName, "lobby");                                                // send player to lobby
-                            _players.CalcScore(playerName, "lose");                                                    // calculate score
-                            await _users.Broadcast(new GameMessage { Text = playerName, State = "lose" }); // broadcast loser's name
-                            _logger.LogInformation("[{username}] проиграл!", playerName);                              // log
+                            _users.SetPlayerState(playerName, "lobby");
+                            _players.CalcScore(playerName, "lose");
+                            await _users.Broadcast(new GameMessage { Text = playerName, State = "lose" });
+                            _logger.LogInformation("[{username}] проиграл!", playerName);
                             break;
                         default:
                             _logger.LogWarning("Unknown command: {command}", message.Text);
