@@ -4,6 +4,28 @@
     <UserName>Валерий</UserName>
     <UserId>599338819</UserId>
     <ChatId>599338819</ChatId>
-    <ReminderList />
+    <ReminderList>
+      <Reminder>
+        <Id>0</Id>
+        <Name>qq31</Name>
+        <Description>123</Description>
+        <DateTime>2001-01-01T12:00:00+04:00</DateTime>
+        <RepeatPeriod>0</RepeatPeriod>
+      </Reminder>
+      <Reminder>
+        <Id>1</Id>
+        <Name>21</Name>
+        <Description>1</Description>
+        <DateTime>0001-02-01T00:00:00+04:00</DateTime>
+        <RepeatPeriod>0</RepeatPeriod>
+      </Reminder>
+      <Reminder>
+        <Id>2</Id>
+        <Name>testName</Name>
+        <Description>testDescription</Description>
+        <DateTime>2001-01-01T00:00:00+04:00</DateTime>
+        <RepeatPeriod>0</RepeatPeriod>
+      </Reminder>
+    </ReminderList>
   </User>
 </ArrayOfUser>

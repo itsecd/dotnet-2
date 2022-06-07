@@ -1,19 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
-using System.Net.Http;
-using DynamicData;
-using DynamicData.Binding;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Lab2Server.Models;
-using BotClient.Properties;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using BotClient.Commands;
 using BotClient.Views;
 
@@ -32,12 +17,12 @@ namespace BotClient.ViewModels
                 OnPropertyChanged(nameof(User));
             }
         }
-        
+
         public MainViewModel()
         {
             AddCall = new Command(_ =>
             {
-                AddReminderWindow addReminderWindow = new AddReminderWindow();
+                AddReminderWindow addReminderWindow = new AddReminderWindow(new AddReminderViewModel { UserId = _user.UserId} );
                 addReminderWindow.Show();
             }, _=>true);
         }

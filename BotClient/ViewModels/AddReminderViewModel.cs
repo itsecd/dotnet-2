@@ -1,23 +1,21 @@
 ﻿using BotClient.Commands;
-using BotClient.Views;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace BotClient.ViewModels
 {
     public class AddReminderViewModel : INotifyPropertyChanged
     {
-        private int _userId;
+        private User _user;
+        private long _userId;
         private DateTime _dateTime;
         private string _name;
         private string _description;
         private int _repeatPeriod;
-        public int UserId // нужно как то получить из LoginViewModel
+
+        public long UserId
         {
             get => _userId;
             set
@@ -27,6 +25,7 @@ namespace BotClient.ViewModels
                 OnPropertyChanged(nameof(UserId));
             }
         }
+
         public string Name
         {
             get => _name;
@@ -73,16 +72,18 @@ namespace BotClient.ViewModels
 
         public AddReminderViewModel()
         {
-            Ok = new Command(async _ =>
+            Ok = new Command(async commandParameter =>
             {
+                if (commandParameter is not Window window) return;
                 using var httpClient = new HttpClient();
-                var telegramBotServer = new TelegramBotServer("/api/User/{id}/reminders", httpClient); // адрес взят из swagger.json, клиент не собирается с этой строкой кода
-                await telegramBotServer.RemindersAsync(UserId, new Reminder { DateTime = _dateTime, Name = _name, Description = _description, RepeatPeriod = _repeatPeriod});
-                // todo закрытие текущего окна AddReminderWindow и вызов метода show к ранее созданному классу MainWindow, на данный момент не знаю как выполнить данные задачи
+                var telegramBotServer = new TelegramBotServer(Properties.Settings1.Default.OpenApiServer, httpClient);
+                await telegramBotServer.RemindersAsync(((int)UserId), new Reminder { DateTime = _dateTime, Name = _name, Description = _description, RepeatPeriod = _repeatPeriod});
+                window.Close();
             }, _ => true);
-            Cancel = new Command(_ =>
+            Cancel = new Command(commandParameter =>
             {
-                // todo закрытие текущего окна AddReminderWindow и вызов метода show к ранее созданному классу MainWindow, на данный момент не знаю как выполнить данные задачи
+                if (commandParameter is not Window window) return;
+                window.Close();
             }, _ => true);
         }
 

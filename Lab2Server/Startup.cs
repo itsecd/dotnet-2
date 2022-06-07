@@ -53,6 +53,7 @@ namespace Lab2Server
             string key = "123";
             string bot = Configuration.GetValue(key, "");            
             var botClient = new TelegramBotClient(bot);
+            userRepository.ReadFromFile();
             botClient.StartReceiving(new TelegramUpdateHandler(userRepository));
         }
     }

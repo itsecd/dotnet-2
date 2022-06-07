@@ -19,7 +19,7 @@ namespace Lab2Server.Models
 
         private readonly string _storageFileName = "users.xml";
 
-        private List<User> _users = new();
+        private List<User> _users;
         
         public void ReadFromFile()
         {

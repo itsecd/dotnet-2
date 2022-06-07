@@ -1,7 +1,4 @@
-﻿using System.Reactive.Linq;
-using ReactiveUI;
-using BotClient.ViewModels;
-using Lab2Server.Models;
+﻿using BotClient.ViewModels;
 using System.Windows;
 
 namespace BotClient
@@ -11,12 +8,13 @@ namespace BotClient
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
 
-        public MainWindow(LoginViewModel loginViewModel)
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = mainViewModel;
         }
     }
 }

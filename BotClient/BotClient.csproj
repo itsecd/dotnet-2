@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <OpenApiReference Include="..\..\..\..\Desktop\swagger.json" CodeGenerator="NSwagCSharp" Namespace="BotClient" ClassName="TelegramBotServer" Link="OpenAPIs\swagger.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Lab2Server\Lab2Server.csproj" />
   </ItemGroup>
 
