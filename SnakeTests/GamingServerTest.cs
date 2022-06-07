@@ -1,26 +1,15 @@
 using Grpc.Core;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
-using Snake;
 using Server;
 using Server.Services;
-using System;
-using System.Collections.Generic;
+using Snake;
 using System.IO;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace SnakeTests
 {
     public class GamingServerTest
     {
-
-        protected readonly ITestOutputHelper Output;
-
-        public GamingServerTest(ITestOutputHelper tempOutput)
-        {
-            Output = tempOutput;
-        }
 
         [Fact]
         public void WriteAsyncTest()
