@@ -1,6 +1,3 @@
-// 0 пустая клетка
-// 1 - 8 цифра
-// -1 бомба
 using System;
 
 namespace MinesweeperClient.Models

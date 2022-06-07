@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -21,32 +20,26 @@ namespace MinesweeperClient.Views
         private const int FieldHeight = 16;
         private const int MineCount = 99;
         private const int TileSize = 35;
-        // field
         private readonly MinesweeperField _field = new(FieldHeight, FieldWidth);
         private readonly Panel _grid;
         private readonly Button[,] _buttonGrid = new Button[FieldHeight, FieldWidth];
-        // assets
         private readonly Bitmap _flag;
         private readonly Bitmap _bomb;
         private readonly Bitmap _bombMarked;
         private readonly Label _flagsLabel;
         private int _flagsCounter;
-        // game
         private GameStatus _gameStatus;
         public Connection? Wire;
         public MainWindow()
         {
             InitializeComponent();
-            // assets
             _flag = new Bitmap("Assets/Flag.png");
             _bomb = new Bitmap("Assets/Bomb.png");
             _bombMarked = new Bitmap("Assets/BombMarked.png");
-            // field
             _grid = this.FindControl<Panel>("GameGrid");
             InitGrid();
             _flagsLabel = this.FindControl<Label>("FlagsLabel");
             _flagsCounter = 99;
-            // connection
             Task.Run(PlayersUpdate);
         }
         private async void PlayersUpdate()
@@ -180,18 +173,18 @@ namespace MinesweeperClient.Views
         }
         private async void OnTileClicked(object? sender, PointerPressedEventArgs e)
         {
-            if (Wire is not {IsConnected: true} || _gameStatus != GameStatus.InProgress)
+            if (Wire is not { IsConnected: true } || _gameStatus != GameStatus.InProgress)
                 return;
-            
+
             Button? button = sender as Button;
             if (button == null || button.Name == null || button.IsEnabled == false)
                 return;
             int x = int.Parse(button.Name.Split("_")[1]);
             int y = int.Parse(button.Name.Split("_")[2]);
-            
+
             if (_field.GameState() == GameStatus.Ready)
                 _field.Generate(x, y, MineCount);
-            
+
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
             {
                 Console.WriteLine($"[{x};{y}] L");
@@ -235,7 +228,7 @@ namespace MinesweeperClient.Views
         }
         private async void OnReadyClicked(object sender, RoutedEventArgs e)
         {
-            if (Wire is not {IsConnected: true})
+            if (Wire is not { IsConnected: true })
                 return;
             if (await Wire.Ready())
                 _gameStatus = GameStatus.InProgress;

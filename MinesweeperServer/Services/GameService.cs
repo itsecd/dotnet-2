@@ -23,10 +23,10 @@ namespace MinesweeperServer
         public override async Task Join(IAsyncStreamReader<GameMessage> requestStream, IServerStreamWriter<GameMessage> responseStream, ServerCallContext context)
         {
             if (!await requestStream.MoveNext()) return;
-            string playerName = requestStream.Current.Name;                              // save players name
-            _logger.LogInformation("[{username}] присоединился к комнате!", playerName); // log
-            if (_players.TryAddPlayer(playerName)) await _players.DumpAsync();           // save player, if new
-            _users.Join(playerName, responseStream);                                     // join player to the server
+            string playerName = requestStream.Current.Name;
+            _logger.LogInformation("[{username}] присоединился к комнате!", playerName);
+            if (_players.TryAddPlayer(playerName)) await _players.DumpAsync();
+            _users.Join(playerName, responseStream);
 
 
             GameMessage message = new();
@@ -61,9 +61,9 @@ namespace MinesweeperServer
                 }
 
 
-                while (!_users.AllStates("ready")) ;                                  // wait for all users to be ready
-                await responseStream.WriteAsync(new GameMessage { Text = "start" }); // send starting signal
-                _logger.LogInformation("[{username}] приступил к игре!", playerName);      // log
+                while (!_users.AllStates("ready"));
+                await responseStream.WriteAsync(new GameMessage { Text = "start" });
+                _logger.LogInformation("[{username}] приступил к игре!", playerName);
 
 
                 while (_users.GetPlayerState(playerName) != "lobby") // GAME

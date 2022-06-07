@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive;
-using System.Text;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using ReactiveUI;
 using MinesweeperClient.Views;
 using MinesweeperClient.Models;
 using System.Collections.ObjectModel;
-using System.Threading;
-using Avalonia.Threading;
-using System.Threading.Tasks;
 
 namespace MinesweeperClient.ViewModels
 {
