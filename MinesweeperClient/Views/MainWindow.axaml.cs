@@ -48,24 +48,6 @@ namespace MinesweeperClient.Views
             _flagsCounter = 99;
             // connection
             Task.Run(PlayersUpdate);
-            Task.Run(FlagsUpdate);
-        }
-        async void ListenToServer()
-        {
-            while (true)
-            {
-                Thread.Sleep(50);
-                if (_gameStatus != GameStatus.InProgress) return;
-                if (Wire is not { IsConnected: true }) continue;
-                GameMessage msg = await Wire.Peek();
-                if (_gameStatus == GameStatus.InProgress && msg.State == "win")
-                {
-                    Console.WriteLine("You lose!");
-                    ResetGrid();
-                    await Wire.Lose();
-                    _gameStatus = GameStatus.Ready;
-                }
-            }
         }
         private async void PlayersUpdate()
         {
@@ -73,6 +55,18 @@ namespace MinesweeperClient.Views
             {
                 Thread.Sleep(2000);
                 if (Wire is not { IsConnected: true }) continue;
+
+                if (_gameStatus == GameStatus.InProgress)
+                {
+                    GameMessage msg = await Wire.Peek();
+                    if (msg.State == "win")
+                    {
+                        Console.WriteLine("You lose!");
+                        ResetGrid();
+                        await Wire.Lose();
+                        _gameStatus = GameStatus.Ready;
+                    }
+                }
 
                 await Wire.UpdatePlayers();
                 Dispatcher.UIThread.Post(() =>
@@ -85,19 +79,6 @@ namespace MinesweeperClient.Views
                         viewModel.Players.Add(info);
                     }
                 }, DispatcherPriority.Background);
-            }
-        }
-        private void FlagsUpdate()
-        {
-            int flagsCache = _flagsCounter;
-            while (true)
-            {
-                Thread.Sleep(100);
-                if (_flagsCounter != flagsCache)
-                {
-                    flagsCache = _flagsCounter;
-                    _flagsLabel.Content = $"Flags left: {flagsCache}";
-                }
             }
         }
         private void InitGrid()
@@ -119,8 +100,6 @@ namespace MinesweeperClient.Views
                         Background = new SolidColorBrush { Color = Color.Parse("#c0c0c0") },
                         BorderThickness = new Thickness(1),
                         BorderBrush = new SolidColorBrush { Color = Color.Parse("#808080") },
-                        // FontSize = 20,
-                        // FontWeight = FontWeight.Bold,
                         VerticalContentAlignment = VerticalAlignment.Center,
                         HorizontalContentAlignment = HorizontalAlignment.Center,
                         IsEnabled = false
@@ -171,7 +150,8 @@ namespace MinesweeperClient.Views
                                 _buttonGrid[y, x].Content = new Label
                                 {
                                     Foreground = numColor,
-                                    FontSize = TileSize - 20,
+                                    FontSize = 18,
+                                    FontWeight = FontWeight.Bold,
                                     Content = _field[x, y].ToString(),
                                     HorizontalAlignment = HorizontalAlignment.Center,
                                     VerticalAlignment = VerticalAlignment.Center,
@@ -230,6 +210,7 @@ namespace MinesweeperClient.Views
                     _flagsCounter--;
                 else
                     _flagsCounter++;
+                _flagsLabel.Content = $"Flags left: {_flagsCounter}";
             }
             // отрисовка поля и проверка состояния игры
             DrawGrid();
@@ -256,7 +237,6 @@ namespace MinesweeperClient.Views
             if (await Wire.Ready())
             {
                 _gameStatus = GameStatus.InProgress;
-                Task.Run(() => ListenToServer());
             }
             ResetGrid();
         }

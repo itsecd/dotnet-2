@@ -58,14 +58,14 @@ namespace MinesweeperClient.Models
             return GameStatus.InProgress;
         }
         /// <summary>Проверка выхода за границы поля.</summary>
-        private bool _outOfBounds(int x, int y) => x < 0 || y < 0 || x >= _width || y >= _height;
+        private bool OutOfBounds(int x, int y) => x < 0 || y < 0 || x >= _width || y >= _height;
         /// <summary>Расчет количества мин вокруг клетки.</summary>
         private int CalcNear(int x, int y)
         {
             int sum = 0;
             for (int dy = -1; dy <= 1; dy++)
                 for (int dx = -1; dx <= 1; dx++)
-                    if (!_outOfBounds(x + dx, y + dy))
+                    if (!OutOfBounds(x + dx, y + dy))
                         sum += _field[x + dx, y + dy] == -1 ? 1 : 0;
             return sum;
         }
@@ -105,7 +105,7 @@ namespace MinesweeperClient.Models
         /// <summary>Раскрытие клетки поля.</summary>
         public void Reveal(int x, int y)
         {
-            if (_outOfBounds(x, y) || _tiles[x, y] != TileStates.Closed)
+            if (OutOfBounds(x, y) || _tiles[x, y] != TileStates.Closed)
                 return;
             _tiles[x, y] = TileStates.Opened;
             if (_field[x, y] != 0)
@@ -117,7 +117,7 @@ namespace MinesweeperClient.Models
         /// <summary>Установка/снятие флажка.</summary>
         public void SwitchFlag(int x, int y)
         {
-            if (!_outOfBounds(x, y) && _tiles[x, y] != TileStates.Opened)
+            if (!OutOfBounds(x, y) && _tiles[x, y] != TileStates.Opened)
                 _tiles[x, y] = _tiles[x, y] == TileStates.Closed ? TileStates.Flagged : TileStates.Closed;
         }
     }

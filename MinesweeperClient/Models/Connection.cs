@@ -32,7 +32,7 @@ namespace MinesweeperClient.Models
                 _call = null;
                 _client = null;
                 _channel = null;
-                Console.WriteLine($"[{e.Source}]\n{e.Message}");
+                Console.WriteLine($"TryJoinAsync\n[{e.Source}]\n{e.Message}");
                 return false;
             }
             return true;
@@ -79,7 +79,7 @@ namespace MinesweeperClient.Models
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[{e.Source}]\n{e.Message}");
+                Console.WriteLine($"UpdatePlayers\n[{e.Source}]\n{e.Message}");
             }
         }
         public bool IsConnected => _call != null;
