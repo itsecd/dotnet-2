@@ -58,8 +58,9 @@ namespace MinesweeperClient.Views
 
                 if (_gameStatus == GameStatus.InProgress)
                 {
+                    Console.WriteLine("peeking");
                     GameMessage msg = await Wire.Peek();
-                    if (msg.State == "win")
+                    if (msg.State == "win" && msg.Text != Wire.Name)
                     {
                         Console.WriteLine("You lose!");
                         ResetGrid();
@@ -67,7 +68,7 @@ namespace MinesweeperClient.Views
                         _gameStatus = GameStatus.Ready;
                     }
                 }
-
+                Console.WriteLine("update players");
                 await Wire.UpdatePlayers();
                 Dispatcher.UIThread.Post(() =>
                 {
@@ -111,6 +112,7 @@ namespace MinesweeperClient.Views
         }
         private void ResetGrid()
         {
+            _field.Reset();
             for (int y = 0; y < FieldHeight; y++)
             {
                 for (int x = 0; x < FieldWidth; x++)
@@ -150,7 +152,7 @@ namespace MinesweeperClient.Views
                                 _buttonGrid[y, x].Content = new Label
                                 {
                                     Foreground = numColor,
-                                    FontSize = 18,
+                                    FontSize = 17,
                                     FontWeight = FontWeight.Bold,
                                     Content = _field[x, y].ToString(),
                                     HorizontalAlignment = HorizontalAlignment.Center,
@@ -221,6 +223,8 @@ namespace MinesweeperClient.Views
                 ResetGrid();
                 await Wire.Win();
                 _gameStatus = GameStatus.Ready;
+                _flagsCounter = 99;
+                _flagsLabel.Content = $"Flags left: {_flagsCounter}";
             }
             if (_field.GameState() == GameStatus.Lose)
             {
@@ -228,6 +232,8 @@ namespace MinesweeperClient.Views
                 ResetGrid();
                 await Wire.Lose();
                 _gameStatus = GameStatus.Ready;
+                _flagsCounter = 99;
+                _flagsLabel.Content = $"Flags left: {_flagsCounter}";
             }
         }
         private async void OnReadyClicked(object sender, RoutedEventArgs e)

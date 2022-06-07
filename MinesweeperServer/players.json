@@ -1,17 +1,5 @@
 {
-  "DimaDivan": {
-    "TotalScore": 18,
-    "WinCount": 3,
-    "LoseCount": 1,
-    "WinStreak": 0
-  },
-  "dimadivan": {
-    "TotalScore": 0,
-    "WinCount": 0,
-    "LoseCount": 4,
-    "WinStreak": 0
-  },
-  "divanchik": {
+  "Dimadivan": {
     "TotalScore": 0,
     "WinCount": 0,
     "LoseCount": 0,
@@ -23,11 +11,11 @@
     "LoseCount": 1,
     "WinStreak": 1
   },
-  "divan": {
-    "TotalScore": 10,
-    "WinCount": 1,
+  "divanchik": {
+    "TotalScore": 0,
+    "WinCount": 0,
     "LoseCount": 0,
-    "WinStreak": 1
+    "WinStreak": 0
   },
   "player1": {
     "TotalScore": 0,
@@ -35,10 +23,22 @@
     "LoseCount": 2,
     "WinStreak": 0
   },
-  "Dimadivan": {
+  "dimadivan": {
     "TotalScore": 0,
     "WinCount": 0,
+    "LoseCount": 16,
+    "WinStreak": 0
+  },
+  "divan": {
+    "TotalScore": 10,
+    "WinCount": 1,
     "LoseCount": 0,
+    "WinStreak": 1
+  },
+  "DimaDivan": {
+    "TotalScore": 18,
+    "WinCount": 3,
+    "LoseCount": 1,
     "WinStreak": 0
   }
 }
