@@ -28,16 +28,16 @@ namespace SnakeServer
             Login = login;
             _responseStream = responseStream;
         }
-        public Player(string login, int countGames, IServerStreamWriter<Reply> responseStream)
+        public Player(string login, int score, IServerStreamWriter<Reply> responseStream)
         {
             Login = login;
-            Score = countGames;
+            Score = score;
             _responseStream = responseStream;
         }
-        public Player(string login, int countGames)
+        public Player(string login, int score)
         {
             Login = login;
-            Score = countGames;
+            Score = score;
             _responseStream = null;
         }
 
@@ -56,6 +56,10 @@ namespace SnakeServer
                     ResponseStream.WriteAsync(reply);
                 });
             }
+        }
+        public override string ToString()
+        {
+            return "\nLogin " + Login + "\nScore: " + Score;
         }
     }
 }

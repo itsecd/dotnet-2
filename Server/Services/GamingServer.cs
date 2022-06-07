@@ -64,32 +64,39 @@ namespace SnakeServer.Services
         private Player Login(LoginRequest loginRequest, IServerStreamWriter<Reply> responseStream)
         {
             var player = GetPlayerFromFile(loginRequest.Login, responseStream).Result;
+            
             return _dictionaryForPlayers.TryAdd(player.Login, player) ? player : null;
         }
 
-        private void SendResult(Player player, SendResultGame sendResultGame)
+        public void SendResult(Player player, SendResultGame sendResultGame)
         {
             player.Score = sendResultGame.Score;
+            _listForPlayers.Add(player);
             _dictionaryForPlayers.TryAdd(player.Login, player);
             WriteToFile();
         }
-        
 
-        private void ReadFromFile()
+
+        private async  void ReadFromFile()
         {
-
-            if (!File.Exists(XmlStorageFileName))
-                _listForPlayers = new List<Player>();
-            else
+            await _databaseLock.WaitAsync();
+            try
             {
-                var xmlSerializer = new XmlSerializer(typeof(List<Player>));
-                using var fileStream = new FileStream(XmlStorageFileName, FileMode.Open);
-                _listForPlayers = (List<Player>)xmlSerializer.Deserialize(fileStream);
-            }
+                if (!File.Exists(XmlStorageFileName))
+                    _listForPlayers = new List<Player>();
+                
+                else
+                {
+                    var xmlSerializer = new XmlSerializer(typeof(List<Player>));
+                    using var fileStream = new FileStream(XmlStorageFileName, FileMode.Open);
+                    _listForPlayers = (List<Player>)xmlSerializer.Deserialize(fileStream);
 
+                }
+            }
+            finally { _databaseLock.Release(); }
         }
 
-        private async Task<Player> GetPlayerFromFile(String login, IServerStreamWriter<Reply> responseStream)
+        public async Task<Player> GetPlayerFromFile(String login, IServerStreamWriter<Reply> responseStream)
         {
             if (!File.Exists(XmlStorageFileName))
             {
@@ -131,12 +138,13 @@ namespace SnakeServer.Services
                 {
                     ReadFromFile();
                     _listForPlayers.Add(player);
-                    
+
                 }
                 else
                 {
                     _listForPlayers.Add(player);
                 }
+
             }
             finally
             {
