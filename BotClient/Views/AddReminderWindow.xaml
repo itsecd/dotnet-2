@@ -1,8 +1,6 @@
 ﻿<Window 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:v="clr-namespace:BotClient"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:viewModels="clr-namespace:BotClient.ViewModels" x:Class="BotClient.Views.AddReminderWindow"
         Width="297"
         Height="205"
@@ -53,7 +51,7 @@
         <DockPanel VerticalAlignment="Top" Grid.Row ="3">
             <Label Content="Period">
             </Label>
-            <TextBox Text="{Binding Period}" HorizontalAlignment="Right" Width="187">
+            <TextBox Text="{Binding RepeatPeriod}" HorizontalAlignment="Right" Width="187">
             </TextBox>
         </DockPanel>
         <DockPanel VerticalAlignment="Bottom" Grid.Row = "4">

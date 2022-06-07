@@ -29,7 +29,7 @@ namespace BotClient.ViewModels
                 var user = await telegramBotServer.UserAsync(UserId);
                 if (user != null)
                 {
-                    var mainWindow = new MainWindow(new MainViewModel { User = user });
+                    var mainWindow = new MainWindow(new MainViewModel(user) { User = user });
                     mainWindow.Show();
                     window.Close();
                 }

@@ -8,7 +8,6 @@ namespace BotClient
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
 
         public MainWindow(MainViewModel mainViewModel)

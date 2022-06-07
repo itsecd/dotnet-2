@@ -1,5 +1,6 @@
 ﻿using BotClient.Commands;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net.Http;
 using System.Windows;
@@ -33,7 +34,7 @@ namespace BotClient.ViewModels
             {
                 if (value == _name) return;
                 _name = value;
-                OnPropertyChanged(nameof(_name));
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -44,7 +45,7 @@ namespace BotClient.ViewModels
             {
                 if (value == _description) return;
                 _description = value;
-                OnPropertyChanged(nameof(_description));
+                OnPropertyChanged(nameof(Description));
             }
         }
 
@@ -55,7 +56,7 @@ namespace BotClient.ViewModels
             {
                 if (value == _dateTime) return;
                 _dateTime = value;
-                OnPropertyChanged(nameof(_dateTime));
+                OnPropertyChanged(nameof(DateTime));
             }
         }
 
@@ -66,18 +67,19 @@ namespace BotClient.ViewModels
             {
                 if (value == _repeatPeriod) return;
                 _repeatPeriod = value;
-                OnPropertyChanged(nameof(_dateTime));
+                OnPropertyChanged(nameof(RepeatPeriod));
             }
         }
 
-        public AddReminderViewModel()
+        public AddReminderViewModel(ObservableCollection<Reminder> reminders)
         {
             Ok = new Command(async commandParameter =>
             {
-                if (commandParameter is not Window window) return;
-                using var httpClient = new HttpClient();
-                var telegramBotServer = new TelegramBotServer(Properties.Settings1.Default.OpenApiServer, httpClient);
-                await telegramBotServer.RemindersAsync(((int)UserId), new Reminder { DateTime = _dateTime, Name = _name, Description = _description, RepeatPeriod = _repeatPeriod});
+            if (commandParameter is not Window window) return;
+            using var httpClient = new HttpClient();
+            var telegramBotServer = new TelegramBotServer(Properties.Settings1.Default.OpenApiServer, httpClient);
+            await telegramBotServer.RemindersAsync(((int)UserId), new Reminder { DateTime = _dateTime, Name = _name, Description = _description, RepeatPeriod = _repeatPeriod });
+            reminders.Add(new Reminder { DateTime = _dateTime, Name = _name, Description = _description, RepeatPeriod = _repeatPeriod });
                 window.Close();
             }, _ => true);
             Cancel = new Command(commandParameter =>

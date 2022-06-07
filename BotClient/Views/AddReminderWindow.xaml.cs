@@ -8,7 +8,6 @@ namespace BotClient.Views
         public AddReminderWindow()
         {
             InitializeComponent();
-            DataContext = new AddReminderViewModel();
         }
 
         public AddReminderWindow(AddReminderViewModel addReminderViewModel)

@@ -13,17 +13,17 @@
         <RepeatPeriod>0</RepeatPeriod>
       </Reminder>
       <Reminder>
-        <Id>1</Id>
-        <Name>21</Name>
-        <Description>1</Description>
-        <DateTime>0001-02-01T00:00:00+04:00</DateTime>
-        <RepeatPeriod>0</RepeatPeriod>
+        <Id>6</Id>
+        <Name>string</Name>
+        <Description>string</Description>
+        <DateTime>2022-06-07T18:44:23.585Z</DateTime>
+        <RepeatPeriod>1</RepeatPeriod>
       </Reminder>
       <Reminder>
-        <Id>2</Id>
-        <Name>testName</Name>
-        <Description>testDescription</Description>
-        <DateTime>2001-01-01T00:00:00+04:00</DateTime>
+        <Id>7</Id>
+        <Name>123</Name>
+        <Description>123</Description>
+        <DateTime>1111-01-01T00:00:00+04:00</DateTime>
         <RepeatPeriod>0</RepeatPeriod>
       </Reminder>
     </ReminderList>

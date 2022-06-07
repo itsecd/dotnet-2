@@ -3,15 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BotClient"
-        xmlns:viewModels="clr-namespace:BotClient.ViewModels" x:Class="BotClient.MainWindow"
+        x:Class="BotClient.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="700"
         WindowStartupLocation="CenterScreen">
-
-    <Window.DataContext>
-        <viewModels:MainViewModel/>
-    </Window.DataContext>
     
     <Window.Resources>
         <Style TargetType="{x:Type Label}">
@@ -31,12 +26,12 @@
         </Style>
     </Window.Resources>
     <StackPanel Orientation="Horizontal">
-        <ListView ItemsSource="{Binding UserEvents}"
-                      SelectedItem="{Binding SelectedUserEvent}">
+        <ListView   ItemsSource="{Binding Reminders}" 
+                      SelectedItem="{Binding SelectedReminder}">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=ReminderName}" Header="Name" Width="175"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="175"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=DateTime}" Header="Date and time" Width="200"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=RepeatPeriod}" Header="Repeat period" Width="175"/>
                     </GridView.Columns>
@@ -46,7 +41,7 @@
         <StackPanel>
             <Button Content="Add" Command="{Binding AddCall}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
             <Button Content="Edit"/>
-            <Button Content="Remove"/>
+            <Button Content="Remove" Command="{Binding RemoveCall}"/>
         </StackPanel>
     </StackPanel>
 </Window>
