@@ -9,17 +9,11 @@ namespace GomokuServer
 {
     public sealed class GamingSession
     {
-        private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(1000);
-
         private readonly Playground _playground = new();
 
         private readonly Player _firstPlayer;
 
         private readonly Player _secondPlayer;
-
-        private readonly Timer _timer = new(_timeout.TotalMilliseconds) { AutoReset = false };
-
-        private bool _isTimerActive;
 
         private bool _isFirstTurn;
 
@@ -30,8 +24,6 @@ namespace GomokuServer
 
             _secondPlayer = secondPlayer;
             _secondPlayer.Session = this;
-
-            //_timer.Elapsed += OnTimeout;
         }
 
         public void Start()
@@ -47,79 +39,56 @@ namespace GomokuServer
             {
                 SendFindOpponentReply(_secondPlayer, _firstPlayer.Login, false);
             });
-
-            _isTimerActive = true;
-            _timer.Start();
         }
 
         public void MakeTurn(Player player, MakeTurnRequest makeTurnRequest)
         {
-            lock (_timer)
+            var gameplay = new Gameplay(_playground);
+
+            var activePlayer = _firstPlayer;
+            var notActivePlayer = _secondPlayer;
+
+            if (!_isFirstTurn)
             {
-                var gameplay = new Gameplay(_playground);
+                activePlayer = _secondPlayer;
+                notActivePlayer = _firstPlayer;
+            }
 
-                var activePlayer = _firstPlayer;
-                var notActivePlayer = _secondPlayer;
+            if (player != activePlayer)
+                throw new ApplicationException("Not your turn");
 
-                if (!_isFirstTurn)
+            var point = makeTurnRequest.Point;
+
+            gameplay.CellIsBusy(point);
+            gameplay.EnterIntoTheCell(point, _isFirstTurn);
+
+            SendMakeTurnReply(notActivePlayer, point, true);
+            SendMakeTurnReply(activePlayer, point, false);
+
+            var gameOver = gameplay.CheckGame();
+
+            if (gameOver)
+            {
+                List<Point> WinPoints = gameplay.WinPoints;
+
+                if (gameplay.Winner == Cell.Empty)
                 {
-                    activePlayer = _secondPlayer;
-                    notActivePlayer = _firstPlayer;
-                }
-
-                if (player != activePlayer)
-                    throw new ApplicationException("Not your turn");
-
-                var point = makeTurnRequest.Point;
-
-                gameplay.CellIsBusy(point);
-
-                _timer.Stop();
-                _isTimerActive = false;
-
-                gameplay.EnterIntoTheCell(point, _isFirstTurn);
-
-                SendMakeTurnReply(notActivePlayer, point, true);
-
-                SendMakeTurnReply(activePlayer, point, false);
-
-                var gameOver = gameplay.CheckGame();
-
-                if (gameOver)
-                {
-                    List<Point> WinPoints = gameplay.WinPoints;
-
-                    if (gameplay.Winner == Cell.Empty)
-                    {
-                        var status = OutcomeStatus.Draw;
-                        SendEndGameReply(_firstPlayer, status, WinPoints);
-                        SendEndGameReply(_secondPlayer, status, WinPoints);
-                    }
-                    else
-                    {
-                        SendEndGameReply(activePlayer, OutcomeStatus.Victory, WinPoints);
-                        activePlayer.CountWinGames++;
-                        SendEndGameReply(notActivePlayer, OutcomeStatus.Defeat, WinPoints);
-                    }
+                    var status = OutcomeStatus.Draw;
+                    SendEndGameReply(_firstPlayer, status, WinPoints);
+                    SendEndGameReply(_secondPlayer, status, WinPoints);
                 }
                 else
                 {
-                    _isFirstTurn = !_isFirstTurn;
+                    SendEndGameReply(activePlayer, OutcomeStatus.Victory, WinPoints);
+                    activePlayer.CountWinGames++;
+                    SendEndGameReply(notActivePlayer, OutcomeStatus.Defeat, WinPoints);
                 }
-                _isTimerActive = true;
-                _timer.Start();
+            }
+            else
+            {
+                _isFirstTurn = !_isFirstTurn;
             }
         }
-
-        //private void OnTimeout(object sender, ElapsedEventArgs e)
-        //{
-        //    lock (_timer)
-        //    {
-        //        if (!_isTimerActive)
-        //            return;
-        //        _isFirstTurn = !_isFirstTurn;
-        //    }
-        //}
 
         private static void SendFindOpponentReply(Player player, string login, bool yourTurn)
         {
