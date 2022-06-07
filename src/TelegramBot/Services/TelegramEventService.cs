@@ -4,7 +4,7 @@ using TelegramBot.Proto;
 using TelegramBot.Model;
 using System.Collections.Generic;
 using Google.Protobuf.WellKnownTypes;
-using TelegramBot.Repository;
+using TelegramBot.Repositories;
 using Microsoft.Extensions.Logging;
 using System;
 

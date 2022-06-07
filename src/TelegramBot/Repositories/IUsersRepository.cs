@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TelegramBot.Model;
 
-namespace TelegramBot.Repository
+namespace TelegramBot.Repositories
 {
     public interface IUsersRepository
     {

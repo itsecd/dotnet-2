@@ -1,6 +1,6 @@
 using System;
 using Xunit;
-using TelegramBot.Repository;
+using TelegramBot.Repositories;
 using TelegramBot.Model;
 using System.IO;
 

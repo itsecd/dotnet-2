@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
 using TelegramBot.Services;
-using TelegramBot.Repository;
+using TelegramBot.Repositories;
 using Microsoft.Extensions.Configuration;
 
 namespace TelegramBot

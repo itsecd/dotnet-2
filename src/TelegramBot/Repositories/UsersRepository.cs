@@ -5,7 +5,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using TelegramBot.Model;
 
-namespace TelegramBot.Repository
+namespace TelegramBot.Repositories
 {
     public class UsersRepository : IUsersRepository
     {
