@@ -3,7 +3,7 @@ using Snake;
 using System;
 using System.Threading.Tasks;
 
-namespace SnakeServer
+namespace Server
 {
     [System.Serializable]
     public sealed class Player

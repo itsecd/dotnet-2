@@ -2,7 +2,7 @@ using Grpc.Core;
 using Snake;
 using System.Threading.Tasks;
 
-namespace SnakeServer.Services
+namespace Server.Services
 {
     public class SnakeService : Snake.Snake.SnakeBase
     {

@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace SnakeServer.Services
+namespace Server.Services
 {
     public sealed class GamingServer
     {
