@@ -1,4 +1,5 @@
 ﻿using BotClient.Commands;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BotClient.ViewModels
 {
@@ -25,14 +27,15 @@ namespace BotClient.ViewModels
 
         public LoginViewModel()
         {
+            MainWindow mainWindow = new MainWindow(this);
             OkCommand = new Command(async _ =>
             {
                 using var httpClient = new HttpClient();
-                var telegramBotServer = new TelegramBotServer("", httpClient);
+                var telegramBotServer = new TelegramBotServer("/api/User/{userid}", httpClient);  // адрес взят из swagger.json, клиент не собирается с этой строкой кода
                 await telegramBotServer.UserAsync(UserId);
-                MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
-            }, null);
+                // todo закрытие LoginWindow из которого вызван OkCommand, на данный момент не знаю как это сделать
+            }, _=> true);
         }
 
         public Command OkCommand { get; private set; }

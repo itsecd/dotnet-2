@@ -1,2 +1,9 @@
 <?xml version="1.0"?>
-<ArrayOfUser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+<ArrayOfUser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <User>
+    <UserName>Валерий</UserName>
+    <UserId>599338819</UserId>
+    <ChatId>599338819</ChatId>
+    <ReminderList />
+  </User>
+</ArrayOfUser>

@@ -37,7 +37,7 @@
             </ListView.View>
         </ListView>
         <StackPanel>
-            <Button Content="Add"/>
+            <Button Content="Add" Command="{Binding AddCall}"/>
             <Button Content="Edit"/>
             <Button Content="Remove"/>
         </StackPanel>
