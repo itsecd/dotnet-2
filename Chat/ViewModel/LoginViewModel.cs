@@ -9,12 +9,22 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Chat.ViewModel
 {
-    public partial class LoginViewModel
+    public partial class LoginViewModel: INotifyPropertyChanged
     {
-        public string UserName { get; set; } = string.Empty;
+        private string? _userName;
+        public string UserName { 
+            get => _userName;
+            set
+            {
+                _userName = value;
+                OnPropertyChanged();
+            } 
+        }
         public ReactiveCommand<Unit, Unit> Join { get; }
         public Interaction<string, Unit> OpenChatWindow { get; } = new();
         public LoginWindowBase LogWindow;
@@ -30,7 +40,7 @@ namespace Chat.ViewModel
         {
             if (UserName == "")
             {
-                MessageBox.Show("Illegal Input Values");
+                MessageBox.Show("Input name please");
                 return;
             }
             else
@@ -39,6 +49,12 @@ namespace Chat.ViewModel
                 _ = await OpenChatWindow.Handle(UserName);
                 LogWindow.Close();
             }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

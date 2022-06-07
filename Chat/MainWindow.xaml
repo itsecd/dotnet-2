@@ -11,7 +11,7 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Height="80">
             <Button Command="{Binding Send}" DockPanel.Dock="Right" Content="Send" HorizontalAlignment="Right" Margin="5" Width="120" FontSize="20"/>
-            <TextBox Text="{Binding Text}"  Margin="5" Width="435" />
+            <TextBox Text="{Binding _MessageText}"  Margin="5" Width="435" />
         </DockPanel>
         <ListView ItemsSource="{Binding Messages}" Width="800"/>
     </DockPanel>
