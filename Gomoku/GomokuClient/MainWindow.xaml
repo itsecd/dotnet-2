@@ -6,7 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:GomokuClient"
         mc:Ignorable="d"
-        Title="Gomoku" Height="530" Width="600">
+        Title="Гомоку" Height="530" Width="600" ResizeMode="NoResize" Icon="/Gomoku.png">
 
     <xctk:BusyIndicator x:Name="BusyIndicator">
         <xctk:BusyIndicator.BusyContentTemplate>

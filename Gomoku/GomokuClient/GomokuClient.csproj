@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Gomoku.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.103" />
       <PackageReference Include="Google.Protobuf" Version="3.20.0" />
       <PackageReference Include="Grpc.Net.Client" Version="2.44.0" />
@@ -15,13 +19,19 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-      <PackageReference Include="ReactiveUI.Fody" Version="18.0.10" />
+      <PackageReference Include="ReactiveUI" Version="18.0.10" />
   </ItemGroup>
-
-   
 
    <ItemGroup>
      <ProjectReference Include="..\ProtosLib\ProtosLib.csproj" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <Folder Include="Assets\" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <Resource Include="Gomoku.png" />
    </ItemGroup>
 
 </Project>

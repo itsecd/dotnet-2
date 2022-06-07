@@ -8,7 +8,7 @@ namespace GomokuClient
 {
     public partial class LoginWindow : Window
     {
-        private Client _client = new();
+        private readonly Client _client = new();
         public string Login { get; set; } = string.Empty;
 
         public LoginWindow()
@@ -21,7 +21,7 @@ namespace GomokuClient
             BusyIndicator.IsBusy = true;
             Login = LoginTextBox.Text;
             _client.LoginSubject.Subscribe(FindOpponent);
-            Task sumTask = new Task(async () =>
+            Task sumTask = new(async () =>
             {
                 await _client.LoginRequest(Login);
             });
@@ -31,7 +31,7 @@ namespace GomokuClient
         public void FindOpponent(LoginReply loginReply)
         {
             _client.FindOpponentSubject.Subscribe(StartGame);
-            Task sumTask = new Task(async () =>
+            Task sumTask = new(async () =>
             {
                 await _client.FindOpponentRequest();
             });
@@ -40,8 +40,8 @@ namespace GomokuClient
 
         public void StartGame(FindOpponentReply findOpponentReply)
         {
-            _client.LoginSubject.Dispose();
-            _client.FindOpponentSubject.Dispose();
+            _client.LoginSubject.OnCompleted();
+            _client.FindOpponentSubject.OnCompleted();
             Dispatcher.InvokeAsync(() =>
             {
                 Application.Current.MainWindow = new MainWindow(_client) { Owner = this };
