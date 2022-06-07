@@ -57,7 +57,7 @@ namespace MinesweeperClient.Models
                 return;
             try
             {
-                await _call.RequestStream.WriteAsync(new GameMessage{ Text = "players" });
+                await _call.RequestStream.WriteAsync(new GameMessage { Text = "players" });
                 GameMessage msg = new();
                 Players.Clear();
                 while (true)
@@ -113,6 +113,12 @@ namespace MinesweeperClient.Models
                 return false;
             await _call.RequestStream.WriteAsync(new GameMessage { Name = _name, Text = "lose" });
             return true;
+        }
+        public async Task<GameMessage> Peek()
+        {
+            if (await _call.ResponseStream.MoveNext())
+                return _call.ResponseStream.Current;
+            return new GameMessage { Text = "no" };
         }
     }
 }

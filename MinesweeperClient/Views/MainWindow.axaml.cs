@@ -52,6 +52,24 @@ namespace MinesweeperClient.Views
             Task.Run(() => PlayersUpdate());
             Task.Run(() => FlagsUpdate());
         }
+        async void ListenToServer()
+        {
+            GameMessage msg = new();
+            while (true)
+            {
+                Thread.Sleep(50);
+                if (_gameStatus != GameStatus.InProgress) return;
+                if (_wire is not { IsConnected: true }) continue;
+                msg = await _wire.Peek();
+                if (_gameStatus == GameStatus.InProgress && msg.State == "win")
+                {
+                    Console.WriteLine("You lose!");
+                    ResetGrid();
+                    await _wire.Lose();
+                    _gameStatus = GameStatus.Ready;
+                }
+            }
+        }
         private async void PlayersUpdate()
         {
             while (true)
@@ -218,7 +236,7 @@ namespace MinesweeperClient.Views
             }
             // отрисовка поля и проверка состояния игры
             DrawGrid();
-            _gameStatus = _field.GameState();
+            // _gameStatus = _field.GameState();
             if (_field.GameState() == GameStatus.Win)
             {
                 Console.WriteLine("You won!");
@@ -239,7 +257,10 @@ namespace MinesweeperClient.Views
             if (_wire == null || !_wire.IsConnected)
                 return;
             if (await _wire.Ready())
+            {
                 _gameStatus = GameStatus.InProgress;
+                Task.Run(() => ListenToServer());
+            }
             ResetGrid();
         }
     }

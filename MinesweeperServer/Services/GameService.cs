@@ -44,7 +44,7 @@ namespace MinesweeperServer
                                 Console.WriteLine($"send {username}'s stats");
                                 await _users.SendPlayer(playerName, username, _players[username]);
                             }
-                            await _users[playerName].Channel.WriteAsync(new GameMessage{ Text = "end" });
+                            await _users[playerName].Channel.WriteAsync(new GameMessage { Text = "end" });
                             break;
                         case "ready":
                             _users.SetPlayerState(playerName, "ready");
@@ -61,7 +61,7 @@ namespace MinesweeperServer
                 }
 
 
-                while (!_users.AllStates("ready"));                                  // wait for all users to be ready
+                while (!_users.AllStates("ready")) ;                                  // wait for all users to be ready
                 await responseStream.WriteAsync(new GameMessage { Text = "start" }); // send starting signal
                 _logger.LogInformation("[{username}] приступил к игре!", playerName);      // log
 
@@ -75,7 +75,7 @@ namespace MinesweeperServer
                         case "players":
                             foreach (string player_name in _users.GetPlayers)
                                 await _users.SendPlayer(playerName, player_name, _players[player_name]);
-                            await _users[playerName].Channel.WriteAsync(new GameMessage{Text="end"});
+                            await _users[playerName].Channel.WriteAsync(new GameMessage { Text = "end" });
                             break;
                         case "leave":
                             _users.Leave(playerName);
@@ -90,6 +90,7 @@ namespace MinesweeperServer
                         case "lose":
                             _users.SetPlayerState(playerName, "lobby");                                                // send player to lobby
                             _players.CalcScore(playerName, "lose");                                                    // calculate score
+                            await _users.Broadcast(new GameMessage { Text = playerName, State = "lose" }, playerName); // broadcast loser's name
                             _logger.LogInformation("[{username}] проиграл!", playerName);                              // log
                             break;
                         default:
