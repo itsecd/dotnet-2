@@ -9,7 +9,7 @@ namespace MinesweeperClient
 {
     public partial class App : Application
     {
-        Connection _wire = new Connection();
+        private readonly Connection _wire = new Connection();
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -19,7 +19,7 @@ namespace MinesweeperClient
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow{_wire = _wire};
+                desktop.MainWindow = new MainWindow{Wire = _wire};
                 desktop.MainWindow.DataContext = new MainWindowViewModel(desktop.MainWindow, _wire);
             }
 

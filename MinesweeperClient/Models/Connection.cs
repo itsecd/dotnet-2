@@ -10,18 +10,16 @@ namespace MinesweeperClient.Models
 {
     public class Connection
     {
-        string? _name;
-        string? _address;
-        GrpcChannel? _channel;
-        Minesweeper.MinesweeperClient? _client;
-        AsyncDuplexStreamingCall<GameMessage, GameMessage>? _call = null;
-        public List<PlayerInfo> Players = new();
-        public async Task<bool> TryJoinAsync(string Name, string Address)
+        private string? _name;
+        private string? _address;
+        private GrpcChannel? _channel;
+        private Minesweeper.MinesweeperClient? _client;
+        private AsyncDuplexStreamingCall<GameMessage, GameMessage>? _call;
+        public readonly List<PlayerInfo> Players = new();
+        public async Task<bool> TryJoinAsync(string name, string address)
         {
-            if (Name == null || Address == null)
-                return false;
-            _name = Name;
-            _address = Address;
+            _name = name;
+            _address = address;
             try
             {
                 _channel = GrpcChannel.ForAddress(_address);
@@ -58,22 +56,21 @@ namespace MinesweeperClient.Models
             try
             {
                 await _call.RequestStream.WriteAsync(new GameMessage { Text = "players" });
-                GameMessage msg = new();
                 Players.Clear();
                 while (true)
                 {
                     await _call.ResponseStream.MoveNext();
-                    msg = _call.ResponseStream.Current;
+                    GameMessage msg = _call.ResponseStream.Current;
                     if (msg.Text != "end")
                     {
                         PlayerInfo info = new();
                         info.Name = msg.Name;
-                        int win_count = int.Parse(msg.Text.Split('_')[0]);
-                        int lose_count = int.Parse(msg.Text.Split('_')[1]);
-                        int win_streak = int.Parse(msg.Text.Split('_')[2]);
-                        info.PlayCount = win_count + lose_count;
-                        info.WinCount = win_count;
-                        info.WinStreak = win_streak;
+                        int winCount = int.Parse(msg.Text.Split('_')[0]);
+                        int loseCount = int.Parse(msg.Text.Split('_')[1]);
+                        int winStreak = int.Parse(msg.Text.Split('_')[2]);
+                        info.PlayCount = winCount + loseCount;
+                        info.WinCount = winCount;
+                        info.WinStreak = winStreak;
                         Players.Add(info);
                     }
                     else
@@ -116,7 +113,7 @@ namespace MinesweeperClient.Models
         }
         public async Task<GameMessage> Peek()
         {
-            if (await _call.ResponseStream.MoveNext())
+            if (_call != null && await _call.ResponseStream.MoveNext())
                 return _call.ResponseStream.Current;
             return new GameMessage { Text = "no" };
         }

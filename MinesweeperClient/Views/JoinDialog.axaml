@@ -8,8 +8,8 @@
         WindowStartupLocation="CenterOwner"
         Title="Join the server">
   <StackPanel Spacing="10" Margin="5" VerticalAlignment="Center">
-    <TextBox Name="nick_textbox" Width="300" Watermark="Nickname" />
-    <TextBox Name="serv_textbox" Width="300" Watermark="Server address" />
+    <TextBox Name="NickTextBox" Width="300" Watermark="Nickname" />
+    <TextBox Name="ServTextBox" Width="300" Watermark="Server address" />
     <Button Content="Join" HorizontalAlignment="Center" Width="70" HorizontalContentAlignment="Center" Click="OnJoinClick" />
   </StackPanel>
 </Window>

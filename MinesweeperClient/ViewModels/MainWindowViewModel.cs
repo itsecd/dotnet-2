@@ -17,15 +17,15 @@ namespace MinesweeperClient.ViewModels
 
     public class MainWindowViewModel : ViewModelBase
     {
-        Window _mainWindow;
-        Connection _wire;
+        private readonly Window _mainWindow;
+        private readonly Connection _wire;
         public ReactiveCommand<Unit, Unit> JoinCommand { get; }
         public ReactiveCommand<Unit, Unit> LeaveCommand { get; }
         public ObservableCollection<PlayerInfo> Players { get; set; } = new();
-        public MainWindowViewModel(Window MainWindow, Connection Wire)
+        public MainWindowViewModel(Window mainWindow, Connection wire)
         {
-            _mainWindow = MainWindow;
-            _wire = Wire;
+            _mainWindow = mainWindow;
+            _wire = wire;
             JoinCommand = ReactiveCommand.Create(JoinImplAsync);
             LeaveCommand = ReactiveCommand.Create(LeaveImpl);
         }

@@ -28,10 +28,10 @@
                    FontSize="20" Content="PLAYERS" Background="White"
                    HorizontalContentAlignment="Center" />
             <!-- Счетчик оставшихся флагов -->
-            <Label Grid.Row="0" Grid.Column="1" Height="30" Margin="4" Name="flags_label"
+            <Label Grid.Row="0" Grid.Column="1" Height="30" Margin="4" Name="FlagsLabel"
                    FontSize="20" Content="Flags left: 99" Background="White" HorizontalContentAlignment="Center" />
             <!-- Список игроков -->
-            <ItemsControl Name="player_list" Grid.Row="1" Grid.Column="0" Background="White" Margin="4" Items="{Binding Players}">
+            <ItemsControl Name="PlayerList" Grid.Row="1" Grid.Column="0" Background="White" Margin="4" Items="{Binding Players}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Label Content="{Binding Stats}" Margin="1" />
@@ -39,9 +39,9 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <!-- Игровое поле -->
-            <Panel Name="game_grid" Grid.Row="1" Grid.Column="1" Background="#808080" Grid.RowSpan="2" Margin="4" />
+            <Panel Name="GameGrid" Grid.Row="1" Grid.Column="1" Background="#808080" Grid.RowSpan="2" Margin="4" />
             <!-- Кнопка READY -->
-            <Button Name="ready_button" Grid.Row="2" Grid.Column="0" Content="READY" Background="White" Width="200" HorizontalContentAlignment="Center" Margin="4" Click="OnReadyClicked" />
+            <Button Grid.Row="2" Grid.Column="0" Content="READY" Background="White" Width="200" HorizontalContentAlignment="Center" Margin="4" Click="OnReadyClicked" />
         </Grid>
     </DockPanel>
 

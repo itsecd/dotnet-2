@@ -7,13 +7,13 @@ namespace MinesweeperClient.Views
 {
     public partial class JoinDialog : Window
     {
-        TextBox nickField;
-        TextBox servField;
+        private readonly TextBox _nickField;
+        private readonly TextBox _servField;
         public JoinDialog()
         {
             InitializeComponent();
-            nickField = this.FindControl<TextBox>("nick_textbox");
-            servField = this.FindControl<TextBox>("serv_textbox");
+            _nickField = this.FindControl<TextBox>("NickTextBox");
+            _servField = this.FindControl<TextBox>("ServTextBox");
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -25,7 +25,7 @@ namespace MinesweeperClient.Views
         }
         private void OnJoinClick(object sender, RoutedEventArgs e)
         {
-            Close(new string[] { nickField.Text, servField.Text });
+            Close(new string[] { _nickField.Text, _servField.Text });
         }
     }
 }

@@ -17,24 +17,23 @@ namespace MinesweeperClient.Views
 {
     public partial class MainWindow : Window
     {
-        const int FIELD_WIDTH = 30;
-        const int FIELD_HEIGHT = 16;
-        const int MINE_COUNT = 99;
-        const int TILE_SIZE = 35;
+        private const int FieldWidth = 30;
+        private const int FieldHeight = 16;
+        private const int MineCount = 99;
+        private const int TileSize = 35;
         // field
-        private MinesweeperField _field = new(FIELD_HEIGHT, FIELD_WIDTH);
-        private Panel _grid;
-        private Button[,] _buttonGrid = new Button[FIELD_HEIGHT, FIELD_WIDTH];
+        private readonly MinesweeperField _field = new(FieldHeight, FieldWidth);
+        private readonly Panel _grid;
+        private readonly Button[,] _buttonGrid = new Button[FieldHeight, FieldWidth];
         // assets
-        Bitmap _flag;
-        Bitmap _bomb;
-        Bitmap _bombMarked;
-        Label _flagsLabel;
-        int _flagsCounter;
+        private readonly Bitmap _flag;
+        private readonly Bitmap _bomb;
+        private readonly Bitmap _bombMarked;
+        private readonly Label _flagsLabel;
+        private int _flagsCounter;
         // game
-        GameStatus _gameStatus;
-        public Connection? _wire;
-        Button _readyButton;
+        private GameStatus _gameStatus;
+        public Connection? Wire;
         public MainWindow()
         {
             InitializeComponent();
@@ -43,29 +42,27 @@ namespace MinesweeperClient.Views
             _bomb = new Bitmap("Assets/Bomb.png");
             _bombMarked = new Bitmap("Assets/BombMarked.png");
             // field
-            _grid = this.FindControl<Panel>("game_grid");
-            _readyButton = this.FindControl<Button>("ready_button");
+            _grid = this.FindControl<Panel>("GameGrid");
             InitGrid();
-            _flagsLabel = this.FindControl<Label>("flags_label");
+            _flagsLabel = this.FindControl<Label>("FlagsLabel");
             _flagsCounter = 99;
             // connection
-            Task.Run(() => PlayersUpdate());
-            Task.Run(() => FlagsUpdate());
+            Task.Run(PlayersUpdate);
+            Task.Run(FlagsUpdate);
         }
         async void ListenToServer()
         {
-            GameMessage msg = new();
             while (true)
             {
                 Thread.Sleep(50);
                 if (_gameStatus != GameStatus.InProgress) return;
-                if (_wire is not { IsConnected: true }) continue;
-                msg = await _wire.Peek();
+                if (Wire is not { IsConnected: true }) continue;
+                GameMessage msg = await Wire.Peek();
                 if (_gameStatus == GameStatus.InProgress && msg.State == "win")
                 {
                     Console.WriteLine("You lose!");
                     ResetGrid();
-                    await _wire.Lose();
+                    await Wire.Lose();
                     _gameStatus = GameStatus.Ready;
                 }
             }
@@ -75,14 +72,14 @@ namespace MinesweeperClient.Views
             while (true)
             {
                 Thread.Sleep(2000);
-                if (_wire is not { IsConnected: true }) continue;
+                if (Wire is not { IsConnected: true }) continue;
 
-                await _wire.UpdatePlayers();
+                await Wire.UpdatePlayers();
                 Dispatcher.UIThread.Post(() =>
                 {
                     if (DataContext is not MainWindowViewModel viewModel) return;
                     viewModel.Players.Clear();
-                    foreach (var info in _wire.Players)
+                    foreach (var info in Wire.Players)
                     {
                         Console.WriteLine($"got {info.Name}'s stats, {info.PlayCount}/{info.WinCount}/{info.WinStreak}");
                         viewModel.Players.Add(info);
@@ -90,35 +87,35 @@ namespace MinesweeperClient.Views
                 }, DispatcherPriority.Background);
             }
         }
-        void FlagsUpdate()
+        private void FlagsUpdate()
         {
-            int flags_cache = _flagsCounter;
+            int flagsCache = _flagsCounter;
             while (true)
             {
                 Thread.Sleep(100);
-                if (_flagsCounter != flags_cache)
+                if (_flagsCounter != flagsCache)
                 {
-                    flags_cache = _flagsCounter;
-                    _flagsLabel.Content = $"Flags left: {flags_cache}";
+                    flagsCache = _flagsCounter;
+                    _flagsLabel.Content = $"Flags left: {flagsCache}";
                 }
             }
         }
         private void InitGrid()
         {
-            _grid.Height = FIELD_HEIGHT * TILE_SIZE;
-            _grid.Width = FIELD_WIDTH * TILE_SIZE;
-            for (int y = 0; y < FIELD_HEIGHT; y++)
+            _grid.Height = FieldHeight * TileSize;
+            _grid.Width = FieldWidth * TileSize;
+            for (int y = 0; y < FieldHeight; y++)
             {
-                for (int x = 0; x < FIELD_WIDTH; x++)
+                for (int x = 0; x < FieldWidth; x++)
                 {
                     _buttonGrid[y, x] = new Button
                     {
                         Name = $"Tile_{x}_{y}",
-                        Height = TILE_SIZE,
-                        Width = TILE_SIZE,
+                        Height = TileSize,
+                        Width = TileSize,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
-                        Margin = new Thickness(x * TILE_SIZE, y * TILE_SIZE, 0, 0),
+                        Margin = new Thickness(x * TileSize, y * TileSize, 0, 0),
                         Background = new SolidColorBrush { Color = Color.Parse("#c0c0c0") },
                         BorderThickness = new Thickness(1),
                         BorderBrush = new SolidColorBrush { Color = Color.Parse("#808080") },
@@ -135,9 +132,9 @@ namespace MinesweeperClient.Views
         }
         private void ResetGrid()
         {
-            for (int y = 0; y < FIELD_HEIGHT; y++)
+            for (int y = 0; y < FieldHeight; y++)
             {
-                for (int x = 0; x < FIELD_WIDTH; x++)
+                for (int x = 0; x < FieldWidth; x++)
                 {
                     _buttonGrid[y, x].Content = string.Empty;
                     _buttonGrid[y, x].IsEnabled = true;
@@ -146,9 +143,9 @@ namespace MinesweeperClient.Views
         }
         private void DrawGrid()
         {
-            for (int y = 0; y < FIELD_HEIGHT; y++)
+            for (int y = 0; y < FieldHeight; y++)
             {
-                for (int x = 0; x < FIELD_WIDTH; x++)
+                for (int x = 0; x < FieldWidth; x++)
                 {
                     switch (_field.TileState(x, y))
                     {
@@ -174,7 +171,7 @@ namespace MinesweeperClient.Views
                                 _buttonGrid[y, x].Content = new Label
                                 {
                                     Foreground = numColor,
-                                    FontSize = TILE_SIZE - 20,
+                                    FontSize = TileSize - 20,
                                     Content = _field[x, y].ToString(),
                                     HorizontalAlignment = HorizontalAlignment.Center,
                                     VerticalAlignment = VerticalAlignment.Center,
@@ -212,7 +209,7 @@ namespace MinesweeperClient.Views
             int y = int.Parse(button.Name.Split("_")[2]);
             // генерация поля при нажатии на пустую клетку
             if (_field.GameState() == GameStatus.Ready)
-                _field.Generate(x, y, MINE_COUNT);
+                _field.Generate(x, y, MineCount);
             // обработка кнопок мышки
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
             {
@@ -241,22 +238,22 @@ namespace MinesweeperClient.Views
             {
                 Console.WriteLine("You won!");
                 ResetGrid();
-                await _wire.Win();
+                await Wire.Win();
                 _gameStatus = GameStatus.Ready;
             }
             if (_field.GameState() == GameStatus.Lose)
             {
                 Console.WriteLine("You lose!");
                 ResetGrid();
-                await _wire.Lose();
+                await Wire.Lose();
                 _gameStatus = GameStatus.Ready;
             }
         }
         private async void OnReadyClicked(object sender, RoutedEventArgs e)
         {
-            if (_wire == null || !_wire.IsConnected)
+            if (Wire == null || !Wire.IsConnected)
                 return;
-            if (await _wire.Ready())
+            if (await Wire.Ready())
             {
                 _gameStatus = GameStatus.InProgress;
                 Task.Run(() => ListenToServer());
