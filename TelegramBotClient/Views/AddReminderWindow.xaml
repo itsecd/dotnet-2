@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TelegramBotClient.Views"
         mc:Ignorable="d"
-        Title="Add reminder" Height="300" Width="400"
+        Title="Add reminder" Height="400" Width="500"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="Margin" Value="8"/>
         </Style>
         <Style TargetType="{x:Type Label}">
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
@@ -20,6 +22,7 @@
             <Setter Property="MinHeight" Value="25"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="Margin" Value="10"/>
         </Style>
     </Window.Resources>
@@ -36,7 +39,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="Name:"/>
-        <Label Grid.Row="1" Grid.Column="0" Content="Description (optional):"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Description:"/>
         <Label Grid.Row="2" Grid.Column="0" Content="Date and time:"/>
         <Label Grid.Row="3" Grid.Column="0" Content="Repeat period:"/>
         <TextBox Grid.Row="0" Grid.Column="1">
@@ -60,8 +63,10 @@
             </TextBox.Text>
         </TextBox>
         <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Command="{Binding OkCommand}">OK</Button>
-            <Button Command="{Binding CanselCommand}">Cansel</Button>
+            <Button Command="{Binding OkCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">OK</Button>
+            <Button Command="{Binding CanselCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">Cansel</Button>
         </StackPanel>
     </Grid>
 </Window>

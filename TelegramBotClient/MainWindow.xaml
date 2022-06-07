@@ -12,6 +12,9 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
+        <Style TargetType="{x:Type ListView}">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
         <Style TargetType="{x:Type StackPanel}">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="8"/>
@@ -21,17 +24,20 @@
             <Setter Property="MinHeight" Value="25"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="Margin" Value="10"/>
         </Style>
     </Window.Resources>
     <StackPanel Orientation="Horizontal">
-        <ListView>
+        <ListView HorizontalContentAlignment="Center" 
+                  ItemsSource="{Binding EventReminders}" 
+                  SelectedItem="{Binding Path=SelectedReminder}">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="175"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="170"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Time}" Header="Date and time" Width="200"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=RepeatPeriod}" Header="Repeat time" Width="175"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=RepeatPeriod}" Header="Repeat time" Width="170"/>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

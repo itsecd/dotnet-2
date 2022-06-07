@@ -3,6 +3,9 @@ using Grpc.Net.Client;
 using TelegramBotClient.Properties;
 using TelegramBotClient.Commands;
 using TelegramBot;
+using System.Windows;
+using TelegramBotClient.Model;
+using System.Collections.ObjectModel;
 
 namespace TelegramBotClient.ViewModels
 {
@@ -22,13 +25,36 @@ namespace TelegramBotClient.ViewModels
 
         public LoginViewModel()
         {
-            OkCommand = new Command(_ =>
+            OkCommand = new Command(commandParameter =>
             {
+                var window = (Window)commandParameter;
                 var channel = GrpcChannel.ForAddress(Settings.Default.Address);
                 var client = new TelegramEventService.TelegramEventServiceClient(channel);
                 var userReminders = client.GetReminders(new UserRequest { UserId = _userId });
-                var mainWindow = new MainWindow();
-                mainWindow.Show();
+                if (userReminders.Reminders[0].Id != -1)
+                {
+                    var reminders = new ObservableCollection<EventReminder>();
+                    foreach (var reminder in userReminders.Reminders)
+                    {
+                        var time = reminder.DateTime.ToDateTime().ToLocalTime();
+                        reminders.Add(new EventReminder
+                        {
+                            Id = reminder.Id,
+                            Name = reminder.Name,
+                            Description = reminder.Description,
+                            Time = time,
+                            RepeatPeriod = reminder.RepeatPeriod.ToTimeSpan()
+                        });
+                    }
+                    var mainWindow = new MainWindow(new MainViewModel(_userId, reminders));
+                    mainWindow.Show();
+                    window.Close();
+                }
+                else
+                {
+                    MessageBox.Show("User not found", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }, _ => true);
         }
 

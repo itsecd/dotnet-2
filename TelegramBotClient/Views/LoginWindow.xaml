@@ -17,6 +17,7 @@
             <Setter Property="MinHeight" Value="25"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="Margin" Value="10"/>
         </Style>
         <Style TargetType="{x:Type TextBlock}">
@@ -36,7 +37,8 @@
                     <Binding Path="UserId" UpdateSourceTrigger="PropertyChanged"/>
                 </TextBox.Text>
             </TextBox>
-            <Button Command="{Binding OkCommand}" Content="OK"/>
+            <Button Command="{Binding OkCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Content="OK"/>
         </StackPanel>
     </StackPanel>
 </Window>

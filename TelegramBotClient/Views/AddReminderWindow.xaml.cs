@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using TelegramBotClient.ViewModels;
 
 namespace TelegramBotClient.Views
 {
@@ -7,6 +8,11 @@ namespace TelegramBotClient.Views
         public AddReminderWindow()
         {
             InitializeComponent();
+        }
+        public AddReminderWindow(ReminderViewModel reminderViewModel)
+        {
+            InitializeComponent();
+            DataContext = reminderViewModel;
         }
     }
 }

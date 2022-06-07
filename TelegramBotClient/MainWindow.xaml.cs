@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using TelegramBotClient.ViewModels;
 
 namespace TelegramBotClient
 {
@@ -7,6 +8,12 @@ namespace TelegramBotClient
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public MainWindow(MainViewModel mainViewModel)
+        {
+            InitializeComponent();
+            DataContext = mainViewModel;
         }
     }
 }

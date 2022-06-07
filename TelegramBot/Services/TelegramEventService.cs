@@ -24,7 +24,7 @@ namespace TelegramBot.Services
                 request.Id,
                 request.Name,
                 request.Description,
-                request.DateTime.ToDateTime(),
+                request.DateTime.ToDateTime().ToLocalTime(),
                 request.RepeatPeriod.ToTimeSpan());
                 _usersRepository.AddEventReminder(request.UserId, reminder);
             _logger.LogTrace($"Add new reminder for User {request.UserId}");
@@ -37,7 +37,7 @@ namespace TelegramBot.Services
                 request.Id,
                 request.Name,
                 request.Description,
-                request.DateTime.ToDateTime(),
+                request.DateTime.ToDateTime().ToLocalTime(),
                 request.RepeatPeriod.ToTimeSpan());
             _usersRepository.ChangeEventReminder(request.UserId, request.Id, reminder);
             _logger.LogTrace($"Change reminder {request.Id} of User {request.UserId}");
@@ -54,6 +54,15 @@ namespace TelegramBot.Services
         public override Task<UserResponse> GetReminders(UserRequest request, ServerCallContext context)
         {
             var user = _usersRepository.FindUser(request.UserId);
+            if (user == null)
+            {
+                var notFound = new UserResponse();
+                notFound.Reminders.Add(new Reminder
+                {
+                    Id = -1
+                });
+                return Task.FromResult(notFound);
+            }
             var reminders = new List<Reminder>();
             foreach(var eventReminder in user.EventReminders)
             {
@@ -62,7 +71,7 @@ namespace TelegramBot.Services
                     Id = eventReminder.Id,
                     Name = eventReminder.Name,
                     Description = eventReminder.Description,
-                    DateTime = Timestamp.FromDateTime(eventReminder.Time),
+                    DateTime = Timestamp.FromDateTime(eventReminder.Time.ToUniversalTime()),
                     RepeatPeriod = Duration.FromTimeSpan(eventReminder.RepeatPeriod),
                     UserId = request.UserId
                 });
