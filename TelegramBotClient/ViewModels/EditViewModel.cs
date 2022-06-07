@@ -3,22 +3,21 @@ using Grpc.Net.Client;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using TelegramBot;
 using TelegramBotClient.Commands;
 using TelegramBotClient.Model;
 using TelegramBotClient.Properties;
-
 using Duration = Google.Protobuf.WellKnownTypes.Duration;
 
 namespace TelegramBotClient.ViewModels
 {
-    public sealed class ReminderViewModel : INotifyPropertyChanged
+    public sealed class EditViewModel : INotifyPropertyChanged
     {
         private readonly long _userId;
         private readonly ObservableCollection<EventReminder> _eventReminders;
 
+        public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Time { get; set; }
@@ -26,9 +25,14 @@ namespace TelegramBotClient.ViewModels
         public Command OkCommand { get; private set; }
         public Command CancelCommand { get; private set; }
 
-        public ReminderViewModel(long userId, ObservableCollection<EventReminder> eventReminders)
+        public EditViewModel(long userId, EventReminder selectedReminder, ObservableCollection<EventReminder> eventReminders)
         {
             _userId = userId;
+            Id = selectedReminder.Id;
+            Name = selectedReminder.Name;
+            Description = selectedReminder.Description;
+            Time = selectedReminder.Time.ToString();
+            RepeatPeriod = selectedReminder.RepeatPeriod.ToString();
             _eventReminders = eventReminders;
 
             OkCommand = new Command(commandParameter =>
@@ -41,23 +45,31 @@ namespace TelegramBotClient.ViewModels
 
                 var time = DateTime.Parse(Time);
                 var repeatPeriod = TimeSpan.Parse(RepeatPeriod);
-                client.AddReminder(new Reminder
+                client.ChangeReminder(new Reminder
                 {
-                    Id = 0,
+                    Id = Id,
                     UserId = _userId,
                     Name = Name,
                     Description = Description,
                     DateTime = Timestamp.FromDateTime(time.ToUniversalTime()),
                     RepeatPeriod = Duration.FromTimeSpan(repeatPeriod)
                 });
-                _eventReminders.Add(new EventReminder
+                foreach(var reminder in _eventReminders)
                 {
-                    Id = _eventReminders.Max(x => x.Id) + 1,
-                    Name = Name,
-                    Description = Description,
-                    Time = time,
-                    RepeatPeriod = repeatPeriod
-                });
+                    if(reminder.Id == Id)
+                    {
+                        _eventReminders.Remove(reminder);
+                        _eventReminders.Add(new EventReminder
+                        {
+                            Id = Id,
+                            Name = Name,
+                            Description = Description,
+                            Time = time,
+                            RepeatPeriod = repeatPeriod
+                        });
+                        break;
+                    }
+                }
                 window.Close();
             }, _ => true);
             CancelCommand = new Command(commandParameter =>
@@ -68,7 +80,6 @@ namespace TelegramBotClient.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

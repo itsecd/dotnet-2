@@ -36,6 +36,8 @@ namespace TelegramBotClient.ViewModels
                 var channel = GrpcChannel.ForAddress(Settings.Default.Address);
                 var client = new TelegramEventService.TelegramEventServiceClient(channel);
 
+                if (SelectedReminder == null) return;
+
                 client.RemoveReminder(new Reminder
                 {
                     Id = SelectedReminder.Id,
@@ -51,6 +53,13 @@ namespace TelegramBotClient.ViewModels
                     }
                 }
             }, _ => true );
+            EditCommand = new Command(commandParameter =>
+            {
+                if (SelectedReminder == null) return;
+
+                var editReminderWindow = new AddReminderWindow(new EditViewModel(_userId, SelectedReminder, EventReminders));
+                editReminderWindow.Show();
+            }, _ => true);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

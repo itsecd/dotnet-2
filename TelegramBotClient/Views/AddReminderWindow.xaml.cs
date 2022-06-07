@@ -14,5 +14,10 @@ namespace TelegramBotClient.Views
             InitializeComponent();
             DataContext = reminderViewModel;
         }
+        public AddReminderWindow(EditViewModel reminderViewModel)
+        {
+            InitializeComponent();
+            DataContext = reminderViewModel;
+        }
     }
 }
