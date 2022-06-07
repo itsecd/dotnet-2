@@ -1,5 +1,10 @@
+using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+
+using Gomoku;
 
 namespace GomokuClient
 {
@@ -25,6 +30,9 @@ namespace GomokuClient
             this.client = client;
             Player1.Content = client.Login;
             Player2.Content = client.OpponentLogin;
+            LockOrUnlock();
+            this.client.MakeTurnSubject.Subscribe(SetOpponentTurn);
+            this.client.EndGameSubject.Subscribe(EndGame);
         }
 
         private void NewGameClick(object sender, RoutedEventArgs e)
@@ -35,7 +43,9 @@ namespace GomokuClient
         private void PlaygroudClick(object sender, RoutedEventArgs e)
         {
             Button cell = ((Button)e.OriginalSource);
-            if (client.IsFirstTurn)
+            if (cell.Content is not null)
+                return;
+            if (client.IsFirstPlayer)
                 cell.Content = "X";
             else
                 cell.Content = "O";
@@ -43,7 +53,30 @@ namespace GomokuClient
             int x = int.Parse(pointString[0]);
             int y = int.Parse(pointString[1]);
             LockPlayground();
-            NewGameButton.Visibility = Visibility.Visible;
+            Task sumTask = new Task(async () =>
+            {
+                await client.MakeTurnRequest(new Gomoku.Point() { X = x, Y = y });
+            });
+            sumTask.Start();
+        }
+
+        private void SetOpponentTurn(MakeTurnReply makeTurnReply)
+        {
+            Dispatcher.InvokeAsync(() =>
+            {
+                LockOrUnlock();
+            });
+
+            if (makeTurnReply.YourTurn)
+            {
+                var point = makeTurnReply.Point;
+                if (!client.IsFirstPlayer)
+                {
+                    Dispatcher.InvokeAsync(() => _playground[point.X, point.Y].Content = "X");
+                }
+                else
+                    Dispatcher.InvokeAsync(() => _playground[point.X, point.Y].Content = "O");
+            }
         }
 
         private void LockPlayground()
@@ -53,7 +86,6 @@ namespace GomokuClient
                 {
                     _playground[i, j].IsEnabled = false;
                 }
-
         }
 
         private void UnlockPlayground()
@@ -65,5 +97,34 @@ namespace GomokuClient
                 }
         }
 
+        private void LockOrUnlock()
+        {
+            Dispatcher.InvokeAsync(() =>
+            {
+                if (client.ActivePlayer)
+                {
+                    ActivePlayerLabel.Content = $"Active player is {client.Login}";
+                    UnlockPlayground();
+                }
+                else
+                {
+                    ActivePlayerLabel.Content = $"Active player is {client.OpponentLogin}";
+                    LockPlayground();
+                }
+            });
+        }
+
+        private void EndGame(EndGameReply endGameReply)
+        {
+            Dispatcher.InvokeAsync(() =>
+            {
+                LockPlayground();
+                ActivePlayerLabel.Content = $"{endGameReply.Status}";
+                var points = endGameReply.Points;
+                foreach (var point in points)
+                    _playground[point.X, point.Y].Background = Brushes.Red;
+                NewGameButton.Visibility = Visibility.Visible;
+            });
+        }
     }
 }

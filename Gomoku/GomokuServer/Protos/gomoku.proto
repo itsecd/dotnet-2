@@ -34,9 +34,8 @@ message Reply {
   oneof reply {
     LoginReply login_reply = 1;
     FindOpponentReply find_opponent_reply = 2;
-    ActivePlayerReply active_player_reply = 3;
-    MakeTurnReply make_turn_reply = 4;
-    EndGameReply end_game_reply = 5;
+    MakeTurnReply make_turn_reply = 3;
+    EndGameReply end_game_reply = 4;
   }
 }
 
@@ -46,11 +45,9 @@ message LoginReply {
 
 message FindOpponentReply {
   string login = 1;
+  bool your_turn = 2;
 }
 
-message ActivePlayerReply {
-  bool your_turn = 1;
-}
 
 message MakeTurnReply {
   Point point = 1;

@@ -40,6 +40,8 @@ namespace GomokuClient
 
         public void StartGame(FindOpponentReply findOpponentReply)
         {
+            _client.LoginSubject.Dispose();
+            _client.FindOpponentSubject.Dispose();
             Dispatcher.InvokeAsync(() =>
             {
                 Application.Current.MainWindow = new MainWindow(_client) { Owner = this };

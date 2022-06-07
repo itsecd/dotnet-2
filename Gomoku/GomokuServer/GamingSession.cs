@@ -31,7 +31,7 @@ namespace GomokuServer
             _secondPlayer = secondPlayer;
             _secondPlayer.Session = this;
 
-            _timer.Elapsed += OnTimeout;
+            //_timer.Elapsed += OnTimeout;
         }
 
         public void Start()
@@ -40,14 +40,12 @@ namespace GomokuServer
 
             Task.Run(() =>
             {
-                SendFindOpponentReply(_firstPlayer, _secondPlayer.Login);
-                SendActivePlayerReply(_firstPlayer, true);
+                SendFindOpponentReply(_firstPlayer, _secondPlayer.Login, true);
             });
 
             Task.Run(() =>
             {
-                SendFindOpponentReply(_secondPlayer, _firstPlayer.Login);
-                SendActivePlayerReply(_secondPlayer, false);
+                SendFindOpponentReply(_secondPlayer, _firstPlayer.Login, false);
             });
 
             _isTimerActive = true;
@@ -81,15 +79,14 @@ namespace GomokuServer
 
                 gameplay.EnterIntoTheCell(point, _isFirstTurn);
 
-                SendMakeTurnReply(notActivePlayer, point, _isFirstTurn);
+                SendMakeTurnReply(notActivePlayer, point, true);
 
-                SendMakeTurnReply(activePlayer, point, !_isFirstTurn);
+                SendMakeTurnReply(activePlayer, point, false);
 
                 var gameOver = gameplay.CheckGame();
 
                 if (gameOver)
                 {
-
                     List<Point> WinPoints = gameplay.WinPoints;
 
                     if (gameplay.Winner == Cell.Empty)
@@ -107,44 +104,27 @@ namespace GomokuServer
                 }
                 else
                 {
-                    ChangeActivePlayer();
+                    _isFirstTurn = !_isFirstTurn;
                 }
-
                 _isTimerActive = true;
                 _timer.Start();
             }
-
         }
 
-        private void OnTimeout(object sender, ElapsedEventArgs e)
-        {
-            lock (_timer)
-            {
-                if (!_isTimerActive)
-                    return;
+        //private void OnTimeout(object sender, ElapsedEventArgs e)
+        //{
+        //    lock (_timer)
+        //    {
+        //        if (!_isTimerActive)
+        //            return;
+        //        _isFirstTurn = !_isFirstTurn;
+        //    }
+        //}
 
-                ChangeActivePlayer();
-            }
-        }
-
-        private void ChangeActivePlayer()
+        private static void SendFindOpponentReply(Player player, string login, bool yourTurn)
         {
-            _isFirstTurn = !_isFirstTurn;
-            SendActivePlayerReply(_firstPlayer, _isFirstTurn);
-            SendActivePlayerReply(_secondPlayer, !_isFirstTurn);
-        }
-
-        private static void SendFindOpponentReply(Player player, string login)
-        {
-            var findOpponentReply = new FindOpponentReply { Login = login };
+            var findOpponentReply = new FindOpponentReply { Login = login, YourTurn = yourTurn };
             var reply = new Reply { FindOpponentReply = findOpponentReply };
-            player.WriteAsync(reply);
-        }
-
-        private static void SendActivePlayerReply(Player player, bool yourTurn)
-        {
-            var activePlayerReply = new ActivePlayerReply { YourTurn = yourTurn };
-            var reply = new Reply { ActivePlayerReply = activePlayerReply };
             player.WriteAsync(reply);
         }
 

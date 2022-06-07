@@ -14,11 +14,14 @@ namespace GomokuClient
     public sealed class Client
     {
         public Subject<LoginReply> LoginSubject { get; private set; } = new();
+        public Subject<EndGameReply> EndGameSubject { get; private set; } = new();
+        public Subject<MakeTurnReply> MakeTurnSubject { get; private set; } = new();
         public Subject<FindOpponentReply> FindOpponentSubject { get; private set; } = new();
         private readonly GrpcChannel _channel;
         private readonly AsyncDuplexStreamingCall<Request, Reply> _stream;
         private readonly Gomoku.Gomoku.GomokuClient _client;
-        public bool IsFirstTurn { get; private set; }
+        public bool IsFirstPlayer { get; set; }
+        public bool ActivePlayer { get; set; } 
         public string Login { get; private set; } = string.Empty;
         public string OpponentLogin { get; private set; } = string.Empty;
 
@@ -69,8 +72,19 @@ namespace GomokuClient
                         break;
 
                     case Reply.ReplyOneofCase.FindOpponentReply:
+                        ActivePlayer = stream.Current.FindOpponentReply.YourTurn;
+                        IsFirstPlayer = stream.Current.FindOpponentReply.YourTurn;
                         OpponentLogin = stream.Current.FindOpponentReply.Login;
                         FindOpponentSubject.OnNext(stream.Current.FindOpponentReply);
+                        break;
+
+                    case Reply.ReplyOneofCase.MakeTurnReply:
+                        ActivePlayer = stream.Current.MakeTurnReply.YourTurn;
+                        MakeTurnSubject.OnNext(stream.Current.MakeTurnReply);
+                        break;
+
+                    case Reply.ReplyOneofCase.EndGameReply:
+                        EndGameSubject.OnNext(stream.Current.EndGameReply);
                         break;
 
                     default:

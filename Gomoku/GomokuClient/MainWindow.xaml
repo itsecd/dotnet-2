@@ -48,7 +48,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" x:Name="ActivePlayer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Grid.Row="0" x:Name="ActivePlayerLabel" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                 <Grid Grid.Row="1" Margin="0,0,0,40" x:Name="PlaygroundGrid">
                     <Grid.ColumnDefinitions>
