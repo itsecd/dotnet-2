@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package snake;
+
+service Snake {
+  rpc Play (stream Request) returns (stream Reply);
+}
+
+message Request {
+  oneof request {
+    LoginRequest login_request = 1;
+    FindOpponentRequest find_opponent_request = 2;
+    SendResultGame send_result_game = 3;
+  }
+}
+
+message LoginRequest {
+  string login = 1; 
+}
+
+message FindOpponentRequest {
+}
+
+message SendResultGame{
+    int32 score = 1; 
+}
+
+
+message Reply {
+  oneof reply {
+    LoginReply login_reply = 1;
+    FindOpponentReply find_opponent_reply = 2;
+    ActivePlayerReply active_player_reply = 3;
+    EndGameReply end_game_reply = 5;
+  }
+}
+
+message LoginReply {
+  bool success = 1;
+}
+
+message FindOpponentReply {
+  string login = 1;
+}
+
+message ActivePlayerReply {
+  bool your_turn = 1;
+}
+
+
+message EndGameReply {
+  OutcomeStatus status = 1;
+}
+
+enum OutcomeStatus {
+  VICTORY = 0;
+  DRAW = 1;
+  DEFEAT = 2;
+}
