@@ -5,12 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:BotClient.ViewModels" x:Class="BotClient.Views.LoginWindow"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="156" Width="406">
+        Title="LoginWindow" Height="183" Width="405">
 
     <Window.DataContext>
         <viewModels:LoginViewModel/>
     </Window.DataContext>
-
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="MinWidth" Value="75"/>
+            <Setter Property="MinHeight" Value="25"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </Window.Resources>
     <Grid Height="243" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="592*"/>
@@ -22,11 +39,11 @@
             <RowDefinition Height="0*"/>
         </Grid.RowDefinitions>
         <StackPanel VerticalAlignment="Top" Margin="0,28,0,0" Height="148" Grid.ColumnSpan="2">
-            <Label Content="Enter your login:" HorizontalAlignment="Left" Height="33" Width="102"/>
-            <TextBox Height="21" Width="390" Text="{Binding UserId}"/>
+            <Label Content="Введите идентификатор полученный из сообщения:" HorizontalAlignment="Left" Height="33" Width="350" FontSize="14"/>
+            <TextBox Height="21" Width="365" Text="{Binding UserId}" HorizontalAlignment="Left"/>
             <Button Command="{Binding OkCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                    Content="OK" Width="391"/>
+                    Content="OK" Width="96" Height="23"/>
         </StackPanel>
     </Grid>
 </Window>

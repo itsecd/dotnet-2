@@ -6,25 +6,32 @@
     <ChatId>599338819</ChatId>
     <ReminderList>
       <Reminder>
-        <Id>0</Id>
-        <Name>qq31</Name>
-        <Description>123</Description>
-        <DateTime>2001-01-01T12:00:00+04:00</DateTime>
+        <Id>23</Id>
+        <Name>TestReminder</Name>
+        <Description>TestDescription</Description>
+        <DateTime>2022-06-07T03:30:00+04:00</DateTime>
         <RepeatPeriod>0</RepeatPeriod>
       </Reminder>
       <Reminder>
-        <Id>6</Id>
-        <Name>string</Name>
-        <Description>string</Description>
-        <DateTime>2022-06-07T18:44:23.585Z</DateTime>
+        <Id>24</Id>
+        <Name>TestName</Name>
+        <Description>TestDescription</Description>
+        <DateTime>2022-06-07T23:30:00+04:00</DateTime>
+        <RepeatPeriod>0</RepeatPeriod>
+      </Reminder>
+      <Reminder>
+        <Id>25</Id>
+        <Name>TestName</Name>
+        <Description>TestDescription</Description>
+        <DateTime>2022-06-08T04:00:00+04:00</DateTime>
         <RepeatPeriod>1</RepeatPeriod>
       </Reminder>
       <Reminder>
-        <Id>7</Id>
-        <Name>123</Name>
-        <Description>123</Description>
-        <DateTime>1111-01-01T00:00:00+04:00</DateTime>
-        <RepeatPeriod>0</RepeatPeriod>
+        <Id>26</Id>
+        <Name>Test2Name</Name>
+        <Description>Test2Description</Description>
+        <DateTime>2022-06-08T00:00:01+04:00</DateTime>
+        <RepeatPeriod>2</RepeatPeriod>
       </Reminder>
     </ReminderList>
   </User>

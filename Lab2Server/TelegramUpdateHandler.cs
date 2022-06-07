@@ -42,7 +42,7 @@ namespace Lab2Server
             Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
             await botClient.SendTextMessageAsync(
                 chatId: chatId,
-                text: "You have successfully registered",
+                text: $"Вы успешно зарегистрированы.\nВаш идентификатор: {userId}",
                 cancellationToken: cancellationToken);
         }
     }

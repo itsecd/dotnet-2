@@ -42,6 +42,7 @@ namespace BotClient.ViewModels
 
             RemoveCall = new Command(async _ =>
             {
+                if (SelectedReminder == null) return;
                 using var httpClient = new HttpClient();
                 var telegramBotServer = new TelegramBotServer(Properties.Settings1.Default.OpenApiServer, httpClient);
                 await telegramBotServer.Reminders3Async((int)_user.UserId, SelectedReminder.Id);
