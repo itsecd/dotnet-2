@@ -13,14 +13,14 @@
 <details>
   <summary><strong>Вход в чат: </strong></summary>
   <p></p>
-  ![alt text](login_menu.jpg)
+  ![alt text](https://github.com/EraserH/dotnet-2/blob/main/login_menu.jpg)
   
 </details>
 
 <details>
   <summary><strong>Непосредственно чат</strong></summary>
   <p></p>
-  ![alt text](main_chat.jpg)
+  ![alt text](https://github.com/EraserH/dotnet-2/blob/main/main_chat.jpg)
   
 </details>
 
