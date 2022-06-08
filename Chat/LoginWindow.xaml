@@ -9,8 +9,8 @@
         mc:Ignorable="d"
         Title="login" Height="200" Width="550">
     <Grid Margin="0,1,0,-1">
-        <TextBlock HorizontalAlignment="Left" Margin="20,60,0,0" TextWrapping="Wrap" Text="User Name" VerticalAlignment="Top" Height="20" Width="40" FontSize="14"/>
-        <TextBox Text="{Binding UserName}" HorizontalAlignment="Left" Margin="85,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125"/>
-        <Button Command="{Binding Join}" Content="Join" HorizontalAlignment="Left" Margin="128,100,0,0" VerticalAlignment="Top" Width="86"/>
+        <TextBlock Text="Enter your username below:" HorizontalAlignment="Left" Margin="40,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="30" FontSize="16" Foreground="#FF6D890F"/>
+        <TextBox Text="{Binding UserName}" HorizontalAlignment="Left" Margin="40,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="309" Height="47"/>
+        <Button Command="{Binding Join}" Content="Join" HorizontalAlignment="Left" Margin="374,79,0,0" VerticalAlignment="Top" Width="127" Height="47" Background="#FF51FF00"/>
     </Grid>
 </v:LoginWindowBase>

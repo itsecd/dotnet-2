@@ -7,11 +7,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chat"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Chat" Height="450" Width="800">
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Height="80">
-            <Button Command="{Binding Send}" DockPanel.Dock="Right" Content="Send" HorizontalAlignment="Right" Margin="5" Width="120" FontSize="20"/>
-            <TextBox Text="{Binding _MessageText}"  Margin="5" Width="435" />
+            <Button Command="{Binding Send}" DockPanel.Dock="Right" Content="Send" HorizontalAlignment="Right" Margin="5" Width="120" FontSize="20" BorderBrush="{x:Null}" Background="#FF3EDC0F"/>
+            <TextBox Text="{Binding _MessageText}"  Margin="5" Width="584" />
         </DockPanel>
         <ListView ItemsSource="{Binding Messages}" Width="800"/>
     </DockPanel>
