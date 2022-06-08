@@ -10,17 +10,9 @@
 * Графический клиент
 * Сохранение личных и групповых сообщений на сервере и их воспроизведение
 
-<details>
-  <summary><strong>Вход в чат: </strong></summary>
-  <p></p>
-  ![alt text](https://github.com/EraserH/dotnet-2/blob/main/login_menu.jpg)
-  
-</details>
+###Вход в чат:
+![alt text](https://github.com/EraserH/dotnet-2/blob/main/login_menu.jpg)
 
-<details>
-  <summary><strong>Непосредственно чат</strong></summary>
-  <p></p>
-  ![alt text](https://github.com/EraserH/dotnet-2/blob/main/main_chat.jpg)
-  
-</details>
+###Непосредственно чат:
+![alt text](https://github.com/EraserH/dotnet-2/blob/main/main_chat.jpg)
 
