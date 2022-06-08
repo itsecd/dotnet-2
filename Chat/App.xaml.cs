@@ -1,12 +1,7 @@
 ﻿using Chat.ViewModel;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Reactive;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Chat
