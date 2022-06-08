@@ -4,10 +4,6 @@ using System.Reactive.Linq;
 
 namespace Chat
 {
-    /// <summary>
-    /// Interaction logic for login.xaml
-    /// </summary>
-    /// 
     public class LoginWindowBase : ReactiveWindow<LoginViewModel>   
     {
     }

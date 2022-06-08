@@ -11,7 +11,7 @@ namespace Chat.ViewModel
 {
     public partial class LoginViewModel: INotifyPropertyChanged
     {
-        private string? _userName;
+        private string _userName;
         public string UserName { 
             get => _userName;
             set
@@ -33,7 +33,7 @@ namespace Chat.ViewModel
 
         private async Task JoinImpl()
         {
-            if (UserName == "")
+            if (!(UserName is string) || UserName.Length == 0)
             {
                 MessageBox.Show("Input name please");
                 return;
@@ -46,7 +46,7 @@ namespace Chat.ViewModel
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));

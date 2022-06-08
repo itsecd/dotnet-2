@@ -12,10 +12,10 @@ namespace Chat.ViewModel
     public partial class MainWindowViewModel: INotifyPropertyChanged
     {
         private static readonly string ChatURL = Settings.Default.defaultChatURL;
-        private HubConnection _Connection { get; set; }
+        private HubConnection _connection;
 
-        private string? _messageText;
-        public string _MessageText { 
+        private string _messageText;
+        public string MessageText { 
             get => _messageText;
             set
             {
@@ -23,44 +23,40 @@ namespace Chat.ViewModel
                 OnPropertyChanged();
             } 
         }
-        private string _User { get; set; }
+        private string _user;
 
 
         public ReactiveCommand<Unit, Unit> Send { get; }
-        public ReactiveCommand<Unit, Unit> Close { get; }
         public ObservableCollection<string> Messages { get; set; } = new();
-
-        private MainWindow _MainWindow { get; }
 
         public MainWindowViewModel(string user, MainWindow mw)
         {
-            _User = user;
-            _MainWindow = mw;
+            _user = user;
             StartConnection();
             Send = ReactiveCommand.CreateFromTask(Message_Send);
         }
         private async void StartConnection()
         {
-            _Connection = new HubConnectionBuilder()
+            _connection = new HubConnectionBuilder()
                     .WithUrl(ChatURL)
                     .Build();
 
-            _Connection.On<string, string>("ReceiveMessage", (user, message) =>
+            _connection.On<string, string>("ReceiveMessage", (user, message) =>
             {
                 Messages.Add($"{user}: {message}");
             });
 
-            _Connection.On<string, string, string>("ReceiveMessageFromGroup", (groupName, user, message) =>
+            _connection.On<string, string, string>("ReceiveMessageFromGroup", (groupName, user, message) =>
             {
                 Messages.Add($"({groupName}) {user}: {message}");
             });
 
-            _Connection.On<string, string>("ReceiveDirectMessage", (user, message) =>
+            _connection.On<string, string>("ReceiveDirectMessage", (user, message) =>
             {
                 Messages.Add($"|From user| {user}: {message}");
             });
 
-            _Connection.On<string, string>("ReceiveServiceMessage", (groupName, message) =>
+            _connection.On<string, string>("ReceiveServiceMessage", (groupName, message) =>
             {
                 if (groupName == "common")
                 {
@@ -72,40 +68,40 @@ namespace Chat.ViewModel
                 }
             });
 
-            await _Connection.StartAsync();
+            await _connection.StartAsync();
 
-            await _Connection.InvokeAsync("Enter", _User);
+            await _connection.InvokeAsync("Enter", _user);
         }
 
         private async Task Message_Send()
         {
-            string message = _MessageText;
+            string message = MessageText;
             if (string.IsNullOrEmpty(message))
             {
                 return;
             }
 
             if (message.StartsWith("+"))
-                await _Connection.InvokeAsync("JoinGroup", message.Split('+', ' ')[1], _User);
+                await _connection.InvokeAsync("JoinGroup", message.Split('+', ' ')[1], _user);
             else if (message.StartsWith("-"))
-                await _Connection.InvokeAsync("LeaveGroup", message.Split('-', ' ')[1], _User);
+                await _connection.InvokeAsync("LeaveGroup", message.Split('-', ' ')[1], _user);
             else if (message.StartsWith("#"))
             {
                 var groupName = message.Split('#', ' ')[1];
                 var messageToSend = message.Replace("#" + groupName, "");
-                await _Connection.InvokeAsync("SendMessageToGroup", groupName, _User, messageToSend);
+                await _connection.InvokeAsync("SendMessageToGroup", groupName, _user, messageToSend);
             }
             else if (message.StartsWith("@"))
             {
                 var receiver = message.Split('@', ' ')[1];
                 var messageToSend = message.Replace("@" + receiver, "");
-                await _Connection.InvokeAsync("SendMessageToUser", _User, messageToSend, receiver);
+                await _connection.InvokeAsync("SendMessageTo_user", _user, messageToSend, receiver);
             }
             else
-                await _Connection.InvokeAsync("SendMessage", _User, message);
+                await _connection.InvokeAsync("SendMessage", _user, message);
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));

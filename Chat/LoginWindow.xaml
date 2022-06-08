@@ -5,7 +5,6 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}, Path=ViewModel}"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Chat"
         mc:Ignorable="d"
         Title="login" Height="200" Width="550">
     <Grid Margin="0,1,0,-1">
