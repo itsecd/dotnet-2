@@ -9,7 +9,6 @@ namespace BotClient.ViewModels
 {
     public class AddReminderViewModel : INotifyPropertyChanged
     {
-        private User _user;
         private long _userId;
         private DateTime _dateTime;
         private string _name;
